@@ -418,7 +418,7 @@ function ConnectingScreen({ bank }: { bank: SupportedBank }) {
 }
 
 function SelectAccountScreen({
-  bank, accounts, onSelect,
+  bank: _bank, accounts, onSelect,
 }: {
   bank: SupportedBank
   accounts: MockAccount[]

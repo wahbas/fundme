@@ -1,4 +1,4 @@
-import { ChevronRight, ArrowRight, Check } from 'lucide-react'
+import { ArrowRight, Check } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { SparkleDecoration } from '../illustrations'

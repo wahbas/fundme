@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import {
-  FileUp, Upload, CheckCircle2, Trash2, FileText, ArrowRight, ArrowLeft, Building2, Users,
+  Upload, CheckCircle2, Trash2, FileText, ArrowRight, ArrowLeft, Building2, Users,
   Receipt, Award, Calendar, TrendingUp, Briefcase, Clock,
-  AlertCircle, X, BarChart3, File,
+  BarChart3, File,
 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { DocumentUploadData, UploadedDocument, DocumentType } from '../types'
@@ -87,42 +87,6 @@ function DocumentIllustration() {
 function formatSize(bytes: number) {
   if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(0) + ' KB'
   return (bytes / (1024 * 1024)).toFixed(1) + ' MB'
-}
-
-// ─── Sub-step indicator ─────────────────────────────────────
-
-function SubStepIndicator({ current, steps }: { current: number; steps: { label: string; done: boolean }[] }) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 0, marginBottom: 24 }}>
-      {steps.map((s, i) => (
-        <div key={i} style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <div style={{
-              width: 28, height: 28, borderRadius: '50%', flexShrink: 0,
-              background: s.done ? '#80FF00' : i === current ? '#0D82F9' : '#E5E7EB',
-              color: s.done ? '#002E83' : i === current ? '#fff' : '#9CA3AF',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 12, fontWeight: 600, transition: 'all 0.3s',
-            }}>
-              {s.done ? <CheckCircle2 size={14} /> : i + 1}
-            </div>
-            <span style={{
-              fontSize: 12, fontWeight: i === current ? 600 : 400,
-              color: i === current ? '#111827' : s.done ? '#047857' : '#9CA3AF',
-              whiteSpace: 'nowrap',
-            }}>{s.label}</span>
-          </div>
-          {i < steps.length - 1 && (
-            <div style={{
-              flex: 1, height: 2, margin: '0 10px', borderRadius: 1,
-              background: s.done ? '#80FF00' : '#E5E7EB', transition: 'background 0.3s',
-              minWidth: 20,
-            }} />
-          )}
-        </div>
-      ))}
-    </div>
-  )
 }
 
 // ─── Document Row ───────────────────────────────────────────
@@ -628,14 +592,6 @@ export default function DocumentUpload({ data, onComplete, onSubStepChange }: Pr
       reviewStatus: 'submitted',
     })
   }
-
-  // Sub-step indicator data
-  const subSteps = [
-    { label: 'Legal', done: legalComplete },
-    { label: 'Financial', done: financialComplete },
-    { label: 'Review', done: step === 'success' },
-  ]
-  const currentSubIdx = step === 'legal' ? 0 : step === 'financial' ? 1 : step === 'review' ? 2 : -1
 
   return (
     <div>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Building2, Search, CheckCircle2, ArrowRight, AlertCircle, ShieldCheck, Upload, FileText, Users, MapPin, Briefcase } from 'lucide-react'
+import { Building2, Search, CheckCircle2, ArrowRight, AlertCircle, ShieldCheck, Upload, FileText, Users, MapPin } from 'lucide-react'
 import { motion } from 'framer-motion'
 import type { BusinessVerificationData, CommercialRegistration, Signatory } from '../types'
 import { WathiqLogo } from '../logos'
@@ -685,7 +685,7 @@ function CompleteScreen({ cr, isAuthorized, onContinue }: { cr: CommercialRegist
 
 // ─── Main Component ──────────────────────────────────────────
 
-export default function WathiqVerification({ data, onComplete, nationalId }: Props) {
+export default function WathiqVerification({ data, onComplete, nationalId: _nationalId }: Props) {
   const [wathiqState, setWathiqState] = useState<WathiqState>(data ? 'complete' : 'fetching-crs')
   const [fetchedCRs, setFetchedCRs] = useState<CommercialRegistration[]>([])
   const [selectedCR, setSelectedCR] = useState<CommercialRegistration | null>(data?.selectedCR || null)
