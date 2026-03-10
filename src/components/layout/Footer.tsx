@@ -2,7 +2,8 @@ export default function Footer() {
   return (
     <footer
       style={{
-        padding: '20px 32px',
+        marginTop: 40,
+        padding: '20px 80px 20px 32px',
         borderTop: '1px solid #E5E7EB',
         display: 'flex',
         justifyContent: 'space-between',

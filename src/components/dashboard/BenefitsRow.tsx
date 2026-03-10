@@ -1,4 +1,5 @@
 import { Zap, Percent, Calendar } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 const benefits = [
   {
@@ -24,31 +25,43 @@ const benefits = [
 export default function BenefitsRow() {
   return (
     <section style={{ marginBottom: 20 }}>
-      <h3 style={{ fontSize: 16, fontWeight: 600, color: '#111', marginBottom: 16 }}>Why Complete Setup?</h3>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+      <h3 style={{ fontSize: 15, fontWeight: 600, color: '#111', marginBottom: 12 }}>Why Complete Setup?</h3>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
         {benefits.map((b) => (
-          <div
+          <motion.div
             key={b.title}
+            whileHover={{ scale: 1.02, boxShadow: '0 4px 16px rgba(0,0,0,0.08)' }}
+            transition={{ duration: 0.15 }}
             style={{
               background: '#fff',
               border: '1px solid #F0F0F0',
-              borderRadius: 16,
-              padding: '28px 20px',
-              textAlign: 'center',
+              borderRadius: 12,
+              padding: '16px 18px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 14,
+              cursor: 'default',
             }}
           >
             <div
               style={{
-                width: 44, height: 44, borderRadius: '50%', margin: '0 auto 14px',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                width: 38,
+                height: 38,
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
                 background: b.gradient,
+                flexShrink: 0,
               }}
             >
-              <b.icon size={22} color="#fff" />
+              <b.icon size={18} color="#fff" />
             </div>
-            <h4 style={{ fontSize: 14, fontWeight: 600, color: '#111', marginBottom: 6 }}>{b.title}</h4>
-            <p style={{ fontSize: 12, color: '#888', lineHeight: 1.5 }}>{b.description}</p>
-          </div>
+            <div style={{ minWidth: 0 }}>
+              <h4 style={{ fontSize: 13, fontWeight: 600, color: '#111', marginBottom: 2 }}>{b.title}</h4>
+              <p style={{ fontSize: 11, color: '#888', lineHeight: 1.4, margin: 0 }}>{b.description}</p>
+            </div>
+          </motion.div>
         ))}
       </div>
     </section>

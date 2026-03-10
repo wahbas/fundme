@@ -1,17 +1,18 @@
 import {
-  LayoutDashboard,
-  FileText,
-  Database,
-  UserCircle,
-  Settings2,
-  Lock,
-  ChevronsLeft,
-  ChevronsRight,
-} from 'lucide-react'
+  HomeIcon,
+  LoansIcon,
+  DataHubIcon,
+  ProfileIcon,
+  HelpSupportIcon,
+  SettingsIcon,
+  LockIcon,
+  ChevronsLeftIcon,
+  ChevronsRightIcon,
+} from '../icons/NavIcons'
 import logo from '../../assets/logo.png'
 
 interface NavItemProps {
-  icon: React.ElementType
+  icon: React.ComponentType<{ size?: number; color?: string }>
   label: string
   active?: boolean
   locked?: boolean
@@ -20,6 +21,8 @@ interface NavItemProps {
 }
 
 function NavItem({ icon: Icon, label, active, locked, hasNotification, collapsed }: NavItemProps) {
+  const color = active ? '#FFFFFF' : locked ? '#94A3B8' : '#CBD5E1'
+
   return (
     <div
       title={collapsed ? label : undefined}
@@ -31,32 +34,33 @@ function NavItem({ icon: Icon, label, active, locked, hasNotification, collapsed
         justifyContent: collapsed ? 'center' : 'flex-start',
         borderRadius: 10,
         fontSize: 14,
-        fontWeight: 500,
-        color: active ? '#80FF00' : locked ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.8)',
-        background: active ? 'rgba(255,255,255,0.08)' : 'transparent',
+        fontWeight: active ? 600 : 500,
+        color,
+        background: active ? 'rgba(37,99,235,0.12)' : 'transparent',
+        borderLeft: active ? '3px solid #2563EB' : '3px solid transparent',
         cursor: locked ? 'not-allowed' : 'pointer',
         transition: 'background 0.15s, padding 0.3s, gap 0.3s',
         position: 'relative',
       }}
     >
-      <Icon size={18} style={{ flexShrink: 0 }} />
+      <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Icon size={20} color={color} />
+      </div>
       {!collapsed && (
-        <span
-          style={{
-            flex: 1,
-            overflow: 'hidden',
-            whiteSpace: 'nowrap',
-          }}
-        >
+        <span style={{ flex: 1, overflow: 'hidden', whiteSpace: 'nowrap' }}>
           {label}
         </span>
       )}
-      {!collapsed && locked && <Lock size={13} style={{ opacity: 0.4, flexShrink: 0 }} />}
+      {!collapsed && locked && (
+        <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center' }}>
+          <LockIcon size={13} color="#94A3B8" />
+        </div>
+      )}
       {hasNotification && (
         <span
           style={{
-            width: 7,
-            height: 7,
+            width: 9,
+            height: 9,
             borderRadius: '50%',
             background: '#EF4444',
             flexShrink: 0,
@@ -77,7 +81,7 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ verified = false, collapsed = false, onToggle }: SidebarProps) {
-  const width = collapsed ? 64 : 200
+  const width = collapsed ? 72 : 240
 
   return (
     <aside
@@ -89,7 +93,7 @@ export default function Sidebar({ verified = false, collapsed = false, onToggle 
         top: 0,
         display: 'flex',
         flexDirection: 'column',
-        background: 'linear-gradient(180deg, #000814 0%, #001B4A 60%, #002E83 100%)',
+        background: '#1B2A3D',
         zIndex: 50,
         transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         overflow: 'hidden',
@@ -127,11 +131,9 @@ export default function Sidebar({ verified = false, collapsed = false, onToggle 
               alignItems: 'center',
               justifyContent: 'center',
               cursor: 'pointer',
-              color: 'rgba(255,255,255,0.6)',
-              transition: 'background 0.15s',
             }}
           >
-            <ChevronsLeft size={16} />
+            <ChevronsLeftIcon size={16} />
           </button>
         )}
       </div>
@@ -151,11 +153,9 @@ export default function Sidebar({ verified = false, collapsed = false, onToggle 
               alignItems: 'center',
               justifyContent: 'center',
               cursor: 'pointer',
-              color: 'rgba(255,255,255,0.6)',
-              transition: 'background 0.15s',
             }}
           >
-            <ChevronsRight size={16} />
+            <ChevronsRightIcon size={16} />
           </button>
         </div>
       )}
@@ -171,16 +171,17 @@ export default function Sidebar({ verified = false, collapsed = false, onToggle 
           transition: 'padding 0.3s',
         }}
       >
-        <NavItem icon={LayoutDashboard} label="Home" active collapsed={collapsed} />
-        <NavItem icon={FileText} label="My Loans" locked={!verified} collapsed={collapsed} />
-        <NavItem icon={Database} label="Data Hub" locked={!verified} collapsed={collapsed} />
-        <NavItem icon={UserCircle} label="My Profile" hasNotification collapsed={collapsed} />
+        <NavItem icon={HomeIcon} label="Home" active collapsed={collapsed} />
+        <NavItem icon={LoansIcon} label="My Loans" locked={!verified} collapsed={collapsed} />
+        <NavItem icon={DataHubIcon} label="Data Hub" locked={!verified} collapsed={collapsed} />
+        <NavItem icon={ProfileIcon} label="My Profile" hasNotification collapsed={collapsed} />
       </nav>
 
       {/* Bottom */}
       <div style={{ padding: collapsed ? '0 8px 20px' : '0 12px 20px', transition: 'padding 0.3s' }}>
         <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', marginBottom: 8, paddingTop: 8 }} />
-        <NavItem icon={Settings2} label="Settings" collapsed={collapsed} />
+        <NavItem icon={HelpSupportIcon} label="Help & Support" collapsed={collapsed} />
+        <NavItem icon={SettingsIcon} label="Settings" collapsed={collapsed} />
         <div
           style={{
             display: 'flex',
@@ -194,14 +195,14 @@ export default function Sidebar({ verified = false, collapsed = false, onToggle 
         >
           <div
             style={{
-              width: 32,
-              height: 32,
+              width: 34,
+              height: 34,
               borderRadius: '50%',
-              background: '#80FF00',
+              background: '#7CFF01',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#000814',
+              color: '#1B2A3D',
               fontSize: 13,
               fontWeight: 700,
               flexShrink: 0,
@@ -210,17 +211,12 @@ export default function Sidebar({ verified = false, collapsed = false, onToggle 
             A
           </div>
           {!collapsed && (
-            <span
-              style={{
-                color: 'rgba(255,255,255,0.8)',
-                fontSize: 14,
-                fontWeight: 500,
-                overflow: 'hidden',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              Ahmed
-            </span>
+            <div style={{ overflow: 'hidden', whiteSpace: 'nowrap' }}>
+              <span style={{ color: '#FFFFFF', fontSize: 14, fontWeight: 600, display: 'block' }}>
+                Ahmed
+              </span>
+              <span style={{ color: '#94A3B8', fontSize: 11 }}>First-time user</span>
+            </div>
           )}
         </div>
       </div>

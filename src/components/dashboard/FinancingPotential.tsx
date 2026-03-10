@@ -7,7 +7,7 @@ import { SparkleDecoration } from '../illustrations'
 
 function RocketIllustration() {
   return (
-    <svg width="240" height="200" viewBox="0 0 280 240" fill="none">
+    <svg width="200" height="160" viewBox="0 0 280 240" fill="none">
       <circle cx="140" cy="120" r="90" fill="white" fillOpacity="0.06" />
 
       {/* Coins */}
@@ -121,8 +121,8 @@ export default function FinancingPotential({ verified = false }: { verified?: bo
     <section style={{ marginBottom: 20 }}>
       <div
         style={{
-          borderRadius: 20,
-          padding: verified ? '36px 40px' : 32,
+          borderRadius: 16,
+          padding: verified ? '32px 36px' : '24px 28px',
           position: 'relative',
           overflow: 'hidden',
           background: 'linear-gradient(135deg, #002E83 0%, #0052B9 50%, #0D82F9 100%)',
@@ -225,12 +225,12 @@ export default function FinancingPotential({ verified = false }: { verified?: bo
           </div>
         ) : (
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative', zIndex: 1 }}>
-            <div style={{ flex: 1, maxWidth: 480 }}>
+            <div style={{ flex: 1, maxWidth: 420 }}>
               <motion.p
                 initial={{ opacity: 0, x: -15 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.1 }}
-                style={{ fontSize: 14, color: 'rgba(255,255,255,0.65)', marginBottom: 12 }}
+                style={{ fontSize: 13, color: 'rgba(255,255,255,0.65)', marginBottom: 8 }}
               >
                 Ready to apply for financing?
               </motion.p>
@@ -238,7 +238,7 @@ export default function FinancingPotential({ verified = false }: { verified?: bo
                 initial={{ opacity: 0, x: -15 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.15 }}
-                style={{ fontSize: 32, fontWeight: 800, color: '#fff', marginBottom: 12 }}
+                style={{ fontSize: 24, fontWeight: 800, color: '#fff', marginBottom: 8 }}
               >
                 Start Your Application
               </motion.h2>
@@ -246,7 +246,7 @@ export default function FinancingPotential({ verified = false }: { verified?: bo
                 initial={{ opacity: 0, x: -15 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.2 }}
-                style={{ fontSize: 15, color: 'rgba(255,255,255,0.6)', marginBottom: 28 }}
+                style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', marginBottom: 20 }}
               >
                 Choose from Working Capital, Invoice, or SADAD financing options
               </motion.p>
@@ -258,12 +258,12 @@ export default function FinancingPotential({ verified = false }: { verified?: bo
                 whileTap={{ scale: 0.98 }}
                 onClick={() => navigate(verified ? '/request-financing' : '/onboarding')}
                 style={{
-                  padding: '14px 32px',
+                  padding: '12px 28px',
                   background: '#80FF00',
                   color: '#002E83',
                   fontWeight: 700,
-                  fontSize: 16,
-                  borderRadius: 12,
+                  fontSize: 14,
+                  borderRadius: 10,
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: 10,

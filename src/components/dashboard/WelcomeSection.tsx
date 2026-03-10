@@ -1,6 +1,6 @@
 import { CheckCircle2, Clock } from 'lucide-react'
 import { motion } from 'framer-motion'
-import { PaymentTerminalIllustration, TrophySuccessIllustration } from '../illustrations'
+import { TrophySuccessIllustration } from '../illustrations'
 import type { UserState } from '../../App'
 
 function UnderReviewIllustrationSmall() {
@@ -46,6 +46,93 @@ function UnderReviewIllustrationSmall() {
         <filter id="wsSh" x="0" y="0" width="100%" height="100%" filterUnits="userSpaceOnUse">
           <feDropShadow dx="0" dy="2" stdDeviation="4" floodOpacity="0.1" />
         </filter>
+      </defs>
+    </svg>
+  )
+}
+
+// Compact circular progress ring for first-time user
+function ProgressRing({ percent }: { percent: number }) {
+  const size = 56
+  const strokeWidth = 5
+  const radius = (size - strokeWidth) / 2
+  const circumference = 2 * Math.PI * radius
+  const offset = circumference - (percent / 100) * circumference
+
+  return (
+    <div style={{ position: 'relative', width: size, height: size, flexShrink: 0 }}>
+      <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }}>
+        <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth={strokeWidth} />
+        <motion.circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          fill="none"
+          stroke="#80FF00"
+          strokeWidth={strokeWidth}
+          strokeLinecap="round"
+          strokeDasharray={circumference}
+          initial={{ strokeDashoffset: circumference }}
+          animate={{ strokeDashoffset: offset }}
+          transition={{ duration: 1, ease: 'easeOut' }}
+        />
+      </svg>
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: 13,
+          fontWeight: 700,
+          color: '#fff',
+        }}
+      >
+        {percent}%
+      </div>
+    </div>
+  )
+}
+
+// Small rocket illustration for the compact welcome card
+function SmallRocketIllustration() {
+  return (
+    <svg width="80" height="80" viewBox="0 0 120 120" fill="none">
+      <circle cx="60" cy="60" r="50" fill="rgba(255,255,255,0.06)" />
+      <g transform="translate(30, 10) rotate(15)">
+        <path d="M20 60 L20 25 C20 10 30 0 40 0 C50 0 60 10 60 25 L60 60 Z" fill="url(#srGrad)" />
+        <circle cx="40" cy="25" r="8" fill="#0a1628" />
+        <circle cx="40" cy="25" r="6" fill="#1e3a5f" />
+        <circle cx="38" cy="23" r="1.5" fill="white" fillOpacity="0.4" />
+        <path d="M20 45 L9 62 L20 59 Z" fill="#001D5C" />
+        <path d="M60 45 L71 62 L60 59 Z" fill="#001D5C" />
+        <rect x="26" y="60" width="28" height="6" fill="#001340" rx="1" />
+        <motion.g animate={{ scaleY: [1, 1.15, 1], opacity: [0.85, 1, 0.85] }} transition={{ repeat: Infinity, duration: 0.3 }}>
+          <path d="M29 66 L40 88 L51 66 Z" fill="url(#sfGrad1)" />
+          <path d="M32 66 L40 81 L48 66 Z" fill="url(#sfGrad2)" />
+          <path d="M36 66 L40 74 L44 66 Z" fill="#FBBF24" />
+        </motion.g>
+      </g>
+      <motion.path
+        animate={{ scale: [1, 1.3, 1], opacity: [0.6, 1, 0.6] }}
+        transition={{ repeat: Infinity, duration: 2 }}
+        d="M95 20 L97 25 L102 27 L97 29 L95 34 L93 29 L88 27 L93 25 Z"
+        fill="#80FF00"
+      />
+      <defs>
+        <linearGradient id="srGrad" x1="20" y1="0" x2="60" y2="60">
+          <stop offset="0%" stopColor="#0D82F9" />
+          <stop offset="100%" stopColor="#002E83" />
+        </linearGradient>
+        <linearGradient id="sfGrad1" x1="40" y1="66" x2="40" y2="88">
+          <stop offset="0%" stopColor="#F97316" />
+          <stop offset="100%" stopColor="#EF4444" stopOpacity="0" />
+        </linearGradient>
+        <linearGradient id="sfGrad2" x1="40" y1="66" x2="40" y2="81">
+          <stop offset="0%" stopColor="#FBBF24" />
+          <stop offset="100%" stopColor="#F97316" />
+        </linearGradient>
       </defs>
     </svg>
   )
@@ -141,36 +228,47 @@ export default function WelcomeSection({ userState = 'first-time' }: { verified?
     )
   }
 
+  // First-time user: compact welcome card with progress ring
   return (
-    <section
+    <motion.section
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
       style={{
-        background: '#fff',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '20px 28px',
         borderRadius: 16,
-        padding: '32px',
         marginBottom: 20,
-        border: '1px solid #F0F0F0',
-        position: 'relative',
+        background: 'linear-gradient(135deg, #002E83 0%, #0052B9 50%, #0D82F9 100%)',
+        maxHeight: 120,
         overflow: 'hidden',
+        position: 'relative',
       }}
     >
-      <div style={{ position: 'relative', zIndex: 1 }}>
-        <h2 style={{ fontSize: 24, fontWeight: 700, color: '#111', marginBottom: 8 }}>
+      {/* Left: text */}
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <h2 style={{ fontSize: 20, fontWeight: 700, color: '#fff', marginBottom: 4 }}>
           Welcome to FundMe, Ahmed!
         </h2>
-        <p style={{ fontSize: 14, color: '#777', marginBottom: 20 }}>
-          Let's get you funded. Complete these quick steps to unlock financing.
+        <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.65)', margin: 0 }}>
+          Complete setup to unlock financing options
         </p>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 8 }}>
-          <span style={{ fontSize: 13, color: '#777' }}>Setup Progress: 1 of 5 complete</span>
-          <span style={{ fontSize: 13, fontWeight: 600, color: '#111' }}>20%</span>
-        </div>
-        <div style={{ width: 260, height: 6, background: '#E5E7EB', borderRadius: 3 }}>
-          <div style={{ width: '20%', height: '100%', background: 'linear-gradient(90deg, #002E83, #0D82F9)', borderRadius: 3 }} />
+      </div>
+
+      {/* Center: progress ring */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginLeft: 24, marginRight: 24 }}>
+        <ProgressRing percent={20} />
+        <div>
+          <p style={{ fontSize: 13, fontWeight: 600, color: '#fff', margin: 0 }}>1/5 Complete</p>
+          <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.5)', margin: 0 }}>Setup Progress</p>
         </div>
       </div>
-      <div style={{ position: 'absolute', right: 24, top: 16 }}>
-        <PaymentTerminalIllustration />
+
+      {/* Right: small illustration */}
+      <div style={{ flexShrink: 0, opacity: 0.9 }}>
+        <SmallRocketIllustration />
       </div>
-    </section>
+    </motion.section>
   )
 }
