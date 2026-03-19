@@ -125,7 +125,7 @@ export default function RequestFinancing() {
   function handleBack() {
     setValidationError('')
     if (stepIdx === 0) {
-      navigate('/?state=verified')
+      navigate('/dashboard?state=verified')
     } else {
       setDirection(-1)
       setStepIdx((s) => s - 1)
@@ -223,7 +223,7 @@ export default function RequestFinancing() {
             initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
             whileHover={{ scale: 1.02, boxShadow: '0 4px 16px rgba(37,99,235,0.2)' }}
             whileTap={{ scale: 0.98 }}
-            onClick={() => navigate('/?state=verified&submitted=true')}
+            onClick={() => navigate('/dashboard?state=verified&submitted=true')}
             style={{
               width: '100%', padding: 16, background: '#2563EB', color: '#fff',
               border: 'none', borderRadius: 12, fontSize: 16, fontWeight: 700, cursor: 'pointer',
@@ -408,7 +408,7 @@ export default function RequestFinancing() {
             </span>
           </div>
           <button
-            onClick={() => navigate('/?state=verified')}
+            onClick={() => navigate('/dashboard?state=verified')}
             style={{
               background: 'none', border: '1px solid #E2E8F0', borderRadius: 8,
               padding: '6px 16px', fontSize: 13, color: '#475569', cursor: 'pointer',
@@ -485,7 +485,7 @@ export default function RequestFinancing() {
             {isLast ? (
               <div style={{ display: 'flex', gap: 10 }}>
                 <button
-                  onClick={() => navigate('/?state=verified&submitted=true')}
+                  onClick={() => navigate('/dashboard?state=verified&submitted=true')}
                   style={{
                     padding: '12px 24px', background: '#fff', color: '#475569',
                     border: '1px solid #E2E8F0', borderRadius: 10, fontSize: 14, fontWeight: 500, cursor: 'pointer',

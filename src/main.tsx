@@ -12,11 +12,12 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App />} />
+        <Route path="/" element={<Register />} />
+        <Route path="/register/*" element={<Register />} />
+        <Route path="/dashboard" element={<App />} />
         <Route path="/apply" element={<LoanApplication />} />
         <Route path="/request-financing" element={<RequestFinancing />} />
         <Route path="/onboarding" element={<Onboarding />} />
-        <Route path="/register/*" element={<Register />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

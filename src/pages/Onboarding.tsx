@@ -125,7 +125,7 @@ export default function Onboarding() {
     if (hasProgress) {
       setShowExitModal(true)
     } else {
-      navigate('/')
+      navigate('/dashboard')
     }
   }
 
@@ -173,7 +173,7 @@ export default function Onboarding() {
           </div>
         </div>
         <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 32 }}>
-          <AccountVerifiedScreen onGoToDashboard={() => navigate('/')} />
+          <AccountVerifiedScreen onGoToDashboard={() => navigate('/dashboard')} />
         </div>
       </div>
     )
@@ -395,7 +395,7 @@ export default function Onboarding() {
                   Continue Setup
                 </button>
                 <button
-                  onClick={() => navigate('/')}
+                  onClick={() => navigate('/dashboard')}
                   style={{
                     flex: 1, padding: '12px 0', background: '#fff', color: '#374151',
                     fontWeight: 600, fontSize: 14, borderRadius: 10,

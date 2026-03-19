@@ -46,7 +46,7 @@ export default function LoanApplication() {
           }}
         >
           {submitted ? (
-            <SuccessScreen onBackToDashboard={() => navigate('/')} />
+            <SuccessScreen onBackToDashboard={() => navigate('/dashboard')} />
           ) : (
             <>
               <div style={{ flex: 1 }}>
@@ -54,7 +54,7 @@ export default function LoanApplication() {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 32 }}>
                   <div>
                     <button
-                      onClick={() => navigate('/')}
+                      onClick={() => navigate('/dashboard')}
                       style={{
                         display: 'flex',
                         alignItems: 'center',

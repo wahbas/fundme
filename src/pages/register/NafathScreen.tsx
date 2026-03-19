@@ -306,7 +306,7 @@ function SuccessView() {
         <motion.button
           whileHover={{ scale: 1.01 }}
           whileTap={{ scale: 0.98 }}
-          onClick={() => navigate('/')}
+          onClick={() => navigate('/dashboard')}
           style={{
             width: '100%', height: 48,
             background: 'linear-gradient(135deg, #000D1F, #002E83, #0052B9)',
