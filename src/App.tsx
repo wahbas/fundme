@@ -39,7 +39,7 @@ function App() {
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
-      <Sidebar verified={verified} collapsed={sidebarCollapsed} onToggle={() => setSidebarCollapsed((c) => !c)} />
+      <Sidebar verified={verified} collapsed={sidebarCollapsed} onToggle={() => setSidebarCollapsed((c) => !c)} activeTab="home" />
       <main
         style={{
           marginLeft: sidebarCollapsed ? 72 : 240,

@@ -1,3 +1,4 @@
+import { useNavigate, useLocation } from 'react-router-dom'
 import {
   HomeIcon,
   LoansIcon,
@@ -18,14 +19,16 @@ interface NavItemProps {
   locked?: boolean
   hasNotification?: boolean
   collapsed?: boolean
+  onClick?: () => void
 }
 
-function NavItem({ icon: Icon, label, active, locked, hasNotification, collapsed }: NavItemProps) {
+function NavItem({ icon: Icon, label, active, locked, hasNotification, collapsed, onClick }: NavItemProps) {
   const color = active ? '#FFFFFF' : locked ? '#94A3B8' : '#CBD5E1'
 
   return (
     <div
       title={collapsed ? label : undefined}
+      onClick={locked ? undefined : onClick}
       style={{
         display: 'flex',
         alignItems: 'center',
@@ -74,14 +77,33 @@ function NavItem({ icon: Icon, label, active, locked, hasNotification, collapsed
   )
 }
 
+export type ActiveTab = 'home' | 'my-loans' | 'data-hub' | 'profile'
+
 interface SidebarProps {
   verified?: boolean
   collapsed?: boolean
   onToggle?: () => void
+  activeTab?: ActiveTab
 }
 
-export default function Sidebar({ verified = false, collapsed = false, onToggle }: SidebarProps) {
+export default function Sidebar({ verified = false, collapsed = false, onToggle, activeTab }: SidebarProps) {
+  const navigate = useNavigate()
+  const location = useLocation()
   const width = collapsed ? 72 : 240
+
+  // Determine active tab from prop or URL
+  const stateParam = new URLSearchParams(location.search).get('state')
+  const query = verified || stateParam === 'verified' ? '?state=verified' : ''
+
+  function getActive(tab: ActiveTab): boolean {
+    if (activeTab) return activeTab === tab
+    const path = location.pathname
+    if (tab === 'home') return path === '/dashboard'
+    if (tab === 'my-loans') return path === '/my-loans'
+    if (tab === 'data-hub') return path === '/data-hub'
+    if (tab === 'profile') return path === '/profile'
+    return false
+  }
 
   return (
     <aside
@@ -171,10 +193,10 @@ export default function Sidebar({ verified = false, collapsed = false, onToggle 
           transition: 'padding 0.3s',
         }}
       >
-        <NavItem icon={HomeIcon} label="Home" active collapsed={collapsed} />
-        <NavItem icon={LoansIcon} label="My Loans" locked={!verified} collapsed={collapsed} />
-        <NavItem icon={DataHubIcon} label="Data Hub" locked={!verified} collapsed={collapsed} />
-        <NavItem icon={ProfileIcon} label="My Profile" hasNotification collapsed={collapsed} />
+        <NavItem icon={HomeIcon} label="Home" active={getActive('home')} collapsed={collapsed} onClick={() => navigate(`/dashboard${query}`)} />
+        <NavItem icon={LoansIcon} label="My Loans" locked={!verified} active={getActive('my-loans')} collapsed={collapsed} onClick={() => navigate(`/my-loans${query}`)} />
+        <NavItem icon={DataHubIcon} label="Data Hub" locked={!verified} active={getActive('data-hub')} collapsed={collapsed} onClick={() => navigate(`/data-hub${query}`)} />
+        <NavItem icon={ProfileIcon} label="My Profile" hasNotification active={getActive('profile')} collapsed={collapsed} onClick={() => navigate(`/profile${query}`)} />
       </nav>
 
       {/* Bottom */}
