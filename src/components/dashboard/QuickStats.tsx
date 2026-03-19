@@ -1,4 +1,4 @@
-import { CreditCard, Clock, Activity, TrendingUp, ChevronUp, Minus } from 'lucide-react'
+import { CreditCard, Clock, Activity, ChevronUp, Minus } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 

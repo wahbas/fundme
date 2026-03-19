@@ -482,7 +482,7 @@ function ErrorScreen({
 
 // ─── Main Component ──────────────────────────────────────────
 
-export default function BankConnection({ data, onComplete }: Props) {
+export default function BankConnection({ onComplete }: Props) {
   const [leanState, setLeanState] = useState<LeanState>('select-bank')
   const [selectedBank, setSelectedBank] = useState<SupportedBank | null>(null)
   const [selectedAccount, setSelectedAccount] = useState<MockAccount | null>(null)
