@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import { AccountManagerIcon, PhoneIcon, EmailIcon, CalendarIcon, VideoIcon, ChatIcon } from '../icons/SupportIcons'
 import { ArrowRightIcon } from '../icons/WidgetIcons'
 
-export default function SupportWidget({ underReview = false }: { underReview?: boolean }) {
+export default function SupportWidget() {
   return (
     <div style={cardStyle}>
       <h3 style={{ fontSize: 15, fontWeight: 600, color: '#1E293B', margin: '0 0 16px' }}>
@@ -58,21 +58,6 @@ export default function SupportWidget({ underReview = false }: { underReview?: b
 
       {/* Divider */}
       <div style={{ height: 1, background: '#E2E8F0', marginBottom: 16 }} />
-
-      {/* Under review note — amber tip */}
-      {underReview && (
-        <>
-          <div style={{ background: '#FFFBEB', border: '1px solid #FDE68A', borderRadius: 8, padding: 12, marginBottom: 16 }}>
-            <p style={{ fontSize: 12, fontWeight: 700, color: '#92400E', margin: '0 0 2px' }}>
-              Questions about your review?
-            </p>
-            <p style={{ fontSize: 11, color: '#A16207', lineHeight: 1.4, margin: 0 }}>
-              Contact your account manager for status updates.
-            </p>
-          </div>
-          <div style={{ height: 1, background: '#E2E8F0', marginBottom: 16 }} />
-        </>
-      )}
 
       {/* Quick actions */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>

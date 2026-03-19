@@ -1,9 +1,7 @@
 export type OnboardingStep =
   | 'create-account'
-  | 'verify-identity'
   | 'verify-business'
   | 'connect-bank'
-  | 'upload-documents'
 
 export interface IdentityVerificationData {
   nafathRequestId: string
@@ -95,7 +93,7 @@ export interface DocumentUploadData {
   financialDocumentsComplete: boolean
   allRequiredUploaded: boolean
   submittedAt?: Date
-  reviewStatus: 'draft' | 'submitted' | 'under-review' | 'approved' | 'needs-revision'
+  reviewStatus: 'draft' | 'submitted' | 'approved' | 'needs-revision'
 }
 
 export interface UploadedDocument {
@@ -130,21 +128,18 @@ export interface OnboardingState {
     identity?: IdentityVerificationData
     business?: BusinessVerificationData
     bank?: BankConnectionData
-    documents?: DocumentUploadData
   }
 }
 
-// Mock initial state — account created, rest pending
+// Registration is done — onboarding starts at verify-business with create-account completed
 export const INITIAL_ONBOARDING_STATE: OnboardingState = {
-  currentStep: 'verify-identity',
+  currentStep: 'verify-business',
   completedSteps: ['create-account'],
   stepData: {},
 }
 
 export const STEP_ORDER: OnboardingStep[] = [
   'create-account',
-  'verify-identity',
   'verify-business',
   'connect-bank',
-  'upload-documents',
 ]

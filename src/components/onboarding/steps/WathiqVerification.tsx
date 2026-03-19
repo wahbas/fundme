@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
-import { Building2, Search, CheckCircle2, ArrowRight, AlertCircle, ShieldCheck, Upload, FileText, Users, MapPin } from 'lucide-react'
+import { Building2, Search, CheckCircle2, ArrowRight, AlertCircle, ShieldCheck, Upload, FileText, Users, MapPin, Hash, Info, ArrowLeft } from 'lucide-react'
 import { motion } from 'framer-motion'
 import type { BusinessVerificationData, CommercialRegistration, Signatory } from '../types'
 import { WathiqLogo } from '../logos'
+import CompanyIllustration from '../CompanyIllustration'
 
 interface Props {
   data?: BusinessVerificationData
@@ -20,7 +21,6 @@ type WathiqState =
   | 'not-authorized'     // user is not an authorized signatory
   | 'upload-letter'      // uploading authorization letter
   | 'aml-screening'      // running AML/compliance check
-  | 'complete'           // done
 
 // ─── Mock Data ──────────────────────────────────────────────
 
@@ -124,95 +124,296 @@ function NoCRFoundScreen({ onManualLookup }: { onManualLookup: () => void }) {
   )
 }
 
-function ManualLookupScreen({ onResult }: { onResult: (cr: CommercialRegistration) => void }) {
+const RELATIONSHIP_OPTIONS = [
+  'Owner',
+  'Partner',
+  'Authorized Representative',
+  'CEO / Managing Director',
+  'CFO / Financial Officer',
+  'Board Member',
+]
+
+function ManualLookupScreen({ onResult, onBack }: { onResult: (cr: CommercialRegistration, relationship: string) => void; onBack?: () => void }) {
   const [crNumber, setCrNumber] = useState('')
+  const [relationship, setRelationship] = useState('')
   const [isSearching, setIsSearching] = useState(false)
   const [error, setError] = useState('')
+  const [verifiedCR, setVerifiedCR] = useState<CommercialRegistration | null>(null)
+  const [uploading, setUploading] = useState(false)
+  const [uploaded, setUploaded] = useState(false)
+  const [crFocused, setCrFocused] = useState(false)
+  const [relFocused, setRelFocused] = useState(false)
 
-  function handleLookup() {
-    if (crNumber.length < 8) {
-      setError('Please enter a valid CR number (at least 8 digits)')
+  function handleVerify() {
+    const errs: string[] = []
+    if (crNumber.length < 8) errs.push('CR number')
+    if (!relationship) errs.push('relationship type')
+    if (errs.length) {
+      setError(`Please enter a valid ${errs.join(' and ')}`)
       return
     }
     setError('')
     setIsSearching(true)
     setTimeout(() => {
-      onResult({ ...MOCK_CRS[0], crNumber })
       setIsSearching(false)
-    }, 2000)
+      setVerifiedCR({ ...MOCK_CRS[0], crNumber, companyNameEn: 'Modern Industries LLC', companyNameAr: 'الصناعات الحديثة ذ.م.م', nationalAddress: { ...MOCK_CRS[0].nationalAddress, city: 'Dammam', district: 'Al Shatie' } })
+    }, 1500)
   }
 
+  function handleUpload() {
+    setUploading(true)
+    setTimeout(() => { setUploading(false); setUploaded(true) }, 1500)
+  }
+
+  function handleComplete() {
+    if (!verifiedCR) return
+    onResult(verifiedCR, relationship)
+  }
+
+  const crHasError = !!error && crNumber.length < 8
+  const relHasError = !!error && !relationship
+
   return (
-    <div style={{ padding: '16px 0' }}>
+    <div style={{ padding: '16px 0', maxWidth: 480, margin: '0 auto' }}>
+      {/* Illustration + Header */}
       <div style={{ textAlign: 'center', marginBottom: 32 }}>
-        <div style={{
-          width: 64, height: 64, borderRadius: 16, margin: '0 auto 16px',
-          background: 'linear-gradient(135deg, #06B6D4, #0D82F9)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          boxShadow: '0 4px 12px rgba(13,130,249,0.25)',
-        }}>
-          <Building2 size={32} color="#fff" />
-        </div>
-        <h2 style={{ fontSize: 22, fontWeight: 700, color: '#111827', marginBottom: 8 }}>Manual CR Lookup</h2>
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 14px', background: '#E0F2F1', borderRadius: 20, marginBottom: 12 }}>
-          <WathiqLogo size={20} />
-          <span style={{ fontSize: 12, fontWeight: 600, color: '#00695C' }}>Verified by Wathiq</span>
-        </div>
-        <p style={{ fontSize: 14, color: '#6B7280', maxWidth: 380, margin: '0 auto' }}>
-          Enter your Commercial Registration (CR) number to look up your business
-        </p>
+        <CompanyIllustration size={130} />
+        <h2 style={{ fontSize: 22, fontWeight: 700, color: '#111827', marginTop: 24, marginBottom: 8 }}>Company Information</h2>
+        <p style={{ fontSize: 14, color: '#6B7280' }}>Provide your company details</p>
       </div>
 
-      <div style={{ marginBottom: 24 }}>
-        <label style={{ fontSize: 13, fontWeight: 600, color: '#374151', display: 'block', marginBottom: 8 }}>CR Number</label>
-        <div style={{ display: 'flex', gap: 12 }}>
-          <input
-            type="text"
-            value={crNumber}
-            onChange={(e) => { setCrNumber(e.target.value.replace(/\D/g, '')); setError('') }}
-            placeholder="e.g. 1010456789"
-            style={{
-              flex: 1, padding: '12px 16px', fontSize: 15, borderRadius: 10,
-              border: `1.5px solid ${error ? '#EF4444' : '#E5E7EB'}`, outline: 'none',
-              fontFamily: 'monospace', letterSpacing: 1,
-            }}
-            maxLength={12}
-          />
+      {/* Back link */}
+      {onBack && (
+        <button
+          onClick={onBack}
+          style={{
+            display: 'flex', alignItems: 'center', gap: 4, fontSize: 13, fontWeight: 500, color: '#94A3B8',
+            cursor: 'pointer', marginBottom: 24, background: 'none', border: 'none', padding: 0,
+            transition: 'color 0.2s',
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = '#002E83')}
+          onMouseLeave={(e) => (e.currentTarget.style.color = '#94A3B8')}
+        >
+          <ArrowLeft size={16} />
+          Back to linked companies
+        </button>
+      )}
+
+      {/* Verified company card */}
+      {verifiedCR && (
+        <div style={{
+          border: '1.5px solid #E5E7EB', borderRadius: 14, padding: 18, marginBottom: 24,
+          display: 'flex', alignItems: 'center', gap: 14,
+        }}>
+          <div style={{
+            width: 40, height: 40, borderRadius: 10, background: '#F0F4FF',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+          }}>
+            <Building2 size={20} color="#002E83" />
+          </div>
+          <div style={{ flex: 1 }}>
+            <p style={{ fontSize: 14, fontWeight: 600, color: '#111827', marginBottom: 2 }}>{verifiedCR.companyNameEn}</p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+              <span style={{ fontSize: 12, color: '#9CA3AF' }}>CR: {verifiedCR.crNumber}</span>
+              <span style={{ fontSize: 10, fontWeight: 600, padding: '2px 8px', borderRadius: 10, background: '#D1FAE5', color: '#047857' }}>Active</span>
+              <span style={{ fontSize: 12, color: '#9CA3AF' }}>City: {verifiedCR.nationalAddress.city}</span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Pre-verification form */}
+      {!verifiedCR && (
+        <>
+          {/* CR Number */}
+          <div style={{ marginBottom: 24 }}>
+            <label style={{ fontSize: 13, fontWeight: 600, color: '#475569', display: 'block', marginBottom: 8 }}>CR Number</label>
+            <div style={{ position: 'relative' }}>
+              <div style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
+                <Hash size={18} color="#94A3B8" />
+              </div>
+              <input
+                type="text"
+                value={crNumber}
+                onChange={(e) => { setCrNumber(e.target.value.replace(/\D/g, '')); setError('') }}
+                onFocus={() => setCrFocused(true)}
+                onBlur={() => setCrFocused(false)}
+                placeholder="e.g. 1010456789"
+                style={{
+                  width: '100%', height: 50, paddingLeft: 42, paddingRight: 14, fontSize: 14, fontWeight: 500,
+                  borderRadius: 12, boxSizing: 'border-box', outline: 'none',
+                  border: `1.5px solid ${crHasError ? '#EF4444' : crFocused ? '#0D82F9' : '#E2E8F0'}`,
+                  background: crFocused ? '#fff' : '#F9FAFB',
+                  boxShadow: crFocused && !crHasError ? '0 0 0 3px rgba(13,130,249,0.1)' : 'none',
+                  transition: 'border-color 0.2s, background 0.2s, box-shadow 0.2s',
+                }}
+                maxLength={12}
+              />
+            </div>
+            {crHasError ? (
+              <p style={{ display: 'flex', alignItems: 'center', gap: 5, marginTop: 6, fontSize: 12, fontWeight: 500, color: '#EF4444' }}>
+                <AlertCircle size={13} /> Enter a valid CR number (at least 8 digits)
+              </p>
+            ) : (
+              <p style={{ fontSize: 12, color: '#94A3B8', marginTop: 6 }}>
+                Enter the 10-digit Commercial Registration number from your CR certificate
+              </p>
+            )}
+          </div>
+
+          {/* Relationship Type */}
+          <div style={{ marginBottom: 24 }}>
+            <label style={{ fontSize: 13, fontWeight: 600, color: '#475569', display: 'block', marginBottom: 8 }}>Relationship Type</label>
+            <div style={{ position: 'relative' }}>
+              <div style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', zIndex: 1 }}>
+                <Users size={18} color="#94A3B8" />
+              </div>
+              <select
+                value={relationship}
+                onChange={(e) => { setRelationship(e.target.value); setError('') }}
+                onFocus={() => setRelFocused(true)}
+                onBlur={() => setRelFocused(false)}
+                style={{
+                  width: '100%', height: 50, paddingLeft: 42, paddingRight: 36, fontSize: 14, fontWeight: 500,
+                  borderRadius: 12, boxSizing: 'border-box', outline: 'none',
+                  border: `1.5px solid ${relHasError ? '#EF4444' : relFocused ? '#0D82F9' : '#E2E8F0'}`,
+                  background: relFocused ? '#fff' : '#F9FAFB',
+                  boxShadow: relFocused && !relHasError ? '0 0 0 3px rgba(13,130,249,0.1)' : 'none',
+                  color: relationship ? '#111827' : '#94A3B8',
+                  cursor: 'pointer', appearance: 'none',
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%239CA3AF' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`,
+                  backgroundRepeat: 'no-repeat', backgroundPosition: 'right 14px center',
+                  transition: 'border-color 0.2s, background 0.2s, box-shadow 0.2s',
+                }}
+              >
+                <option value="" disabled>Select relationship</option>
+                {RELATIONSHIP_OPTIONS.map((opt) => (
+                  <option key={opt} value={opt}>{opt}</option>
+                ))}
+              </select>
+            </div>
+            {relHasError && (
+              <p style={{ display: 'flex', alignItems: 'center', gap: 5, marginTop: 6, fontSize: 12, fontWeight: 500, color: '#EF4444' }}>
+                <AlertCircle size={13} /> Please select your relationship to the company
+              </p>
+            )}
+          </div>
+
+          {/* Verify CR Button */}
           <motion.button
             whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
-            onClick={handleLookup} disabled={isSearching}
+            onClick={handleVerify} disabled={isSearching}
             style={{
-              padding: '12px 24px', background: '#002E83', color: '#fff', fontWeight: 600,
-              fontSize: 14, borderRadius: 10, border: 'none', cursor: isSearching ? 'wait' : 'pointer',
-              display: 'flex', alignItems: 'center', gap: 8, opacity: isSearching ? 0.7 : 1,
+              width: '100%', padding: '14px 0', marginTop: 8,
+              background: '#002E83', color: '#fff', fontWeight: 600,
+              fontSize: 15, borderRadius: 12, border: 'none', cursor: isSearching ? 'wait' : 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+              opacity: isSearching ? 0.8 : 1,
             }}
           >
             {isSearching ? (
-              <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
-                style={{ width: 18, height: 18, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.3)', borderTopColor: '#fff' }} />
+              <>
+                <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
+                  style={{ width: 18, height: 18, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.3)', borderTopColor: '#fff' }} />
+                Verifying...
+              </>
             ) : (
-              <Search size={18} />
+              <>
+                <Search size={16} />
+                Verify CR
+              </>
             )}
-            {isSearching ? 'Searching...' : 'Lookup'}
           </motion.button>
-        </div>
-        {error && (
-          <p style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 8, fontSize: 12, color: '#EF4444' }}>
-            <AlertCircle size={14} /> {error}
-          </p>
-        )}
-      </div>
 
-      <div style={{ background: '#E0F2F1', borderRadius: 12, padding: 16, display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-        <div style={{ flexShrink: 0 }}><WathiqLogo size={36} /></div>
-        <div>
-          <p style={{ fontSize: 13, fontWeight: 600, color: '#00695C', marginBottom: 4 }}>About Wathiq</p>
-          <p style={{ fontSize: 12, color: '#00897B', lineHeight: 1.5 }}>
-            Wathiq is the Ministry of Commerce's API for verifying commercial registrations.
-            We'll automatically retrieve your business details.
-          </p>
-        </div>
-      </div>
+          {/* Info card */}
+          <div style={{
+            marginTop: 24, padding: 16, background: 'rgba(239,246,255,0.5)',
+            border: '1px solid #DBEAFE', borderRadius: 12,
+            display: 'flex', alignItems: 'flex-start', gap: 10,
+          }}>
+            <Info size={16} color="#0D82F9" style={{ flexShrink: 0, marginTop: 1 }} />
+            <p style={{ fontSize: 12, color: '#64748B', lineHeight: 1.6 }}>
+              Your CR details will be verified via Wathiq. Make sure the CR number is active and not expired.
+            </p>
+          </div>
+        </>
+      )}
+
+      {/* Authorization Document upload (shown after CR verified) */}
+      {verifiedCR && (
+        <>
+          <div style={{ marginBottom: 12 }}>
+            <label style={{ fontSize: 13, fontWeight: 600, color: '#475569' }}>
+              Authorization Document <span style={{ color: '#EF4444' }}>*</span>
+            </label>
+            <p style={{ fontSize: 12, color: '#94A3B8', marginTop: 4, lineHeight: 1.5 }}>
+              Upload a signed authorization letter or power of attorney proving you are allowed to apply on behalf of this company.
+            </p>
+          </div>
+
+          {!uploaded ? (
+            <div style={{
+              border: '2px dashed #D1D5DB', borderRadius: 14, padding: 32,
+              textAlign: 'center', marginBottom: 24, background: '#FAFAFA',
+            }}>
+              {uploading ? (
+                <div>
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
+                    style={{ width: 36, height: 36, borderRadius: '50%', margin: '0 auto 12px', border: '3px solid #E5E7EB', borderTopColor: '#0D82F9' }}
+                  />
+                  <p style={{ fontSize: 13, color: '#6B7280' }}>Uploading...</p>
+                </div>
+              ) : (
+                <div>
+                  <Upload size={28} color="#94A3B8" style={{ marginBottom: 10 }} />
+                  <p style={{ fontSize: 14, fontWeight: 500, color: '#374151', marginBottom: 4 }}>Upload Authorization Document</p>
+                  <p style={{ fontSize: 12, color: '#94A3B8', marginBottom: 14 }}>PDF, JPG, or PNG (Max 10MB)</p>
+                  <motion.button
+                    whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
+                    onClick={handleUpload}
+                    style={{
+                      padding: '8px 20px', background: '#fff', color: '#374151',
+                      fontWeight: 500, fontSize: 13, borderRadius: 8,
+                      border: '1px solid #D1D5DB', cursor: 'pointer',
+                    }}
+                  >
+                    Choose File
+                  </motion.button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div style={{
+              border: '1.5px solid #D1FAE5', borderRadius: 14, padding: 16, marginBottom: 24,
+              background: '#F0FDF4', display: 'flex', alignItems: 'center', gap: 12,
+            }}>
+              <CheckCircle2 size={20} color="#047857" />
+              <div style={{ flex: 1 }}>
+                <p style={{ fontSize: 13, fontWeight: 600, color: '#111827' }}>authorization_letter.pdf</p>
+                <p style={{ fontSize: 11, color: '#6B7280' }}>1.2 MB · Uploaded just now</p>
+              </div>
+            </div>
+          )}
+
+          <motion.button
+            whileHover={uploaded ? { scale: 1.02 } : undefined}
+            whileTap={uploaded ? { scale: 0.98 } : undefined}
+            onClick={handleComplete}
+            disabled={!uploaded}
+            style={{
+              width: '100%', padding: '14px 0', fontWeight: 700, fontSize: 15, borderRadius: 12,
+              border: 'none', cursor: uploaded ? 'pointer' : 'not-allowed',
+              background: uploaded ? '#80FF00' : '#D1D5DB', color: uploaded ? '#002E83' : '#fff',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+            }}
+          >
+            Complete & Continue
+            <ArrowRight size={18} />
+          </motion.button>
+        </>
+      )}
     </div>
   )
 }
@@ -260,7 +461,7 @@ function CRCard({ cr, selected, onSelect }: { cr: CommercialRegistration; select
   )
 }
 
-function SelectCRScreen({ crs, onSelect }: { crs: CommercialRegistration[]; onSelect: (cr: CommercialRegistration) => void }) {
+function SelectCRScreen({ crs, onSelect, onAddManually }: { crs: CommercialRegistration[]; onSelect: (cr: CommercialRegistration) => void; onAddManually: () => void }) {
   const [selectedId, setSelectedId] = useState<string | null>(null)
 
   return (
@@ -284,11 +485,28 @@ function SelectCRScreen({ crs, onSelect }: { crs: CommercialRegistration[]; onSe
         </p>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 24 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 16 }}>
         {crs.map((cr) => (
           <CRCard key={cr.crNumber} cr={cr} selected={selectedId === cr.crNumber} onSelect={() => setSelectedId(cr.crNumber)} />
         ))}
       </div>
+
+      {/* Add another company manually */}
+      <button
+        onClick={onAddManually}
+        style={{
+          width: '100%', padding: '14px 0', marginBottom: 16,
+          background: '#fff', color: '#0D82F9', fontWeight: 600, fontSize: 14,
+          borderRadius: 12, border: '1.5px dashed #0D82F9', cursor: 'pointer',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+          transition: 'background 0.2s',
+        }}
+        onMouseEnter={(e) => (e.currentTarget.style.background = '#EFF6FF')}
+        onMouseLeave={(e) => (e.currentTarget.style.background = '#fff')}
+      >
+        <span style={{ fontSize: 18, lineHeight: 1 }}>+</span>
+        Add Another Company Manually
+      </button>
 
       <motion.button
         whileHover={selectedId ? { scale: 1.02 } : undefined}
@@ -604,89 +822,10 @@ function AMLScreeningScreen() {
   )
 }
 
-function CompleteScreen({ cr, isAuthorized, onContinue }: { cr: CommercialRegistration; isAuthorized: boolean; onContinue: () => void }) {
-  return (
-    <div style={{ textAlign: 'center', padding: '24px 0' }}>
-      <motion.div
-        initial={{ scale: 0 }} animate={{ scale: 1 }}
-        transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-        style={{
-          width: 80, height: 80, borderRadius: '50%', background: '#80FF00', margin: '0 auto 24px',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-        }}
-      >
-        <CheckCircle2 size={40} color="#002E83" />
-      </motion.div>
-
-      <h2 style={{ fontSize: 22, fontWeight: 700, color: '#111827', marginBottom: 6 }}>Business Verified!</h2>
-      <p style={{ fontSize: 14, color: '#6B7280', marginBottom: 28 }}>Your business has been successfully verified via Wathiq</p>
-
-      <div style={{ background: '#F9FAFB', borderRadius: 16, padding: 24, marginBottom: 24, textAlign: 'left' }}>
-        <h3 style={{ fontSize: 14, fontWeight: 600, color: '#111827', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
-          <CheckCircle2 size={16} color="#22C55E" />
-          Verified Business
-        </h3>
-        {[
-          ['Company', cr.companyNameEn],
-          ['CR Number', cr.crNumber],
-          ['Type', cr.companyType],
-          ['Activities', cr.isicActivities.join(', ')],
-          ['Location', `${cr.nationalAddress.district}, ${cr.nationalAddress.city}`],
-        ].map(([label, value]) => (
-          <div key={label} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10, fontSize: 13 }}>
-            <span style={{ color: '#9CA3AF' }}>{label}</span>
-            <span style={{ fontWeight: 500, color: '#111827', textAlign: 'right', maxWidth: 240 }}>{value}</span>
-          </div>
-        ))}
-      </div>
-
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginBottom: 28 }}>
-        <span style={{
-          display: 'inline-flex', alignItems: 'center', gap: 4, padding: '4px 12px',
-          background: '#D1FAE5', color: '#047857', borderRadius: 20, fontSize: 12, fontWeight: 600,
-        }}>
-          <ShieldCheck size={14} />
-          AML Screening Passed
-        </span>
-        {isAuthorized ? (
-          <span style={{
-            display: 'inline-flex', alignItems: 'center', gap: 4, padding: '4px 12px',
-            background: '#D1FAE5', color: '#047857', borderRadius: 20, fontSize: 12, fontWeight: 600,
-          }}>
-            <CheckCircle2 size={14} />
-            Authorized Signatory
-          </span>
-        ) : (
-          <span style={{
-            display: 'inline-flex', alignItems: 'center', gap: 4, padding: '4px 12px',
-            background: '#FEF3C7', color: '#92400E', borderRadius: 20, fontSize: 12, fontWeight: 600,
-          }}>
-            <FileText size={14} />
-            Via Authorization Letter
-          </span>
-        )}
-      </div>
-
-      <motion.button
-        whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
-        onClick={onContinue}
-        style={{
-          width: '100%', padding: '14px 0', background: '#80FF00', color: '#002E83', fontWeight: 700,
-          fontSize: 15, borderRadius: 12, border: 'none', cursor: 'pointer',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-        }}
-      >
-        Continue to Bank Connection
-        <ArrowRight size={18} />
-      </motion.button>
-    </div>
-  )
-}
-
 // ─── Main Component ──────────────────────────────────────────
 
 export default function WathiqVerification({ data, onComplete, nationalId: _nationalId }: Props) {
-  const [wathiqState, setWathiqState] = useState<WathiqState>(data ? 'complete' : 'fetching-crs')
+  const [wathiqState, setWathiqState] = useState<WathiqState>('fetching-crs')
   const [fetchedCRs, setFetchedCRs] = useState<CommercialRegistration[]>([])
   const [selectedCR, setSelectedCR] = useState<CommercialRegistration | null>(data?.selectedCR || null)
   const [isAuthorized, setIsAuthorized] = useState(data?.isAuthorizedSignatory ?? false)
@@ -737,25 +876,22 @@ export default function WathiqVerification({ data, onComplete, nationalId: _nati
     setWathiqState('aml-screening')
   }
 
-  // AML auto-completes
+  // AML auto-completes → skip "complete" screen, go straight to next step
   useEffect(() => {
-    if (wathiqState !== 'aml-screening') return
-    const t = setTimeout(() => setWathiqState('complete'), 2500)
+    if (wathiqState !== 'aml-screening' || !selectedCR) return
+    const t = setTimeout(() => {
+      const result: BusinessVerificationData = {
+        selectedCR,
+        isAuthorizedSignatory: isAuthorized,
+        authorizationLetterUploaded: letterUploaded || undefined,
+        amlScreeningStatus: 'clear',
+        amlScreeningId: 'AML-BIZ-' + Date.now(),
+        wathiqVerifiedAt: new Date(),
+      }
+      onComplete(result)
+    }, 2500)
     return () => clearTimeout(t)
   }, [wathiqState])
-
-  function handleContinue() {
-    if (!selectedCR) return
-    const result: BusinessVerificationData = {
-      selectedCR,
-      isAuthorizedSignatory: isAuthorized,
-      authorizationLetterUploaded: letterUploaded || undefined,
-      amlScreeningStatus: 'clear',
-      amlScreeningId: 'AML-BIZ-' + Date.now(),
-      wathiqVerifiedAt: new Date(),
-    }
-    onComplete(result)
-  }
 
   function goBack() {
     if (fetchedCRs.length > 1) {
@@ -772,9 +908,12 @@ export default function WathiqVerification({ data, onComplete, nationalId: _nati
     case 'no-cr-found':
       return <NoCRFoundScreen onManualLookup={() => setWathiqState('manual-lookup')} />
     case 'manual-lookup':
-      return <ManualLookupScreen onResult={(cr) => { setSelectedCR(cr); setFetchedCRs([cr]); setWathiqState('confirm-cr') }} />
+      return <ManualLookupScreen
+        onResult={(cr, _relationship) => { setSelectedCR(cr); setFetchedCRs((prev) => [...prev, cr]); setWathiqState('confirm-cr') }}
+        onBack={fetchedCRs.length > 0 ? () => setWathiqState('select-cr') : undefined}
+      />
     case 'select-cr':
-      return <SelectCRScreen crs={fetchedCRs} onSelect={handleCRSelected} />
+      return <SelectCRScreen crs={fetchedCRs} onSelect={handleCRSelected} onAddManually={() => setWathiqState('manual-lookup')} />
     case 'confirm-cr':
       return selectedCR ? <ConfirmCRScreen cr={selectedCR} onConfirm={handleCRConfirmed} onBack={goBack} /> : null
     case 'checking-signatory':
@@ -789,8 +928,6 @@ export default function WathiqVerification({ data, onComplete, nationalId: _nati
       return <UploadLetterScreen onUploaded={handleLetterUploaded} onBack={() => setWathiqState('not-authorized')} />
     case 'aml-screening':
       return <AMLScreeningScreen />
-    case 'complete':
-      return selectedCR ? <CompleteScreen cr={selectedCR} isAuthorized={isAuthorized} onContinue={handleContinue} /> : null
     default:
       return null
   }

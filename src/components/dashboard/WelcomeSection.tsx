@@ -1,55 +1,6 @@
-import { CheckCircle2, Clock } from 'lucide-react'
+import { CheckCircle2 } from 'lucide-react'
 import { motion } from 'framer-motion'
-import { TrophySuccessIllustration } from '../illustrations'
 import type { UserState } from '../../App'
-
-function UnderReviewIllustrationSmall() {
-  return (
-    <svg width="140" height="110" viewBox="0 0 280 180" fill="none">
-      <circle cx="140" cy="90" r="70" fill="url(#wsBg)" opacity="0.1" />
-      <g filter="url(#wsSh)">
-        <rect x="95" y="35" width="90" height="110" rx="8" fill="white" />
-        <rect x="95" y="35" width="90" height="110" rx="8" stroke="#E5E5E5" strokeWidth="1.5" />
-        <rect x="120" y="28" width="40" height="14" rx="4" fill="#F59E0B" />
-        <circle cx="140" cy="35" r="4" fill="white" />
-      </g>
-      <rect x="110" y="55" width="50" height="4" rx="2" fill="#F59E0B" />
-      <rect x="110" y="65" width="60" height="3" rx="1.5" fill="#E5E5E5" />
-      <rect x="110" y="74" width="55" height="3" rx="1.5" fill="#E5E5E5" />
-      <rect x="110" y="95" width="12" height="12" rx="3" fill="#22C55E" />
-      <path d="M113 101 L116 104 L120 98" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      <rect x="127" y="98" width="40" height="3" rx="1.5" fill="#E5E5E5" />
-      <rect x="110" y="112" width="12" height="12" rx="3" fill="#22C55E" />
-      <path d="M113 118 L116 121 L120 115" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      <rect x="127" y="115" width="35" height="3" rx="1.5" fill="#E5E5E5" />
-      <g filter="url(#wsSh)">
-        <circle cx="195" cy="75" r="28" fill="white" stroke="#F59E0B" strokeWidth="5" />
-      </g>
-      <circle cx="195" cy="75" r="14" fill="#FEF3C7" />
-      <path d="M195 67 L195 75 L201 79" stroke="#F59E0B" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx="60" cy="55" r="12" fill="#22C55E" />
-      <path d="M55 55 L58 58 L65 51" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx="210" cy="140" r="4" fill="#F59E0B">
-        <animate attributeName="opacity" values="1;0.3;1" dur="1.5s" repeatCount="indefinite" />
-      </circle>
-      <circle cx="222" cy="140" r="4" fill="#F59E0B">
-        <animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite" />
-      </circle>
-      <circle cx="234" cy="140" r="4" fill="#F59E0B">
-        <animate attributeName="opacity" values="0.6;0.3;1;0.6" dur="1.5s" repeatCount="indefinite" />
-      </circle>
-      <defs>
-        <linearGradient id="wsBg" x1="70" y1="20" x2="210" y2="160">
-          <stop offset="0%" stopColor="#F59E0B" />
-          <stop offset="100%" stopColor="#D97706" />
-        </linearGradient>
-        <filter id="wsSh" x="0" y="0" width="100%" height="100%" filterUnits="userSpaceOnUse">
-          <feDropShadow dx="0" dy="2" stdDeviation="4" floodOpacity="0.1" />
-        </filter>
-      </defs>
-    </svg>
-  )
-}
 
 // Compact circular progress ring for first-time user
 function ProgressRing({ percent }: { percent: number }) {
@@ -138,18 +89,62 @@ function SmallRocketIllustration() {
   )
 }
 
+// Building scene illustration for verified welcome card
+function VerifiedIllustration() {
+  return (
+    <svg width="160" height="110" viewBox="0 0 160 110" fill="none">
+      {/* Background circle */}
+      <circle cx="80" cy="55" r="48" fill="#F1F5F9" />
+      {/* Main building */}
+      <rect x="48" y="28" width="40" height="52" rx="3" fill="#002E83" />
+      <rect x="48" y="28" width="40" height="5" rx="2.5" fill="#0052B9" />
+      {/* Windows row 1 */}
+      <rect x="54" y="38" width="8" height="7" rx="1.5" fill="#0D82F9" opacity="0.9" />
+      <rect x="66" y="38" width="8" height="7" rx="1.5" fill="#0D82F9" opacity="0.7" />
+      <rect x="78" y="38" width="4" height="7" rx="1" fill="#0D82F9" opacity="0.5" />
+      {/* Windows row 2 */}
+      <rect x="54" y="50" width="8" height="7" rx="1.5" fill="#0D82F9" opacity="0.7" />
+      <rect x="66" y="50" width="8" height="7" rx="1.5" fill="#0D82F9" opacity="0.9" />
+      <rect x="78" y="50" width="4" height="7" rx="1" fill="#0D82F9" opacity="0.6" />
+      {/* Door */}
+      <rect x="62" y="66" width="12" height="14" rx="2" fill="#F59E0B" />
+      {/* Small building (right) */}
+      <rect x="94" y="48" width="24" height="32" rx="2.5" fill="#0D9488" />
+      <rect x="94" y="48" width="24" height="4" rx="2" fill="#0F766E" />
+      <rect x="99" y="56" width="6" height="5" rx="1" fill="#fff" opacity="0.3" />
+      <rect x="108" y="56" width="6" height="5" rx="1" fill="#fff" opacity="0.2" />
+      {/* Tree (left) */}
+      <rect x="32" y="62" width="3" height="18" rx="1.5" fill="#0D9488" opacity="0.6" />
+      <circle cx="33.5" cy="58" r="7" fill="#0D9488" opacity="0.25" />
+      <circle cx="33.5" cy="56" r="5" fill="#0D9488" opacity="0.35" />
+      {/* Rising arrow */}
+      <path d="M125 65 L125 38 L132 45" stroke="#22C55E" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M125 38 L118 45" stroke="#22C55E" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+      {/* Ground line */}
+      <rect x="22" y="80" width="116" height="2" rx="1" fill="#E2E8F0" />
+      {/* Decorative dots */}
+      <circle cx="140" cy="32" r="2" fill="#0D82F9" opacity="0.3" />
+      <circle cx="22" cy="44" r="1.5" fill="#0D9488" opacity="0.3" />
+    </svg>
+  )
+}
+
 export default function WelcomeSection({ userState = 'first-time' }: { verified?: boolean; userState?: UserState }) {
   if (userState === 'verified') {
     return (
-      <section
+      <motion.section
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
         style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: 24,
-          background: '#F9FAFB',
-          borderRadius: 16,
+          padding: '24px 28px',
+          background: 'linear-gradient(135deg, #FFFFFF 60%, rgba(13,130,249,0.03) 80%, rgba(34,197,94,0.03) 100%)',
+          borderRadius: 20,
           marginBottom: 20,
+          border: '1px solid #E2E8F0',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
         }}
       >
         <div>
@@ -174,57 +169,10 @@ export default function WelcomeSection({ userState = 'first-time' }: { verified?
           </div>
           <p style={{ fontSize: 14, color: '#666' }}>Your account is ready. Start a new financing application.</p>
         </div>
-        <div style={{ flexShrink: 0, transform: 'scale(0.65)', transformOrigin: 'center right' }}>
-          <TrophySuccessIllustration />
-        </div>
-      </section>
-    )
-  }
-
-  if (userState === 'under-review') {
-    return (
-      <section
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: 24,
-          background: '#FFFBEB',
-          borderRadius: 16,
-          marginBottom: 20,
-          border: '1px solid #FDE68A',
-        }}
-      >
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
-            <h1 style={{ fontSize: 24, fontWeight: 700, color: '#111' }}>Welcome back, Ahmed!</h1>
-            <motion.span
-              animate={{ opacity: [1, 0.7, 1] }}
-              transition={{ repeat: Infinity, duration: 2 }}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 4,
-                padding: '3px 10px',
-                background: '#FEF3C7',
-                color: '#92400E',
-                borderRadius: 20,
-                fontSize: 12,
-                fontWeight: 500,
-              }}
-            >
-              <Clock size={14} />
-              Under Review
-            </motion.span>
-          </div>
-          <p style={{ fontSize: 14, color: '#666' }}>
-            Your application is being reviewed. We'll notify you once it's approved.
-          </p>
-        </div>
         <div style={{ flexShrink: 0 }}>
-          <UnderReviewIllustrationSmall />
+          <VerifiedIllustration />
         </div>
-      </section>
+      </motion.section>
     )
   }
 

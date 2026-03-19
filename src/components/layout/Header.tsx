@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { DownloadIcon, NotificationBellIcon, DarkModeIcon, PlusIcon } from '../icons/WidgetIcons'
+import { NotificationBellIcon, PlusIcon } from '../icons/WidgetIcons'
 
 function getGreeting() {
   const hour = new Date().getHours()
@@ -18,13 +18,13 @@ function getFormattedDate() {
   })
 }
 
-export default function Header({ showNewLoanButton = false, disableNewLoanButton = false }: { showNewLoanButton?: boolean; disableNewLoanButton?: boolean }) {
+export default function Header({ showNewLoanButton = false, showVerifiedLoanButton = false }: { showNewLoanButton?: boolean; showVerifiedLoanButton?: boolean }) {
   const navigate = useNavigate()
 
   return (
     <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
       <div>
-        <h1 style={{ fontSize: 20, fontWeight: 700, color: '#1E293B' }}>
+        <h1 style={{ fontSize: showVerifiedLoanButton ? 26 : 20, fontWeight: 700, color: '#1E293B' }}>
           {getGreeting()}, Ahmed
         </h1>
         <p style={{ fontSize: 12, color: '#64748B', fontWeight: 400, marginTop: 2 }}>{getFormattedDate()}</p>
@@ -32,31 +32,52 @@ export default function Header({ showNewLoanButton = false, disableNewLoanButton
       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
         {showNewLoanButton && (
           <motion.button
-            whileHover={disableNewLoanButton ? {} : { scale: 1.03 }}
-            whileTap={disableNewLoanButton ? {} : { scale: 0.97 }}
-            onClick={() => !disableNewLoanButton && navigate('/onboarding')}
-            title={disableNewLoanButton ? 'Available after approval' : undefined}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={() => navigate('/onboarding')}
             style={{
               padding: '8px 18px',
-              background: '#7CFF01',
-              color: '#1E293B',
+              background: '#2563EB',
+              color: '#fff',
               fontWeight: 700,
               fontSize: 13,
               borderRadius: 20,
               border: 'none',
-              cursor: disableNewLoanButton ? 'not-allowed' : 'pointer',
+              cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               gap: 6,
               marginRight: 8,
-              opacity: disableNewLoanButton ? 0.5 : 1,
             }}
           >
-            <PlusIcon size={14} color="#1E293B" />
+            <PlusIcon size={14} color="#fff" />
             New Loan Request
           </motion.button>
         )}
-        <div style={iconBtn}><DownloadIcon size={20} color="#64748B" /></div>
+        {showVerifiedLoanButton && (
+          <motion.button
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={() => navigate('/request-financing')}
+            style={{
+              padding: '8px 18px',
+              background: '#2563EB',
+              color: '#fff',
+              fontWeight: 700,
+              fontSize: 13,
+              borderRadius: 20,
+              border: 'none',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+              marginRight: 8,
+            }}
+          >
+            <PlusIcon size={14} color="#fff" />
+            New Loan Request
+          </motion.button>
+        )}
         <div style={{ ...iconBtn, position: 'relative' }}>
           <NotificationBellIcon size={20} color="#64748B" />
           <span
@@ -69,7 +90,6 @@ export default function Header({ showNewLoanButton = false, disableNewLoanButton
             }}
           >2</span>
         </div>
-        <div style={iconBtn}><DarkModeIcon size={20} color="#64748B" /></div>
         <div
           style={{
             width: 36, height: 36, borderRadius: '50%',

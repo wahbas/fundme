@@ -1,4 +1,4 @@
-import { CheckCircle2, ShieldCheck, Landmark, FileUp } from 'lucide-react'
+import { CheckCircle2, ShieldCheck, Landmark, FileUp, ArrowRight } from 'lucide-react'
 
 const activities = [
   {
@@ -34,13 +34,32 @@ const activities = [
 export default function RecentActivity() {
   return (
     <section style={{ marginBottom: 20 }}>
-      <h3 style={{ fontSize: 16, fontWeight: 600, color: '#111', marginBottom: 16 }}>Recent Activity</h3>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+        <h3 style={{ fontSize: 16, fontWeight: 600, color: '#111827' }}>Recent Activity</h3>
+        <button
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 4,
+            fontSize: 13,
+            color: '#0D82F9',
+            fontWeight: 500,
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+          }}
+        >
+          View All
+          <ArrowRight size={14} />
+        </button>
+      </div>
       <div
         style={{
           background: '#fff',
-          border: '1px solid #F0F0F0',
+          border: '1px solid #E2E8F0',
           borderRadius: 16,
           padding: '4px 24px',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
         }}
       >
         {activities.map((a, i) => (
@@ -50,46 +69,23 @@ export default function RecentActivity() {
               display: 'flex',
               alignItems: 'center',
               padding: '16px 0',
-              borderBottom: i < activities.length - 1 ? '1px solid #F0F0F0' : 'none',
+              borderBottom: i < activities.length - 1 ? '1px solid #F1F5F9' : 'none',
             }}
           >
-            {/* Timeline dot + line */}
             <div
               style={{
+                width: 36,
+                height: 36,
+                borderRadius: 10,
                 display: 'flex',
-                flexDirection: 'column',
                 alignItems: 'center',
+                justifyContent: 'center',
+                background: `${a.color}15`,
                 marginRight: 14,
                 flexShrink: 0,
-                position: 'relative',
               }}
             >
-              <div
-                style={{
-                  width: 36,
-                  height: 36,
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  background: `${a.color}15`,
-                }}
-              >
-                <a.icon size={18} color={a.color} />
-              </div>
-              {i < activities.length - 1 && (
-                <div
-                  style={{
-                    width: 2,
-                    height: 20,
-                    background: '#E5E7EB',
-                    position: 'absolute',
-                    top: 38,
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                  }}
-                />
-              )}
+              <a.icon size={18} color={a.color} />
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <h4 style={{ fontSize: 13, fontWeight: 600, color: '#111', marginBottom: 2 }}>{a.title}</h4>

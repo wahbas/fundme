@@ -1,298 +1,537 @@
-import { useState, useMemo } from 'react'
+import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { X, Check, ArrowLeft, ArrowRight, Send } from 'lucide-react'
+import { Check, ArrowLeft, ArrowRight, Send, Info, Building2, FileText, Upload, LayoutGrid, Landmark } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FLOWS, INITIAL_DATA, type WizardData, type StepDef } from '../components/wizard/types'
-import ChooseProduct from '../components/wizard/steps/ChooseProduct'
-import BusinessProfile from '../components/wizard/steps/BusinessProfile'
-import AmountTerms from '../components/wizard/steps/AmountTerms'
-import UploadInvoices from '../components/wizard/steps/UploadInvoices'
-import SelectSadadBills from '../components/wizard/steps/SelectSadadBills'
-import SelectBank from '../components/wizard/steps/SelectBank'
-import ReviewSubmit from '../components/wizard/steps/ReviewSubmit'
-import SuccessScreen from '../components/wizard/SuccessScreen'
-import LoadingOverlay from '../components/wizard/LoadingOverlay'
+import SelectCategory from '../components/wizard/steps/SelectCategory'
+import SelectBiller from '../components/wizard/steps/SelectBiller'
+import InvoiceDetails from '../components/wizard/steps/InvoiceDetails'
+import Documents from '../components/wizard/steps/DocumentsAndBank'
+import BankConnect from '../components/wizard/steps/BankConnect'
 import logo from '../assets/logo.png'
+
+// ─── Types ────────────────────────────────────────────────────
+
+export interface WizardData {
+  category: string
+  biller: string
+  billerCode: string
+  selectedBills: string[]
+  financingType: Record<string, 'full' | 'partial'>
+  partialAmounts: Record<string, number>
+  uploadedDocs: string[]
+  bankConnected: boolean
+}
+
+export const INITIAL_WIZARD_DATA: WizardData = {
+  category: '',
+  biller: '',
+  billerCode: '',
+  selectedBills: [],
+  financingType: {},
+  partialAmounts: {},
+  uploadedDocs: [],
+  bankConnected: false,
+}
+
+// ─── Steps config ─────────────────────────────────────────────
+
+const STEPS = [
+  { id: 'category', label: 'Select Category', desc: 'Choose bill category', icon: LayoutGrid },
+  { id: 'biller', label: 'Select Biller', desc: 'Pick your biller', icon: Building2 },
+  { id: 'invoices', label: 'Invoice Details', desc: 'Enter bill details', icon: FileText },
+  { id: 'documents', label: 'Documents', desc: 'Upload required docs', icon: Upload },
+  { id: 'bank', label: 'Connect Bank', desc: 'Link your bank account', icon: Landmark },
+]
+
+const TOTAL_STEPS = STEPS.length
+
+// ─── Green circles SVG pattern ────────────────────────────────
+
+function GreenCircles() {
+  return (
+    <svg
+      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', opacity: 0.06 }}
+      viewBox="0 0 400 800"
+      preserveAspectRatio="xMidYMid slice"
+    >
+      <circle cx="320" cy="80" r="120" stroke="#80FF00" strokeWidth="1.5" fill="none" />
+      <circle cx="320" cy="80" r="80" stroke="#80FF00" strokeWidth="1" fill="none" />
+      <circle cx="80" cy="400" r="160" stroke="#80FF00" strokeWidth="1.5" fill="none" />
+      <circle cx="80" cy="400" r="100" stroke="#80FF00" strokeWidth="1" fill="none" />
+      <circle cx="300" cy="700" r="140" stroke="#80FF00" strokeWidth="1.5" fill="none" />
+      <circle cx="300" cy="700" r="90" stroke="#80FF00" strokeWidth="1" fill="none" />
+    </svg>
+  )
+}
 
 export default function RequestFinancing() {
   const navigate = useNavigate()
-  const [data, setData] = useState<WizardData>({ ...INITIAL_DATA })
+  const [data, setData] = useState<WizardData>({ ...INITIAL_WIZARD_DATA })
   const [stepIdx, setStepIdx] = useState(0)
-  const [submitted, setSubmitted] = useState(false)
+  const [direction, setDirection] = useState(1)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
+  const [validationError, setValidationError] = useState('')
+  const refId = useRef(`APP-${Date.now()}`)
 
   function patch(p: Partial<WizardData>) {
     setData((d) => ({ ...d, ...p }))
   }
 
-  const steps: StepDef[] = useMemo(() => {
-    if (!data.product) return [{ id: 'product', label: 'Choose Product' }]
-    return FLOWS[data.product]
-  }, [data.product])
+  const progress = ((stepIdx + 1) / TOTAL_STEPS) * 100
 
-  const currentStep = steps[stepIdx]
-  const totalSteps = steps.length
-  const progress = ((stepIdx + 1) / totalSteps) * 100
-  const isLast = stepIdx === totalSteps - 1
+  const canContinue = (() => {
+    if (stepIdx === 0) return !!data.category
+    if (stepIdx === 1) return !!data.biller
+    if (stepIdx === 2) return data.selectedBills.length > 0
+    return true
+  })()
+
+  function validate(): boolean {
+    if (stepIdx === 0 && !data.category) {
+      setValidationError('Please select a category')
+      return false
+    }
+    if (stepIdx === 1 && !data.biller) {
+      setValidationError('Please select a biller')
+      return false
+    }
+    if (stepIdx === 2 && data.selectedBills.length === 0) {
+      setValidationError('Please select at least one bill')
+      return false
+    }
+    setValidationError('')
+    return true
+  }
 
   function handleNext() {
-    if (stepIdx === 0 && !data.product) return
-    if (isLast) {
-      setIsSubmitting(true)
-      setTimeout(() => {
-        setIsSubmitting(false)
-        setSubmitted(true)
-      }, 2200)
+    if (!validate()) return
+    if (stepIdx === TOTAL_STEPS - 1) {
+      handleSubmit()
       return
     }
-    setStepIdx((s) => Math.min(s + 1, totalSteps - 1))
+    setDirection(1)
+    setStepIdx((s) => s + 1)
+  }
+
+  function handleSubmit() {
+    setIsSubmitting(true)
+    setTimeout(() => {
+      setIsSubmitting(false)
+      setSubmitted(true)
+    }, 2000)
   }
 
   function handleBack() {
-    if (stepIdx === 0) return
-    setStepIdx((s) => s - 1)
-  }
-
-  function goToStep(idx: number) {
-    setStepIdx(idx)
-  }
-
-  function handleProductChange(p: WizardData['product']) {
-    patch({ product: p })
-  }
-
-  if (isSubmitting) {
-    return <LoadingOverlay />
-  }
-
-  if (submitted) {
-    return <SuccessScreen onBack={() => navigate('/')} />
-  }
-
-  function renderStep() {
-    if (!currentStep) return null
-    switch (currentStep.id) {
-      case 'product':
-        return <ChooseProduct value={data.product} onChange={handleProductChange} />
-      case 'business':
-        return <BusinessProfile data={data} onChange={patch} />
-      case 'amount':
-        return <AmountTerms data={data} onChange={patch} />
-      case 'invoices':
-        return <UploadInvoices data={data} onChange={patch} />
-      case 'sadad':
-        return <SelectSadadBills data={data} onChange={patch} />
-      case 'bank':
-        return <SelectBank data={data} onChange={patch} />
-      case 'review':
-        return <ReviewSubmit data={data} onGoToStep={goToStep} />
-      default:
-        return null
+    setValidationError('')
+    if (stepIdx === 0) {
+      navigate('/?state=verified')
+    } else {
+      setDirection(-1)
+      setStepIdx((s) => s - 1)
     }
   }
 
-  const isNextDisabled = stepIdx === 0 && !data.product
+  // ─── Loading overlay ─────────────────────────────────────────
 
-  return (
-    <div style={{ minHeight: '100vh', background: '#FAFAFA', fontFamily: 'Poppins, sans-serif', display: 'flex', flexDirection: 'column' }}>
-      {/* Top bar */}
-      <div style={{ background: '#fff', borderBottom: '1px solid #E5E5E5', position: 'relative' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 32px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-            <img src={logo} alt="FundMe" style={{ height: 32 }} />
-            <div style={{ width: 1, height: 20, background: '#E5E5E5' }} />
-            <span style={{ fontSize: 15, fontWeight: 600, color: '#111827' }}>Request Financing</span>
-          </div>
-          <button
-            onClick={() => navigate('/')}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 6 }}
-          >
-            <X size={22} color="#6B7280" />
-          </button>
-        </div>
-        {/* Animated Progress bar */}
-        <div style={{ height: 3, background: '#E5E7EB' }}>
+  if (isSubmitting) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        style={{
+          position: 'fixed', inset: 0, background: 'rgba(255,255,255,0.95)',
+          backdropFilter: 'blur(8px)', zIndex: 50,
+          display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+        }}
+      >
+        <div style={{ position: 'relative', width: 80, height: 80 }}>
           <motion.div
-            initial={{ width: 0 }}
-            animate={{ width: `${progress}%` }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
-            style={{
-              height: '100%',
-              background: 'linear-gradient(90deg, #002E83, #0D82F9)',
-              borderRadius: '0 2px 2px 0',
-            }}
+            animate={{ rotate: 360 }}
+            transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
+            style={{ width: 80, height: 80, borderRadius: '50%', border: '4px solid #E5E7EB', borderTopColor: '#2563EB' }}
           />
         </div>
-      </div>
+        <p style={{ marginTop: 32, fontSize: 20, fontWeight: 600, color: '#0F172A' }}>
+          Submitting your request<motion.span animate={{ opacity: [0, 1, 0] }} transition={{ repeat: Infinity, duration: 1.5 }}>...</motion.span>
+        </p>
+      </motion.div>
+    )
+  }
 
-      {/* Body */}
-      <div style={{ flex: 1, display: 'flex', maxWidth: 1120, margin: '0 auto', width: '100%', padding: '40px 32px 0' }}>
-        {/* Left sidebar - step indicator */}
-        <div style={{ width: 240, flexShrink: 0, paddingRight: 40 }}>
-          <div style={{ position: 'sticky', top: 40, display: 'flex', flexDirection: 'column', gap: 0 }}>
-            {steps.map((s, i) => {
-              const completed = i < stepIdx
-              const active = i === stepIdx
-              return (
-                <div
-                  key={s.id}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 12,
-                    padding: '12px 14px',
-                    borderLeft: `3px solid ${active ? '#0D82F9' : completed ? '#0D82F9' : 'transparent'}`,
-                    cursor: completed ? 'pointer' : 'default',
-                    transition: 'border-color 0.3s',
-                  }}
-                  onClick={() => completed && goToStep(i)}
-                >
-                  {completed ? (
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-                      style={{
-                        width: 24,
-                        height: 24,
-                        borderRadius: '50%',
-                        background: '#0D82F9',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        flexShrink: 0,
-                      }}
-                    >
-                      <Check size={14} color="#fff" />
-                    </motion.div>
-                  ) : (
+  // ─── Success screen ───────────────────────────────────────────
+
+  if (submitted) {
+    return (
+      <div style={{ minHeight: '100vh', background: '#F8FAFC', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
+        <div style={{ textAlign: 'center', maxWidth: 400, width: '100%' }}>
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: 'spring', stiffness: 200 }}
+            style={{
+              width: 80, height: 80, borderRadius: '50%', margin: '0 auto 24px',
+              background: '#10B981', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              boxShadow: '0 0 0 12px rgba(16,185,129,0.15)',
+            }}
+          >
+            <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3 }}>
+              <Check size={36} color="#fff" strokeWidth={3} />
+            </motion.div>
+          </motion.div>
+
+          <motion.h1 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+            style={{ fontSize: 24, fontWeight: 700, color: '#0F172A', marginBottom: 8 }}>
+            Request Created!
+          </motion.h1>
+
+          <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+            style={{ fontSize: 14, color: '#475569', marginBottom: 24 }}>
+            Your financing request has been successfully created.
+          </motion.p>
+
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+            style={{
+              background: '#fff', border: '1px solid #E2E8F0', borderRadius: 14,
+              padding: 20, marginBottom: 16,
+            }}
+          >
+            <p style={{ fontSize: 12, color: '#94A3B8', marginBottom: 6 }}>Application Reference</p>
+            <p style={{ fontSize: 18, fontWeight: 600, color: '#2563EB', fontFamily: 'monospace' }}>{refId.current}</p>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+            style={{
+              background: '#fff', border: '1px solid #E2E8F0', borderRadius: 14,
+              padding: 20, marginBottom: 24, textAlign: 'left',
+            }}
+          >
+            <p style={{ fontSize: 15, fontWeight: 700, color: '#0F172A', marginBottom: 14 }}>What's Next?</p>
+            {[
+              'Our team reviews your application',
+              'Receive your financing offer',
+              'Accept and get funded',
+            ].map((text, i) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: i < 2 ? 10 : 0 }}>
+                <span style={{ fontSize: 14, fontWeight: 600, color: '#2563EB', width: 20, flexShrink: 0 }}>{i + 1}.</span>
+                <span style={{ fontSize: 14, color: '#475569' }}>{text}</span>
+              </div>
+            ))}
+          </motion.div>
+
+          <motion.button
+            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+            whileHover={{ scale: 1.02, boxShadow: '0 4px 16px rgba(37,99,235,0.2)' }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => navigate('/?state=verified&submitted=true')}
+            style={{
+              width: '100%', padding: 16, background: '#2563EB', color: '#fff',
+              border: 'none', borderRadius: 12, fontSize: 16, fontWeight: 700, cursor: 'pointer',
+            }}
+          >
+            Go to Application Dashboard
+          </motion.button>
+        </div>
+      </div>
+    )
+  }
+
+  // ─── Wizard (split-panel) ────────────────────────────────────
+
+  function renderStep() {
+    switch (stepIdx) {
+      case 0: return <SelectCategory data={data} onChange={patch} />
+      case 1: return <SelectBiller data={data} onChange={patch} />
+      case 2: return <InvoiceDetails data={data} onChange={patch} />
+      case 3: return <Documents data={data} onChange={patch} />
+      case 4: return <BankConnect data={data} onChange={patch} />
+      default: return null
+    }
+  }
+
+  const isLast = stepIdx === TOTAL_STEPS - 1
+
+  return (
+    <div style={{ display: 'flex', minHeight: '100vh' }}>
+      {/* ── Left panel (380px) ─── Steps sidebar ─────────────── */}
+      <div
+        style={{
+          width: 380,
+          flexShrink: 0,
+          background: 'linear-gradient(155deg, #000814 0%, #001233 40%, #002E83 70%, #0052B9 100%)',
+          position: 'relative',
+          overflow: 'hidden',
+          display: 'flex',
+          flexDirection: 'column',
+          padding: '40px 36px',
+        }}
+      >
+        <GreenCircles />
+
+        {/* Logo */}
+        <div style={{ position: 'relative', zIndex: 1, marginBottom: 48 }}>
+          <img src={logo} alt="FundMe" style={{ height: 80 }} />
+        </div>
+
+        {/* Title */}
+        <div style={{ position: 'relative', zIndex: 1, marginBottom: 48 }}>
+          <h1 style={{ fontSize: 22, fontWeight: 700, color: '#fff', marginBottom: 6 }}>
+            SADAD Financing
+          </h1>
+          <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', lineHeight: 1.5 }}>
+            Complete the steps below to submit your financing request
+          </p>
+        </div>
+
+        {/* Step tracker */}
+        <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', gap: 0, flex: 1 }}>
+          {STEPS.map((step, i) => {
+            const completed = i < stepIdx
+            const active = i === stepIdx
+            const Icon = step.icon
+            const isLastStep = i === STEPS.length - 1
+
+            return (
+              <div key={step.id} style={{ display: 'flex', gap: 16 }}>
+                {/* Circle + connector line */}
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <motion.div
+                    animate={{
+                      background: completed ? '#2563EB' : active ? 'rgba(37,99,235,0.6)' : 'rgba(255,255,255,0.1)',
+                      borderColor: completed ? '#2563EB' : active ? 'rgba(37,99,235,0.6)' : 'rgba(255,255,255,0.2)',
+                    }}
+                    style={{
+                      width: 44,
+                      height: 44,
+                      borderRadius: 14,
+                      border: '2px solid',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0,
+                      transition: 'all 0.3s',
+                    }}
+                  >
+                    {completed ? (
+                      <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}>
+                        <Check size={20} color="#fff" strokeWidth={3} />
+                      </motion.div>
+                    ) : (
+                      <Icon size={20} color={active ? '#fff' : 'rgba(255,255,255,0.4)'} />
+                    )}
+                  </motion.div>
+                  {/* Connector line */}
+                  {!isLastStep && (
                     <div
                       style={{
-                        width: 24,
-                        height: 24,
-                        borderRadius: '50%',
-                        border: `2px solid ${active ? '#0D82F9' : '#D1D5DB'}`,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: 12,
-                        fontWeight: 600,
-                        color: active ? '#0D82F9' : '#9CA3AF',
-                        flexShrink: 0,
-                        transition: 'all 0.3s',
+                        width: 2,
+                        flex: 1,
+                        minHeight: 32,
+                        background: completed
+                          ? 'rgba(37,99,235,0.4)'
+                          : 'rgba(255,255,255,0.1)',
+                        transition: 'background 0.3s',
                       }}
-                    >
-                      {i + 1}
-                    </div>
+                    />
                   )}
-                  <span
+                </div>
+
+                {/* Label + description */}
+                <div style={{ paddingTop: 8, paddingBottom: isLastStep ? 0 : 24 }}>
+                  <p
                     style={{
-                      fontSize: 14,
-                      fontWeight: active ? 600 : 400,
-                      color: active ? '#111827' : completed ? '#0D82F9' : '#9CA3AF',
+                      fontSize: 15,
+                      fontWeight: active ? 700 : 500,
+                      color: active || completed ? '#fff' : 'rgba(255,255,255,0.4)',
+                      marginBottom: 3,
                       transition: 'color 0.3s',
                     }}
                   >
-                    {s.label}
-                  </span>
+                    {step.label}
+                  </p>
+                  <p
+                    style={{
+                      fontSize: 12,
+                      color: active ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.25)',
+                      transition: 'color 0.3s',
+                    }}
+                  >
+                    {step.desc}
+                  </p>
                 </div>
-              )
-            })}
-          </div>
+              </div>
+            )
+          })}
         </div>
 
-        {/* Main content with step transitions */}
-        <div style={{ flex: 1, maxWidth: 640, paddingBottom: 40 }}>
-          <AnimatePresence mode="wait">
+        {/* Progress at bottom */}
+        <div style={{ position: 'relative', zIndex: 1, marginTop: 'auto', paddingTop: 32 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+            <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)' }}>Progress</span>
+            <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.6)', fontWeight: 600 }}>{Math.round(progress)}%</span>
+          </div>
+          <div style={{ height: 4, borderRadius: 2, background: 'rgba(255,255,255,0.1)' }}>
             <motion.div
-              key={currentStep?.id ?? 'empty'}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3, ease: 'easeInOut' }}
-            >
-              {renderStep()}
-            </motion.div>
-          </AnimatePresence>
+              animate={{ width: `${progress}%` }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
+              style={{ height: '100%', background: '#2563EB', borderRadius: 2 }}
+            />
+          </div>
         </div>
       </div>
 
-      {/* Footer */}
+      {/* ── Right panel ─── Form area ─────────────────────────── */}
       <div
         style={{
-          borderTop: '1px solid #E5E5E5',
-          background: '#fff',
-          padding: '14px 32px',
-          position: 'sticky',
-          bottom: 0,
+          flex: 1,
+          background: '#F8FAFC',
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'auto',
+          height: '100vh',
         }}
       >
-        <div style={{ maxWidth: 1120, margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span style={{ fontSize: 13, color: '#9CA3AF' }}>
-            Step {stepIdx + 1} of {totalSteps}
-          </span>
-          <div style={{ display: 'flex', gap: 12 }}>
-            {stepIdx > 0 && (
+        {/* Top bar (sticky) */}
+        <div style={{ position: 'sticky', top: 0, zIndex: 5, background: '#fff', borderBottom: '1px solid #E2E8F0', padding: '16px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <button
+              onClick={handleBack}
+              style={{
+                background: 'none', border: 'none', cursor: 'pointer', padding: 4,
+                display: 'flex', alignItems: 'center',
+              }}
+            >
+              <ArrowLeft size={20} color="#475569" />
+            </button>
+            <span style={{ fontSize: 14, color: '#94A3B8' }}>
+              Step {stepIdx + 1} of {TOTAL_STEPS}
+            </span>
+          </div>
+          <button
+            onClick={() => navigate('/?state=verified')}
+            style={{
+              background: 'none', border: '1px solid #E2E8F0', borderRadius: 8,
+              padding: '6px 16px', fontSize: 13, color: '#475569', cursor: 'pointer',
+            }}
+          >
+            Save & Exit
+          </button>
+        </div>
+
+        {/* Content */}
+        <div style={{ flex: 1, padding: '32px 48px' }}>
+          <div style={{ maxWidth: 860, margin: '0 auto', width: '100%' }}>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={stepIdx}
+                initial={{ opacity: 0, x: direction * 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: direction * -20 }}
+                transition={{ duration: 0.2, ease: 'easeOut' }}
+              >
+                {renderStep()}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
+
+        {/* Validation error toast */}
+        <AnimatePresence>
+          {validationError && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              style={{
+                position: 'fixed', bottom: 100, left: '50%', transform: 'translateX(-50%)',
+                background: '#FEF2F2', border: '1px solid #FECACA', borderRadius: 10,
+                padding: '10px 20px', display: 'flex', alignItems: 'center', gap: 8,
+                fontSize: 13, color: '#EF4444', fontWeight: 500, zIndex: 20,
+                boxShadow: '0 4px 16px rgba(0,0,0,0.1)',
+              }}
+            >
+              <Info size={16} />
+              {validationError}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Footer (sticky) */}
+        <div style={{
+          position: 'sticky', bottom: 0,
+          background: '#fff', borderTop: '1px solid #E2E8F0',
+          padding: '16px 48px', zIndex: 5,
+        }}>
+          <div style={{ maxWidth: 860, margin: '0 auto', width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            {stepIdx > 0 ? (
               <motion.button
                 onClick={handleBack}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 6,
-                  padding: '10px 20px',
-                  background: '#fff',
-                  border: '1px solid #D1D5DB',
-                  borderRadius: 10,
-                  fontSize: 14,
-                  color: '#374151',
-                  cursor: 'pointer',
-                  fontWeight: 500,
+                  display: 'flex', alignItems: 'center', gap: 6,
+                  padding: '12px 24px', background: '#fff',
+                  border: '1px solid #E2E8F0', borderRadius: 10,
+                  fontSize: 14, color: '#475569', cursor: 'pointer', fontWeight: 500,
                 }}
               >
                 <ArrowLeft size={16} />
                 Back
               </motion.button>
+            ) : (
+              <div />
             )}
-            <motion.button
-              onClick={handleNext}
-              disabled={isNextDisabled}
-              whileHover={isNextDisabled ? undefined : { scale: 1.02 }}
-              whileTap={isNextDisabled ? undefined : { scale: 0.98 }}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 6,
-                padding: '10px 24px',
-                background: isNextDisabled ? '#D1D5DB' : '#0D82F9',
-                color: '#fff',
-                border: 'none',
-                borderRadius: 10,
-                fontSize: 14,
-                fontWeight: 600,
-                cursor: isNextDisabled ? 'not-allowed' : 'pointer',
-                boxShadow: isNextDisabled ? 'none' : '0 4px 12px rgba(13,130,249,0.25)',
-              }}
-            >
-              {isLast ? (
-                <>
-                  Submit
+
+            {isLast ? (
+              <div style={{ display: 'flex', gap: 10 }}>
+                <button
+                  onClick={() => navigate('/?state=verified&submitted=true')}
+                  style={{
+                    padding: '12px 24px', background: '#fff', color: '#475569',
+                    border: '1px solid #E2E8F0', borderRadius: 10, fontSize: 14, fontWeight: 500, cursor: 'pointer',
+                  }}
+                >
+                  Skip for Now
+                </button>
+                <motion.button
+                  onClick={handleSubmit}
+                  whileHover={{ scale: 1.02, boxShadow: '0 4px 16px rgba(37,99,235,0.3)' }}
+                  whileTap={{ scale: 0.98 }}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: 8,
+                    padding: '12px 28px', background: '#2563EB', color: '#fff',
+                    border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: 'pointer',
+                  }}
+                >
+                  Submit Request
                   <Send size={16} />
-                </>
-              ) : (
-                <>
-                  Next
-                  <motion.span
-                    animate={isNextDisabled ? {} : { x: [0, 4, 0] }}
-                    transition={{ repeat: Infinity, duration: 1.5 }}
-                    style={{ display: 'flex', alignItems: 'center' }}
-                  >
-                    <ArrowRight size={16} />
-                  </motion.span>
-                </>
-              )}
-            </motion.button>
+                </motion.button>
+              </div>
+            ) : (
+              <motion.button
+                onClick={handleNext}
+                whileHover={canContinue ? { y: -1, boxShadow: '0 6px 20px rgba(37,99,235,0.3)' } : {}}
+                whileTap={canContinue ? { scale: 0.98 } : {}}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 8,
+                  padding: '13px 28px',
+                  background: canContinue ? '#2563EB' : '#E2E8F0',
+                  color: canContinue ? '#fff' : '#94A3B8',
+                  border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 700,
+                  cursor: canContinue ? 'pointer' : 'not-allowed',
+                  transition: 'background 0.15s, color 0.15s',
+                }}
+              >
+                Continue
+                <motion.span
+                  animate={canContinue ? { x: [0, 4, 0] } : {}}
+                  transition={{ repeat: Infinity, duration: 1.5 }}
+                  style={{ display: 'flex', alignItems: 'center' }}
+                >
+                  <ArrowRight size={16} />
+                </motion.span>
+              </motion.button>
+            )}
           </div>
         </div>
       </div>

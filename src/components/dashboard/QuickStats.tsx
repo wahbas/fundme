@@ -1,51 +1,187 @@
-import { Wallet, TrendingUp, Banknote, FileText } from 'lucide-react'
+import { CreditCard, Clock, Activity, TrendingUp, ChevronUp, Minus } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { useState } from 'react'
 
-const stats = [
-  { icon: Wallet, label: 'Total Financed', value: '500,000', sub: 'SAR', color: '#0D82F9', bg: '#EFF6FF' },
-  { icon: Banknote, label: 'Outstanding', value: '125,000', sub: 'SAR', color: '#F59E0B', bg: '#FFFBEB' },
-  { icon: TrendingUp, label: 'Financings', value: '3', sub: 'Active', color: '#22C55E', bg: '#F0FDF4' },
-  { icon: FileText, label: 'Documents', value: '4/4', sub: 'Verified', color: '#8B5CF6', bg: '#F5F3FF' },
+interface StatDef {
+  icon: typeof CreditCard
+  label: string
+  value: string
+  currency: string
+  sub: string
+  accentLine: string
+  iconBg: string
+  iconColor: string
+  trend: { text: string; color: string; bg: string; icon: typeof ChevronUp | null } | null
+}
+
+const activeStats: StatDef[] = [
+  {
+    icon: CreditCard,
+    label: 'Total Financed',
+    value: '500,000',
+    currency: 'SAR',
+    sub: 'Across 3 active financings',
+    accentLine: '#2563EB',
+    iconBg: 'rgba(37, 99, 235, 0.06)',
+    iconColor: '#3B82F6',
+    trend: { text: '+12%', color: '#16A34A', bg: 'rgba(22, 163, 74, 0.08)', icon: ChevronUp },
+  },
+  {
+    icon: Clock,
+    label: 'Outstanding Balance',
+    value: '125,000',
+    currency: 'SAR',
+    sub: 'Next payment: Apr 1, 2026',
+    accentLine: '#16A34A',
+    iconBg: 'rgba(22, 163, 74, 0.06)',
+    iconColor: '#16A34A',
+    trend: { text: 'On track', color: '#94A3B8', bg: 'rgba(100, 116, 139, 0.1)', icon: null },
+  },
+  {
+    icon: Activity,
+    label: 'Active Financings',
+    value: '3',
+    currency: '',
+    sub: '1 under review \u00b7 4/4 docs verified',
+    accentLine: '#14B8A6',
+    iconBg: 'rgba(20, 184, 166, 0.06)',
+    iconColor: '#14B8A6',
+    trend: { text: '+1', color: '#16A34A', bg: 'rgba(22, 163, 74, 0.08)', icon: ChevronUp },
+  },
 ]
 
-export default function QuickStats() {
+const emptyStats: StatDef[] = [
+  {
+    icon: CreditCard,
+    label: 'Total Financed',
+    value: '0',
+    currency: 'SAR',
+    sub: 'No financings yet',
+    accentLine: '#E2E8F0',
+    iconBg: 'rgba(37, 99, 235, 0.06)',
+    iconColor: '#3B82F6',
+    trend: null,
+  },
+  {
+    icon: Clock,
+    label: 'Outstanding Balance',
+    value: '0',
+    currency: 'SAR',
+    sub: 'No payments due',
+    accentLine: '#E2E8F0',
+    iconBg: 'rgba(22, 163, 74, 0.06)',
+    iconColor: '#16A34A',
+    trend: null,
+  },
+  {
+    icon: Activity,
+    label: 'Active Financings',
+    value: '0',
+    currency: '',
+    sub: 'Apply for your first financing',
+    accentLine: '#E2E8F0',
+    iconBg: 'rgba(20, 184, 166, 0.06)',
+    iconColor: '#14B8A6',
+    trend: null,
+  },
+]
+
+function StatCard({ s, delay }: { s: StatDef; delay: number }) {
+  const [hovered, setHovered] = useState(false)
+  const Icon = s.icon
+  const isEmpty = s.value === '0'
+
   return (
-    <section style={{ marginBottom: 20 }}>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
-        {stats.map((s) => (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay, duration: 0.5, ease: 'easeOut' }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        background: '#fff',
+        border: `1px solid ${hovered ? '#CBD5E1' : '#E2E8F0'}`,
+        borderRadius: 18,
+        overflow: 'hidden',
+        boxShadow: hovered ? '0 4px 12px rgba(0,0,0,0.06)' : '0 1px 3px rgba(0,0,0,0.04)',
+        transition: 'border-color 0.2s, box-shadow 0.2s, transform 0.2s',
+        transform: hovered ? 'translateY(-2px)' : 'translateY(0)',
+      }}
+    >
+      {/* Accent line */}
+      <div style={{ height: 3, background: s.accentLine }} />
+
+      <div style={{ padding: 24 }}>
+        {/* Header: icon + trend */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
           <div
-            key={s.label}
             style={{
-              background: '#fff',
-              border: '1px solid #F0F0F0',
-              borderRadius: 12,
-              padding: '16px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 12,
+              width: 44, height: 44, borderRadius: 10,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: s.iconBg, flexShrink: 0,
             }}
           >
+            <Icon size={20} color={s.iconColor} />
+          </div>
+          {s.trend ? (
             <div
               style={{
-                width: 36,
-                height: 36,
-                borderRadius: 10,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                background: s.bg,
-                flexShrink: 0,
+                display: 'inline-flex', alignItems: 'center', gap: 3,
+                padding: '4px 10px', borderRadius: 20,
+                background: s.trend.bg, color: s.trend.color,
+                fontSize: 12, fontWeight: 600,
               }}
             >
-              <s.icon size={18} color={s.color} />
+              {s.trend.icon && <s.trend.icon size={14} />}
+              {s.trend.text}
             </div>
-            <div style={{ minWidth: 0 }}>
-              <p style={{ fontSize: 11, color: '#888', fontWeight: 500, marginBottom: 2 }}>{s.label}</p>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
-                <span style={{ fontSize: 18, fontWeight: 700, color: '#111' }}>{s.value}</span>
-                <span style={{ fontSize: 11, color: s.color, fontWeight: 500 }}>{s.sub}</span>
-              </div>
+          ) : (
+            <div
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 3,
+                padding: '4px 10px', borderRadius: 20,
+                background: '#F1F5F9', color: '#94A3B8',
+                fontSize: 12, fontWeight: 600,
+              }}
+            >
+              <Minus size={14} />
             </div>
-          </div>
+          )}
+        </div>
+
+        {/* Label */}
+        <p
+          style={{
+            fontSize: 11, fontWeight: 600, textTransform: 'uppercase',
+            letterSpacing: 0.8, color: '#94A3B8', marginBottom: 8,
+          }}
+        >
+          {s.label}
+        </p>
+
+        {/* Value */}
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 6 }}>
+          <span style={{ fontSize: 32, fontWeight: 700, color: isEmpty ? '#CBD5E1' : '#0F172A' }}>{s.value}</span>
+          {s.currency && (
+            <span style={{ fontSize: 14, fontWeight: 500, color: isEmpty ? '#CBD5E1' : '#475569' }}>{s.currency}</span>
+          )}
+        </div>
+
+        {/* Sub text */}
+        <p style={{ fontSize: 12, color: '#94A3B8', margin: 0 }}>{s.sub}</p>
+      </div>
+    </motion.div>
+  )
+}
+
+export default function QuickStats({ hasLoans = true }: { hasLoans?: boolean }) {
+  const stats = hasLoans ? activeStats : emptyStats
+
+  return (
+    <section style={{ marginBottom: 28 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+        {stats.map((s, i) => (
+          <StatCard key={s.label} s={s} delay={0.08 + i * 0.08} />
         ))}
       </div>
     </section>

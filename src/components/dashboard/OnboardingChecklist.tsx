@@ -6,19 +6,16 @@ import { StepCompleteIcon, StepCurrentIcon, StepUpcomingIcon, ChevronUpIcon, Che
 const steps = [
   {
     title: 'Create Account',
+    description: 'Identity verified with Nafath',
     status: 'completed' as const,
-  },
-  {
-    title: 'Verify Your Identity',
-    description: 'Complete Nafath biometric verification. Required by Saudi Arabian regulations.',
-    status: 'current' as const,
-    timeLabel: '~2 min',
-    actionLabel: 'Verify Now',
-    stepId: 'verify-identity',
+    stepId: 'create-account',
   },
   {
     title: 'Verify Your Business',
-    status: 'pending' as const,
+    description: 'Connect your Commercial Registration via Wathiq.',
+    status: 'current' as const,
+    timeLabel: '~3 min',
+    actionLabel: 'Verify Now',
     stepId: 'verify-business',
   },
   {
