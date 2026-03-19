@@ -31,7 +31,7 @@ export default function RegisterLayout() {
             zIndex: 1,
           }}
         >
-          <img src={logo} alt="FundMe" style={{ height: 44, objectFit: 'contain' }} />
+          <img src={logo} alt="FundMe" style={{ height: 72, objectFit: 'contain' }} />
           <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)' }}>
             Already have an account?{' '}
             <span
