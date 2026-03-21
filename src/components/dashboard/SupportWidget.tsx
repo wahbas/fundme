@@ -37,7 +37,7 @@ export default function SupportWidget() {
         </div>
 
         <motion.button
-          whileHover={{ background: '#F1F5F9' }}
+          whileHover={{ background: theme.bgHover }}
           style={{
             width: '100%',
             padding: '8px 0',

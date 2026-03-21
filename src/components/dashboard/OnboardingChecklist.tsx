@@ -109,7 +109,7 @@ export default function OnboardingChecklist() {
                         padding: isCurrent ? '10px 12px 6px' : '8px 12px',
                         borderRadius: isCurrent ? '10px 10px 0 0' : 8,
                         borderLeft: isCurrent ? '3px solid #2563EB' : '3px solid transparent',
-                        background: isCurrent ? '#EFF6FF' : 'transparent',
+                        background: isCurrent ? (theme.isDark ? 'rgba(37,99,235,0.12)' : '#EFF6FF') : 'transparent',
                       }}
                     >
                       {/* Step icon */}
@@ -150,7 +150,7 @@ export default function OnboardingChecklist() {
                         style={{
                           padding: '0 12px 12px 44px',
                           borderLeft: '3px solid #2563EB',
-                          background: '#EFF6FF',
+                          background: theme.isDark ? 'rgba(37,99,235,0.12)' : '#EFF6FF',
                           borderRadius: '0 0 10px 10px',
                         }}
                       >
@@ -159,7 +159,7 @@ export default function OnboardingChecklist() {
                         </p>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                           {step.timeLabel && (
-                            <span style={{ fontSize: 11, color: '#64748B', background: '#DBEAFE', padding: '3px 10px', borderRadius: 12 }}>
+                            <span style={{ fontSize: 11, color: theme.isDark ? '#93C5FD' : '#64748B', background: theme.isDark ? 'rgba(37,99,235,0.2)' : '#DBEAFE', padding: '3px 10px', borderRadius: 12 }}>
                               {step.timeLabel}
                             </span>
                           )}
