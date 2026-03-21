@@ -7,17 +7,130 @@
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'DM Sans', 'Poppins', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #F5F7FA;
-  color: #111;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background 0.3s, color 0.3s;
 }
 
 button {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'DM Sans', 'Poppins', sans-serif;
   cursor: pointer;
   border: none;
   background: none;
   padding: 0;
+}
+
+:root {
+  --bg-primary: #F8FAFC;
+  --bg-card: #FFFFFF;
+  --bg-input: #F8FAFC;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #94A3B8;
+  --border: #E2E8F0;
+  --border-light: #F1F5F9;
+  --sidebar-bg: #1B2A3D;
+}
+
+[data-theme="dark"] {
+  --bg-primary: #0F172A;
+  --bg-card: #1E293B;
+  --bg-input: #1E293B;
+  --text-primary: #F1F5F9;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+  --border: #334155;
+  --border-light: #1E293B;
+  --sidebar-bg: #0F172A;
+}
+
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea {
+  color: var(--text-primary);
+  background: var(--bg-input);
+  border-color: var(--border);
+}
+
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] select::placeholder,
+[data-theme="dark"] textarea::placeholder {
+  color: var(--text-muted);
+}
+
+/* ─── Responsive Breakpoints ─── */
+
+/* Tablet: 768px - 1200px */
+@media (max-width: 1200px) {
+  /* Dashboard KPI cards: 3-col → 2-col */
+  .quick-stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Dashboard main grid: remove right sidebar column */
+  .dashboard-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Profile fields: 3-col → 2-col */
+  .profile-fields-3 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Loan details summary: 5-col → 3-col */
+  .loan-summary-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+/* Mobile: < 768px */
+@media (max-width: 768px) {
+  /* Dashboard KPI cards: 1-col */
+  .quick-stats-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* All dashboard widgets stack */
+  .dashboard-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Profile layout: stack columns */
+  .profile-layout {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Profile fields: 1-col */
+  .profile-fields-3,
+  .profile-fields-2 {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Loan details summary: stack */
+  .loan-summary-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Loan details info grid: stack */
+  .loan-info-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Loan details fields: 2-col */
+  .loan-detail-fields {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Onboarding grid: stack */
+  .onboarding-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Main content padding reduce */
+  .main-content {
+    padding: 16px !important;
+  }
 }

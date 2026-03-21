@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import { motion } from 'framer-motion'
-import { NafathLogo } from '../../components/onboarding/logos'
 import { useRegister } from './RegisterContext'
 import ProgressBar from './components/ProgressBar'
 import PhoneInputComp from './components/PhoneInput'
@@ -64,8 +63,8 @@ export default function PhoneScreen() {
           width: '100%',
           height: 48,
           marginTop: 24,
-          background: loading ? '#93C5FD' : 'linear-gradient(135deg, #000D1F, #002E83, #0052B9)',
-          color: '#fff',
+          background: loading ? 'rgba(124,255,1,0.5)' : '#7CFF01',
+          color: '#0F172A',
           fontWeight: 600,
           fontSize: 15,
           borderRadius: 12,
@@ -75,7 +74,6 @@ export default function PhoneScreen() {
           alignItems: 'center',
           justifyContent: 'center',
           gap: 8,
-          boxShadow: loading ? 'none' : 'inset 0 1px 0 rgba(255,255,255,0.15)',
         }}
       >
         {loading ? (
@@ -83,7 +81,7 @@ export default function PhoneScreen() {
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
-              style={{ width: 18, height: 18, border: '2px solid rgba(255,255,255,0.3)', borderTopColor: '#fff', borderRadius: '50%' }}
+              style={{ width: 18, height: 18, border: '2px solid rgba(0,0,0,0.15)', borderTopColor: '#0F172A', borderRadius: '50%' }}
             />
             Sending...
           </>
@@ -93,38 +91,6 @@ export default function PhoneScreen() {
           </>
         )}
       </motion.button>
-
-      {/* Divider */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 14, margin: '24px 0' }}>
-        <div style={{ flex: 1, height: 1, background: '#E2E8F0' }} />
-        <span style={{ fontSize: 12, color: '#94A3B8' }}>or continue with</span>
-        <div style={{ flex: 1, height: 1, background: '#E2E8F0' }} />
-      </div>
-
-      {/* Nafath Button */}
-      <button
-        style={{
-          width: '100%',
-          height: 48,
-          background: '#fff',
-          border: '1.5px solid #E2E8F0',
-          borderRadius: 12,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: 10,
-          fontSize: 14,
-          fontWeight: 600,
-          color: '#0D9488',
-          cursor: 'pointer',
-          transition: 'border-color 0.2s',
-        }}
-        onMouseEnter={(e) => (e.currentTarget.style.borderColor = '#0D9488')}
-        onMouseLeave={(e) => (e.currentTarget.style.borderColor = '#E2E8F0')}
-      >
-        <NafathLogo size={20} />
-        Nafath Digital Identity
-      </button>
 
       {/* Terms */}
       <p style={{ textAlign: 'center', fontSize: 11, color: '#94A3B8', marginTop: 24, lineHeight: 1.6 }}>

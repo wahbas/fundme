@@ -1,4 +1,5 @@
 import { CheckCircle2, FileText, Plus } from 'lucide-react'
+import { useTheme } from '../../ThemeContext'
 
 const documents = [
   { id: 'cr', name: 'Commercial Registration (CR)', required: true, uploaded: true },
@@ -9,13 +10,14 @@ const documents = [
 ]
 
 export default function StepDocuments() {
+  const { theme } = useTheme()
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
       <div>
-        <h2 style={{ fontSize: 20, fontWeight: 600, color: '#111', marginBottom: 6 }}>
+        <h2 style={{ fontSize: 20, fontWeight: 600, color: theme.textPrimary, marginBottom: 6 }}>
           Upload Required Documents
         </h2>
-        <p style={{ fontSize: 14, color: '#888' }}>We need these documents to process your application</p>
+        <p style={{ fontSize: 14, color: theme.textMuted }}>We need these documents to process your application</p>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -28,8 +30,8 @@ export default function StepDocuments() {
               justifyContent: 'space-between',
               padding: 16,
               borderRadius: 12,
-              border: `2px solid ${doc.uploaded ? '#BBF7D0' : '#E5E7EB'}`,
-              background: doc.uploaded ? '#F0FDF4' : '#fff',
+              border: `2px solid ${doc.uploaded ? '#BBF7D0' : theme.border}`,
+              background: doc.uploaded ? '#F0FDF4' : theme.cardBg,
               transition: 'all 0.2s',
             }}
           >
@@ -42,7 +44,7 @@ export default function StepDocuments() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  background: doc.uploaded ? '#DCFCE7' : '#F3F4F6',
+                  background: doc.uploaded ? '#DCFCE7' : theme.bgPrimary,
                 }}
               >
                 {doc.uploaded ? (
@@ -52,7 +54,7 @@ export default function StepDocuments() {
                 )}
               </div>
               <div>
-                <p style={{ fontWeight: 500, color: '#111', fontSize: 14 }}>
+                <p style={{ fontWeight: 500, color: theme.textPrimary, fontSize: 14 }}>
                   {doc.name}
                   {doc.required && <span style={{ color: '#EF4444', marginLeft: 4 }}>*</span>}
                 </p>
@@ -105,7 +107,7 @@ export default function StepDocuments() {
         }}
       >
         <Plus size={32} color="#9CA3AF" style={{ margin: '0 auto 8px' }} />
-        <p style={{ color: '#555', fontSize: 14 }}>Add additional supporting documents</p>
+        <p style={{ color: theme.textSecondary, fontSize: 14 }}>Add additional supporting documents</p>
         <p style={{ color: '#9CA3AF', fontSize: 13, marginTop: 4 }}>PDF, JPG, PNG up to 10MB each</p>
       </div>
     </div>

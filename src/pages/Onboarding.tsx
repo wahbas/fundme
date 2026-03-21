@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { X, Check, CheckCircle2, Building2, Landmark, ArrowRight } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useTheme } from '../ThemeContext'
 import { STEP_ORDER, INITIAL_ONBOARDING_STATE, type OnboardingStep, type OnboardingState } from '../components/onboarding/types'
 import WathiqVerification from '../components/onboarding/steps/WathiqVerification'
 import BankConnection from '../components/onboarding/steps/BankConnection'
@@ -23,6 +24,7 @@ const CHECKLIST_ITEMS = [
 ]
 
 function AccountVerifiedScreen({ onGoToDashboard }: { onGoToDashboard: () => void }) {
+  const { theme } = useTheme()
   return (
     <div style={{ textAlign: 'center', padding: '24px 0', maxWidth: 440, margin: '0 auto' }}>
       {/* Success icon */}
@@ -44,7 +46,7 @@ function AccountVerifiedScreen({ onGoToDashboard }: { onGoToDashboard: () => voi
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        style={{ fontSize: 26, fontWeight: 700, color: '#111827', marginBottom: 8 }}
+        style={{ fontSize: 26, fontWeight: 700, color: theme.textPrimary, marginBottom: 8 }}
       >
         Your Account is Verified!
       </motion.h2>
@@ -52,7 +54,7 @@ function AccountVerifiedScreen({ onGoToDashboard }: { onGoToDashboard: () => voi
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        style={{ fontSize: 14, color: '#6B7280', lineHeight: 1.6, marginBottom: 28 }}
+        style={{ fontSize: 14, color: theme.textMuted, lineHeight: 1.6, marginBottom: 28 }}
       >
         Congratulations! Your account setup is complete. You can now start requesting financing.
       </motion.p>
@@ -62,9 +64,9 @@ function AccountVerifiedScreen({ onGoToDashboard }: { onGoToDashboard: () => voi
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
-        style={{ background: '#F9FAFB', borderRadius: 16, padding: 20, marginBottom: 24, textAlign: 'left' }}
+        style={{ background: theme.bgPrimary, borderRadius: 16, padding: 20, marginBottom: 24, textAlign: 'left' }}
       >
-        <h3 style={{ fontSize: 15, fontWeight: 600, color: '#111827', marginBottom: 16 }}>Setup Complete</h3>
+        <h3 style={{ fontSize: 15, fontWeight: 600, color: theme.textPrimary, marginBottom: 16 }}>Setup Complete</h3>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           {CHECKLIST_ITEMS.map((item) => (
             <div key={item} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -74,7 +76,7 @@ function AccountVerifiedScreen({ onGoToDashboard }: { onGoToDashboard: () => voi
               }}>
                 <Check size={14} color="#fff" strokeWidth={3} />
               </div>
-              <span style={{ fontSize: 14, color: '#374151' }}>{item}</span>
+              <span style={{ fontSize: 14, color: theme.textSecondary }}>{item}</span>
             </div>
           ))}
         </div>
@@ -104,6 +106,7 @@ function AccountVerifiedScreen({ onGoToDashboard }: { onGoToDashboard: () => voi
 // ─── Main Wizard ─────────────────────────────────────────────
 
 export default function Onboarding() {
+  const { theme } = useTheme()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const initialStepParam = searchParams.get('step') as OnboardingStep | null
@@ -166,8 +169,8 @@ export default function Onboarding() {
 
   if (completed) {
     return (
-      <div style={{ minHeight: '100vh', background: '#FAFAFA', fontFamily: 'Poppins, sans-serif', display: 'flex', flexDirection: 'column' }}>
-        <div style={{ background: '#fff', borderBottom: '1px solid #E5E5E5' }}>
+      <div style={{ minHeight: '100vh', background: theme.bgPrimary, fontFamily: 'Poppins, sans-serif', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ background: theme.cardBg, borderBottom: `1px solid ${theme.border}` }}>
           <div style={{ display: 'flex', alignItems: 'center', padding: '14px 32px' }}>
             <img src={logo} alt="FundMe" style={{ height: 32, filter: 'brightness(0) saturate(100%)' }} />
           </div>
@@ -191,14 +194,14 @@ export default function Onboarding() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#FAFAFA', fontFamily: 'Poppins, sans-serif', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ minHeight: '100vh', background: theme.bgPrimary, fontFamily: 'Poppins, sans-serif', display: 'flex', flexDirection: 'column' }}>
       {/* Top bar — matches RequestFinancing */}
-      <div style={{ background: '#fff', borderBottom: '1px solid #E5E5E5', position: 'relative' }}>
+      <div style={{ background: theme.cardBg, borderBottom: `1px solid ${theme.border}`, position: 'relative' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 32px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
             <img src={logo} alt="FundMe" style={{ height: 32, filter: 'brightness(0) saturate(100%)' }} />
             <div style={{ width: 1, height: 20, background: '#E5E5E5' }} />
-            <span style={{ fontSize: 15, fontWeight: 600, color: '#111827' }}>Account Setup</span>
+            <span style={{ fontSize: 15, fontWeight: 600, color: theme.textPrimary }}>Account Setup</span>
           </div>
           <button onClick={handleClose} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 6 }}>
             <X size={22} color="#6B7280" />
@@ -297,7 +300,7 @@ export default function Onboarding() {
       </div>
 
       {/* Footer — matches RequestFinancing */}
-      <div style={{ borderTop: '1px solid #E5E5E5', background: '#fff', padding: '14px 32px', position: 'sticky', bottom: 0 }}>
+      <div style={{ borderTop: `1px solid ${theme.border}`, background: theme.cardBg, padding: '14px 32px', position: 'sticky', bottom: 0 }}>
         <div style={{ maxWidth: 1120, margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <span style={{ fontSize: 13, color: '#9CA3AF' }}>
             Step {currentStepIndex + 1} of {WIZARD_STEPS.length}
@@ -332,7 +335,7 @@ export default function Onboarding() {
               transition={{ duration: 0.2 }}
               onClick={(e) => e.stopPropagation()}
               style={{
-                background: '#fff', borderRadius: 20, padding: 32,
+                background: theme.cardBg, borderRadius: 20, padding: 32,
                 maxWidth: 400, width: '100%',
                 boxShadow: '0 20px 60px rgba(0,0,0,0.15)',
               }}
@@ -345,15 +348,15 @@ export default function Onboarding() {
                 <CheckCircle2 size={28} color="#F59E0B" />
               </div>
 
-              <h3 style={{ fontSize: 18, fontWeight: 700, color: '#111827', textAlign: 'center', marginBottom: 8 }}>
+              <h3 style={{ fontSize: 18, fontWeight: 700, color: theme.textPrimary, textAlign: 'center', marginBottom: 8 }}>
                 Leave Account Setup?
               </h3>
-              <p style={{ fontSize: 14, color: '#6B7280', textAlign: 'center', lineHeight: 1.6, marginBottom: 8 }}>
+              <p style={{ fontSize: 14, color: theme.textMuted, textAlign: 'center', lineHeight: 1.6, marginBottom: 8 }}>
                 Don't worry — your progress has been saved. You can pick up right where you left off anytime.
               </p>
 
               {/* Progress summary */}
-              <div style={{ background: '#F9FAFB', borderRadius: 12, padding: 16, marginBottom: 24 }}>
+              <div style={{ background: theme.bgPrimary, borderRadius: 12, padding: 16, marginBottom: 24 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
                   <div style={{ flex: 1, height: 4, background: '#E5E7EB', borderRadius: 2 }}>
                     <div style={{
@@ -363,7 +366,7 @@ export default function Onboarding() {
                       transition: 'width 0.3s',
                     }} />
                   </div>
-                  <span style={{ fontSize: 12, fontWeight: 600, color: '#111827' }}>
+                  <span style={{ fontSize: 12, fontWeight: 600, color: theme.textPrimary }}>
                     {state.completedSteps.length - 1}/{WIZARD_STEPS.length}
                   </span>
                 </div>

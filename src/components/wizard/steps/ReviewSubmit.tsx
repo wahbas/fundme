@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { Landmark, CheckCircle2, Info } from 'lucide-react'
+import { useTheme } from '../../../ThemeContext'
 import ReviewSection from '../shared/ReviewSection'
 import { CONNECTED_BANKS, type WizardData } from '../types'
+import RiyalSign from '../../icons/RiyalSign'
 
 interface Props {
   data: WizardData
@@ -16,13 +18,14 @@ const purposeLabels: Record<string, string> = {
 }
 
 const revenueLabels: Record<string, string> = {
-  '<1M': 'Less than 1M SAR',
-  '1-5M': '1M \u2013 5M SAR',
-  '5-20M': '5M \u2013 20M SAR',
-  '>20M': 'More than 20M SAR',
+  '<1M': 'Less than 1M ر.س',
+  '1-5M': '1M \u2013 5M ر.س',
+  '5-20M': '5M \u2013 20M ر.س',
+  '>20M': 'More than 20M ر.س',
 }
 
 export default function ReviewSubmit({ data, onGoToStep }: Props) {
+  const { theme } = useTheme()
   const [agreed, setAgreed] = useState(false)
   const isSadad = data.product === 'sadad'
   const isInvoice = data.product === 'invoice'
@@ -32,8 +35,8 @@ export default function ReviewSubmit({ data, onGoToStep }: Props) {
 
   return (
     <div>
-      <h2 style={{ fontSize: 22, fontWeight: 700, color: '#111', marginBottom: 6 }}>Review & Submit</h2>
-      <p style={{ fontSize: 14, color: '#888', marginBottom: 28 }}>Please verify all information before submitting</p>
+      <h2 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary, marginBottom: 6 }}>Review & Submit</h2>
+      <p style={{ fontSize: 14, color: theme.textMuted, marginBottom: 28 }}>Please verify all information before submitting</p>
 
       {/* Summary */}
       <div
@@ -49,14 +52,14 @@ export default function ReviewSubmit({ data, onGoToStep }: Props) {
       >
         <div>
           <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.65)', marginBottom: 4 }}>Amount</p>
-          <p style={{ fontSize: 20, fontWeight: 700, color: '#fff' }}>{data.amount.toLocaleString()} SAR</p>
+          <p style={{ fontSize: 20, fontWeight: 700, color: '#fff' }}>{data.amount.toLocaleString()}<RiyalSign color="#FFFFFF" /></p>
         </div>
         <div>
           <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.65)', marginBottom: 4 }}>
             {isSadad ? 'Repayment' : 'Term'}
           </p>
           <p style={{ fontSize: 20, fontWeight: 700, color: '#fff' }}>
-            {isSadad ? `${Math.round(data.amount * 1.02).toLocaleString()} SAR` : `${data.term} months`}
+            {isSadad ? <>{Math.round(data.amount * 1.02).toLocaleString()}<RiyalSign size="sm" color="#FFFFFF" /></> : `${data.term} months`}
           </p>
         </div>
         <div>
@@ -64,7 +67,7 @@ export default function ReviewSubmit({ data, onGoToStep }: Props) {
             {isSadad ? 'Service Fee' : 'Monthly'}
           </p>
           <p style={{ fontSize: 20, fontWeight: 700, color: '#fff' }}>
-            {isSadad ? `${Math.round(data.amount * 0.02).toLocaleString()} SAR` : `~${monthly.toLocaleString()} SAR`}
+            {isSadad ? <>{Math.round(data.amount * 0.02).toLocaleString()}<RiyalSign size="sm" color="#FFFFFF" /></> : <>~{monthly.toLocaleString()}<RiyalSign size="sm" color="#FFFFFF" /></>}
           </p>
         </div>
       </div>
@@ -104,7 +107,7 @@ export default function ReviewSubmit({ data, onGoToStep }: Props) {
             onEdit={() => onGoToStep(2)}
             items={[
               { label: 'Invoices uploaded', value: String(data.invoices.length) },
-              { label: 'Total value', value: `${data.invoices.reduce((s, i) => s + i.amount, 0).toLocaleString()} SAR` },
+              { label: 'Total value', value: `${data.invoices.reduce((s, i) => s + i.amount, 0).toLocaleString()} ر.س` },
             ]}
           />
         )}
@@ -114,7 +117,7 @@ export default function ReviewSubmit({ data, onGoToStep }: Props) {
             onEdit={() => onGoToStep(2)}
             items={[
               { label: 'Bills selected', value: String(data.selectedBills.length) },
-              { label: 'Total amount', value: `${data.amount.toLocaleString()} SAR` },
+              { label: 'Total amount', value: `${data.amount.toLocaleString()} ر.س` },
             ]}
           />
         )}
@@ -124,7 +127,7 @@ export default function ReviewSubmit({ data, onGoToStep }: Props) {
           title="Amount & Terms"
           onEdit={() => onGoToStep(isSadad || isInvoice ? 3 : 2)}
           items={[
-            { label: 'Amount', value: `${data.amount.toLocaleString()} SAR` },
+            { label: 'Amount', value: `${data.amount.toLocaleString()} ر.س` },
             ...(!isSadad ? [{ label: 'Term', value: `${data.term} months` }] : []),
             ...(data.purposeDescription ? [{ label: 'Purpose', value: data.purposeDescription }] : []),
           ]}
@@ -134,7 +137,7 @@ export default function ReviewSubmit({ data, onGoToStep }: Props) {
       {/* Disbursement Account */}
       <div
         style={{
-          border: '1px solid #E5E7EB',
+          border: `1px solid ${theme.border}`,
           borderRadius: 12,
           overflow: 'hidden',
           marginTop: 12,
@@ -146,12 +149,12 @@ export default function ReviewSubmit({ data, onGoToStep }: Props) {
             alignItems: 'center',
             justifyContent: 'space-between',
             padding: '14px 18px',
-            background: '#F9FAFB',
+            background: theme.bgPrimary,
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <Landmark size={16} color="#002E83" />
-            <span style={{ fontSize: 14, fontWeight: 600, color: '#111' }}>Disbursement Account</span>
+            <span style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary }}>Disbursement Account</span>
           </div>
           <span
             onClick={() => onGoToStep(bankStepIdx)}
@@ -163,10 +166,10 @@ export default function ReviewSubmit({ data, onGoToStep }: Props) {
         <div style={{ padding: '16px 18px' }}>
           {selectedBank ? (
             <>
-              <p style={{ fontSize: 14, fontWeight: 500, color: '#111', marginBottom: 4 }}>
+              <p style={{ fontSize: 14, fontWeight: 500, color: theme.textPrimary, marginBottom: 4 }}>
                 {selectedBank.bankName} •••• {selectedBank.lastFour}
               </p>
-              <p style={{ fontSize: 12, color: '#888', fontFamily: 'monospace', marginBottom: 6 }}>
+              <p style={{ fontSize: 12, color: theme.textMuted, fontFamily: 'monospace', marginBottom: 6 }}>
                 {selectedBank.iban}
               </p>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -183,7 +186,7 @@ export default function ReviewSubmit({ data, onGoToStep }: Props) {
                   background: '#EFF6FF',
                   borderRadius: 8,
                   fontSize: 12,
-                  color: '#555',
+                  color: theme.textSecondary,
                 }}
               >
                 <Info size={14} color="#0D82F9" style={{ flexShrink: 0 }} />
@@ -197,7 +200,7 @@ export default function ReviewSubmit({ data, onGoToStep }: Props) {
       </div>
 
       {/* Terms */}
-      <div style={{ marginTop: 24, background: '#F9FAFB', borderRadius: 12, padding: 18 }}>
+      <div style={{ marginTop: 24, background: theme.bgPrimary, borderRadius: 12, padding: 18 }}>
         <label style={{ display: 'flex', alignItems: 'flex-start', gap: 12, cursor: 'pointer' }}>
           <input
             type="checkbox"
@@ -205,7 +208,7 @@ export default function ReviewSubmit({ data, onGoToStep }: Props) {
             onChange={(e) => setAgreed(e.target.checked)}
             style={{ marginTop: 3, width: 18, height: 18, accentColor: '#002E83' }}
           />
-          <span style={{ fontSize: 13, color: '#555', lineHeight: 1.6 }}>
+          <span style={{ fontSize: 13, color: theme.textSecondary, lineHeight: 1.6 }}>
             I confirm that all information is accurate. I agree to the{' '}
             <a href="#" style={{ color: '#002E83' }}>Terms of Service</a> and{' '}
             <a href="#" style={{ color: '#002E83' }}>Privacy Policy</a>.

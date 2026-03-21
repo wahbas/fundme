@@ -1,6 +1,8 @@
 import { CreditCard, Clock, Activity, ChevronUp, Minus } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
+import RiyalSign from '../icons/RiyalSign'
+import { useTheme } from '../../ThemeContext'
 
 interface StatDef {
   icon: typeof CreditCard
@@ -19,7 +21,7 @@ const activeStats: StatDef[] = [
     icon: CreditCard,
     label: 'Total Financed',
     value: '500,000',
-    currency: 'SAR',
+    currency: 'ر.س',
     sub: 'Across 3 active financings',
     accentLine: '#2563EB',
     iconBg: 'rgba(37, 99, 235, 0.06)',
@@ -30,7 +32,7 @@ const activeStats: StatDef[] = [
     icon: Clock,
     label: 'Outstanding Balance',
     value: '125,000',
-    currency: 'SAR',
+    currency: 'ر.س',
     sub: 'Next payment: Apr 1, 2026',
     accentLine: '#16A34A',
     iconBg: 'rgba(22, 163, 74, 0.06)',
@@ -55,7 +57,7 @@ const emptyStats: StatDef[] = [
     icon: CreditCard,
     label: 'Total Financed',
     value: '0',
-    currency: 'SAR',
+    currency: 'ر.س',
     sub: 'No financings yet',
     accentLine: '#E2E8F0',
     iconBg: 'rgba(37, 99, 235, 0.06)',
@@ -66,7 +68,7 @@ const emptyStats: StatDef[] = [
     icon: Clock,
     label: 'Outstanding Balance',
     value: '0',
-    currency: 'SAR',
+    currency: 'ر.س',
     sub: 'No payments due',
     accentLine: '#E2E8F0',
     iconBg: 'rgba(22, 163, 74, 0.06)',
@@ -88,6 +90,7 @@ const emptyStats: StatDef[] = [
 
 function StatCard({ s, delay }: { s: StatDef; delay: number }) {
   const [hovered, setHovered] = useState(false)
+  const { theme } = useTheme()
   const Icon = s.icon
   const isEmpty = s.value === '0'
 
@@ -99,11 +102,11 @@ function StatCard({ s, delay }: { s: StatDef; delay: number }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        background: '#fff',
-        border: `1px solid ${hovered ? '#CBD5E1' : '#E2E8F0'}`,
+        background: theme.cardBg,
+        border: `1px solid ${hovered ? '#CBD5E1' : theme.border}`,
         borderRadius: 18,
         overflow: 'hidden',
-        boxShadow: hovered ? '0 4px 12px rgba(0,0,0,0.06)' : '0 1px 3px rgba(0,0,0,0.04)',
+        boxShadow: hovered ? '0 4px 12px rgba(0,0,0,0.06)' : theme.shadow,
         transition: 'border-color 0.2s, box-shadow 0.2s, transform 0.2s',
         transform: hovered ? 'translateY(-2px)' : 'translateY(0)',
       }}
@@ -140,7 +143,7 @@ function StatCard({ s, delay }: { s: StatDef; delay: number }) {
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: 3,
                 padding: '4px 10px', borderRadius: 20,
-                background: '#F1F5F9', color: '#94A3B8',
+                background: theme.borderLight, color: theme.textMuted,
                 fontSize: 12, fontWeight: 600,
               }}
             >
@@ -153,7 +156,7 @@ function StatCard({ s, delay }: { s: StatDef; delay: number }) {
         <p
           style={{
             fontSize: 11, fontWeight: 600, textTransform: 'uppercase',
-            letterSpacing: 0.8, color: '#94A3B8', marginBottom: 8,
+            letterSpacing: 0.8, color: theme.textMuted, marginBottom: 8,
           }}
         >
           {s.label}
@@ -161,14 +164,14 @@ function StatCard({ s, delay }: { s: StatDef; delay: number }) {
 
         {/* Value */}
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 6 }}>
-          <span style={{ fontSize: 32, fontWeight: 700, color: isEmpty ? '#CBD5E1' : '#0F172A' }}>{s.value}</span>
+          <span style={{ fontSize: 32, fontWeight: 700, color: isEmpty ? '#CBD5E1' : theme.textPrimary }}>{s.value}</span>
           {s.currency && (
-            <span style={{ fontSize: 14, fontWeight: 500, color: isEmpty ? '#CBD5E1' : '#475569' }}>{s.currency}</span>
+            <span style={{ fontSize: 14, fontWeight: 500, color: isEmpty ? '#CBD5E1' : theme.textSecondary }}><RiyalSign size="lg" /></span>
           )}
         </div>
 
         {/* Sub text */}
-        <p style={{ fontSize: 12, color: '#94A3B8', margin: 0 }}>{s.sub}</p>
+        <p style={{ fontSize: 12, color: theme.textMuted, margin: 0 }}>{s.sub}</p>
       </div>
     </motion.div>
   )
@@ -179,7 +182,7 @@ export default function QuickStats({ hasLoans = true }: { hasLoans?: boolean }) 
 
   return (
     <section style={{ marginBottom: 28 }}>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+      <div className="quick-stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
         {stats.map((s, i) => (
           <StatCard key={s.label} s={s} delay={0.08 + i * 0.08} />
         ))}

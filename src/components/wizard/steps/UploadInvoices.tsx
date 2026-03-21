@@ -1,17 +1,19 @@
 import { useState } from 'react'
 import { Upload, Trash2 } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { useTheme } from '../../../ThemeContext'
 import type { InvoiceRow, WizardData } from '../types'
+import RiyalSign from '../../icons/RiyalSign'
 
 interface Props {
   data: WizardData
   onChange: (patch: Partial<WizardData>) => void
 }
 
-const thStyle: React.CSSProperties = { fontSize: 12, fontWeight: 500, color: '#6B7280', padding: '10px 14px', textAlign: 'left', borderBottom: '1px solid #E5E7EB' }
-const tdStyle: React.CSSProperties = { fontSize: 13, color: '#111827', padding: '12px 14px', borderBottom: '1px solid #F3F4F6' }
-
 export default function UploadInvoices({ data, onChange }: Props) {
+  const { theme } = useTheme()
+  const thStyle: React.CSSProperties = { fontSize: 12, fontWeight: 500, color: theme.textMuted, padding: '10px 14px', textAlign: 'left', borderBottom: `1px solid ${theme.border}` }
+  const tdStyle: React.CSSProperties = { fontSize: 13, color: theme.textPrimary, padding: '12px 14px', borderBottom: `1px solid ${theme.borderLight}` }
   const [isDragging, setIsDragging] = useState(false)
   const total = data.invoices.reduce((s, i) => s + i.amount, 0)
 
@@ -32,8 +34,8 @@ export default function UploadInvoices({ data, onChange }: Props) {
 
   return (
     <div>
-      <h2 style={{ fontSize: 22, fontWeight: 700, color: '#111', marginBottom: 6 }}>Upload Your Invoices</h2>
-      <p style={{ fontSize: 14, color: '#6B7280', marginBottom: 28 }}>Add the invoices you want to finance</p>
+      <h2 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary, marginBottom: 6 }}>Upload Your Invoices</h2>
+      <p style={{ fontSize: 14, color: theme.textMuted, marginBottom: 28 }}>Add the invoices you want to finance</p>
 
       {/* Drag & Drop Zone */}
       <motion.button
@@ -47,7 +49,7 @@ export default function UploadInvoices({ data, onChange }: Props) {
           padding: 40,
           border: `2px dashed ${isDragging ? '#0D82F9' : '#D1D5DB'}`,
           borderRadius: 16,
-          background: isDragging ? 'rgba(13,130,249,0.04)' : '#FAFAFA',
+          background: isDragging ? 'rgba(13,130,249,0.04)' : theme.bgPrimary,
           cursor: 'pointer',
           textAlign: 'center',
           marginBottom: 24,
@@ -68,11 +70,11 @@ export default function UploadInvoices({ data, onChange }: Props) {
         >
           <Upload size={28} color="#0D82F9" />
         </div>
-        <p style={{ color: '#374151', fontSize: 16, fontWeight: 500 }}>
+        <p style={{ color: theme.textPrimary, fontSize: 16, fontWeight: 500 }}>
           Drag & drop files here
         </p>
-        <p style={{ color: '#6B7280', fontSize: 14, marginTop: 4 }}>or click to browse</p>
-        <p style={{ color: '#9CA3AF', fontSize: 13, marginTop: 8 }}>PDF, JPG, PNG up to 10MB</p>
+        <p style={{ color: theme.textMuted, fontSize: 14, marginTop: 4 }}>or click to browse</p>
+        <p style={{ color: theme.textMuted, fontSize: 13, marginTop: 8 }}>PDF, JPG, PNG up to 10MB</p>
         <p style={{ color: '#0D82F9', fontSize: 13, marginTop: 10, fontWeight: 500 }}>
           (Click to add a demo invoice)
         </p>
@@ -80,10 +82,10 @@ export default function UploadInvoices({ data, onChange }: Props) {
 
       {/* Table */}
       {data.invoices.length > 0 && (
-        <div style={{ border: '1px solid #E5E5E5', borderRadius: 14, overflow: 'hidden', marginBottom: 20 }}>
+        <div style={{ border: `1px solid ${theme.border}`, borderRadius: 14, overflow: 'hidden', marginBottom: 20 }}>
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
-              <tr style={{ background: '#F9FAFB' }}>
+              <tr style={{ background: theme.bgPrimary }}>
                 <th style={thStyle}>Invoice #</th>
                 <th style={thStyle}>Client</th>
                 <th style={{ ...thStyle, textAlign: 'right' }}>Amount</th>
@@ -100,7 +102,7 @@ export default function UploadInvoices({ data, onChange }: Props) {
                 >
                   <td style={tdStyle}>{inv.number}</td>
                   <td style={tdStyle}>{inv.client}</td>
-                  <td style={{ ...tdStyle, textAlign: 'right', fontWeight: 600 }}>{inv.amount.toLocaleString()} SAR</td>
+                  <td style={{ ...tdStyle, textAlign: 'right', fontWeight: 600 }}>{inv.amount.toLocaleString()}<RiyalSign size="sm" /></td>
                   <td style={tdStyle}>{inv.dueDate}</td>
                   <td style={tdStyle}>
                     <button onClick={() => remove(inv.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }}>
@@ -127,7 +129,7 @@ export default function UploadInvoices({ data, onChange }: Props) {
           }}
         >
           <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.7)', marginBottom: 4 }}>Total Invoice Value</p>
-          <p style={{ fontSize: 28, fontWeight: 700 }}>{total.toLocaleString()} SAR</p>
+          <p style={{ fontSize: 28, fontWeight: 700 }}>{total.toLocaleString()}<RiyalSign size="lg" color="#FFFFFF" /></p>
           <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', marginTop: 4 }}>
             {data.invoices.length} invoice{data.invoices.length !== 1 ? 's' : ''} uploaded
           </p>

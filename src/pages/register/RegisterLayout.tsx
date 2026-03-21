@@ -35,7 +35,7 @@ export default function RegisterLayout() {
           <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)' }}>
             Already have an account?{' '}
             <span
-              onClick={() => navigate('/')}
+              onClick={() => navigate('/login')}
               style={{ color: '#fff', fontWeight: 600, cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: 2 }}
             >
               Sign in

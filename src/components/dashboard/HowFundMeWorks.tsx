@@ -1,5 +1,6 @@
 import { CompleteProfileIllust, ChooseProductIllust, GetFundedIllust } from '../icons/SpotIllustrations'
 import { ApplyFastIcon, FundsQuickIcon, ShariaIcon, NoCollateralIcon, SAMAIcon } from '../icons/TrustBadgeIcons'
+import { useTheme } from '../../ThemeContext'
 
 const processSteps = [
   {
@@ -34,9 +35,10 @@ const badges = [
 ]
 
 export default function HowFundMeWorks() {
+  const { theme } = useTheme()
   return (
-    <div style={cardStyle}>
-      <h3 style={{ fontSize: 15, fontWeight: 600, color: '#1E293B', margin: '0 0 24px' }}>
+    <div style={{ background: theme.cardBg, border: `1px solid ${theme.border}`, borderRadius: 12, padding: '20px 22px' }}>
+      <h3 style={{ fontSize: 15, fontWeight: 600, color: theme.textPrimary, margin: '0 0 24px' }}>
         How FundMe Works
       </h3>
 
@@ -53,7 +55,7 @@ export default function HowFundMeWorks() {
                   left: '60%',
                   right: '-40%',
                   height: 0,
-                  borderTop: '2px dashed #E2E8F0',
+                  borderTop: `2px dashed ${theme.border}`,
                   zIndex: 0,
                 }}
               />
@@ -86,12 +88,12 @@ export default function HowFundMeWorks() {
             </p>
 
             {/* Title */}
-            <p style={{ fontSize: 13, fontWeight: 600, color: '#1E293B', margin: '0 0 4px' }}>
+            <p style={{ fontSize: 13, fontWeight: 600, color: theme.textPrimary, margin: '0 0 4px' }}>
               {step.title}
             </p>
 
             {/* Description */}
-            <p style={{ fontSize: 11, color: '#64748B', margin: 0, lineHeight: 1.4, padding: '0 12px' }}>
+            <p style={{ fontSize: 11, color: theme.textSecondary, margin: 0, lineHeight: 1.4, padding: '0 12px' }}>
               {step.description}
             </p>
           </div>
@@ -99,7 +101,7 @@ export default function HowFundMeWorks() {
       </div>
 
       {/* Divider */}
-      <div style={{ height: 1, background: '#E2E8F0', marginBottom: 16 }} />
+      <div style={{ height: 1, background: theme.border, marginBottom: 16 }} />
 
       {/* Trust badges */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
@@ -111,13 +113,13 @@ export default function HowFundMeWorks() {
               alignItems: 'center',
               gap: 8,
               padding: '8px 14px',
-              background: '#F8FAFC',
-              border: '1px solid #E2E8F0',
+              background: theme.bgPrimary,
+              border: `1px solid ${theme.border}`,
               borderRadius: 8,
             }}
           >
             <b.Icon size={18} color="#2563EB" />
-            <span style={{ fontSize: 12, fontWeight: 500, color: '#1E293B' }}>{b.label}</span>
+            <span style={{ fontSize: 12, fontWeight: 500, color: theme.textPrimary }}>{b.label}</span>
           </div>
         ))}
       </div>
@@ -125,9 +127,4 @@ export default function HowFundMeWorks() {
   )
 }
 
-const cardStyle: React.CSSProperties = {
-  background: '#FFFFFF',
-  border: '1px solid #E2E8F0',
-  borderRadius: 12,
-  padding: '20px 22px',
-}
+// cardStyle moved inline to use theme

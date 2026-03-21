@@ -92,7 +92,7 @@ export default function OTPScreen() {
         ) : (
           <button
             onClick={handleResend}
-            style={{ fontSize: 13, fontWeight: 600, color: '#0D82F9', cursor: 'pointer', background: 'none', border: 'none' }}
+            style={{ fontSize: 13, fontWeight: 600, color: '#2563EB', cursor: 'pointer', background: 'none', border: 'none' }}
           >
             Resend code
           </button>
@@ -108,8 +108,8 @@ export default function OTPScreen() {
         style={{
           width: '100%',
           height: 48,
-          background: loading ? '#93C5FD' : 'linear-gradient(135deg, #000D1F, #002E83, #0052B9)',
-          color: '#fff',
+          background: loading ? 'rgba(124,255,1,0.5)' : '#7CFF01',
+          color: '#0F172A',
           fontWeight: 600,
           fontSize: 15,
           borderRadius: 12,
@@ -119,7 +119,6 @@ export default function OTPScreen() {
           alignItems: 'center',
           justifyContent: 'center',
           gap: 8,
-          boxShadow: loading ? 'none' : 'inset 0 1px 0 rgba(255,255,255,0.15)',
         }}
       >
         {loading ? (
@@ -127,7 +126,7 @@ export default function OTPScreen() {
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
-              style={{ width: 18, height: 18, border: '2px solid rgba(255,255,255,0.3)', borderTopColor: '#fff', borderRadius: '50%' }}
+              style={{ width: 18, height: 18, border: '2px solid rgba(0,0,0,0.15)', borderTopColor: '#0F172A', borderRadius: '50%' }}
             />
             Verifying...
           </>

@@ -2,28 +2,31 @@ import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
-  User, Phone, Mail, Shield, FileText, Building2,
+  User, Shield, FileText, Building2,
   Eye, Upload, Download, Edit3, ExternalLink, CheckCircle2,
 } from 'lucide-react'
 import Sidebar from '../components/layout/Sidebar'
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
 import FloatingHelpButton from '../components/dashboard/FloatingHelpButton'
+import ChangeContactModal from '../components/ChangeContactModal'
+import { useTheme } from '../ThemeContext'
 
 /* ─── Helpers ─── */
 
 function SectionCard({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+  const { theme } = useTheme()
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.4, ease: 'easeOut' }}
       style={{
-        background: '#fff',
-        border: '1px solid #E2E8F0',
+        background: theme.cardBg,
+        border: `1px solid ${theme.cardBorder}`,
         borderRadius: 12,
         padding: 28,
-        boxShadow: '0 1px 3px rgba(0,0,0,0.03)',
+        boxShadow: theme.shadow,
       }}
     >
       {children}
@@ -32,12 +35,13 @@ function SectionCard({ children, delay = 0 }: { children: React.ReactNode; delay
 }
 
 function ReadOnlyField({ label, value }: { label: string; value: string }) {
+  const { theme } = useTheme()
   return (
     <div style={{ flex: 1 }}>
-      <p style={{ fontSize: 12, fontWeight: 600, color: '#64748B', marginBottom: 8 }}>{label}</p>
+      <p style={{ fontSize: 12, fontWeight: 600, color: theme.textSecondary, marginBottom: 8 }}>{label}</p>
       <div style={{
-        padding: '12px 14px', background: '#F8FAFC', borderRadius: 8, border: '1px solid #F1F5F9',
-        fontSize: 14, color: '#0F172A',
+        padding: '12px 14px', background: theme.inputBg, borderRadius: 8, border: `1px solid ${theme.borderLight}`,
+        fontSize: 14, color: theme.textPrimary,
       }}>
         {value}
       </div>
@@ -45,16 +49,17 @@ function ReadOnlyField({ label, value }: { label: string; value: string }) {
   )
 }
 
-function EditableField({ label, value }: { label: string; value: string }) {
+function EditableField({ label, value, onEdit }: { label: string; value: string; onEdit?: () => void }) {
+  const { theme } = useTheme()
   return (
     <div style={{ flex: 1 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-        <p style={{ fontSize: 12, fontWeight: 600, color: '#64748B' }}>{label}</p>
-        <Edit3 size={14} color="#94A3B8" style={{ cursor: 'pointer' }} />
+        <p style={{ fontSize: 12, fontWeight: 600, color: theme.textSecondary }}>{label}</p>
+        <Edit3 size={14} color={theme.textMuted} style={{ cursor: 'pointer' }} onClick={() => onEdit?.()} />
       </div>
       <div style={{
-        padding: '12px 14px', background: '#F8FAFC', borderRadius: 8, border: '1px solid #F1F5F9',
-        fontSize: 14, color: '#0F172A',
+        padding: '12px 14px', background: theme.inputBg, borderRadius: 8, border: `1px solid ${theme.borderLight}`,
+        fontSize: 14, color: theme.textPrimary,
       }}>
         {value}
       </div>
@@ -65,10 +70,12 @@ function EditableField({ label, value }: { label: string; value: string }) {
 /* ─── Page ─── */
 
 export default function MyProfile() {
+  const { theme } = useTheme()
   const [searchParams] = useSearchParams()
   const stateParam = searchParams.get('state')
   const verified = stateParam === 'verified' || searchParams.get('verified') === 'true'
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const [contactModal, setContactModal] = useState<{ open: boolean; type: 'phone' | 'email' }>({ open: false, type: 'phone' })
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
@@ -76,14 +83,14 @@ export default function MyProfile() {
       <main style={{
         marginLeft: sidebarCollapsed ? 72 : 240,
         transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-        flex: 1, minWidth: 0, overflow: 'hidden', minHeight: '100vh', background: '#F8FAFC', padding: 0,
+        flex: 1, minWidth: 0, overflow: 'hidden', minHeight: '100vh', background: theme.bgPrimary, padding: 0,
       }}>
-        <div style={{ background: '#F8FAFC', minHeight: '100vh', padding: '28px 32px', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ background: theme.bgPrimary, minHeight: '100vh', padding: '28px 32px', display: 'flex', flexDirection: 'column' }}>
           <div style={{ flex: 1, minWidth: 0 }}>
             <Header />
 
             {/* Two-column layout */}
-            <div style={{ display: 'grid', gridTemplateColumns: '340px 1fr', gap: 20, alignItems: 'start' }}>
+            <div className="profile-layout" style={{ display: 'grid', gridTemplateColumns: '340px 1fr', gap: 20, alignItems: 'start' }}>
 
               {/* ── Left Column ── */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
@@ -110,21 +117,21 @@ export default function MyProfile() {
                       Verified Account
                     </span>
 
-                    <p style={{ fontSize: 13, color: '#64748B', lineHeight: 1.5, marginBottom: 12 }}>
+                    <p style={{ fontSize: 13, color: theme.textSecondary, lineHeight: 1.5, marginBottom: 12 }}>
                       Your account has been successfully verified. You can now apply for financing
                     </p>
 
-                    <p style={{ fontSize: 12, color: '#94A3B8' }}>Member since November 14, 2025</p>
+                    <p style={{ fontSize: 12, color: theme.textMuted }}>Member since November 14, 2025</p>
                   </div>
                 </SectionCard>
 
                 {/* SIMAH Consent */}
                 <SectionCard delay={0.12}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
-                    <Shield size={20} color="#0F172A" />
-                    <h3 style={{ fontSize: 16, fontWeight: 700, color: '#0F172A' }}>SIMAH Consent</h3>
+                    <Shield size={20} color={theme.textPrimary} />
+                    <h3 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary }}>SIMAH Consent</h3>
                   </div>
-                  <p style={{ fontSize: 13, color: '#94A3B8', marginBottom: 20 }}>
+                  <p style={{ fontSize: 13, color: theme.textMuted, marginBottom: 20 }}>
                     Your SIMAH consent is approved and ready to download.
                   </p>
                   <button style={{
@@ -139,7 +146,7 @@ export default function MyProfile() {
 
                 {/* Important Links */}
                 <SectionCard delay={0.19}>
-                  <h3 style={{ fontSize: 16, fontWeight: 700, color: '#0F172A', marginBottom: 16 }}>Important Links</h3>
+                  <h3 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary, marginBottom: 16 }}>Important Links</h3>
                   {[
                     { icon: FileText, label: 'Terms & Conditions' },
                     { icon: Shield, label: 'Privacy Policy' },
@@ -147,16 +154,16 @@ export default function MyProfile() {
                   ].map((link, i) => (
                     <div key={link.label} style={{
                       display: 'flex', alignItems: 'center', gap: 12, padding: '14px 0',
-                      borderTop: i > 0 ? '1px solid #F1F5F9' : 'none', cursor: 'pointer',
+                      borderTop: i > 0 ? `1px solid ${theme.borderLight}` : 'none', cursor: 'pointer',
                     }}>
                       <div style={{
-                        width: 36, height: 36, borderRadius: 8, background: '#F8FAFC',
+                        width: 36, height: 36, borderRadius: 8, background: theme.inputBg,
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                       }}>
-                        <link.icon size={16} color="#64748B" />
+                        <link.icon size={16} color={theme.textSecondary} />
                       </div>
-                      <span style={{ flex: 1, fontSize: 14, fontWeight: 500, color: '#0F172A' }}>{link.label}</span>
-                      <ExternalLink size={16} color="#94A3B8" />
+                      <span style={{ flex: 1, fontSize: 14, fontWeight: 500, color: theme.textPrimary }}>{link.label}</span>
+                      <ExternalLink size={16} color={theme.textMuted} />
                     </div>
                   ))}
                 </SectionCard>
@@ -169,8 +176,8 @@ export default function MyProfile() {
                 <SectionCard delay={0.08}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                      <User size={20} color="#0F172A" />
-                      <h3 style={{ fontSize: 17, fontWeight: 700, color: '#0F172A' }}>Personal Information</h3>
+                      <User size={20} color={theme.textPrimary} />
+                      <h3 style={{ fontSize: 17, fontWeight: 700, color: theme.textPrimary }}>Personal Information</h3>
                     </div>
                     <span style={{
                       padding: '4px 14px', borderRadius: 20, fontSize: 12, fontWeight: 600,
@@ -181,24 +188,24 @@ export default function MyProfile() {
                   </div>
 
                   {/* Row 1: Name, NID, DOB */}
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, marginBottom: 20 }}>
+                  <div className="profile-fields-3" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, marginBottom: 20 }}>
                     <ReadOnlyField label="Full Name" value="Ahmed Mohammed Al-Rashid" />
                     <ReadOnlyField label="National ID Number" value="1234567890" />
                     <ReadOnlyField label="Date of Birth" value="15/03/1985" />
                   </div>
 
                   {/* Row 2: Phone, Email */}
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24 }}>
-                    <EditableField label="Phone Number" value="+966 50 123 4567" />
-                    <EditableField label="Email Address" value="ahmed.alrashid@email.com" />
+                  <div className="profile-fields-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24 }}>
+                    <EditableField label="Phone Number" value="+966 50 123 4567" onEdit={() => setContactModal({ open: true, type: 'phone' })} />
+                    <EditableField label="Email Address" value="ahmed.alrashid@email.com" onEdit={() => setContactModal({ open: true, type: 'email' })} />
                   </div>
 
                   {/* Authorization Document */}
-                  <div style={{ borderTop: '1px solid #F1F5F9', paddingTop: 20 }}>
-                    <p style={{ fontSize: 13, fontWeight: 600, color: '#64748B', marginBottom: 12 }}>Authorization Document</p>
+                  <div style={{ borderTop: `1px solid ${theme.borderLight}`, paddingTop: 20 }}>
+                    <p style={{ fontSize: 13, fontWeight: 600, color: theme.textSecondary, marginBottom: 12 }}>Authorization Document</p>
                     <div style={{
                       display: 'flex', alignItems: 'center', gap: 12, padding: 16,
-                      background: '#F8FAFC', borderRadius: 10, border: '1px solid #F1F5F9',
+                      background: theme.inputBg, borderRadius: 10, border: `1px solid ${theme.borderLight}`,
                     }}>
                       <div style={{
                         width: 40, height: 40, borderRadius: 8, background: '#EFF6FF',
@@ -208,24 +215,24 @@ export default function MyProfile() {
                       </div>
                       <div style={{ flex: 1 }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                          <p style={{ fontSize: 14, fontWeight: 600, color: '#0F172A' }}>authorization-letter.pdf</p>
+                          <p style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary }}>authorization-letter.pdf</p>
                           <CheckCircle2 size={16} color="#2563EB" />
                         </div>
-                        <p style={{ fontSize: 12, color: '#94A3B8' }}>Uploaded: Nov 14, 2025</p>
+                        <p style={{ fontSize: 12, color: theme.textMuted }}>Uploaded: Nov 14, 2025</p>
                       </div>
                     </div>
                     <div style={{ display: 'flex', gap: 12, marginTop: 12 }}>
                       <button style={{
-                        padding: '8px 16px', background: '#fff', border: '1px solid #E2E8F0',
-                        borderRadius: 8, fontSize: 13, fontWeight: 600, color: '#475569', cursor: 'pointer',
+                        padding: '8px 16px', background: theme.cardBg, border: `1px solid ${theme.border}`,
+                        borderRadius: 8, fontSize: 13, fontWeight: 600, color: theme.textSecondary, cursor: 'pointer',
                         display: 'flex', alignItems: 'center', gap: 6,
                       }}>
                         <Eye size={14} />
                         View Document
                       </button>
                       <button style={{
-                        padding: '8px 16px', background: '#fff', border: '1px solid #E2E8F0',
-                        borderRadius: 8, fontSize: 13, fontWeight: 600, color: '#475569', cursor: 'pointer',
+                        padding: '8px 16px', background: theme.cardBg, border: `1px solid ${theme.border}`,
+                        borderRadius: 8, fontSize: 13, fontWeight: 600, color: theme.textSecondary, cursor: 'pointer',
                         display: 'flex', alignItems: 'center', gap: 6,
                       }}>
                         <Upload size={14} />
@@ -239,10 +246,10 @@ export default function MyProfile() {
                 <SectionCard delay={0.15}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                      <Building2 size={20} color="#0F172A" />
+                      <Building2 size={20} color={theme.textPrimary} />
                       <div>
-                        <h3 style={{ fontSize: 17, fontWeight: 700, color: '#0F172A' }}>Company Information</h3>
-                        <p style={{ fontSize: 12, color: '#94A3B8' }}>Source: Wathiq</p>
+                        <h3 style={{ fontSize: 17, fontWeight: 700, color: theme.textPrimary }}>Company Information</h3>
+                        <p style={{ fontSize: 12, color: theme.textMuted }}>Source: Wathiq</p>
                       </div>
                     </div>
                     <span style={{
@@ -254,18 +261,18 @@ export default function MyProfile() {
                   </div>
 
                   {/* Row 1 */}
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20 }}>
+                  <div className="profile-fields-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20 }}>
                     <ReadOnlyField label="Company Name" value="Al-Majd Trading Company LLC" />
                     <ReadOnlyField label="Commercial Registration (CR)" value="1010123456" />
                   </div>
 
                   {/* Row 2 */}
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20 }}>
+                  <div className="profile-fields-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20 }}>
                     <ReadOnlyField label="Industry" value="Retail & Trading" />
                     <ReadOnlyField label="Business Activity" value="General Trading & Import/Export" />
                   </div>
 
-                  <p style={{ fontSize: 12, color: '#94A3B8', fontStyle: 'italic' }}>
+                  <p style={{ fontSize: 12, color: theme.textMuted, fontStyle: 'italic' }}>
                     Company information is automatically fetched from Wathiq and cannot be edited manually.
                   </p>
                 </SectionCard>
@@ -276,6 +283,7 @@ export default function MyProfile() {
         </div>
       </main>
       <FloatingHelpButton />
+      <ChangeContactModal open={contactModal.open} type={contactModal.type} onClose={() => setContactModal(m => ({ ...m, open: false }))} />
     </div>
   )
 }

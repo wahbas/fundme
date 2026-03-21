@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { NotificationBellIcon, PlusIcon } from '../icons/WidgetIcons'
+import { useTheme } from '../../ThemeContext'
 
 function getGreeting() {
   const hour = new Date().getHours()
@@ -19,15 +20,16 @@ function getFormattedDate() {
 }
 
 export default function Header({ showNewLoanButton = false, showVerifiedLoanButton = false }: { showNewLoanButton?: boolean; showVerifiedLoanButton?: boolean }) {
+  const { theme } = useTheme()
   const navigate = useNavigate()
 
   return (
     <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
       <div>
-        <h1 style={{ fontSize: showVerifiedLoanButton ? 26 : 20, fontWeight: 700, color: '#1E293B' }}>
+        <h1 style={{ fontSize: showVerifiedLoanButton ? 26 : 20, fontWeight: 700, color: theme.textHeading }}>
           {getGreeting()}, Ahmed
         </h1>
-        <p style={{ fontSize: 12, color: '#64748B', fontWeight: 400, marginTop: 2 }}>{getFormattedDate()}</p>
+        <p style={{ fontSize: 12, color: theme.textSecondary, fontWeight: 400, marginTop: 2 }}>{getFormattedDate()}</p>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
         {showNewLoanButton && (
@@ -78,7 +80,7 @@ export default function Header({ showNewLoanButton = false, showVerifiedLoanButt
             New Loan Request
           </motion.button>
         )}
-        <div style={{ ...iconBtn, position: 'relative' }}>
+        <div onClick={() => navigate('/notifications')} style={{ ...iconBtn, position: 'relative', cursor: 'pointer' }}>
           <NotificationBellIcon size={20} color="#64748B" />
           <span
             style={{

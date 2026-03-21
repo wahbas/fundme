@@ -1,32 +1,36 @@
-const inputStyle: React.CSSProperties = {
-  width: '100%',
-  padding: '12px 16px',
-  borderRadius: 12,
-  border: '1px solid #D1D5DB',
-  fontSize: 14,
-  outline: 'none',
-  fontFamily: 'inherit',
-  background: '#fff',
-}
-
-const labelStyle: React.CSSProperties = {
-  display: 'block',
-  fontSize: 13,
-  fontWeight: 500,
-  color: '#555',
-  marginBottom: 8,
-}
+import { useTheme } from '../../ThemeContext'
 
 export default function StepBusinessInfo() {
+  const { theme } = useTheme()
+
+  const inputStyle: React.CSSProperties = {
+    width: '100%',
+    padding: '12px 16px',
+    borderRadius: 12,
+    border: `1px solid ${theme.inputBorder}`,
+    fontSize: 14,
+    outline: 'none',
+    fontFamily: 'inherit',
+    background: theme.inputBg,
+    color: theme.textPrimary,
+  }
+
+  const labelStyle: React.CSSProperties = {
+    display: 'block',
+    fontSize: 13,
+    fontWeight: 500,
+    color: theme.textSecondary,
+    marginBottom: 8,
+  }
   const years = Array.from({ length: 30 }, (_, i) => 2025 - i)
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
       <div>
-        <h2 style={{ fontSize: 20, fontWeight: 600, color: '#111', marginBottom: 6 }}>
+        <h2 style={{ fontSize: 20, fontWeight: 600, color: theme.textPrimary, marginBottom: 6 }}>
           Tell us about your business
         </h2>
-        <p style={{ fontSize: 14, color: '#888' }}>This helps us understand your business better</p>
+        <p style={{ fontSize: 14, color: theme.textMuted }}>This helps us understand your business better</p>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>

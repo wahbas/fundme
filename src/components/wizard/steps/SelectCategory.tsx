@@ -1,5 +1,6 @@
 import { ChevronRight } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { useTheme } from '../../../ThemeContext'
 import type { WizardData } from '../../../pages/RequestFinancing'
 
 interface Props {
@@ -81,12 +82,13 @@ const categories = [
 ]
 
 export default function SelectCategory({ data, onChange }: Props) {
+  const { theme } = useTheme()
   return (
     <div>
-      <h2 style={{ fontSize: 24, fontWeight: 700, color: '#0F172A', marginBottom: 6, textAlign: 'center' }}>
+      <h2 style={{ fontSize: 24, fontWeight: 700, color: theme.textPrimary, marginBottom: 6, textAlign: 'center' }}>
         Select Bill Category
       </h2>
-      <p style={{ fontSize: 14, color: '#475569', marginBottom: 32, textAlign: 'center' }}>
+      <p style={{ fontSize: 14, color: theme.textSecondary, marginBottom: 32, textAlign: 'center' }}>
         Choose a category to browse billers
       </p>
 
@@ -109,8 +111,8 @@ export default function SelectCategory({ data, onChange }: Props) {
                 gap: 14,
                 width: '100%',
                 padding: isSelected ? '15.5px 19.5px' : '16px 20px',
-                background: isSelected ? 'rgba(37, 99, 235, 0.03)' : '#fff',
-                border: isSelected ? '2px solid #2563EB' : '1.5px solid #E2E8F0',
+                background: isSelected ? 'rgba(37, 99, 235, 0.03)' : theme.cardBg,
+                border: isSelected ? '2px solid #2563EB' : `1.5px solid ${theme.border}`,
                 borderRadius: 12,
                 cursor: 'pointer',
                 textAlign: 'left',
@@ -118,14 +120,14 @@ export default function SelectCategory({ data, onChange }: Props) {
               }}
               onMouseEnter={(e) => {
                 if (!isSelected) {
-                  e.currentTarget.style.borderColor = '#CBD5E1'
-                  e.currentTarget.style.background = '#FAFBFC'
+                  e.currentTarget.style.borderColor = theme.textMuted
+                  e.currentTarget.style.background = theme.bgHover
                 }
               }}
               onMouseLeave={(e) => {
                 if (!isSelected) {
-                  e.currentTarget.style.borderColor = '#E2E8F0'
-                  e.currentTarget.style.background = '#fff'
+                  e.currentTarget.style.borderColor = theme.border
+                  e.currentTarget.style.background = theme.cardBg
                 }
               }}
             >
@@ -146,7 +148,7 @@ export default function SelectCategory({ data, onChange }: Props) {
               </div>
 
               {/* Label */}
-              <span style={{ flex: 1, fontSize: 15, fontWeight: 600, color: '#0F172A' }}>
+              <span style={{ flex: 1, fontSize: 15, fontWeight: 600, color: theme.textPrimary }}>
                 {cat.label}
               </span>
 
@@ -156,7 +158,7 @@ export default function SelectCategory({ data, onChange }: Props) {
                   width: 32,
                   height: 32,
                   borderRadius: 8,
-                  background: isSelected ? '#2563EB' : '#F5F7FA',
+                  background: isSelected ? '#2563EB' : theme.bgPrimary,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -164,7 +166,7 @@ export default function SelectCategory({ data, onChange }: Props) {
                   transition: 'background 0.2s',
                 }}
               >
-                <ChevronRight size={14} color={isSelected ? '#fff' : '#94A3B8'} />
+                <ChevronRight size={14} color={isSelected ? '#fff' : theme.textMuted} />
               </div>
             </motion.button>
           )

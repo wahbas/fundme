@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useTheme } from '../../../ThemeContext'
 
 interface RadioCardProps {
   selected: boolean
@@ -8,6 +9,7 @@ interface RadioCardProps {
 }
 
 export default function RadioCard({ selected, onClick, label, description }: RadioCardProps) {
+  const { theme } = useTheme()
   return (
     <motion.button
       onClick={onClick}
@@ -20,8 +22,8 @@ export default function RadioCard({ selected, onClick, label, description }: Rad
         width: '100%',
         padding: '14px 18px',
         borderRadius: 12,
-        border: `2px solid ${selected ? '#0D82F9' : '#E5E5E5'}`,
-        background: selected ? 'rgba(13,130,249,0.05)' : '#fff',
+        border: `2px solid ${selected ? '#0D82F9' : theme.border}`,
+        background: selected ? 'rgba(13,130,249,0.05)' : theme.cardBg,
         cursor: 'pointer',
         textAlign: 'left',
         transition: 'border-color 0.2s, background 0.2s',
@@ -51,8 +53,8 @@ export default function RadioCard({ selected, onClick, label, description }: Rad
         )}
       </div>
       <div>
-        <p style={{ fontSize: 14, fontWeight: 500, color: '#111827', marginBottom: description ? 2 : 0 }}>{label}</p>
-        {description && <p style={{ fontSize: 13, color: '#6B7280' }}>{description}</p>}
+        <p style={{ fontSize: 14, fontWeight: 500, color: theme.textPrimary, marginBottom: description ? 2 : 0 }}>{label}</p>
+        {description && <p style={{ fontSize: 13, color: theme.textMuted }}>{description}</p>}
       </div>
     </motion.button>
   )

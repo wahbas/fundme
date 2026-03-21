@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { Briefcase, Truck, Receipt, Calculator } from 'lucide-react'
+import { useTheme } from '../../ThemeContext'
+import RiyalSign from '../icons/RiyalSign'
 
 const loanTypes = [
   {
@@ -39,6 +41,7 @@ const inputStyle: React.CSSProperties = {
 }
 
 export default function StepLoanDetails() {
+  const { theme } = useTheme()
   const [loanType, setLoanType] = useState('')
   const [amount, setAmount] = useState(100000)
   const [term, setTerm] = useState(12)
@@ -47,10 +50,10 @@ export default function StepLoanDetails() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
       <div>
-        <h2 style={{ fontSize: 20, fontWeight: 600, color: '#111', marginBottom: 6 }}>
+        <h2 style={{ fontSize: 20, fontWeight: 600, color: theme.textPrimary, marginBottom: 6 }}>
           What type of financing do you need?
         </h2>
-        <p style={{ fontSize: 14, color: '#888' }}>Select the option that best fits your business needs</p>
+        <p style={{ fontSize: 14, color: theme.textMuted }}>Select the option that best fits your business needs</p>
       </div>
 
       {/* Loan Type Cards */}
@@ -65,8 +68,8 @@ export default function StepLoanDetails() {
               style={{
                 padding: 24,
                 borderRadius: 16,
-                border: `2px solid ${selected ? '#002E83' : '#E5E7EB'}`,
-                background: selected ? '#EFF6FF' : '#fff',
+                border: `2px solid ${selected ? '#002E83' : theme.border}`,
+                background: selected ? '#EFF6FF' : theme.cardBg,
                 textAlign: 'left',
                 cursor: 'pointer',
                 transition: 'all 0.2s',
@@ -81,15 +84,15 @@ export default function StepLoanDetails() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  background: selected ? '#002E83' : '#F3F4F6',
+                  background: selected ? '#002E83' : theme.bgPrimary,
                 }}
               >
                 <Icon size={24} color={selected ? '#fff' : '#888'} />
               </div>
-              <h3 style={{ fontWeight: 600, color: '#111', marginBottom: 4, fontSize: 14 }}>{type.name}</h3>
-              <p style={{ fontSize: 13, color: '#888', marginBottom: 8 }}>{type.description}</p>
+              <h3 style={{ fontWeight: 600, color: theme.textPrimary, marginBottom: 4, fontSize: 14 }}>{type.name}</h3>
+              <p style={{ fontSize: 13, color: theme.textMuted, marginBottom: 8 }}>{type.description}</p>
               <p style={{ fontSize: 13, fontWeight: 500, color: '#0D82F9' }}>
-                Up to {type.maxAmount.toLocaleString()} SAR
+                Up to {type.maxAmount.toLocaleString()}<RiyalSign size="sm" />
               </p>
             </button>
           )
@@ -97,13 +100,13 @@ export default function StepLoanDetails() {
       </div>
 
       {/* Amount Slider */}
-      <div style={{ background: '#F9FAFB', borderRadius: 16, padding: 24 }}>
-        <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: '#555', marginBottom: 16 }}>
+      <div style={{ background: theme.bgPrimary, borderRadius: 16, padding: 24 }}>
+        <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: theme.textSecondary, marginBottom: 16 }}>
           How much do you need?
         </label>
         <div style={{ textAlign: 'center', marginBottom: 20 }}>
           <span style={{ fontSize: 36, fontWeight: 700, color: '#002E83' }}>
-            {amount.toLocaleString()} SAR
+            {amount.toLocaleString()}<RiyalSign size="lg" />
           </span>
         </div>
         <input
@@ -122,15 +125,15 @@ export default function StepLoanDetails() {
             cursor: 'pointer',
           }}
         />
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: '#888', marginTop: 8 }}>
-          <span>10,000 SAR</span>
-          <span>500,000 SAR</span>
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: theme.textMuted, marginTop: 8 }}>
+          <span>10,000<RiyalSign size="sm" /></span>
+          <span>500,000<RiyalSign size="sm" /></span>
         </div>
       </div>
 
       {/* Term Selection */}
       <div>
-        <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: '#555', marginBottom: 12 }}>
+        <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: theme.textSecondary, marginBottom: 12 }}>
           Repayment Term
         </label>
         <div style={{ display: 'flex', gap: 12 }}>
@@ -147,8 +150,8 @@ export default function StepLoanDetails() {
                 border: 'none',
                 cursor: 'pointer',
                 transition: 'all 0.2s',
-                background: term === months ? '#002E83' : '#F3F4F6',
-                color: term === months ? '#fff' : '#555',
+                background: term === months ? '#002E83' : theme.bgPrimary,
+                color: term === months ? '#fff' : theme.textSecondary,
               }}
             >
               {months} months
@@ -159,7 +162,7 @@ export default function StepLoanDetails() {
 
       {/* Purpose */}
       <div>
-        <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: '#555', marginBottom: 8 }}>
+        <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: theme.textSecondary, marginBottom: 8 }}>
           Purpose of Financing
         </label>
         <textarea
@@ -186,7 +189,7 @@ export default function StepLoanDetails() {
         <div>
           <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.7)', marginBottom: 4 }}>Estimated Monthly Payment</p>
           <p style={{ fontSize: 30, fontWeight: 700 }}>
-            {Math.round((amount / term) * 1.05).toLocaleString()} SAR
+            {Math.round((amount / term) * 1.05).toLocaleString()}<RiyalSign size="sm" />
           </p>
           <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)', marginTop: 4 }}>
             at ~5% APR for {term} months

@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { ArrowRight } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import RiyalSign from '../icons/RiyalSign'
+import { useTheme } from '../../ThemeContext'
 
 type Status = 'all' | 'submitted' | 'under-review' | 'approved' | 'rejected'
 
@@ -66,6 +68,7 @@ const FILTERS: { key: Status; label: string }[] = [
 
 export default function RecentApplication() {
   const [activeFilter, setActiveFilter] = useState<Status>('all')
+  const { theme } = useTheme()
 
   const filtered = activeFilter === 'all'
     ? APPLICATIONS
@@ -82,7 +85,7 @@ export default function RecentApplication() {
   return (
     <section>
       <div style={{ marginBottom: 16 }}>
-        <h3 style={{ fontSize: 16, fontWeight: 700, color: '#0F172A', marginBottom: 12 }}>My Recent Applications</h3>
+        <h3 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary, marginBottom: 12 }}>My Recent Applications</h3>
 
         {/* Filter pills */}
         <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
@@ -98,9 +101,9 @@ export default function RecentApplication() {
                   borderRadius: 20,
                   fontSize: 12,
                   fontWeight: 600,
-                  background: isActive ? '#1B2A3D' : '#fff',
-                  color: isActive ? '#fff' : '#64748B',
-                  border: isActive ? 'none' : '1px solid #E2E8F0',
+                  background: isActive ? '#1B2A3D' : theme.cardBg,
+                  color: isActive ? '#fff' : theme.textSecondary,
+                  border: isActive ? 'none' : `1px solid ${theme.border}`,
                   cursor: 'pointer',
                   transition: 'all 0.15s',
                   display: 'flex',
@@ -114,8 +117,8 @@ export default function RecentApplication() {
                     style={{
                       fontSize: 10,
                       fontWeight: 700,
-                      background: isActive ? 'rgba(255,255,255,0.2)' : '#F1F5F9',
-                      color: isActive ? '#fff' : '#94A3B8',
+                      background: isActive ? 'rgba(255,255,255,0.2)' : theme.borderLight,
+                      color: isActive ? '#fff' : theme.textMuted,
                       borderRadius: 10,
                       padding: '1px 6px',
                       minWidth: 18,
@@ -141,12 +144,12 @@ export default function RecentApplication() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               style={{
-                background: '#fff',
-                border: '1px solid #E2E8F0',
+                background: theme.cardBg,
+                border: `1px solid ${theme.border}`,
                 borderRadius: 14,
                 padding: '32px 24px',
                 textAlign: 'center',
-                color: '#94A3B8',
+                color: theme.textMuted,
                 fontSize: 13,
               }}
             >
@@ -162,11 +165,11 @@ export default function RecentApplication() {
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.2 }}
                 style={{
-                  background: '#fff',
-                  border: '1px solid #E2E8F0',
+                  background: theme.cardBg,
+                  border: `1px solid ${theme.border}`,
                   borderRadius: 16,
                   overflow: 'hidden',
-                  boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+                  boxShadow: theme.shadow,
                 }}
               >
                 {/* Top section */}
@@ -176,7 +179,7 @@ export default function RecentApplication() {
                       <p style={{ fontSize: 14, fontWeight: 600, color: '#0D9488', marginBottom: 4, fontFamily: 'monospace' }}>
                         {app.id}
                       </p>
-                      <p style={{ fontSize: 14, color: '#475569', marginBottom: 4 }}>{app.type}</p>
+                      <p style={{ fontSize: 14, color: theme.textSecondary, marginBottom: 4 }}>{app.type}</p>
                     </div>
                     <span
                       style={{
@@ -193,23 +196,23 @@ export default function RecentApplication() {
                       {app.statusLabel}
                     </span>
                   </div>
-                  <p style={{ fontSize: 13, color: '#94A3B8' }}>{app.subtitle}</p>
+                  <p style={{ fontSize: 13, color: theme.textMuted }}>{app.subtitle}</p>
                 </div>
 
                 {/* Divider */}
-                <div style={{ height: 1, background: '#F1F5F9', margin: '0 22px' }} />
+                <div style={{ height: 1, background: theme.borderLight, margin: '0 22px' }} />
 
                 {/* Amount + Date */}
                 <div style={{ padding: '16px 22px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
                   <div>
-                    <p style={{ fontSize: 12, color: '#94A3B8', marginBottom: 4 }}>Financing Amount</p>
-                    <p style={{ fontSize: 22, fontWeight: 700, color: '#0F172A' }}>SAR {app.amount.toLocaleString()}</p>
+                    <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 4 }}>Financing Amount</p>
+                    <p style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary }}>{app.amount.toLocaleString()} <RiyalSign size="lg" /></p>
                   </div>
-                  <p style={{ fontSize: 12, color: '#94A3B8' }}>{app.date}</p>
+                  <p style={{ fontSize: 12, color: theme.textMuted }}>{app.date}</p>
                 </div>
 
                 {/* Divider */}
-                <div style={{ height: 1, background: '#F1F5F9', margin: '0 22px' }} />
+                <div style={{ height: 1, background: theme.borderLight, margin: '0 22px' }} />
 
                 {/* View Status button */}
                 <div style={{ padding: '16px 22px' }}>
@@ -217,12 +220,12 @@ export default function RecentApplication() {
                     style={{
                       width: '100%',
                       padding: '12px 0',
-                      background: '#fff',
-                      border: '1px solid #E2E8F0',
+                      background: theme.cardBg,
+                      border: `1px solid ${theme.border}`,
                       borderRadius: 10,
                       fontSize: 14,
                       fontWeight: 600,
-                      color: '#0F172A',
+                      color: theme.textPrimary,
                       cursor: 'pointer',
                       display: 'flex',
                       alignItems: 'center',
@@ -230,8 +233,8 @@ export default function RecentApplication() {
                       gap: 8,
                       transition: 'background 0.15s',
                     }}
-                    onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = '#F8FAFC' }}
-                    onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = '#fff' }}
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = theme.bgPrimary }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = theme.cardBg }}
                   >
                     View Status
                     <ArrowRight size={16} />

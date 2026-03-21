@@ -1,7 +1,9 @@
 import { Calculator } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { useTheme } from '../../../ThemeContext'
 import AmountSlider from '../shared/AmountSlider'
 import type { Product, WizardData } from '../types'
+import RiyalSign from '../../icons/RiyalSign'
 
 interface Props {
   data: WizardData
@@ -28,6 +30,7 @@ const inputStyle: React.CSSProperties = {
 const termOptions = [6, 12, 18, 24]
 
 export default function AmountTerms({ data, onChange }: Props) {
+  const { theme } = useTheme()
   const product = data.product || 'working-capital'
   const { min, max } = limits[product]
   const monthly = Math.round((data.amount / data.term) * 1.05)
@@ -37,8 +40,8 @@ export default function AmountTerms({ data, onChange }: Props) {
 
   return (
     <div>
-      <h2 style={{ fontSize: 22, fontWeight: 700, color: '#111', marginBottom: 6 }}>Amount & Terms</h2>
-      <p style={{ fontSize: 14, color: '#888', marginBottom: 28 }}>
+      <h2 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary, marginBottom: 6 }}>Amount & Terms</h2>
+      <p style={{ fontSize: 14, color: theme.textMuted, marginBottom: 28 }}>
         {isSadad
           ? 'Review your financing amount and repayment schedule'
           : isInvoice
@@ -48,8 +51,8 @@ export default function AmountTerms({ data, onChange }: Props) {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
         {/* Amount */}
-        <div style={{ background: '#F9FAFB', borderRadius: 14, padding: 24 }}>
-          <p style={{ fontSize: 14, fontWeight: 600, color: '#333', marginBottom: 16 }}>
+        <div style={{ background: theme.bgPrimary, borderRadius: 14, padding: 24 }}>
+          <p style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary, marginBottom: 16 }}>
             {isSadad ? 'Total financing amount' : isInvoice ? 'Advance amount' : 'Requested amount'}
           </p>
           <AmountSlider value={data.amount} min={min} max={max} onChange={(v) => onChange({ amount: v })} />
@@ -63,7 +66,7 @@ export default function AmountTerms({ data, onChange }: Props) {
         {/* Term */}
         {!isSadad && (
           <div>
-            <p style={{ fontSize: 14, fontWeight: 600, color: '#333', marginBottom: 10 }}>Preferred term</p>
+            <p style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary, marginBottom: 10 }}>Preferred term</p>
             <div style={{ display: 'flex', gap: 10 }}>
               {termOptions.map((m) => (
                 <button
@@ -75,9 +78,9 @@ export default function AmountTerms({ data, onChange }: Props) {
                     borderRadius: 10,
                     fontWeight: 500,
                     fontSize: 14,
-                    border: data.term === m ? '2px solid #002E83' : '1px solid #E5E7EB',
-                    background: data.term === m ? '#EFF6FF' : '#fff',
-                    color: data.term === m ? '#002E83' : '#555',
+                    border: data.term === m ? '2px solid #002E83' : `1px solid ${theme.border}`,
+                    background: data.term === m ? '#EFF6FF' : theme.cardBg,
+                    color: data.term === m ? '#002E83' : theme.textSecondary,
                     cursor: 'pointer',
                   }}
                 >
@@ -91,7 +94,7 @@ export default function AmountTerms({ data, onChange }: Props) {
         {/* Purpose description */}
         {!isSadad && !isInvoice && (
           <div>
-            <p style={{ fontSize: 14, fontWeight: 600, color: '#333', marginBottom: 8 }}>How will you use the funds?</p>
+            <p style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary, marginBottom: 8 }}>How will you use the funds?</p>
             <textarea
               value={data.purposeDescription}
               onChange={(e) => onChange({ purposeDescription: e.target.value })}
@@ -104,20 +107,20 @@ export default function AmountTerms({ data, onChange }: Props) {
 
         {/* SADAD specifics */}
         {isSadad && (
-          <div style={{ background: '#F9FAFB', borderRadius: 14, padding: 20 }}>
-            <p style={{ fontSize: 14, fontWeight: 600, color: '#333', marginBottom: 12 }}>Fee Breakdown</p>
+          <div style={{ background: theme.bgPrimary, borderRadius: 14, padding: 20 }}>
+            <p style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary, marginBottom: 12 }}>Fee Breakdown</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8, fontSize: 13 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: '#888' }}>Bill total</span>
-                <span style={{ fontWeight: 500 }}>{data.amount.toLocaleString()} SAR</span>
+                <span style={{ color: theme.textMuted }}>Bill total</span>
+                <span style={{ fontWeight: 500 }}>{data.amount.toLocaleString()}<RiyalSign size="sm" /></span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: '#888' }}>Service fee (2%)</span>
-                <span style={{ fontWeight: 500 }}>{Math.round(data.amount * 0.02).toLocaleString()} SAR</span>
+                <span style={{ color: theme.textMuted }}>Service fee (2%)</span>
+                <span style={{ fontWeight: 500 }}>{Math.round(data.amount * 0.02).toLocaleString()}<RiyalSign size="sm" /></span>
               </div>
-              <div style={{ borderTop: '1px solid #E5E7EB', paddingTop: 8, display: 'flex', justifyContent: 'space-between', fontWeight: 600 }}>
+              <div style={{ borderTop: `1px solid ${theme.border}`, paddingTop: 8, display: 'flex', justifyContent: 'space-between', fontWeight: 600 }}>
                 <span>Total repayment</span>
-                <span style={{ color: '#002E83' }}>{Math.round(data.amount * 1.02).toLocaleString()} SAR</span>
+                <span style={{ color: '#002E83' }}>{Math.round(data.amount * 1.02).toLocaleString()}<RiyalSign size="sm" /></span>
               </div>
             </div>
           </div>
@@ -141,7 +144,7 @@ export default function AmountTerms({ data, onChange }: Props) {
               {isSadad ? 'Total Repayment' : 'Estimated Monthly Payment'}
             </p>
             <p style={{ fontSize: 26, fontWeight: 700, color: '#fff' }}>
-              {isSadad ? Math.round(data.amount * 1.02).toLocaleString() : monthly.toLocaleString()} SAR
+              {isSadad ? Math.round(data.amount * 1.02).toLocaleString() : monthly.toLocaleString()}<RiyalSign size="sm" />
             </p>
             {!isSadad && (
               <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.55)', marginTop: 2 }}>

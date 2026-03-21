@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft } from 'lucide-react'
+import { useTheme } from '../ThemeContext'
 import Sidebar from '../components/layout/Sidebar'
 import ProgressStepper from '../components/loan/ProgressStepper'
 import StepLoanDetails from '../components/loan/StepLoanDetails'
@@ -12,6 +13,7 @@ import SuccessScreen from '../components/loan/SuccessScreen'
 import FormNavigation from '../components/loan/FormNavigation'
 
 export default function LoanApplication() {
+  const { theme } = useTheme()
   const [currentStep, setCurrentStep] = useState(1)
   const [submitted, setSubmitted] = useState(false)
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
@@ -37,7 +39,7 @@ export default function LoanApplication() {
       >
         <div
           style={{
-            background: '#fff',
+            background: theme.cardBg,
             borderRadius: 24,
             minHeight: 'calc(100vh - 40px)',
             padding: '28px 32px',
@@ -59,7 +61,7 @@ export default function LoanApplication() {
                         display: 'flex',
                         alignItems: 'center',
                         gap: 8,
-                        color: '#888',
+                        color: theme.textMuted,
                         fontSize: 14,
                         marginBottom: 8,
                         background: 'none',
@@ -70,11 +72,11 @@ export default function LoanApplication() {
                       <ArrowLeft size={20} />
                       Back to Dashboard
                     </button>
-                    <h1 style={{ fontSize: 24, fontWeight: 700, color: '#111' }}>Apply for Financing</h1>
+                    <h1 style={{ fontSize: 24, fontWeight: 700, color: theme.textPrimary }}>Apply for Financing</h1>
                   </div>
                   <div style={{ textAlign: 'right' }}>
-                    <p style={{ fontSize: 13, color: '#999' }}>Application ID</p>
-                    <p style={{ fontFamily: 'monospace', color: '#111', fontWeight: 600 }}>#APP-2025-00142</p>
+                    <p style={{ fontSize: 13, color: theme.textMuted }}>Application ID</p>
+                    <p style={{ fontFamily: 'monospace', color: theme.textPrimary, fontWeight: 600 }}>#APP-2025-00142</p>
                   </div>
                 </div>
 

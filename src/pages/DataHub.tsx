@@ -5,6 +5,7 @@ import {
   Upload, Plus, ChevronDown, Filter, CheckCircle2, AlertCircle,
   FileText, TrendingUp, Landmark, Building2,
 } from 'lucide-react'
+import { useTheme } from '../ThemeContext'
 import Sidebar from '../components/layout/Sidebar'
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
@@ -84,17 +85,18 @@ function ProgressBar({ completed, total }: { completed: number; total: number })
 }
 
 function SectionCard({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+  const { theme } = useTheme()
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.4, ease: 'easeOut' }}
       style={{
-        background: '#fff',
-        border: '1px solid #E2E8F0',
+        background: theme.cardBg,
+        border: `1px solid ${theme.border}`,
         borderRadius: 12,
         padding: 28,
-        boxShadow: '0 1px 3px rgba(0,0,0,0.03)',
+        boxShadow: theme.shadow,
       }}
     >
       {children}
@@ -103,11 +105,12 @@ function SectionCard({ children, delay = 0 }: { children: React.ReactNode; delay
 }
 
 function DocCategoryRow({ cat }: { cat: DocCategory }) {
+  const { theme } = useTheme()
   const [expanded, setExpanded] = useState(false)
   const Icon = cat.icon
 
   return (
-    <div style={{ borderTop: '1px solid #F1F5F9' }}>
+    <div style={{ borderTop: `1px solid ${theme.borderLight}` }}>
       <button
         onClick={() => setExpanded(!expanded)}
         style={{
@@ -122,7 +125,7 @@ function DocCategoryRow({ cat }: { cat: DocCategory }) {
           <Icon size={18} color={cat.iconColor} />
         </div>
         <div style={{ flex: 1, textAlign: 'left' }}>
-          <p style={{ fontSize: 14, fontWeight: 600, color: '#0F172A', marginBottom: 4 }}>{cat.label}</p>
+          <p style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary, marginBottom: 4 }}>{cat.label}</p>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <div style={{ width: 80, height: 4, borderRadius: 2, background: '#E2E8F0' }}>
               <div style={{
@@ -130,7 +133,7 @@ function DocCategoryRow({ cat }: { cat: DocCategory }) {
                 height: 4, borderRadius: 2, background: cat.completed > 0 ? '#2563EB' : '#E2E8F0',
               }} />
             </div>
-            <span style={{ fontSize: 12, color: '#94A3B8' }}>{cat.completed} / {cat.total}</span>
+            <span style={{ fontSize: 12, color: theme.textMuted }}>{cat.completed} / {cat.total}</span>
           </div>
         </div>
         <ChevronDown
@@ -157,7 +160,7 @@ function DocCategoryRow({ cat }: { cat: DocCategory }) {
                   ) : (
                     <div style={{ width: 16, height: 16, borderRadius: '50%', border: '1.5px solid #CBD5E1' }} />
                   )}
-                  <span style={{ color: doc.status === 'uploaded' ? '#0F172A' : '#94A3B8' }}>{doc.name}</span>
+                  <span style={{ color: doc.status === 'uploaded' ? theme.textPrimary : theme.textMuted }}>{doc.name}</span>
                   {doc.status === 'uploaded' && (
                     <span style={{ fontSize: 11, color: '#2563EB', fontWeight: 600 }}>Uploaded</span>
                   )}
@@ -174,6 +177,7 @@ function DocCategoryRow({ cat }: { cat: DocCategory }) {
 /* ─── Page ─── */
 
 export default function DataHub() {
+  const { theme } = useTheme()
   const [searchParams] = useSearchParams()
   const stateParam = searchParams.get('state')
   const verified = stateParam === 'verified' || searchParams.get('verified') === 'true'
@@ -190,9 +194,9 @@ export default function DataHub() {
       <main style={{
         marginLeft: sidebarCollapsed ? 72 : 240,
         transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-        flex: 1, minWidth: 0, overflow: 'hidden', minHeight: '100vh', background: '#F8FAFC', padding: 0,
+        flex: 1, minWidth: 0, overflow: 'hidden', minHeight: '100vh', background: theme.bgPrimary, padding: 0,
       }}>
-        <div style={{ background: '#F8FAFC', minHeight: '100vh', padding: '28px 32px', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ background: theme.bgPrimary, minHeight: '100vh', padding: '28px 32px', display: 'flex', flexDirection: 'column' }}>
           <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 20 }}>
             <Header />
 
@@ -207,8 +211,8 @@ export default function DataHub() {
                     <Upload size={20} color="#2563EB" />
                   </div>
                   <div>
-                    <h3 style={{ fontSize: 17, fontWeight: 700, color: '#0F172A', marginBottom: 4 }}>Upload Documents</h3>
-                    <p style={{ fontSize: 13, color: '#94A3B8' }}>Upload the required documents to complete your financing application.</p>
+                    <h3 style={{ fontSize: 17, fontWeight: 700, color: theme.textPrimary, marginBottom: 4 }}>Upload Documents</h3>
+                    <p style={{ fontSize: 13, color: theme.textMuted }}>Upload the required documents to complete your financing application.</p>
                   </div>
                 </div>
                 <button style={{
@@ -254,7 +258,7 @@ export default function DataHub() {
               {/* Progress bar */}
               <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
                 <ProgressBar completed={totalCompleted} total={totalDocs} />
-                <span style={{ fontSize: 13, color: '#94A3B8', whiteSpace: 'nowrap' }}>{totalCompleted} / {totalDocs} completed</span>
+                <span style={{ fontSize: 13, color: theme.textMuted, whiteSpace: 'nowrap' }}>{totalCompleted} / {totalDocs} completed</span>
               </div>
             </SectionCard>
 
@@ -269,8 +273,8 @@ export default function DataHub() {
                     <Landmark size={20} color="#2563EB" />
                   </div>
                   <div>
-                    <h3 style={{ fontSize: 17, fontWeight: 700, color: '#0F172A', marginBottom: 4 }}>Bank Connections</h3>
-                    <p style={{ fontSize: 13, color: '#94A3B8' }}>Connect and manage your bank accounts</p>
+                    <h3 style={{ fontSize: 17, fontWeight: 700, color: theme.textPrimary, marginBottom: 4 }}>Bank Connections</h3>
+                    <p style={{ fontSize: 13, color: theme.textMuted }}>Connect and manage your bank accounts</p>
                   </div>
                 </div>
                 <button style={{
@@ -288,9 +292,9 @@ export default function DataHub() {
                   const isConnected = bank.status === 'connected'
                   return (
                     <div key={bank.name} style={{
-                      border: `1px solid ${isConnected ? '#E2E8F0' : '#FDE68A'}`,
+                      border: `1px solid ${isConnected ? theme.border : '#FDE68A'}`,
                       borderRadius: 12, padding: 20,
-                      background: isConnected ? '#fff' : '#FFFBEB',
+                      background: isConnected ? theme.cardBg : '#FFFBEB',
                     }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
                         <div style={{
@@ -300,7 +304,7 @@ export default function DataHub() {
                           <Landmark size={18} color="#64748B" />
                         </div>
                         <div>
-                          <p style={{ fontSize: 14, fontWeight: 600, color: '#0F172A' }}>{bank.name}</p>
+                          <p style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary }}>{bank.name}</p>
                           <p style={{ fontSize: 12, color: isConnected ? '#94A3B8' : '#D97706' }}>{bank.syncInfo}</p>
                         </div>
                       </div>
@@ -334,8 +338,8 @@ export default function DataHub() {
                     <FileText size={20} color="#2563EB" />
                   </div>
                   <div>
-                    <h3 style={{ fontSize: 17, fontWeight: 700, color: '#0F172A', marginBottom: 4 }}>Required Documents</h3>
-                    <p style={{ fontSize: 13, color: '#94A3B8' }}>You still have {totalDocs - totalCompleted} documents to upload</p>
+                    <h3 style={{ fontSize: 17, fontWeight: 700, color: theme.textPrimary, marginBottom: 4 }}>Required Documents</h3>
+                    <p style={{ fontSize: 13, color: theme.textMuted }}>You still have {totalDocs - totalCompleted} documents to upload</p>
                   </div>
                 </div>
                 <button

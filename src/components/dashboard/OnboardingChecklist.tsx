@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { StepCompleteIcon, StepCurrentIcon, StepUpcomingIcon, ChevronUpIcon, ChevronDownIcon, ArrowRightIcon } from '../icons/WidgetIcons'
+import { useTheme } from '../../ThemeContext'
 
 const steps = [
   {
@@ -33,20 +34,21 @@ const steps = [
 export default function OnboardingChecklist() {
   const navigate = useNavigate()
   const [minimized, setMinimized] = useState(false)
+  const { theme } = useTheme()
 
   const completed = steps.filter((s) => s.status === 'completed').length
   const total = steps.length
   const percent = Math.round((completed / total) * 100)
 
   return (
-    <div style={cardStyle}>
+    <div style={{ background: theme.cardBg, border: `1px solid ${theme.border}`, borderRadius: 12, padding: '20px 22px' }}>
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: minimized ? 0 : 4 }}>
-        <h3 style={{ fontSize: 15, fontWeight: 600, color: '#1E293B', margin: 0 }}>Complete Your Profile</h3>
+        <h3 style={{ fontSize: 15, fontWeight: 600, color: theme.textPrimary, margin: 0 }}>Complete Your Profile</h3>
         <button
           onClick={() => setMinimized((v) => !v)}
           style={{
-            background: '#F1F5F9',
+            background: theme.borderLight,
             border: 'none',
             borderRadius: 6,
             width: 28,
@@ -62,7 +64,7 @@ export default function OnboardingChecklist() {
       </div>
 
       {!minimized && (
-        <p style={{ fontSize: 12, color: '#64748B', margin: '0 0 16px' }}>
+        <p style={{ fontSize: 12, color: theme.textSecondary, margin: '0 0 16px' }}>
           Finish setup to unlock financing options
         </p>
       )}
@@ -78,7 +80,7 @@ export default function OnboardingChecklist() {
           >
             {/* Progress bar */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
-              <div style={{ flex: 1, height: 6, background: '#E2E8F0', borderRadius: 3 }}>
+              <div style={{ flex: 1, height: 6, background: theme.border, borderRadius: 3 }}>
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${percent}%` }}
@@ -86,7 +88,7 @@ export default function OnboardingChecklist() {
                   style={{ height: '100%', background: '#2563EB', borderRadius: 3 }}
                 />
               </div>
-              <span style={{ fontSize: 12, fontWeight: 600, color: '#1E293B', flexShrink: 0 }}>{completed}/{total} Complete</span>
+              <span style={{ fontSize: 12, fontWeight: 600, color: theme.textPrimary, flexShrink: 0 }}>{completed}/{total} Complete</span>
             </div>
 
             {/* Step list */}
@@ -125,7 +127,7 @@ export default function OnboardingChecklist() {
                           flex: 1,
                           fontSize: 13,
                           fontWeight: isCurrent ? 600 : 400,
-                          color: isCompleted ? '#94A3B8' : isCurrent ? '#1E293B' : '#64748B',
+                          color: isCompleted ? theme.textMuted : isCurrent ? theme.textPrimary : theme.textSecondary,
                           textDecoration: isCompleted ? 'line-through' : 'none',
                         }}
                       >
@@ -150,7 +152,7 @@ export default function OnboardingChecklist() {
                           borderRadius: '0 0 10px 10px',
                         }}
                       >
-                        <p style={{ fontSize: 12, color: '#64748B', lineHeight: 1.5, margin: '0 0 10px' }}>
+                        <p style={{ fontSize: 12, color: theme.textSecondary, lineHeight: 1.5, margin: '0 0 10px' }}>
                           {step.description}
                         </p>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -194,9 +196,4 @@ export default function OnboardingChecklist() {
   )
 }
 
-const cardStyle: React.CSSProperties = {
-  background: '#FFFFFF',
-  border: '1px solid #E2E8F0',
-  borderRadius: 12,
-  padding: '20px 22px',
-}
+// cardStyle moved inline to use theme

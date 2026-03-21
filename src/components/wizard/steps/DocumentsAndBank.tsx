@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { ChevronUp, ChevronDown, Upload, FileCheck, X } from 'lucide-react'
+import { useTheme } from '../../../ThemeContext'
 import type { WizardData } from '../../../pages/RequestFinancing'
 
 interface Props {
@@ -31,14 +32,15 @@ function DocRow({ doc, uploaded, onUpload, onRemove }: {
   onUpload: () => void
   onRemove: () => void
 }) {
+  const { theme } = useTheme()
   return (
     <div style={{
       display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-      padding: '14px 20px', borderTop: '1px solid #F1F5F9',
+      padding: '14px 20px', borderTop: `1px solid ${theme.borderLight}`,
     }}>
       <div>
-        <p style={{ fontSize: 14, fontWeight: 500, color: '#0F172A', marginBottom: 2 }}>{doc.name}</p>
-        <p style={{ fontSize: 12, color: '#94A3B8' }}>{doc.description}</p>
+        <p style={{ fontSize: 14, fontWeight: 500, color: theme.textPrimary, marginBottom: 2 }}>{doc.name}</p>
+        <p style={{ fontSize: 12, color: theme.textMuted }}>{doc.description}</p>
       </div>
       {uploaded ? (
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -61,9 +63,9 @@ function DocRow({ doc, uploaded, onUpload, onRemove }: {
           onClick={onUpload}
           style={{
             display: 'flex', alignItems: 'center', gap: 6,
-            padding: '8px 16px', background: '#fff',
-            border: '1px solid #E2E8F0', borderRadius: 8,
-            fontSize: 13, color: '#475569', cursor: 'pointer',
+            padding: '8px 16px', background: theme.cardBg,
+            border: `1px solid ${theme.border}`, borderRadius: 8,
+            fontSize: 13, color: theme.textSecondary, cursor: 'pointer',
             transition: 'border-color 0.15s, color 0.15s',
           }}
           onMouseEnter={(e) => {
@@ -91,12 +93,13 @@ function DocGroup({ title, docs, uploadedDocs, onUpload, onRemove, defaultOpen =
   onRemove: (id: string) => void
   defaultOpen?: boolean
 }) {
+  const { theme } = useTheme()
   const [open, setOpen] = useState(defaultOpen)
   const uploadedCount = docs.filter((d) => uploadedDocs.includes(d.id)).length
 
   return (
     <div style={{
-      background: '#fff', border: '1px solid #E2E8F0', borderRadius: 14,
+      background: theme.cardBg, border: `1px solid ${theme.border}`, borderRadius: 14,
       overflow: 'hidden',
     }}>
       <button
@@ -109,8 +112,8 @@ function DocGroup({ title, docs, uploadedDocs, onUpload, onRemove, defaultOpen =
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <FileCheck size={18} color="#2563EB" />
-          <span style={{ fontSize: 15, fontWeight: 600, color: '#0F172A' }}>{title}</span>
-          <span style={{ fontSize: 12, color: '#94A3B8' }}>({uploadedCount}/{docs.length})</span>
+          <span style={{ fontSize: 15, fontWeight: 600, color: theme.textPrimary }}>{title}</span>
+          <span style={{ fontSize: 12, color: theme.textMuted }}>({uploadedCount}/{docs.length})</span>
         </div>
         {open ? <ChevronUp size={18} color="#94A3B8" /> : <ChevronDown size={18} color="#94A3B8" />}
       </button>
@@ -132,6 +135,7 @@ function DocGroup({ title, docs, uploadedDocs, onUpload, onRemove, defaultOpen =
 }
 
 export default function Documents({ data, onChange }: Props) {
+  const { theme } = useTheme()
   const totalDocs = legalDocs.length + financialDocs.length
   const uploadedCount = data.uploadedDocs.length
 
@@ -147,8 +151,8 @@ export default function Documents({ data, onChange }: Props) {
 
   return (
     <div>
-      <h2 style={{ fontSize: 24, fontWeight: 700, color: '#0F172A', marginBottom: 6, textAlign: 'center' }}>Required Documents</h2>
-      <p style={{ fontSize: 14, color: '#475569', marginBottom: 32, textAlign: 'center' }}>
+      <h2 style={{ fontSize: 24, fontWeight: 700, color: theme.textPrimary, marginBottom: 6, textAlign: 'center' }}>Required Documents</h2>
+      <p style={{ fontSize: 14, color: theme.textSecondary, marginBottom: 32, textAlign: 'center' }}>
         Upload your business documents to proceed ({uploadedCount}/{totalDocs} uploaded)
       </p>
 

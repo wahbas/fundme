@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import { useTheme } from './ThemeContext'
 import Sidebar from './components/layout/Sidebar'
 import Header from './components/layout/Header'
 import OnboardingChecklist from './components/dashboard/OnboardingChecklist'
@@ -13,6 +14,8 @@ import FinancingProducts from './components/dashboard/FinancingProducts'
 import HowFundMeWorks from './components/dashboard/HowFundMeWorks'
 import SupportWidget from './components/dashboard/SupportWidget'
 import FloatingHelpButton from './components/dashboard/FloatingHelpButton'
+import MakePaymentModal from './components/dashboard/MakePaymentModal'
+import ContactSupportModal from './components/dashboard/ContactSupportModal'
 import Footer from './components/layout/Footer'
 
 export type UserState = 'first-time' | 'verified'
@@ -23,12 +26,15 @@ const DEMO_BUTTONS: { state: UserState; label: string; activeColor: string }[] =
 ]
 
 function App() {
+  const { theme } = useTheme()
   const [searchParams, setSearchParams] = useSearchParams()
   const stateParam = searchParams.get('state') as UserState | null
   const legacyVerified = searchParams.get('verified') === 'true'
   const userState: UserState = stateParam === 'verified' || legacyVerified ? 'verified' : 'first-time'
   const hasSubmitted = searchParams.get('submitted') === 'true'
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const [paymentModalOpen, setPaymentModalOpen] = useState(false)
+  const [supportModalOpen, setSupportModalOpen] = useState(false)
 
   function setUserState(s: UserState) {
     setSearchParams(s === 'first-time' ? {} : { state: s })
@@ -48,13 +54,13 @@ function App() {
           minWidth: 0,
           overflow: 'hidden',
           minHeight: '100vh',
-          background: '#F8FAFC',
+          background: theme.bgPrimary,
           padding: 0,
         }}
       >
         <div
           style={{
-            background: '#F8FAFC',
+            background: theme.bgPrimary,
             borderRadius: 0,
             minHeight: '100vh',
             padding: '28px 32px',
@@ -75,12 +81,12 @@ function App() {
                 gap: 6,
                 marginBottom: 24,
                 padding: '4px 6px',
-                background: '#fff',
+                background: theme.cardBg,
                 borderRadius: 20,
-                border: '1px dashed #E2E8F0',
+                border: `1px dashed ${theme.border}`,
               }}
             >
-              <span style={{ fontSize: 11, color: '#94A3B8', fontWeight: 500, paddingLeft: 8 }}>Demo:</span>
+              <span style={{ fontSize: 11, color: theme.textMuted, fontWeight: 500, paddingLeft: 8 }}>Demo:</span>
               {DEMO_BUTTONS.map((btn) => (
                 <button
                   key={btn.state}
@@ -91,7 +97,7 @@ function App() {
                     fontWeight: 600,
                     borderRadius: 14,
                     background: userState === btn.state ? btn.activeColor : 'transparent',
-                    color: userState === btn.state ? '#fff' : '#94A3B8',
+                    color: userState === btn.state ? '#fff' : theme.textMuted,
                     border: 'none',
                     cursor: 'pointer',
                     transition: 'background 0.15s, color 0.15s',
@@ -105,15 +111,15 @@ function App() {
             {verified ? (
               <>
                 <QuickStats hasLoans={hasSubmitted} />
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: 20, alignItems: 'start' }}>
+                <div className="dashboard-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: 20, alignItems: 'start' }}>
                   {/* Left column — scrolls naturally */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
                     {hasSubmitted ? <RecentApplication /> : <FinancingOptions />}
-                    <RepaymentSchedule />
+                    <RepaymentSchedule onPayClick={() => setPaymentModalOpen(true)} />
                   </div>
                   {/* Right column — sticky on scroll */}
                   <div style={{ position: 'sticky', top: 28, display: 'flex', flexDirection: 'column', gap: 20 }}>
-                    <QuickActions />
+                    <QuickActions onContactSupport={() => setSupportModalOpen(true)} />
                     <SupportCards verified />
                   </div>
                 </div>
@@ -122,19 +128,19 @@ function App() {
               /* First-time user: widget-based dashboard grid */
               <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
                 {/* Row 1: Complete Profile (75%) + Support (25%) */}
-                <div style={{ display: 'grid', gridTemplateColumns: '3fr 1fr', gap: 20 }}>
+                <div className="onboarding-grid" style={{ display: 'grid', gridTemplateColumns: '3fr 1fr', gap: 20 }}>
                   <OnboardingChecklist />
                   <SupportWidget />
                 </div>
 
                 {/* Spacer divider */}
-                <div style={{ height: 1, background: '#E2E8F0' }} />
+                <div style={{ height: 1, background: theme.border }} />
 
                 {/* Row 2: Financing Products (full width) */}
                 <FinancingProducts />
 
                 {/* Spacer divider */}
-                <div style={{ height: 1, background: '#E2E8F0' }} />
+                <div style={{ height: 1, background: theme.border }} />
 
                 {/* Row 3: How FundMe Works (full width) */}
                 <HowFundMeWorks />
@@ -147,6 +153,10 @@ function App() {
 
       {/* Floating help button — always visible */}
       <FloatingHelpButton />
+
+      {/* Modals */}
+      <MakePaymentModal open={paymentModalOpen} onClose={() => setPaymentModalOpen(false)} />
+      <ContactSupportModal open={supportModalOpen} onClose={() => setSupportModalOpen(false)} />
     </div>
   )
 }

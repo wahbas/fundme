@@ -4,7 +4,9 @@ import {
   Wallet, Search, XCircle, AlertCircle, RefreshCw,
 } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { useTheme } from '../../../ThemeContext'
 import type { BankConnectionData, SupportedBank } from '../types'
+import RiyalSign from '../../icons/RiyalSign'
 import {
   AlRajhiLogo, SNBLogo, SABBLogo, RiyadBankLogo, AlinmaLogo,
   BSFLogo, ANBLogo, AlbiladLogo, AlJaziraLogo,
@@ -56,7 +58,7 @@ const MOCK_ACCOUNTS: MockAccount[] = [
     iban: 'SA0380000000608010167519',
     type: 'current',
     holderName: 'Al-Mansour Trading Co.',
-    currency: 'SAR',
+    currency: 'ر.س',
     balance: 125000,
   },
   {
@@ -65,7 +67,7 @@ const MOCK_ACCOUNTS: MockAccount[] = [
     iban: 'SA0380000000608010167620',
     type: 'savings',
     holderName: 'Al-Mansour Trading Co.',
-    currency: 'SAR',
+    currency: 'ر.س',
     balance: 48500,
   },
 ]
@@ -103,6 +105,7 @@ function BankLogo({ bank, size = 40 }: { bank: SupportedBank; size?: number }) {
 // ─── Screens ────────────────────────────────────────────────
 
 function SelectBankScreen({ onSelect }: { onSelect: (bank: SupportedBank) => void }) {
+  const { theme } = useTheme()
   const [search, setSearch] = useState('')
   const [selectedId, setSelectedId] = useState<string | null>(null)
 
@@ -116,7 +119,7 @@ function SelectBankScreen({ onSelect }: { onSelect: (bank: SupportedBank) => voi
   return (
     <div style={{ padding: '16px 0' }}>
       <div style={{ textAlign: 'center', marginBottom: 24 }}>
-        <h2 style={{ fontSize: 22, fontWeight: 700, color: '#111827', marginBottom: 6 }}>Select Your Bank</h2>
+        <h2 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary, marginBottom: 6 }}>Select Your Bank</h2>
         <p style={{ fontSize: 14, color: '#6B7280' }}>Choose your business bank account provider</p>
       </div>
 
@@ -129,7 +132,7 @@ function SelectBankScreen({ onSelect }: { onSelect: (bank: SupportedBank) => voi
           placeholder="Search banks..."
           style={{
             width: '100%', padding: '12px 16px 12px 42px', fontSize: 14, borderRadius: 10,
-            border: '1.5px solid #E5E7EB', outline: 'none', background: '#FAFAFA',
+            border: `1.5px solid ${theme.border}`, outline: 'none', background: theme.inputBg,
             boxSizing: 'border-box',
           }}
         />
@@ -149,8 +152,8 @@ function SelectBankScreen({ onSelect }: { onSelect: (bank: SupportedBank) => voi
                   onClick={() => setSelectedId(bank.id)}
                   style={{
                     padding: 14, borderRadius: 12, cursor: 'pointer', textAlign: 'left',
-                    border: `2px solid ${active ? '#0D82F9' : '#E5E7EB'}`,
-                    background: active ? '#EFF6FF' : '#fff',
+                    border: `2px solid ${active ? '#0D82F9' : theme.border}`,
+                    background: active ? '#EFF6FF' : theme.cardBg,
                     display: 'flex', alignItems: 'center', gap: 10,
                     transition: 'border-color 0.2s, background 0.2s',
                   }}
@@ -181,8 +184,8 @@ function SelectBankScreen({ onSelect }: { onSelect: (bank: SupportedBank) => voi
                   onClick={() => setSelectedId(bank.id)}
                   style={{
                     padding: '12px 14px', borderRadius: 10, cursor: 'pointer',
-                    border: `1.5px solid ${active ? '#0D82F9' : '#E5E7EB'}`,
-                    background: active ? '#EFF6FF' : '#fff',
+                    border: `1.5px solid ${active ? '#0D82F9' : theme.border}`,
+                    background: active ? '#EFF6FF' : theme.cardBg,
                     display: 'flex', alignItems: 'center', gap: 12,
                     transition: 'border-color 0.2s, background 0.2s',
                   }}
@@ -302,6 +305,7 @@ function SelectAccountScreen({
   accounts: MockAccount[]
   onSelect: (account: MockAccount) => void
 }) {
+  const { theme } = useTheme()
   const [selectedId, setSelectedId] = useState<string | null>(null)
 
   function maskIban(iban: string) {
@@ -321,7 +325,7 @@ function SelectAccountScreen({
         >
           <CheckCircle2 size={32} color="#047857" />
         </motion.div>
-        <h2 style={{ fontSize: 22, fontWeight: 700, color: '#111827', marginBottom: 6 }}>Bank Connected!</h2>
+        <h2 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary, marginBottom: 6 }}>Bank Connected!</h2>
         <p style={{ fontSize: 14, color: '#6B7280' }}>Select the account you want to use for financing</p>
       </div>
 
@@ -374,7 +378,7 @@ function SelectAccountScreen({
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontSize: 12, color: '#9CA3AF', fontFamily: 'monospace' }}>{maskIban(acc.iban)}</span>
                 <span style={{ fontSize: 14, fontWeight: 700, color: '#111827' }}>
-                  {acc.balance.toLocaleString()} <span style={{ fontSize: 11, fontWeight: 400, color: '#9CA3AF' }}>SAR</span>
+                  {acc.balance.toLocaleString()} <span style={{ fontSize: 11, fontWeight: 400, color: '#9CA3AF' }}><RiyalSign size="sm" /></span>
                 </span>
               </div>
             </motion.button>

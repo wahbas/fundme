@@ -1,5 +1,6 @@
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import { useState } from 'react'
+import { useTheme } from '../../../ThemeContext'
 
 interface ReviewSectionProps {
   title: string
@@ -8,9 +9,10 @@ interface ReviewSectionProps {
 }
 
 export default function ReviewSection({ title, onEdit, items }: ReviewSectionProps) {
+  const { theme } = useTheme()
   const [open, setOpen] = useState(true)
   return (
-    <div style={{ border: '1px solid #E5E7EB', borderRadius: 12, overflow: 'hidden' }}>
+    <div style={{ border: `1px solid ${theme.border}`, borderRadius: 12, overflow: 'hidden' }}>
       <button
         onClick={() => setOpen((o) => !o)}
         style={{
@@ -19,12 +21,12 @@ export default function ReviewSection({ title, onEdit, items }: ReviewSectionPro
           justifyContent: 'space-between',
           width: '100%',
           padding: '14px 18px',
-          background: '#F9FAFB',
+          background: theme.bgPrimary,
           border: 'none',
           cursor: 'pointer',
         }}
       >
-        <span style={{ fontSize: 14, fontWeight: 600, color: '#111' }}>{title}</span>
+        <span style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary }}>{title}</span>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           {onEdit && (
             <span
@@ -34,15 +36,15 @@ export default function ReviewSection({ title, onEdit, items }: ReviewSectionPro
               Edit
             </span>
           )}
-          {open ? <ChevronUp size={16} color="#888" /> : <ChevronDown size={16} color="#888" />}
+          {open ? <ChevronUp size={16} color={theme.textMuted} /> : <ChevronDown size={16} color={theme.textMuted} />}
         </div>
       </button>
       {open && (
-        <div style={{ padding: '14px 18px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <div style={{ padding: '14px 18px', background: theme.cardBg, display: 'flex', flexDirection: 'column', gap: 10 }}>
           {items.map((item) => (
             <div key={item.label} style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13 }}>
-              <span style={{ color: '#888' }}>{item.label}</span>
-              <span style={{ fontWeight: 500, color: '#111' }}>{item.value}</span>
+              <span style={{ color: theme.textMuted }}>{item.label}</span>
+              <span style={{ fontWeight: 500, color: theme.textPrimary }}>{item.value}</span>
             </div>
           ))}
         </div>

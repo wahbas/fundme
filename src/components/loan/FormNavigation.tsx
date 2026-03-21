@@ -1,4 +1,5 @@
 import { ArrowLeft, ArrowRight, Send } from 'lucide-react'
+import { useTheme } from '../../ThemeContext'
 
 interface FormNavigationProps {
   currentStep: number
@@ -9,6 +10,7 @@ interface FormNavigationProps {
 }
 
 export default function FormNavigation({ currentStep, totalSteps, onNext, onBack, onSubmit }: FormNavigationProps) {
+  const { theme } = useTheme()
   return (
     <div
       style={{
@@ -17,7 +19,7 @@ export default function FormNavigation({ currentStep, totalSteps, onNext, onBack
         alignItems: 'center',
         marginTop: 40,
         paddingTop: 24,
-        borderTop: '1px solid #F0F0F0',
+        borderTop: `1px solid ${theme.borderLight}`,
       }}
     >
       {currentStep > 1 ? (
@@ -28,7 +30,7 @@ export default function FormNavigation({ currentStep, totalSteps, onNext, onBack
             alignItems: 'center',
             gap: 8,
             padding: '12px 24px',
-            color: '#555',
+            color: theme.textSecondary,
             fontSize: 14,
             fontWeight: 500,
             background: 'none',

@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { Plus } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useTheme } from '../../../ThemeContext'
 import type { WizardData } from '../../../pages/RequestFinancing'
+import RiyalSign from '../../icons/RiyalSign'
 
 interface Props {
   data: WizardData
@@ -57,7 +59,10 @@ function CalendarIcon() {
 }
 
 export default function InvoiceDetails({ data, onChange }: Props) {
+  const { theme } = useTheme()
   const [customMode, setCustomMode] = useState<Record<string, boolean>>({})
+  const [showManualForm, setShowManualForm] = useState(false)
+  const [manualInvoice, setManualInvoice] = useState({ number: '', client: '', amount: '', dueDate: '' })
   const selected = new Set(data.selectedBills)
   const selectedCount = selected.size
 
@@ -88,16 +93,16 @@ export default function InvoiceDetails({ data, onChange }: Props) {
         display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 20,
         padding: '10px 16px', background: 'rgba(37,99,235,0.04)', borderRadius: 10,
       }}>
-        <span style={{ fontSize: 13, color: '#475569' }}>Adding invoices from:</span>
-        <span style={{ fontSize: 13, fontWeight: 700, color: '#0F172A' }}>{data.biller}</span>
+        <span style={{ fontSize: 13, color: theme.textSecondary }}>Adding invoices from:</span>
+        <span style={{ fontSize: 13, fontWeight: 700, color: theme.textPrimary }}>{data.biller}</span>
       </div>
 
-      <h2 style={{ fontSize: 24, fontWeight: 700, color: '#0F172A', marginBottom: 6, textAlign: 'center' }}>Enter Invoice Details</h2>
-      <p style={{ fontSize: 14, color: '#475569', marginBottom: 32, textAlign: 'center' }}>Provide the bill details you want to finance</p>
+      <h2 style={{ fontSize: 24, fontWeight: 700, color: theme.textPrimary, marginBottom: 6, textAlign: 'center' }}>Enter Invoice Details</h2>
+      <p style={{ fontSize: 14, color: theme.textSecondary, marginBottom: 32, textAlign: 'center' }}>Provide the bill details you want to finance</p>
 
       {/* Suggested bills header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
-        <h3 style={{ fontSize: 15, fontWeight: 700, color: '#0F172A' }}>Suggested Bills</h3>
+        <h3 style={{ fontSize: 15, fontWeight: 700, color: theme.textPrimary }}>Suggested Bills</h3>
         {selectedCount > 0 && (
           <span style={{ fontSize: 13, color: '#2563EB', fontWeight: 500 }}>{selectedCount} selected</span>
         )}
@@ -121,8 +126,8 @@ export default function InvoiceDetails({ data, onChange }: Props) {
               key={bill.id}
               layout
               style={{
-                background: '#fff',
-                border: isSelected ? '2px solid #2563EB' : '1.5px solid #E2E8F0',
+                background: theme.cardBg,
+                border: isSelected ? '2px solid #2563EB' : `1.5px solid ${theme.border}`,
                 borderRadius: 14,
                 overflow: 'hidden',
                 cursor: 'pointer',
@@ -131,13 +136,13 @@ export default function InvoiceDetails({ data, onChange }: Props) {
               }}
               onMouseEnter={(e) => {
                 if (!isSelected) {
-                  e.currentTarget.style.borderColor = '#CBD5E1'
+                  e.currentTarget.style.borderColor = theme.textMuted
                   e.currentTarget.style.boxShadow = '0 2px 12px rgba(0,0,0,0.04)'
                 }
               }}
               onMouseLeave={(e) => {
                 if (!isSelected) {
-                  e.currentTarget.style.borderColor = '#E2E8F0'
+                  e.currentTarget.style.borderColor = theme.border
                   e.currentTarget.style.boxShadow = 'none'
                 }
               }}
@@ -167,8 +172,8 @@ export default function InvoiceDetails({ data, onChange }: Props) {
                 {/* Bill info (middle) */}
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <span style={{ fontSize: 15, fontWeight: 700, color: '#0F172A' }}>{data.biller}</span>
-                    <span style={{ fontSize: 12, fontWeight: 500, color: '#94A3B8', fontFamily: 'monospace' }}>{bill.billNumber}</span>
+                    <span style={{ fontSize: 15, fontWeight: 700, color: theme.textPrimary }}>{data.biller}</span>
+                    <span style={{ fontSize: 12, fontWeight: 500, color: theme.textMuted, fontFamily: 'monospace' }}>{bill.billNumber}</span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginTop: 8 }}>
                     <span style={{
@@ -181,17 +186,17 @@ export default function InvoiceDetails({ data, onChange }: Props) {
                     </span>
                     <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
                       <CalendarIcon />
-                      <span style={{ fontSize: 12, color: '#475569' }}>Due {bill.dueDate}</span>
+                      <span style={{ fontSize: 12, color: theme.textSecondary }}>Due {bill.dueDate}</span>
                     </span>
                   </div>
                 </div>
 
                 {/* Amount (right) */}
                 <div style={{ minWidth: 100, textAlign: 'right', flexShrink: 0 }}>
-                  <p style={{ fontSize: 20, fontWeight: 700, color: '#0F172A', lineHeight: 1.2 }}>
+                  <p style={{ fontSize: 20, fontWeight: 700, color: theme.textPrimary, lineHeight: 1.2 }}>
                     {bill.amount.toLocaleString()}
                   </p>
-                  <p style={{ fontSize: 12, fontWeight: 500, color: '#94A3B8', marginTop: 3 }}>SAR</p>
+                  <p style={{ fontSize: 12, fontWeight: 500, color: theme.textMuted, marginTop: 3 }}><RiyalSign size="sm" /></p>
                 </div>
               </div>
 
@@ -208,20 +213,20 @@ export default function InvoiceDetails({ data, onChange }: Props) {
                     <div
                       onClick={(e) => e.stopPropagation()}
                       style={{
-                        borderTop: '1px solid #F1F5F9',
+                        borderTop: `1px solid ${theme.borderLight}`,
                         padding: '20px 24px 24px',
                         paddingLeft: 56,
-                        background: '#FAFBFC',
+                        background: theme.bgPrimary,
                       }}
                     >
-                      <p style={{ fontSize: 12, fontWeight: 600, color: '#475569', marginBottom: 14 }}>
+                      <p style={{ fontSize: 12, fontWeight: 600, color: theme.textSecondary, marginBottom: 14 }}>
                         How much do you want to finance?
                       </p>
 
                       {/* Split bar */}
                       <div style={{
                         display: 'flex', height: 44, borderRadius: 10,
-                        overflow: 'hidden', background: '#E2E8F0', marginBottom: 12,
+                        overflow: 'hidden', background: theme.border, marginBottom: 12,
                       }}>
                         {/* Financed (blue) */}
                         <motion.div
@@ -234,14 +239,14 @@ export default function InvoiceDetails({ data, onChange }: Props) {
                             overflow: 'hidden', whiteSpace: 'nowrap',
                           }}
                         >
-                          {financedAmount.toLocaleString()} SAR
+                          {financedAmount.toLocaleString()}<RiyalSign size="sm" color="#FFFFFF" />
                         </motion.div>
                         {/* Divider */}
-                        <div style={{ width: 4, background: '#fff', flexShrink: 0 }} />
+                        <div style={{ width: 4, background: theme.cardBg, flexShrink: 0 }} />
                         {/* Remaining (gray) */}
                         <div style={{
                           flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                          color: '#94A3B8', fontSize: 13, fontWeight: 500,
+                          color: theme.textMuted, fontSize: 13, fontWeight: 500,
                           overflow: 'hidden', whiteSpace: 'nowrap',
                         }}>
                           {remaining > 0 ? `${remaining.toLocaleString()} remaining` : 'Full amount'}
@@ -252,13 +257,13 @@ export default function InvoiceDetails({ data, onChange }: Props) {
                       <div style={{
                         display: 'flex', justifyContent: 'space-between', marginBottom: 14,
                       }}>
-                        <span style={{ fontSize: 12, color: '#94A3B8' }}>
+                        <span style={{ fontSize: 12, color: theme.textMuted }}>
                           Financing{' '}
-                          <span style={{ fontWeight: 700, color: '#2563EB' }}>{financedAmount.toLocaleString()} SAR</span>
+                          <span style={{ fontWeight: 700, color: '#2563EB' }}>{financedAmount.toLocaleString()}<RiyalSign size="sm" color="#2563EB" /></span>
                         </span>
-                        <span style={{ fontSize: 12, color: '#94A3B8' }}>
+                        <span style={{ fontSize: 12, color: theme.textMuted }}>
                           Remaining{' '}
-                          <span style={{ fontWeight: 700, color: '#0F172A' }}>{remaining.toLocaleString()} SAR</span>
+                          <span style={{ fontWeight: 700, color: theme.textPrimary }}>{remaining.toLocaleString()}<RiyalSign size="sm" /></span>
                         </span>
                       </div>
 
@@ -294,7 +299,7 @@ export default function InvoiceDetails({ data, onChange }: Props) {
                                     }}
                                     onMouseLeave={(e) => {
                                       if (!isActive) {
-                                        e.currentTarget.style.borderColor = '#E2E8F0'
+                                        e.currentTarget.style.borderColor = theme.border
                                         e.currentTarget.style.color = '#475569'
                                       }
                                     }}
@@ -323,7 +328,7 @@ export default function InvoiceDetails({ data, onChange }: Props) {
                                 }}
                                 onMouseLeave={(e) => {
                                   if (!isCustom) {
-                                    e.currentTarget.style.borderColor = '#E2E8F0'
+                                    e.currentTarget.style.borderColor = theme.border
                                     e.currentTarget.style.color = '#475569'
                                   }
                                 }}
@@ -341,8 +346,8 @@ export default function InvoiceDetails({ data, onChange }: Props) {
                                   exit={{ opacity: 0, height: 0 }}
                                   style={{ marginTop: 12, overflow: 'hidden' }}
                                 >
-                                  <label style={{ fontSize: 12, fontWeight: 600, color: '#475569', display: 'block', marginBottom: 6 }}>
-                                    Enter amount (SAR)
+                                  <label style={{ fontSize: 12, fontWeight: 600, color: theme.textSecondary, display: 'block', marginBottom: 6 }}>
+                                    Enter amount (<RiyalSign size="sm" />)
                                   </label>
                                   <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                                     <input
@@ -356,8 +361,8 @@ export default function InvoiceDetails({ data, onChange }: Props) {
                                       }}
                                       style={{
                                         width: 180, padding: '10px 14px',
-                                        border: '1.5px solid #E2E8F0', borderRadius: 8,
-                                        fontSize: 14, color: '#0F172A', outline: 'none',
+                                        border: `1.5px solid ${theme.border}`, borderRadius: 8,
+                                        fontSize: 14, color: theme.textPrimary, outline: 'none',
                                         transition: 'border-color 0.15s, box-shadow 0.15s',
                                       }}
                                       onFocus={(e) => {
@@ -369,8 +374,8 @@ export default function InvoiceDetails({ data, onChange }: Props) {
                                         e.target.style.boxShadow = 'none'
                                       }}
                                     />
-                                    <span style={{ fontSize: 12, color: '#94A3B8' }}>
-                                      of {bill.amount.toLocaleString()} SAR
+                                    <span style={{ fontSize: 12, color: theme.textMuted }}>
+                                      of {bill.amount.toLocaleString()}<RiyalSign size="sm" />
                                     </span>
                                   </div>
                                 </motion.div>
@@ -401,19 +406,19 @@ export default function InvoiceDetails({ data, onChange }: Props) {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             style={{
-              background: '#fff', border: '1.5px solid #E2E8F0', borderRadius: 14,
+              background: theme.cardBg, border: `1.5px solid ${theme.border}`, borderRadius: 14,
               padding: '18px 24px', marginBottom: 28,
               display: 'flex', alignItems: 'center', justifyContent: 'space-between',
             }}
           >
             <div>
-              <p style={{ fontSize: 12, color: '#94A3B8', marginBottom: 4 }}>Total Financing Amount</p>
-              <p style={{ fontSize: 24, fontWeight: 700, color: '#0F172A' }}>
-                {totalFinanced.toLocaleString()} <span style={{ fontSize: 14, fontWeight: 500, color: '#94A3B8' }}>SAR</span>
+              <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 4 }}>Total Financing Amount</p>
+              <p style={{ fontSize: 24, fontWeight: 700, color: theme.textPrimary }}>
+                {totalFinanced.toLocaleString()} <span style={{ fontSize: 14, fontWeight: 500, color: theme.textMuted }}><RiyalSign size="lg" /></span>
               </p>
             </div>
             <div style={{ textAlign: 'right' }}>
-              <p style={{ fontSize: 12, color: '#94A3B8', marginBottom: 4 }}>
+              <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 4 }}>
                 from {selectedCount} invoice{selectedCount > 1 ? 's' : ''}
               </p>
               <p style={{ fontSize: 14, fontWeight: 600, color: totalFinanced === totalBillAmount ? '#059669' : '#2563EB' }}>
@@ -428,13 +433,14 @@ export default function InvoiceDetails({ data, onChange }: Props) {
       })()}
 
       {/* Manual invoice entry */}
-      <h3 style={{ fontSize: 15, fontWeight: 700, color: '#0F172A', marginBottom: 10 }}>Manual Invoice Entry</h3>
+      <h3 style={{ fontSize: 15, fontWeight: 700, color: theme.textPrimary, marginBottom: 10 }}>Manual Invoice Entry</h3>
       <button
+        onClick={() => setShowManualForm(f => !f)}
         style={{
           display: 'flex', alignItems: 'center', gap: 8,
-          padding: '10px 20px', background: '#fff',
-          border: '1px solid #E2E8F0', borderRadius: 10,
-          fontSize: 13, fontWeight: 600, color: '#475569', cursor: 'pointer',
+          padding: '10px 20px', background: theme.cardBg,
+          border: `1px solid ${theme.border}`, borderRadius: 10,
+          fontSize: 13, fontWeight: 600, color: theme.textSecondary, cursor: 'pointer',
           transition: 'border-color 0.15s, color 0.15s',
         }}
         onMouseEnter={(e) => {
@@ -442,13 +448,97 @@ export default function InvoiceDetails({ data, onChange }: Props) {
           e.currentTarget.style.color = '#2563EB'
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.borderColor = '#E2E8F0'
+          e.currentTarget.style.borderColor = theme.border
           e.currentTarget.style.color = '#475569'
         }}
       >
         <Plus size={16} />
         Add Invoice
       </button>
+
+      <AnimatePresence>
+        {showManualForm && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            style={{ overflow: 'hidden', marginTop: 12 }}
+          >
+            <div style={{ background: theme.cardBg, border: `1px solid ${theme.border}`, borderRadius: 12, padding: 20 }}>
+              <div style={{ marginBottom: 12 }}>
+                <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: theme.textMuted, marginBottom: 6 }}>Invoice Number</label>
+                <input
+                  type="text"
+                  placeholder="e.g. INV-2024-004"
+                  value={manualInvoice.number}
+                  onChange={e => setManualInvoice(m => ({ ...m, number: e.target.value }))}
+                  style={{ width: '100%', padding: '12px 14px', background: theme.inputBg, border: `1px solid ${theme.borderLight}`, borderRadius: 10, fontSize: 14, outline: 'none' }}
+                />
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: theme.textMuted, marginBottom: 6 }}>Client Name</label>
+                  <input
+                    type="text"
+                    placeholder="Client name"
+                    value={manualInvoice.client}
+                    onChange={e => setManualInvoice(m => ({ ...m, client: e.target.value }))}
+                    style={{ width: '100%', padding: '12px 14px', background: theme.inputBg, border: `1px solid ${theme.borderLight}`, borderRadius: 10, fontSize: 14, outline: 'none' }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: theme.textMuted, marginBottom: 6 }}>Amount (<RiyalSign size="sm" />)</label>
+                  <input
+                    type="number"
+                    placeholder="0"
+                    value={manualInvoice.amount}
+                    onChange={e => setManualInvoice(m => ({ ...m, amount: e.target.value }))}
+                    style={{ width: '100%', padding: '12px 14px', background: theme.inputBg, border: `1px solid ${theme.borderLight}`, borderRadius: 10, fontSize: 14, outline: 'none' }}
+                  />
+                </div>
+              </div>
+              <div style={{ marginBottom: 16 }}>
+                <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: theme.textMuted, marginBottom: 6 }}>Due Date</label>
+                <input
+                  type="date"
+                  value={manualInvoice.dueDate}
+                  onChange={e => setManualInvoice(m => ({ ...m, dueDate: e.target.value }))}
+                  style={{ width: '100%', padding: '12px 14px', background: theme.inputBg, border: `1px solid ${theme.borderLight}`, borderRadius: 10, fontSize: 14, outline: 'none' }}
+                />
+              </div>
+              <button
+                onClick={() => {
+                  if (!manualInvoice.number || !manualInvoice.amount) return
+                  const newBill: Bill = {
+                    id: 'manual-' + Date.now(),
+                    billNumber: manualInvoice.number,
+                    amount: Number(manualInvoice.amount),
+                    status: 'open',
+                    dueDate: manualInvoice.dueDate || 'TBD',
+                  }
+                  // Add to selected bills via onChange
+                  const currentSelected = data.selectedBills || []
+                  onChange({ selectedBills: [...currentSelected, newBill.id] })
+                  setManualInvoice({ number: '', client: '', amount: '', dueDate: '' })
+                  setShowManualForm(false)
+                }}
+                style={{
+                  width: '100%', height: 44, background: '#7CFF01', color: theme.textPrimary,
+                  fontWeight: 600, fontSize: 14, borderRadius: 10, border: 'none', cursor: 'pointer',
+                }}
+              >
+                Add Invoice
+              </button>
+              <p
+                onClick={() => setShowManualForm(false)}
+                style={{ textAlign: 'center', fontSize: 13, color: theme.textMuted, cursor: 'pointer', marginTop: 10 }}
+              >
+                Cancel
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

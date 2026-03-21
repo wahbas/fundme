@@ -1,5 +1,6 @@
 import { Shield, Building2, FileCheck, Zap, Clock } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { useTheme } from '../../../ThemeContext'
 import type { WizardData } from '../../../pages/RequestFinancing'
 
 interface Props {
@@ -8,22 +9,23 @@ interface Props {
 }
 
 export default function BankConnect({ data, onChange }: Props) {
+  const { theme } = useTheme()
   return (
     <div>
-      <h2 style={{ fontSize: 24, fontWeight: 700, color: '#0F172A', marginBottom: 6, textAlign: 'center' }}>
+      <h2 style={{ fontSize: 24, fontWeight: 700, color: theme.textPrimary, marginBottom: 6, textAlign: 'center' }}>
         Connect Your Bank Account
       </h2>
-      <p style={{ fontSize: 14, color: '#475569', marginBottom: 32, textAlign: 'center' }}>
+      <p style={{ fontSize: 14, color: theme.textSecondary, marginBottom: 32, textAlign: 'center' }}>
         Securely link your bank for faster processing
       </p>
 
-      <div style={{ background: '#fff', border: '1px solid #E2E8F0', borderRadius: 14, padding: 24 }}>
+      <div style={{ background: theme.cardBg, border: `1px solid ${theme.border}`, borderRadius: 14, padding: 24 }}>
         {/* Benefits */}
         <div style={{
-          background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: 12,
+          background: theme.bgPrimary, border: `1px solid ${theme.border}`, borderRadius: 12,
           padding: 20, marginBottom: 24,
         }}>
-          <p style={{ fontSize: 14, fontWeight: 600, color: '#0F172A', marginBottom: 16 }}>Why connect your bank?</p>
+          <p style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary, marginBottom: 16 }}>Why connect your bank?</p>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
@@ -34,8 +36,8 @@ export default function BankConnect({ data, onChange }: Props) {
                 <Shield size={18} color="#4F46E5" />
               </div>
               <div>
-                <p style={{ fontSize: 13, fontWeight: 600, color: '#0F172A', marginBottom: 2 }}>Secure & Encrypted</p>
-                <p style={{ fontSize: 12, color: '#94A3B8' }}>Your data is protected with bank-level encryption</p>
+                <p style={{ fontSize: 13, fontWeight: 600, color: theme.textPrimary, marginBottom: 2 }}>Secure & Encrypted</p>
+                <p style={{ fontSize: 12, color: theme.textMuted }}>Your data is protected with bank-level encryption</p>
               </div>
             </div>
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
@@ -46,8 +48,8 @@ export default function BankConnect({ data, onChange }: Props) {
                 <Zap size={18} color="#059669" />
               </div>
               <div>
-                <p style={{ fontSize: 13, fontWeight: 600, color: '#0F172A', marginBottom: 2 }}>Faster Approval</p>
-                <p style={{ fontSize: 12, color: '#94A3B8' }}>Automatic verification speeds up your application</p>
+                <p style={{ fontSize: 13, fontWeight: 600, color: theme.textPrimary, marginBottom: 2 }}>Faster Approval</p>
+                <p style={{ fontSize: 12, color: theme.textMuted }}>Automatic verification speeds up your application</p>
               </div>
             </div>
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
@@ -58,8 +60,8 @@ export default function BankConnect({ data, onChange }: Props) {
                 <Clock size={18} color="#B45309" />
               </div>
               <div>
-                <p style={{ fontSize: 13, fontWeight: 600, color: '#0F172A', marginBottom: 2 }}>Real-time Data</p>
-                <p style={{ fontSize: 12, color: '#94A3B8' }}>No need to manually upload bank statements</p>
+                <p style={{ fontSize: 13, fontWeight: 600, color: theme.textPrimary, marginBottom: 2 }}>Real-time Data</p>
+                <p style={{ fontSize: 12, color: theme.textMuted }}>No need to manually upload bank statements</p>
               </div>
             </div>
           </div>
@@ -97,7 +99,7 @@ export default function BankConnect({ data, onChange }: Props) {
 
         {/* Skip note */}
         {!data.bankConnected && (
-          <p style={{ fontSize: 12, color: '#94A3B8', textAlign: 'center', marginTop: 12 }}>
+          <p style={{ fontSize: 12, color: theme.textMuted, textAlign: 'center', marginTop: 12 }}>
             You can skip this step and upload statements manually instead
           </p>
         )}

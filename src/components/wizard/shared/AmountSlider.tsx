@@ -1,3 +1,6 @@
+import RiyalSign from '../../icons/RiyalSign'
+import { useTheme } from '../../../ThemeContext'
+
 interface AmountSliderProps {
   value: number
   min: number
@@ -7,12 +10,13 @@ interface AmountSliderProps {
 }
 
 export default function AmountSlider({ value, min, max, step = 10000, onChange }: AmountSliderProps) {
+  const { theme } = useTheme()
   const pct = ((value - min) / (max - min)) * 100
   return (
     <div>
       <div style={{ textAlign: 'center', marginBottom: 20 }}>
         <span style={{ fontSize: 36, fontWeight: 700, color: '#002E83' }}>
-          {value.toLocaleString()} SAR
+          {value.toLocaleString()}<RiyalSign size="lg" />
         </span>
       </div>
       <input
@@ -27,13 +31,13 @@ export default function AmountSlider({ value, min, max, step = 10000, onChange }
           height: 8,
           borderRadius: 4,
           appearance: 'none',
-          background: `linear-gradient(to right, #0D82F9 ${pct}%, #E5E7EB ${pct}%)`,
+          background: `linear-gradient(to right, #0D82F9 ${pct}%, ${theme.border} ${pct}%)`,
           cursor: 'pointer',
         }}
       />
-      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: '#888', marginTop: 8 }}>
-        <span>{min.toLocaleString()} SAR</span>
-        <span>{max.toLocaleString()} SAR</span>
+      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: theme.textMuted, marginTop: 8 }}>
+        <span>{min.toLocaleString()}<RiyalSign size="sm" /></span>
+        <span>{max.toLocaleString()}<RiyalSign size="sm" /></span>
       </div>
     </div>
   )

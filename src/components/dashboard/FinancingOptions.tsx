@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Lock, ChevronRight } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { useTheme } from '../../ThemeContext'
 
 // ─── Abstract circle illustrations (navy + green strokes) ────
 
@@ -103,6 +104,7 @@ const products = [
 function ProductCard({ p, i }: { p: typeof products[0]; i: number }) {
   const navigate = useNavigate()
   const [hovered, setHovered] = useState(false)
+  const { theme } = useTheme()
   const Illust = p.illustration
 
   return (
@@ -114,13 +116,13 @@ function ProductCard({ p, i }: { p: typeof products[0]; i: number }) {
       onMouseLeave={() => setHovered(false)}
       onClick={() => p.available && navigate('/request-financing')}
       style={{
-        background: '#fff',
+        background: theme.cardBg,
         borderRadius: 16,
-        border: `1px solid ${hovered && p.available ? '#3B82F6' : '#E2E8F0'}`,
+        border: `1px solid ${hovered && p.available ? '#3B82F6' : theme.border}`,
         overflow: 'hidden',
         cursor: p.available ? 'pointer' : 'default',
         transition: 'border-color 0.2s, box-shadow 0.2s',
-        boxShadow: hovered && p.available ? '0 4px 16px rgba(0,0,0,0.08)' : '0 1px 3px rgba(0,0,0,0.04)',
+        boxShadow: hovered && p.available ? '0 4px 16px rgba(0,0,0,0.08)' : theme.shadow,
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',
@@ -187,8 +189,8 @@ function ProductCard({ p, i }: { p: typeof products[0]; i: number }) {
           {p.tag}
         </span>
 
-        <h4 style={{ fontSize: 16, fontWeight: 700, color: '#0F172A', marginBottom: 8 }}>{p.name}</h4>
-        <p style={{ fontSize: 13, color: '#64748B', lineHeight: 1.6, marginBottom: 18 }}>{p.desc}</p>
+        <h4 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary, marginBottom: 8 }}>{p.name}</h4>
+        <p style={{ fontSize: 13, color: theme.textSecondary, lineHeight: 1.6, marginBottom: 18 }}>{p.desc}</p>
 
         {/* Footer */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -219,7 +221,7 @@ function ProductCard({ p, i }: { p: typeof products[0]; i: number }) {
             </>
           ) : (
             <>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: '#94A3B8' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: theme.textMuted }}>
                 <Lock size={13} />
                 Coming soon
               </div>
@@ -248,11 +250,12 @@ function ProductCard({ p, i }: { p: typeof products[0]; i: number }) {
 // ─── Main ────────────────────────────────────────────────────
 
 export default function FinancingOptions() {
+  const { theme } = useTheme()
   return (
     <section style={{ marginBottom: 28 }}>
       <div style={{ marginBottom: 18 }}>
-        <h3 style={{ fontSize: 16, fontWeight: 700, color: '#0F172A', marginBottom: 4 }}>Explore Financing Options</h3>
-        <p style={{ fontSize: 13, color: '#94A3B8' }}>Choose the right financing product for your business</p>
+        <h3 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary, marginBottom: 4 }}>Explore Financing Options</h3>
+        <p style={{ fontSize: 13, color: theme.textMuted }}>Choose the right financing product for your business</p>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>

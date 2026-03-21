@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { LockIcon } from '../icons/NavIcons'
 import { ArrowRightIcon } from '../icons/WidgetIcons'
+import { useTheme } from '../../ThemeContext'
 
 // ─── Cover Art SVGs ─────────────────────────────────────────────
 
@@ -84,12 +85,13 @@ const products = [
 // ─── Component ──────────────────────────────────────────────────
 
 export default function FinancingProducts({ lockText = 'Unlock after verification' }: { lockText?: string }) {
+  const { theme } = useTheme()
   return (
     <div>
-      <h3 style={{ fontSize: 15, fontWeight: 600, color: '#1E293B', margin: '0 0 4px' }}>
+      <h3 style={{ fontSize: 15, fontWeight: 600, color: theme.textPrimary, margin: '0 0 4px' }}>
         Explore Financing Options
       </h3>
-      <p style={{ fontSize: 12, color: '#64748B', margin: '0 0 16px' }}>
+      <p style={{ fontSize: 12, color: theme.textSecondary, margin: '0 0 16px' }}>
         Complete your profile to apply for financing
       </p>
 
@@ -99,7 +101,7 @@ export default function FinancingProducts({ lockText = 'Unlock after verificatio
             key={p.title}
             whileHover={{ translateY: -4, boxShadow: '0 16px 40px rgba(10,47,160,0.14)', borderColor: 'transparent' }}
             transition={{ duration: 0.2 }}
-            style={cardStyle}
+            style={{ background: theme.cardBg, border: `1px solid ${theme.border}`, borderRadius: 16, overflow: 'hidden', cursor: 'pointer', transition: 'box-shadow 0.2s, border-color 0.2s, transform 0.2s' }}
           >
             {/* Cover art */}
             <div style={coverStyle}>
@@ -112,12 +114,12 @@ export default function FinancingProducts({ lockText = 'Unlock after verificatio
               <span style={tagStyle}>{p.tag}</span>
 
               {/* Title */}
-              <h4 style={{ fontSize: 18, fontWeight: 700, color: '#1E293B', margin: '0 0 6px' }}>
+              <h4 style={{ fontSize: 18, fontWeight: 700, color: theme.textPrimary, margin: '0 0 6px' }}>
                 {p.title}
               </h4>
 
               {/* Description */}
-              <p style={{ fontSize: 13, color: '#64748B', lineHeight: 1.5, margin: '0 0 16px' }}>
+              <p style={{ fontSize: 13, color: theme.textSecondary, lineHeight: 1.5, margin: '0 0 16px' }}>
                 {p.description}
               </p>
 
@@ -126,7 +128,7 @@ export default function FinancingProducts({ lockText = 'Unlock after verificatio
                 {/* Lock state */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
                   <LockIcon size={13} color="#94A3B8" />
-                  <span style={{ fontSize: 11, color: '#94A3B8' }}>{lockText}</span>
+                  <span style={{ fontSize: 11, color: theme.textMuted }}>{lockText}</span>
                 </div>
 
                 {/* Learn link */}
@@ -159,14 +161,7 @@ export default function FinancingProducts({ lockText = 'Unlock after verificatio
 
 // ─── Styles ─────────────────────────────────────────────────────
 
-const cardStyle: React.CSSProperties = {
-  background: '#FFFFFF',
-  border: '1px solid #E2E8F0',
-  borderRadius: 16,
-  overflow: 'hidden',
-  cursor: 'pointer',
-  transition: 'box-shadow 0.2s, border-color 0.2s, transform 0.2s',
-}
+// cardStyle moved inline to use theme
 
 const coverStyle: React.CSSProperties = {
   height: 180,

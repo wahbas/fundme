@@ -5,6 +5,7 @@ import {
   BarChart3, File,
 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useTheme } from '../../../ThemeContext'
 import type { DocumentUploadData, UploadedDocument, DocumentType } from '../types'
 
 export type DocSubStep = 'intro' | 'legal' | 'financial' | 'review' | 'success'
@@ -100,12 +101,13 @@ function DocumentRow({
   onUpload: (type: DocumentType) => void
   onDelete: (id: string) => void
 }) {
+  const { theme } = useTheme()
   const Icon = config.icon
   return (
     <div style={{
       padding: 16, borderRadius: 12, marginBottom: 8,
-      border: `1.5px ${doc ? 'solid' : 'dashed'} ${doc ? '#D1FAE5' : '#E5E7EB'}`,
-      background: doc ? '#F0FDF4' : '#fff',
+      border: `1.5px ${doc ? 'solid' : 'dashed'} ${doc ? '#D1FAE5' : theme.border}`,
+      background: doc ? '#F0FDF4' : theme.cardBg,
       transition: 'all 0.2s',
     }}>
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
@@ -187,6 +189,7 @@ function DocumentRow({
 // ─── Intro Screen ───────────────────────────────────────────
 
 function IntroScreen({ onStart }: { onStart: () => void }) {
+  const { theme } = useTheme()
   return (
     <div style={{ padding: '16px 0' }}>
       <div style={{ textAlign: 'center', marginBottom: 24, display: 'flex', justifyContent: 'center' }}>
@@ -194,7 +197,7 @@ function IntroScreen({ onStart }: { onStart: () => void }) {
       </div>
 
       <div style={{ textAlign: 'center', marginBottom: 24 }}>
-        <h2 style={{ fontSize: 22, fontWeight: 700, color: '#111827', marginBottom: 8 }}>Upload Business Documents</h2>
+        <h2 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary, marginBottom: 8 }}>Upload Business Documents</h2>
         <p style={{ fontSize: 14, color: '#6B7280', maxWidth: 380, margin: '0 auto', lineHeight: 1.6 }}>
           We need some documents to verify your business and assess your financing eligibility
         </p>
@@ -233,8 +236,8 @@ function IntroScreen({ onStart }: { onStart: () => void }) {
       </div>
 
       {/* Tips */}
-      <div style={{ background: '#F9FAFB', borderRadius: 14, padding: 20, marginBottom: 24 }}>
-        <h3 style={{ fontSize: 14, fontWeight: 600, color: '#111827', marginBottom: 12 }}>Tips for faster approval:</h3>
+      <div style={{ background: theme.bgPrimary, borderRadius: 14, padding: 20, marginBottom: 24 }}>
+        <h3 style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary, marginBottom: 12 }}>Tips for faster approval:</h3>
         {[
           'Ensure all documents are clear and readable',
           'Certificates should be valid and not expired',
@@ -375,6 +378,7 @@ function ReviewScreen({
   onSubmit: () => void
   onBack: () => void
 }) {
+  const { theme } = useTheme()
   const legalUploaded = documents.filter((d) => d.category === 'legal')
   const financialUploaded = documents.filter((d) => d.category === 'financial')
 
@@ -421,14 +425,14 @@ function ReviewScreen({
         >
           <CheckCircle2 size={32} color="#047857" />
         </motion.div>
-        <h2 style={{ fontSize: 22, fontWeight: 700, color: '#111827', marginBottom: 6 }}>Review & Submit</h2>
+        <h2 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary, marginBottom: 6 }}>Review & Submit</h2>
         <p style={{ fontSize: 14, color: '#6B7280' }}>
           All required documents uploaded. Review before submitting.
         </p>
       </div>
 
       {/* Summary */}
-      <div style={{ background: '#fff', border: '1px solid #E5E7EB', borderRadius: 16, padding: 20, marginBottom: 20 }}>
+      <div style={{ background: theme.cardBg, border: `1px solid ${theme.border}`, borderRadius: 16, padding: 20, marginBottom: 20 }}>
         <ReviewCategory label="Legal Documents" icon={FileText} color="#0D82F9" docs={legalUploaded} />
         <ReviewCategory label="Financial Documents" icon={BarChart3} color="#8B5CF6" docs={financialUploaded} />
       </div>
@@ -480,6 +484,7 @@ function ReviewScreen({
 // ─── Success Screen ─────────────────────────────────────────
 
 function SuccessScreen({ onContinue }: { onContinue: () => void }) {
+  const { theme } = useTheme()
   return (
     <div style={{ textAlign: 'center', padding: '24px 0' }}>
       <motion.div
@@ -493,13 +498,13 @@ function SuccessScreen({ onContinue }: { onContinue: () => void }) {
         <CheckCircle2 size={40} color="#002E83" />
       </motion.div>
 
-      <h2 style={{ fontSize: 22, fontWeight: 700, color: '#111827', marginBottom: 6 }}>Documents Submitted!</h2>
+      <h2 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary, marginBottom: 6 }}>Documents Submitted!</h2>
       <p style={{ fontSize: 14, color: '#6B7280', marginBottom: 28 }}>
         Your documents have been submitted for review. We'll notify you once they're verified.
       </p>
 
-      <div style={{ background: '#F9FAFB', borderRadius: 16, padding: 24, marginBottom: 28, textAlign: 'left' }}>
-        <h3 style={{ fontSize: 14, fontWeight: 600, color: '#111827', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
+      <div style={{ background: theme.bgPrimary, borderRadius: 16, padding: 24, marginBottom: 28, textAlign: 'left' }}>
+        <h3 style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary, marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
           <FileText size={16} color="#0D82F9" />
           What happens next?
         </h3>

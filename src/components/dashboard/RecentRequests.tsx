@@ -6,6 +6,7 @@ import {
   CheckCircle2, ArrowRight, ChevronLeft, ChevronRight,
 } from 'lucide-react'
 import { motion } from 'framer-motion'
+import RiyalSign from '../icons/RiyalSign'
 
 // ─── Types ────────────────────────────────────────────────────
 
@@ -205,7 +206,7 @@ function RequestCard({ request, index }: { request: FinancingRequest; index: num
 
       {/* Amount */}
       <p style={{ fontSize: 22, fontWeight: 700, color: '#111827', marginBottom: 6 }}>
-        {request.amountRequested.toLocaleString()} SAR
+        {request.amountRequested.toLocaleString()} <RiyalSign size="sm" />
       </p>
 
       {/* Bottom area — fixed height, swaps content on hover */}

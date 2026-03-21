@@ -3,19 +3,22 @@ import {
   Phone, Mail, Calendar, HelpCircle, User, MessageCircle,
 } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { useTheme } from '../../ThemeContext'
 
-const cardBase: React.CSSProperties = {
-  background: '#fff',
-  border: '1px solid #E2E8F0',
-  borderRadius: 18,
-  padding: 24,
-  boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
-}
+// cardBase is now computed inside the components via useTheme
 
 // ─── Support Widget (Verified) ────────────────────────────────
 
 function VerifiedSupportWidget() {
   const [contactHovered, setContactHovered] = useState(false)
+  const { theme } = useTheme()
+  const cardBase: React.CSSProperties = {
+    background: theme.cardBg,
+    border: `1px solid ${theme.border}`,
+    borderRadius: 18,
+    padding: 24,
+    boxShadow: theme.shadow,
+  }
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
@@ -23,7 +26,7 @@ function VerifiedSupportWidget() {
       transition={{ delay: 0.4, duration: 0.5, ease: 'easeOut' }}
       style={{ ...cardBase, display: 'flex', flexDirection: 'column' }}
     >
-      <h3 style={{ fontSize: 15, fontWeight: 700, color: '#0F172A', marginBottom: 20 }}>Your Support</h3>
+      <h3 style={{ fontSize: 15, fontWeight: 700, color: theme.textPrimary, marginBottom: 20 }}>Your Support</h3>
 
       {/* Account Manager */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
@@ -42,19 +45,19 @@ function VerifiedSupportWidget() {
           <User size={20} color="#3B82F6" />
         </div>
         <div>
-          <h4 style={{ fontSize: 14, fontWeight: 600, color: '#0F172A', marginBottom: 1 }}>Ahmed Al-Mansour</h4>
-          <p style={{ fontSize: 11, color: '#94A3B8', margin: 0 }}>Account Manager</p>
+          <h4 style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary, marginBottom: 1 }}>Ahmed Al-Mansour</h4>
+          <p style={{ fontSize: 11, color: theme.textMuted, margin: 0 }}>Account Manager</p>
         </div>
       </div>
 
       {/* Contact info */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 18 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: '#475569' }}>
-          <Phone size={14} color="#94A3B8" />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: theme.textSecondary }}>
+          <Phone size={14} color={theme.textMuted} />
           +966 12 345 6789
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: '#475569' }}>
-          <Mail size={14} color="#94A3B8" />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: theme.textSecondary }}>
+          <Mail size={14} color={theme.textMuted} />
           ahmed.almansour@fundme.sa
         </div>
       </div>
@@ -86,7 +89,7 @@ function VerifiedSupportWidget() {
       </button>
 
       {/* Divider */}
-      <div style={{ height: 1, background: '#E2E8F0', marginBottom: 16 }} />
+      <div style={{ height: 1, background: theme.border, marginBottom: 16 }} />
 
       {/* Contact Support */}
       <div
@@ -116,8 +119,8 @@ function VerifiedSupportWidget() {
           <MessageCircle size={16} color="#64748B" />
         </div>
         <div>
-          <p style={{ fontSize: 13, fontWeight: 600, color: '#0F172A', marginBottom: 1 }}>Contact Support</p>
-          <p style={{ fontSize: 11, color: '#94A3B8', margin: 0 }}>Get help with your account</p>
+          <p style={{ fontSize: 13, fontWeight: 600, color: theme.textPrimary, marginBottom: 1 }}>Contact Support</p>
+          <p style={{ fontSize: 11, color: theme.textMuted, margin: 0 }}>Get help with your account</p>
         </div>
       </div>
     </motion.div>
@@ -127,8 +130,17 @@ function VerifiedSupportWidget() {
 // ─── Main Export ──────────────────────────────────────────────
 
 export default function SupportCards({ verified = false }: { verified?: boolean }) {
+  const { theme } = useTheme()
   if (verified) {
     return <VerifiedSupportWidget />
+  }
+
+  const cardBase: React.CSSProperties = {
+    background: theme.cardBg,
+    border: `1px solid ${theme.border}`,
+    borderRadius: 18,
+    padding: 24,
+    boxShadow: theme.shadow,
   }
 
   // Non-verified: simple help card
@@ -146,7 +158,7 @@ export default function SupportCards({ verified = false }: { verified?: boolean 
             <HelpCircle size={20} color="#fff" />
           </div>
           <div>
-            <h4 style={{ fontSize: 14, fontWeight: 600, color: '#111' }}>Need Help?</h4>
+            <h4 style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary }}>Need Help?</h4>
             <p style={{ fontSize: 12, color: '#999' }}>Watch how FundMe works or contact support</p>
           </div>
         </div>
@@ -159,7 +171,7 @@ export default function SupportCards({ verified = false }: { verified?: boolean 
             borderRadius: 10,
             fontSize: 13,
             fontWeight: 600,
-            background: '#fff',
+            background: theme.cardBg,
             marginBottom: 12,
             cursor: 'pointer',
           }}

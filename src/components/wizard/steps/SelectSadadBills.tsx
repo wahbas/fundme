@@ -1,16 +1,19 @@
 import { Link2, Check, Info } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { useTheme } from '../../../ThemeContext'
 import { SADAD_BILLS, type WizardData } from '../types'
+import RiyalSign from '../../icons/RiyalSign'
 
 interface Props {
   data: WizardData
   onChange: (patch: Partial<WizardData>) => void
 }
 
-const thStyle: React.CSSProperties = { fontSize: 12, fontWeight: 500, color: '#6B7280', padding: '10px 14px', textAlign: 'left', borderBottom: '1px solid #E5E7EB' }
-const tdStyle: React.CSSProperties = { fontSize: 13, color: '#111827', padding: '12px 14px', borderBottom: '1px solid #F3F4F6' }
-
 export default function SelectSadadBills({ data, onChange }: Props) {
+  const { theme } = useTheme()
+
+  const thStyle: React.CSSProperties = { fontSize: 12, fontWeight: 500, color: theme.textMuted, padding: '10px 14px', textAlign: 'left', borderBottom: `1px solid ${theme.border}` }
+  const tdStyle: React.CSSProperties = { fontSize: 13, color: theme.textPrimary, padding: '12px 14px', borderBottom: `1px solid ${theme.borderLight}` }
   const selected = new Set(data.selectedBills)
   const total = SADAD_BILLS.filter((b) => selected.has(b.id)).reduce((s, b) => s + b.amount, 0)
 
@@ -23,8 +26,8 @@ export default function SelectSadadBills({ data, onChange }: Props) {
 
   return (
     <div>
-      <h2 style={{ fontSize: 22, fontWeight: 700, color: '#111', marginBottom: 6 }}>Select SADAD Bills to Finance</h2>
-      <p style={{ fontSize: 14, color: '#6B7280', marginBottom: 20 }}>Choose which bills you want FundMe to pay</p>
+      <h2 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary, marginBottom: 6 }}>Select SADAD Bills to Finance</h2>
+      <p style={{ fontSize: 14, color: theme.textMuted, marginBottom: 20 }}>Choose which bills you want FundMe to pay</p>
 
       {/* Connected badge */}
       <div
@@ -47,10 +50,10 @@ export default function SelectSadadBills({ data, onChange }: Props) {
       </div>
 
       {/* Table with custom checkboxes */}
-      <div style={{ border: '1px solid #E5E5E5', borderRadius: 14, overflow: 'hidden', marginBottom: 20 }}>
+      <div style={{ border: `1px solid ${theme.border}`, borderRadius: 14, overflow: 'hidden', marginBottom: 20 }}>
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
-            <tr style={{ background: '#F9FAFB' }}>
+            <tr style={{ background: theme.bgPrimary }}>
               <th style={{ ...thStyle, width: 48 }} />
               <th style={thStyle}>Bill #</th>
               <th style={thStyle}>Biller</th>
@@ -67,7 +70,7 @@ export default function SelectSadadBills({ data, onChange }: Props) {
                   onClick={() => toggle(bill.id)}
                   style={{
                     cursor: 'pointer',
-                    background: isSelected ? '#EFF6FF' : '#fff',
+                    background: isSelected ? '#EFF6FF' : theme.cardBg,
                     transition: 'background 0.15s',
                   }}
                 >
@@ -94,7 +97,7 @@ export default function SelectSadadBills({ data, onChange }: Props) {
                   </td>
                   <td style={{ ...tdStyle, fontFamily: 'monospace', fontSize: 12 }}>{bill.billNumber}</td>
                   <td style={tdStyle}>{bill.biller}</td>
-                  <td style={{ ...tdStyle, textAlign: 'right', fontWeight: 600 }}>{bill.amount.toLocaleString()} SAR</td>
+                  <td style={{ ...tdStyle, textAlign: 'right', fontWeight: 600 }}>{bill.amount.toLocaleString()}<RiyalSign size="sm" /></td>
                   <td style={tdStyle}>{bill.dueDate}</td>
                 </tr>
               )
@@ -109,18 +112,18 @@ export default function SelectSadadBills({ data, onChange }: Props) {
         style={{
           background: selected.size > 0
             ? 'linear-gradient(135deg, #002E83, #0D82F9)'
-            : '#F9FAFB',
+            : theme.bgPrimary,
           borderRadius: 14,
           padding: 22,
-          color: selected.size > 0 ? '#fff' : '#111',
+          color: selected.size > 0 ? '#fff' : theme.textPrimary,
           transition: 'background 0.3s',
         }}
       >
-        <p style={{ fontSize: 13, color: selected.size > 0 ? 'rgba(255,255,255,0.7)' : '#6B7280', marginBottom: 4 }}>
+        <p style={{ fontSize: 13, color: selected.size > 0 ? 'rgba(255,255,255,0.7)' : theme.textMuted, marginBottom: 4 }}>
           Total Selected
         </p>
-        <p style={{ fontSize: 28, fontWeight: 700 }}>{total.toLocaleString()} SAR</p>
-        <p style={{ fontSize: 13, color: selected.size > 0 ? 'rgba(255,255,255,0.6)' : '#9CA3AF', marginTop: 4 }}>
+        <p style={{ fontSize: 28, fontWeight: 700 }}>{total.toLocaleString()}<RiyalSign size="lg" color="#FFFFFF" /></p>
+        <p style={{ fontSize: 13, color: selected.size > 0 ? 'rgba(255,255,255,0.6)' : theme.textMuted, marginTop: 4 }}>
           {selected.size} bill{selected.size !== 1 ? 's' : ''} selected
         </p>
       </motion.div>
@@ -136,7 +139,7 @@ export default function SelectSadadBills({ data, onChange }: Props) {
           background: '#EFF6FF',
           borderRadius: 12,
           fontSize: 13,
-          color: '#6B7280',
+          color: theme.textMuted,
         }}
       >
         <Info size={18} color="#0D82F9" style={{ flexShrink: 0, marginTop: 1 }} />

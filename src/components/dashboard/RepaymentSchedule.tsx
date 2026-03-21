@@ -1,93 +1,164 @@
-import { CalendarClock } from 'lucide-react'
+import { CalendarClock, ChevronRight } from 'lucide-react'
 import { motion } from 'framer-motion'
+import RiyalSign from '../icons/RiyalSign'
+import { useTheme } from '../../ThemeContext'
 
-function SkeletonLine({ width, height = 12, delay = 0 }: { width: string; height?: number; delay?: number }) {
-  return (
-    <motion.div
-      animate={{ opacity: [0.3, 0.6, 0.3] }}
-      transition={{ repeat: Infinity, duration: 1.5, delay }}
-      style={{
-        width,
-        height,
-        borderRadius: 6,
-        background: '#E2E8F0',
-      }}
-    />
-  )
+interface Payment {
+  month: string
+  day: string
+  fullDate: string
+  label: string
+  invoiceId: string
+  amount: number
+  status: 'due' | 'upcoming'
+  daysUntil?: number
 }
 
-function SkeletonRow({ delay }: { delay: number }) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 0' }}>
-      <motion.div
-        animate={{ opacity: [0.3, 0.6, 0.3] }}
-        transition={{ repeat: Infinity, duration: 1.5, delay }}
-        style={{ width: 40, height: 40, borderRadius: 10, background: '#E2E8F0', flexShrink: 0 }}
-      />
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 6 }}>
-        <SkeletonLine width="60%" height={12} delay={delay + 0.1} />
-        <SkeletonLine width="40%" height={10} delay={delay + 0.2} />
+const payments: Payment[] = [
+  { month: 'APR', day: '1', fullDate: 'Apr 1, 2026', label: 'SADAD Financing', invoiceId: 'INV-2024-001', amount: 10677, status: 'due', daysUntil: 12 },
+  { month: 'MAY', day: '1', fullDate: 'May 1, 2026', label: 'SADAD Financing', invoiceId: 'INV-2024-002', amount: 10677, status: 'upcoming' },
+  { month: 'JUN', day: '1', fullDate: 'Jun 1, 2026', label: 'SADAD Financing', invoiceId: 'INV-2024-003', amount: 10677, status: 'upcoming' },
+]
+
+function StatusIndicator({ status, daysUntil }: { status: 'due' | 'upcoming'; daysUntil?: number }) {
+  if (status === 'due') {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+        <div style={{ width: 7, height: 7, borderRadius: '50%', background: '#2563EB' }} />
+        <span style={{ fontSize: 12, color: '#2563EB', fontWeight: 500 }}>Due in {daysUntil} days</span>
       </div>
-      <SkeletonLine width="70px" height={12} delay={delay + 0.15} />
+    )
+  }
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+      <div style={{ width: 7, height: 7, borderRadius: '50%', border: '1.5px solid #94A3B8' }} />
+      <span style={{ fontSize: 12, color: '#94A3B8' }}>Upcoming</span>
     </div>
   )
 }
 
-export default function RepaymentSchedule() {
+function PaymentRow({ payment, showPay, onPayClick }: { payment: Payment; showPay: boolean; onPayClick?: () => void }) {
+  const { theme } = useTheme()
+  const isDue = payment.status === 'due'
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 0' }}>
+      {/* Date block */}
+      <div
+        style={{
+          width: 48,
+          height: 48,
+          borderRadius: 10,
+          background: isDue ? '#EFF6FF' : theme.bgPrimary,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
+        }}
+      >
+        <span style={{ fontSize: 10, fontWeight: 700, color: isDue ? '#2563EB' : theme.textMuted, textTransform: 'uppercase', lineHeight: 1 }}>
+          {payment.month}
+        </span>
+        <span style={{ fontSize: 18, fontWeight: 700, color: isDue ? theme.textPrimary : theme.textMuted, lineHeight: 1.2 }}>
+          {payment.day}
+        </span>
+      </div>
+
+      {/* Middle info */}
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary }}>{payment.fullDate}</div>
+        <div style={{ fontSize: 12, color: theme.textMuted }}>{payment.label} · {payment.invoiceId}</div>
+      </div>
+
+      {/* Right side */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
+        <div style={{ textAlign: 'right' }}>
+          <div style={{ fontSize: 15, fontWeight: 700, color: theme.textPrimary, whiteSpace: 'nowrap' }}>
+            {payment.amount.toLocaleString()} <RiyalSign />
+          </div>
+          <StatusIndicator status={payment.status} daysUntil={payment.daysUntil} />
+        </div>
+        {showPay && (
+          <button
+            onClick={onPayClick}
+            style={{
+              background: '#7CFF01',
+              color: '#0F172A',
+              fontSize: 12,
+              fontWeight: 600,
+              borderRadius: 8,
+              padding: '6px 14px',
+              border: 'none',
+              cursor: 'pointer',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            Pay →
+          </button>
+        )}
+      </div>
+    </div>
+  )
+}
+
+export default function RepaymentSchedule({ onPayClick }: { onPayClick?: () => void }) {
+  const { theme } = useTheme()
   return (
     <motion.section
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.4, duration: 0.5, ease: 'easeOut' }}
       style={{
-        background: '#fff',
-        border: '1px solid #E2E8F0',
+        background: theme.cardBg,
+        border: `1px solid ${theme.border}`,
         borderRadius: 18,
         padding: 24,
-        boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+        boxShadow: theme.shadow,
         height: '100%',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
-        <div
+      {/* Header */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: 10,
+              background: 'rgba(37, 99, 235, 0.06)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <CalendarClock size={18} color="#3B82F6" />
+          </div>
+          <h3 style={{ fontSize: 15, fontWeight: 700, color: theme.textPrimary, margin: 0 }}>Upcoming Payments</h3>
+        </div>
+        <a
+          href="#"
           style={{
-            width: 36,
-            height: 36,
-            borderRadius: 10,
-            background: 'rgba(37, 99, 235, 0.06)',
+            color: '#2563EB',
+            fontSize: 13,
+            fontWeight: 600,
+            textDecoration: 'none',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
+            gap: 2,
           }}
         >
-          <CalendarClock size={18} color="#3B82F6" />
-        </div>
-        <div>
-          <h3 style={{ fontSize: 15, fontWeight: 700, color: '#0F172A', marginBottom: 2 }}>Repayment Schedule</h3>
-          <p style={{ fontSize: 12, color: '#94A3B8', margin: 0 }}>No active loans yet</p>
-        </div>
+          View All <ChevronRight size={14} />
+        </a>
       </div>
 
-      {/* Skeleton rows */}
-      <div style={{ borderTop: '1px solid #F1F5F9' }}>
-        <SkeletonRow delay={0} />
-        <div style={{ height: 1, background: '#F1F5F9' }} />
-        <SkeletonRow delay={0.15} />
-        <div style={{ height: 1, background: '#F1F5F9' }} />
-        <SkeletonRow delay={0.3} />
-      </div>
-
-      {/* Empty state message */}
-      <div
-        style={{
-          textAlign: 'center',
-          padding: '16px 0 4px',
-          borderTop: '1px solid #F1F5F9',
-        }}
-      >
-        <p style={{ fontSize: 13, color: '#94A3B8', margin: 0 }}>
-          Your repayment schedule will appear here once you have an active loan.
-        </p>
+      {/* Payment rows */}
+      <div>
+        {payments.map((payment, i) => (
+          <div key={payment.invoiceId}>
+            {i > 0 && <div style={{ height: 1, background: theme.borderLight }} />}
+            <PaymentRow payment={payment} showPay={i === 0} onPayClick={onPayClick} />
+          </div>
+        ))}
       </div>
     </motion.section>
   )

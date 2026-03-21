@@ -1,5 +1,6 @@
 import { Briefcase, FileText, Building2, CheckCircle2 } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { useTheme } from '../../../ThemeContext'
 import type { Product } from '../types'
 
 interface Props {
@@ -24,7 +25,7 @@ const products: {
     gradient: 'linear-gradient(135deg, #0D82F9, #06B6D4)',
     name: 'Working Capital',
     desc: 'Quick financing for daily operations and business growth',
-    detail: 'Up to 300,000 SAR \u2022 6\u201324 months',
+    detail: 'Up to 300,000 ر.س \u2022 6\u201324 months',
     selectedBg: '#EFF6FF',
     selectedBorder: '#0D82F9',
   },
@@ -34,7 +35,7 @@ const products: {
     gradient: 'linear-gradient(135deg, #8B5CF6, #EC4899)',
     name: 'Invoice Financing',
     desc: 'Convert outstanding invoices into immediate cash',
-    detail: 'Up to 200,000 SAR \u2022 Based on invoice terms',
+    detail: 'Up to 200,000 ر.س \u2022 Based on invoice terms',
     selectedBg: '#F5F3FF',
     selectedBorder: '#8B5CF6',
   },
@@ -44,7 +45,7 @@ const products: {
     gradient: 'linear-gradient(135deg, #002E83, #0D82F9)',
     name: 'SADAD Invoice Financing',
     desc: 'Finance unpaid government & service bills via SADAD',
-    detail: 'Up to 500,000 SAR \u2022 Flexible terms',
+    detail: 'Up to 500,000 ر.س \u2022 Flexible terms',
     selectedBg: '#EFF6FF',
     selectedBorder: '#002E83',
     popular: true,
@@ -52,10 +53,11 @@ const products: {
 ]
 
 export default function ChooseProduct({ value, onChange }: Props) {
+  const { theme } = useTheme()
   return (
     <div>
-      <h2 style={{ fontSize: 22, fontWeight: 700, color: '#111', marginBottom: 6 }}>Choose Your Product</h2>
-      <p style={{ fontSize: 14, color: '#6B7280', marginBottom: 28 }}>Select the financing product that best fits your business needs</p>
+      <h2 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary, marginBottom: 6 }}>Choose Your Product</h2>
+      <p style={{ fontSize: 14, color: theme.textMuted, marginBottom: 28 }}>Select the financing product that best fits your business needs</p>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
         {products.map((p) => {
@@ -74,12 +76,12 @@ export default function ChooseProduct({ value, onChange }: Props) {
                 width: '100%',
                 padding: 20,
                 borderRadius: 16,
-                border: `2px solid ${selected ? p.selectedBorder : '#E5E5E5'}`,
-                background: selected ? p.selectedBg : '#fff',
+                border: `2px solid ${selected ? p.selectedBorder : theme.border}`,
+                background: selected ? p.selectedBg : theme.cardBg,
                 cursor: 'pointer',
                 textAlign: 'left',
                 transition: 'border-color 0.2s, background 0.2s',
-                boxShadow: selected ? '0 4px 20px rgba(0,0,0,0.08)' : '0 1px 3px rgba(0,0,0,0.04)',
+                boxShadow: selected ? '0 4px 20px rgba(0,0,0,0.08)' : theme.shadow,
                 position: 'relative',
               }}
             >
@@ -103,7 +105,7 @@ export default function ChooseProduct({ value, onChange }: Props) {
               {/* Content */}
               <div style={{ flex: 1 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-                  <p style={{ fontSize: 17, fontWeight: 600, color: '#111827' }}>{p.name}</p>
+                  <p style={{ fontSize: 17, fontWeight: 600, color: theme.textPrimary }}>{p.name}</p>
                   {p.popular && (
                     <span
                       style={{
@@ -119,7 +121,7 @@ export default function ChooseProduct({ value, onChange }: Props) {
                     </span>
                   )}
                 </div>
-                <p style={{ fontSize: 13, color: '#6B7280', marginBottom: 6 }}>{p.desc}</p>
+                <p style={{ fontSize: 13, color: theme.textMuted, marginBottom: 6 }}>{p.desc}</p>
                 <p style={{ fontSize: 13, color: '#0D82F9', fontWeight: 500 }}>{p.detail}</p>
               </div>
 

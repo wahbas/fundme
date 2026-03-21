@@ -1,4 +1,6 @@
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useTheme } from '../../ThemeContext'
 import {
   HomeIcon,
   LoansIcon,
@@ -87,9 +89,22 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ verified = false, collapsed = false, onToggle, activeTab }: SidebarProps) {
+  const { theme } = useTheme()
   const navigate = useNavigate()
   const location = useLocation()
   const width = collapsed ? 72 : 240
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false)
+  const bottomRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (bottomRef.current && !bottomRef.current.contains(e.target as Node)) {
+        setProfileMenuOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   // Determine active tab from prop or URL
   const stateParam = new URLSearchParams(location.search).get('state')
@@ -115,7 +130,7 @@ export default function Sidebar({ verified = false, collapsed = false, onToggle,
         top: 0,
         display: 'flex',
         flexDirection: 'column',
-        background: '#1B2A3D',
+        background: theme.sidebarBg,
         zIndex: 50,
         transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         overflow: 'hidden',
@@ -144,7 +159,7 @@ export default function Sidebar({ verified = false, collapsed = false, onToggle,
           <button
             onClick={onToggle}
             style={{
-              background: 'rgba(255,255,255,0.08)',
+              background: theme.sidebarHover,
               border: 'none',
               borderRadius: 8,
               width: 28,
@@ -166,7 +181,7 @@ export default function Sidebar({ verified = false, collapsed = false, onToggle,
           <button
             onClick={onToggle}
             style={{
-              background: 'rgba(255,255,255,0.08)',
+              background: theme.sidebarHover,
               border: 'none',
               borderRadius: 8,
               width: 32,
@@ -200,11 +215,83 @@ export default function Sidebar({ verified = false, collapsed = false, onToggle,
       </nav>
 
       {/* Bottom */}
-      <div style={{ padding: collapsed ? '0 8px 20px' : '0 12px 20px', transition: 'padding 0.3s' }}>
+      <div ref={bottomRef} style={{ padding: collapsed ? '0 8px 20px' : '0 12px 20px', transition: 'padding 0.3s', position: 'relative' }}>
         <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', marginBottom: 8, paddingTop: 8 }} />
         <NavItem icon={HelpSupportIcon} label="Help & Support" collapsed={collapsed} />
-        <NavItem icon={SettingsIcon} label="Settings" collapsed={collapsed} />
+        <NavItem icon={SettingsIcon} label="Settings" collapsed={collapsed} onClick={() => navigate(`/settings${query}`)} />
+
+        {/* Profile switcher dropdown */}
+        {profileMenuOpen && !collapsed && (
+          <div style={{
+            position: 'absolute',
+            bottom: 80,
+            left: 12,
+            right: 12,
+            background: '#243447',
+            borderRadius: 12,
+            padding: 8,
+            boxShadow: '0 -4px 16px rgba(0,0,0,0.3)',
+            zIndex: 10,
+          }}>
+            {/* Current profile */}
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px',
+              borderRadius: 8, background: 'rgba(37,99,235,0.15)', marginBottom: 4,
+            }}>
+              <div style={{
+                width: 32, height: 32, borderRadius: '50%', background: '#7CFF01',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                color: '#1B2A3D', fontSize: 12, fontWeight: 700,
+              }}>A</div>
+              <div style={{ flex: 1 }}>
+                <p style={{ fontSize: 13, fontWeight: 600, color: '#fff' }}>Ahmed Al-Rashid</p>
+                <p style={{ fontSize: 11, color: '#94A3B8' }}>Al-Majd Trading Company</p>
+              </div>
+              <span style={{ color: '#7CFF01', fontSize: 16 }}>✓</span>
+            </div>
+
+            {/* Other profile */}
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px',
+              borderRadius: 8, cursor: 'pointer', marginBottom: 4,
+            }}
+            onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
+            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+            >
+              <div style={{
+                width: 32, height: 32, borderRadius: '50%', background: '#3B82F6',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                color: '#fff', fontSize: 12, fontWeight: 700,
+              }}>F</div>
+              <div>
+                <p style={{ fontSize: 13, fontWeight: 500, color: '#CBD5E1' }}>Faisal Al-Otaibi</p>
+                <p style={{ fontSize: 11, color: '#64748B' }}>Gulf Services Co.</p>
+              </div>
+            </div>
+
+            {/* Divider */}
+            <div style={{ height: 1, background: 'rgba(255,255,255,0.1)', margin: '4px 0' }} />
+
+            {/* Add profile */}
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px',
+              borderRadius: 8, cursor: 'pointer',
+            }}
+            onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
+            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+            >
+              <div style={{
+                width: 32, height: 32, borderRadius: '50%', border: '1.5px dashed #64748B',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                color: '#64748B', fontSize: 16,
+              }}>+</div>
+              <p style={{ fontSize: 13, fontWeight: 500, color: '#94A3B8' }}>Add Business Profile</p>
+            </div>
+          </div>
+        )}
+
         <div
+          onClick={() => setProfileMenuOpen(p => !p)}
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -212,6 +299,7 @@ export default function Sidebar({ verified = false, collapsed = false, onToggle,
             padding: collapsed ? '12px 0' : '12px 16px',
             justifyContent: collapsed ? 'center' : 'flex-start',
             marginTop: 4,
+            cursor: 'pointer',
             transition: 'padding 0.3s, gap 0.3s',
           }}
         >

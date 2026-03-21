@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { Search, ChevronRight, Plus } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { useTheme } from '../../../ThemeContext'
 import type { WizardData } from '../../../pages/RequestFinancing'
+import RiyalSign from '../../icons/RiyalSign'
 
 interface Props {
   data: WizardData
@@ -51,7 +53,21 @@ const categoryConfig: Record<string, { label: string; bg: string; color: string 
 }
 
 export default function SelectBiller({ data, onChange }: Props) {
+  const { theme } = useTheme()
   const [search, setSearch] = useState('')
+  const [showManualForm, setShowManualForm] = useState(false)
+  const [manualBiller, setManualBiller] = useState({ name: '', accountNumber: '', billNumber: '', amount: '', dueDate: '' })
+
+  const labelStyle: React.CSSProperties = {
+    fontSize: 12, fontWeight: 600, color: theme.textMuted, marginBottom: 6,
+  }
+
+  const inputStyle: React.CSSProperties = {
+    width: '100%', padding: '12px 14px', background: theme.inputBg,
+    border: `1px solid ${theme.inputBorder}`, borderRadius: 10, fontSize: 14, outline: 'none',
+    boxSizing: 'border-box', color: theme.textPrimary,
+  }
+
   const billers = billersByCategory[data.category] || []
   const catConf = categoryConfig[data.category] || categoryConfig.others
   const filtered = search
@@ -60,12 +76,12 @@ export default function SelectBiller({ data, onChange }: Props) {
 
   return (
     <div>
-      <h2 style={{ fontSize: 24, fontWeight: 700, color: '#0F172A', marginBottom: 6, textAlign: 'center' }}>Select Biller</h2>
+      <h2 style={{ fontSize: 24, fontWeight: 700, color: theme.textPrimary, marginBottom: 6, textAlign: 'center' }}>Select Biller</h2>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 32 }}>
-        <p style={{ fontSize: 14, color: '#475569' }}>Showing billers in</p>
+        <p style={{ fontSize: 14, color: theme.textSecondary }}>Showing billers in</p>
         <span style={{
-          padding: '3px 10px', borderRadius: 20, background: '#F1F5F9',
-          fontSize: 11, fontWeight: 600, color: '#64748B',
+          padding: '3px 10px', borderRadius: 20, background: theme.bgPrimary,
+          fontSize: 11, fontWeight: 600, color: theme.textMuted,
         }}>
           {catConf.label}
         </span>
@@ -81,8 +97,8 @@ export default function SelectBiller({ data, onChange }: Props) {
           onChange={(e) => setSearch(e.target.value)}
           style={{
             width: '100%', padding: '14px 16px 14px 44px',
-            background: '#fff', border: '1px solid #E2E8F0', borderRadius: 12,
-            fontSize: 14, color: '#0F172A', outline: 'none',
+            background: theme.cardBg, border: `1px solid ${theme.border}`, borderRadius: 12,
+            fontSize: 14, color: theme.textPrimary, outline: 'none',
             transition: 'border-color 0.15s, box-shadow 0.15s',
           }}
           onFocus={(e) => {
@@ -90,7 +106,7 @@ export default function SelectBiller({ data, onChange }: Props) {
             e.target.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.08)'
           }}
           onBlur={(e) => {
-            e.target.style.borderColor = '#E2E8F0'
+            e.target.style.borderColor = theme.border
             e.target.style.boxShadow = 'none'
           }}
         />
@@ -98,11 +114,12 @@ export default function SelectBiller({ data, onChange }: Props) {
 
       {/* Manual entry */}
       <button
+        onClick={() => setShowManualForm((v) => !v)}
         style={{
-          width: '100%', padding: 16, background: '#fff',
-          border: '1px dashed #CBD5E1', borderRadius: 12,
+          width: '100%', padding: 16, background: theme.cardBg,
+          border: `1px dashed ${theme.textMuted}`, borderRadius: 12,
           display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-          fontSize: 14, fontWeight: 500, color: '#475569', cursor: 'pointer',
+          fontSize: 14, fontWeight: 500, color: theme.textSecondary, cursor: 'pointer',
           marginBottom: 16, transition: 'border-color 0.15s, background 0.15s',
         }}
         onMouseEnter={(e) => {
@@ -110,13 +127,107 @@ export default function SelectBiller({ data, onChange }: Props) {
           e.currentTarget.style.background = 'rgba(37,99,235,0.02)'
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.borderColor = '#CBD5E1'
-          e.currentTarget.style.background = '#fff'
+          e.currentTarget.style.borderColor = theme.textMuted
+          e.currentTarget.style.background = theme.cardBg
         }}
       >
         <Plus size={18} />
         Manual Biller Entry
       </button>
+
+      {/* Manual form */}
+      {showManualForm && (
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+          transition={{ duration: 0.25, ease: 'easeOut' }}
+          style={{
+            background: theme.cardBg, border: `1px solid ${theme.border}`, borderRadius: 12,
+            padding: 20, marginBottom: 16, overflow: 'hidden',
+          }}
+        >
+          {/* Biller Name - full width */}
+          <div style={{ marginBottom: 12 }}>
+            <label style={labelStyle}>Biller Name</label>
+            <input
+              type="text"
+              value={manualBiller.name}
+              onChange={(e) => setManualBiller((p) => ({ ...p, name: e.target.value }))}
+              style={inputStyle}
+              placeholder="Enter biller name"
+            />
+          </div>
+
+          {/* 2-column grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+            <div>
+              <label style={labelStyle}>Biller ID / Account Number</label>
+              <input
+                type="text"
+                value={manualBiller.accountNumber}
+                onChange={(e) => setManualBiller((p) => ({ ...p, accountNumber: e.target.value }))}
+                style={inputStyle}
+                placeholder="Enter account number"
+              />
+            </div>
+            <div>
+              <label style={labelStyle}>Bill Number</label>
+              <input
+                type="text"
+                value={manualBiller.billNumber}
+                onChange={(e) => setManualBiller((p) => ({ ...p, billNumber: e.target.value }))}
+                style={inputStyle}
+                placeholder="Enter bill number"
+              />
+            </div>
+            <div>
+              <label style={labelStyle}>Amount (<RiyalSign size="sm" />)</label>
+              <input
+                type="number"
+                value={manualBiller.amount}
+                onChange={(e) => setManualBiller((p) => ({ ...p, amount: e.target.value }))}
+                style={inputStyle}
+                placeholder="0.00"
+              />
+            </div>
+            <div>
+              <label style={labelStyle}>Due Date</label>
+              <input
+                type="date"
+                value={manualBiller.dueDate}
+                onChange={(e) => setManualBiller((p) => ({ ...p, dueDate: e.target.value }))}
+                style={inputStyle}
+              />
+            </div>
+          </div>
+
+          {/* Add Bill button */}
+          <button
+            onClick={() => {
+              onChange({ biller: manualBiller.name, billerCode: 'MANUAL-' + Date.now() })
+              setShowManualForm(false)
+            }}
+            style={{
+              background: '#7CFF01', color: '#0F172A', fontWeight: 600, fontSize: 14,
+              width: '100%', height: 44, borderRadius: 10, border: 'none',
+              cursor: 'pointer', marginTop: 12,
+            }}
+          >
+            Add Bill
+          </button>
+
+          {/* Cancel link */}
+          <p
+            onClick={() => setShowManualForm(false)}
+            style={{
+              fontSize: 13, color: '#94A3B8', cursor: 'pointer', textAlign: 'center',
+              marginTop: 10,
+            }}
+          >
+            Cancel
+          </p>
+        </motion.div>
+      )}
 
       {/* Biller list */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -132,21 +243,21 @@ export default function SelectBiller({ data, onChange }: Props) {
               style={{
                 display: 'flex', alignItems: 'center', gap: 14,
                 width: '100%', padding: isSelected ? '15px 19px' : '16px 20px',
-                background: isSelected ? 'rgba(37,99,235,0.03)' : '#fff',
-                border: isSelected ? '2px solid #2563EB' : '1.5px solid #E2E8F0',
+                background: isSelected ? 'rgba(37,99,235,0.03)' : theme.cardBg,
+                border: isSelected ? '2px solid #2563EB' : `1.5px solid ${theme.border}`,
                 borderRadius: 12, cursor: 'pointer',
                 textAlign: 'left', transition: 'all 0.2s',
               }}
               onMouseEnter={(e) => {
                 if (!isSelected) {
-                  e.currentTarget.style.borderColor = '#CBD5E1'
-                  e.currentTarget.style.background = '#FAFBFC'
+                  e.currentTarget.style.borderColor = theme.textMuted
+                  e.currentTarget.style.background = theme.bgHover
                 }
               }}
               onMouseLeave={(e) => {
                 if (!isSelected) {
-                  e.currentTarget.style.borderColor = '#E2E8F0'
-                  e.currentTarget.style.background = '#fff'
+                  e.currentTarget.style.borderColor = theme.border
+                  e.currentTarget.style.background = theme.cardBg
                 }
               }}
             >
@@ -162,14 +273,14 @@ export default function SelectBiller({ data, onChange }: Props) {
 
               {/* Name + code */}
               <div style={{ flex: 1, minWidth: 0 }}>
-                <p style={{ fontSize: 14, fontWeight: 600, color: '#0F172A', marginBottom: 2 }}>{biller.name}</p>
-                <p style={{ fontSize: 12, color: '#94A3B8', fontFamily: 'monospace' }}>{biller.code}</p>
+                <p style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary, marginBottom: 2 }}>{biller.name}</p>
+                <p style={{ fontSize: 12, color: theme.textMuted, fontFamily: 'monospace' }}>{biller.code}</p>
               </div>
 
               {/* Arrow */}
               <div style={{
                 width: 32, height: 32, borderRadius: 8, flexShrink: 0,
-                background: isSelected ? '#2563EB' : '#F5F7FA',
+                background: isSelected ? '#2563EB' : theme.bgPrimary,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 transition: 'background 0.2s',
               }}>

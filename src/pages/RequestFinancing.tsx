@@ -2,6 +2,7 @@ import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Check, ArrowLeft, ArrowRight, Send, Info, Building2, FileText, Upload, LayoutGrid, Landmark } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useTheme } from '../ThemeContext'
 import SelectCategory from '../components/wizard/steps/SelectCategory'
 import SelectBiller from '../components/wizard/steps/SelectBiller'
 import InvoiceDetails from '../components/wizard/steps/InvoiceDetails'
@@ -65,6 +66,7 @@ function GreenCircles() {
 }
 
 export default function RequestFinancing() {
+  const { theme } = useTheme()
   const navigate = useNavigate()
   const [data, setData] = useState<WizardData>({ ...INITIAL_WIZARD_DATA })
   const [stepIdx, setStepIdx] = useState(0)
@@ -163,7 +165,7 @@ export default function RequestFinancing() {
 
   if (submitted) {
     return (
-      <div style={{ minHeight: '100vh', background: '#F8FAFC', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
+      <div style={{ minHeight: '100vh', background: theme.bgPrimary, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
         <div style={{ textAlign: 'center', maxWidth: 400, width: '100%' }}>
           <motion.div
             initial={{ scale: 0 }}
@@ -181,32 +183,32 @@ export default function RequestFinancing() {
           </motion.div>
 
           <motion.h1 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-            style={{ fontSize: 24, fontWeight: 700, color: '#0F172A', marginBottom: 8 }}>
+            style={{ fontSize: 24, fontWeight: 700, color: theme.textPrimary, marginBottom: 8 }}>
             Request Created!
           </motion.h1>
 
           <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-            style={{ fontSize: 14, color: '#475569', marginBottom: 24 }}>
+            style={{ fontSize: 14, color: theme.textSecondary, marginBottom: 24 }}>
             Your financing request has been successfully created.
           </motion.p>
 
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
             style={{
-              background: '#fff', border: '1px solid #E2E8F0', borderRadius: 14,
+              background: theme.cardBg, border: `1px solid ${theme.border}`, borderRadius: 14,
               padding: 20, marginBottom: 16,
             }}
           >
-            <p style={{ fontSize: 12, color: '#94A3B8', marginBottom: 6 }}>Application Reference</p>
+            <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 6 }}>Application Reference</p>
             <p style={{ fontSize: 18, fontWeight: 600, color: '#2563EB', fontFamily: 'monospace' }}>{refId.current}</p>
           </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
             style={{
-              background: '#fff', border: '1px solid #E2E8F0', borderRadius: 14,
+              background: theme.cardBg, border: `1px solid ${theme.border}`, borderRadius: 14,
               padding: 20, marginBottom: 24, textAlign: 'left',
             }}
           >
-            <p style={{ fontSize: 15, fontWeight: 700, color: '#0F172A', marginBottom: 14 }}>What's Next?</p>
+            <p style={{ fontSize: 15, fontWeight: 700, color: theme.textPrimary, marginBottom: 14 }}>What's Next?</p>
             {[
               'Our team reviews your application',
               'Receive your financing offer',
@@ -214,7 +216,7 @@ export default function RequestFinancing() {
             ].map((text, i) => (
               <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: i < 2 ? 10 : 0 }}>
                 <span style={{ fontSize: 14, fontWeight: 600, color: '#2563EB', width: 20, flexShrink: 0 }}>{i + 1}.</span>
-                <span style={{ fontSize: 14, color: '#475569' }}>{text}</span>
+                <span style={{ fontSize: 14, color: theme.textSecondary }}>{text}</span>
               </div>
             ))}
           </motion.div>
@@ -384,7 +386,7 @@ export default function RequestFinancing() {
       <div
         style={{
           flex: 1,
-          background: '#F8FAFC',
+          background: theme.bgPrimary,
           display: 'flex',
           flexDirection: 'column',
           overflow: 'auto',
@@ -392,7 +394,7 @@ export default function RequestFinancing() {
         }}
       >
         {/* Top bar (sticky) */}
-        <div style={{ position: 'sticky', top: 0, zIndex: 5, background: '#fff', borderBottom: '1px solid #E2E8F0', padding: '16px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ position: 'sticky', top: 0, zIndex: 5, background: theme.cardBg, borderBottom: `1px solid ${theme.border}`, padding: '16px 40px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <button
               onClick={handleBack}
@@ -403,15 +405,15 @@ export default function RequestFinancing() {
             >
               <ArrowLeft size={20} color="#475569" />
             </button>
-            <span style={{ fontSize: 14, color: '#94A3B8' }}>
+            <span style={{ fontSize: 14, color: theme.textMuted }}>
               Step {stepIdx + 1} of {TOTAL_STEPS}
             </span>
           </div>
           <button
             onClick={() => navigate('/dashboard?state=verified')}
             style={{
-              background: 'none', border: '1px solid #E2E8F0', borderRadius: 8,
-              padding: '6px 16px', fontSize: 13, color: '#475569', cursor: 'pointer',
+              background: 'none', border: `1px solid ${theme.border}`, borderRadius: 8,
+              padding: '6px 16px', fontSize: 13, color: theme.textSecondary, cursor: 'pointer',
             }}
           >
             Save & Exit
@@ -459,7 +461,7 @@ export default function RequestFinancing() {
         {/* Footer (sticky) */}
         <div style={{
           position: 'sticky', bottom: 0,
-          background: '#fff', borderTop: '1px solid #E2E8F0',
+          background: theme.cardBg, borderTop: `1px solid ${theme.border}`,
           padding: '16px 48px', zIndex: 5,
         }}>
           <div style={{ maxWidth: 860, margin: '0 auto', width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -470,9 +472,9 @@ export default function RequestFinancing() {
                 whileTap={{ scale: 0.98 }}
                 style={{
                   display: 'flex', alignItems: 'center', gap: 6,
-                  padding: '12px 24px', background: '#fff',
-                  border: '1px solid #E2E8F0', borderRadius: 10,
-                  fontSize: 14, color: '#475569', cursor: 'pointer', fontWeight: 500,
+                  padding: '12px 24px', background: theme.cardBg,
+                  border: `1px solid ${theme.border}`, borderRadius: 10,
+                  fontSize: 14, color: theme.textSecondary, cursor: 'pointer', fontWeight: 500,
                 }}
               >
                 <ArrowLeft size={16} />
@@ -487,8 +489,8 @@ export default function RequestFinancing() {
                 <button
                   onClick={() => navigate('/dashboard?state=verified&submitted=true')}
                   style={{
-                    padding: '12px 24px', background: '#fff', color: '#475569',
-                    border: '1px solid #E2E8F0', borderRadius: 10, fontSize: 14, fontWeight: 500, cursor: 'pointer',
+                    padding: '12px 24px', background: theme.cardBg, color: theme.textSecondary,
+                    border: `1px solid ${theme.border}`, borderRadius: 10, fontSize: 14, fontWeight: 500, cursor: 'pointer',
                   }}
                 >
                   Skip for Now

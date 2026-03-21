@@ -1,4 +1,5 @@
 import { Wallet, Building2, BarChart3, FileUp, CheckCircle, Check } from 'lucide-react'
+import { useTheme } from '../../ThemeContext'
 
 const steps = [
   { number: 1, label: 'Loan Details', icon: Wallet },
@@ -9,6 +10,7 @@ const steps = [
 ]
 
 export default function ProgressStepper({ currentStep }: { currentStep: number }) {
+  const { theme } = useTheme()
   return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', maxWidth: 700, margin: '0 auto' }}>
       {steps.map((step, index) => {
@@ -28,7 +30,7 @@ export default function ProgressStepper({ currentStep }: { currentStep: number }
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  background: completed ? '#80FF00' : active ? '#002E83' : '#F3F4F6',
+                  background: completed ? '#80FF00' : active ? '#002E83' : theme.bgPrimary,
                   color: completed ? '#002E83' : active ? '#fff' : '#9CA3AF',
                   transition: 'all 0.3s',
                 }}
@@ -40,7 +42,7 @@ export default function ProgressStepper({ currentStep }: { currentStep: number }
                   marginTop: 8,
                   fontSize: 13,
                   fontWeight: 500,
-                  color: currentStep >= step.number ? '#111' : '#9CA3AF',
+                  color: currentStep >= step.number ? theme.textPrimary : theme.textMuted,
                 }}
               >
                 {step.label}
@@ -55,7 +57,7 @@ export default function ProgressStepper({ currentStep }: { currentStep: number }
                   height: 4,
                   margin: '0 12px',
                   borderRadius: 2,
-                  background: '#E5E7EB',
+                  background: theme.border,
                   position: 'relative',
                   alignSelf: 'center',
                   marginBottom: 28,

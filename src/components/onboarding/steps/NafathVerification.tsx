@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { ShieldCheck, Smartphone, Clock, CheckCircle2, XCircle, RefreshCw, ArrowRight } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { useTheme } from '../../../ThemeContext'
 import type { IdentityVerificationData } from '../types'
 import { NafathLogo } from '../logos'
 
@@ -90,13 +91,14 @@ function NafathIllustration() {
 // ─── Screens ─────────────────────────────────────────────────
 
 function IntroScreen({ onStart }: { onStart: () => void }) {
+  const { theme } = useTheme()
   return (
     <div style={{ textAlign: 'center', padding: '16px 0' }}>
       <div style={{ marginBottom: 24, display: 'flex', justifyContent: 'center' }}>
         <NafathIllustration />
       </div>
 
-      <h2 style={{ fontSize: 22, fontWeight: 700, color: '#111827', marginBottom: 8 }}>Verify Your Identity</h2>
+      <h2 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary, marginBottom: 8 }}>Verify Your Identity</h2>
 
       {/* Powered by Nafath badge */}
       <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 14px', background: '#F0FDF4', borderRadius: 20, marginBottom: 20 }}>
@@ -108,8 +110,8 @@ function IntroScreen({ onStart }: { onStart: () => void }) {
         We use Nafath, Saudi Arabia's national digital identity service, to securely verify your identity.
       </p>
 
-      <div style={{ background: '#F9FAFB', borderRadius: 16, padding: 24, marginBottom: 28, textAlign: 'left' }}>
-        <h3 style={{ fontSize: 14, fontWeight: 600, color: '#111827', marginBottom: 16 }}>How it works:</h3>
+      <div style={{ background: theme.bgPrimary, borderRadius: 16, padding: 24, marginBottom: 28, textAlign: 'left' }}>
+        <h3 style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary, marginBottom: 16 }}>How it works:</h3>
         {[
           'Click "Start Verification" below',
           'Open the Nafath app on your phone',
@@ -153,6 +155,7 @@ function IntroScreen({ onStart }: { onStart: () => void }) {
 }
 
 function WaitingScreen({ nafathNumber, timeRemaining, onCancel }: { nafathNumber: string; timeRemaining: number; onCancel: () => void }) {
+  const { theme } = useTheme()
   const mins = Math.floor(timeRemaining / 60)
   const secs = timeRemaining % 60
 
@@ -172,7 +175,7 @@ function WaitingScreen({ nafathNumber, timeRemaining, onCancel }: { nafathNumber
         </motion.div>
       </div>
 
-      <h2 style={{ fontSize: 22, fontWeight: 700, color: '#111827', marginBottom: 6 }}>Open Nafath App</h2>
+      <h2 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary, marginBottom: 6 }}>Open Nafath App</h2>
       <p style={{ fontSize: 14, color: '#6B7280', marginBottom: 28 }}>Select the number below in your Nafath app</p>
 
       <div style={{
@@ -227,6 +230,7 @@ function LoadingScreen({ message }: { message: string }) {
 }
 
 function SuccessScreen({ onContinue }: { onContinue: () => void }) {
+  const { theme } = useTheme()
   return (
     <div style={{ textAlign: 'center', padding: '24px 0' }}>
       <motion.div
@@ -241,11 +245,11 @@ function SuccessScreen({ onContinue }: { onContinue: () => void }) {
         <CheckCircle2 size={40} color="#002E83" />
       </motion.div>
 
-      <h2 style={{ fontSize: 22, fontWeight: 700, color: '#111827', marginBottom: 6 }}>Identity Verified!</h2>
+      <h2 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary, marginBottom: 6 }}>Identity Verified!</h2>
       <p style={{ fontSize: 14, color: '#6B7280', marginBottom: 28 }}>Your identity has been successfully verified via Nafath</p>
 
-      <div style={{ background: '#F9FAFB', borderRadius: 16, padding: 24, marginBottom: 24, textAlign: 'left' }}>
-        <h3 style={{ fontSize: 14, fontWeight: 600, color: '#111827', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
+      <div style={{ background: theme.bgPrimary, borderRadius: 16, padding: 24, marginBottom: 24, textAlign: 'left' }}>
+        <h3 style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary, marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
           <CheckCircle2 size={16} color="#22C55E" />
           Verified Information
         </h3>
@@ -257,7 +261,7 @@ function SuccessScreen({ onContinue }: { onContinue: () => void }) {
         ].map(([label, value]) => (
           <div key={label} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10, fontSize: 13 }}>
             <span style={{ color: '#9CA3AF' }}>{label}</span>
-            <span style={{ fontWeight: 500, color: '#111827' }}>{value}</span>
+            <span style={{ fontWeight: 500, color: theme.textPrimary }}>{value}</span>
           </div>
         ))}
       </div>
