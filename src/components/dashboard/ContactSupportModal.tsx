@@ -41,6 +41,7 @@ export default function ContactSupportModal({ open, onClose }: ContactSupportMod
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.2, ease: 'easeOut' }}
         onClick={(e) => e.stopPropagation()}
+        className="modal-card"
         style={{
           background: theme.cardBg,
           borderRadius: 20,

@@ -7,6 +7,7 @@ import Sidebar from '../components/layout/Sidebar'
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
 import FloatingHelpButton from '../components/dashboard/FloatingHelpButton'
+import MobileTabBar from '../components/layout/MobileTabBar'
 import { LoansIcon } from '../components/icons/NavIcons'
 import RiyalSign from '../components/icons/RiyalSign'
 import { useTheme } from '../ThemeContext'
@@ -220,7 +221,7 @@ export default function MyLoans() {
                   <p style={{ fontSize: 13, color: theme.textMuted }}>Try adjusting your filters</p>
                 </motion.div>
               ) : (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
+                <div className="loans-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
                   {filtered.map((loan, i) => <LoanCard key={loan.id} loan={loan} delay={0.05 + i * 0.05} query={query} />)}
                 </div>
               )}
@@ -230,6 +231,7 @@ export default function MyLoans() {
         </div>
       </main>
       <FloatingHelpButton />
+      <MobileTabBar />
     </div>
   )
 }

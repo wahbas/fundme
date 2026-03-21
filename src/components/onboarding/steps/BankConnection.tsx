@@ -5,6 +5,7 @@ import {
 } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useTheme } from '../../../ThemeContext'
+import { useI18n } from '../../../i18n'
 import type { BankConnectionData, SupportedBank } from '../types'
 import RiyalSign from '../../icons/RiyalSign'
 import {
@@ -487,6 +488,7 @@ function ErrorScreen({
 // ─── Main Component ──────────────────────────────────────────
 
 export default function BankConnection({ onComplete }: Props) {
+  useI18n() // i18n hook ready for future translations
   const [leanState, setLeanState] = useState<LeanState>('select-bank')
   const [selectedBank, setSelectedBank] = useState<SupportedBank | null>(null)
   const [selectedAccount, setSelectedAccount] = useState<MockAccount | null>(null)

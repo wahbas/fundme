@@ -18,6 +18,7 @@ import FloatingHelpButton from './components/dashboard/FloatingHelpButton'
 import MakePaymentModal from './components/dashboard/MakePaymentModal'
 import ContactSupportModal from './components/dashboard/ContactSupportModal'
 import Footer from './components/layout/Footer'
+import MobileTabBar from './components/layout/MobileTabBar'
 
 export type UserState = 'first-time' | 'verified'
 
@@ -154,6 +155,9 @@ function App() {
 
       {/* Floating help button — always visible */}
       <FloatingHelpButton />
+
+      {/* Mobile bottom tab bar */}
+      <MobileTabBar />
 
       {/* Modals */}
       <MakePaymentModal open={paymentModalOpen} onClose={() => setPaymentModalOpen(false)} />

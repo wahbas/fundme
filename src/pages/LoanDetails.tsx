@@ -10,6 +10,7 @@ import Sidebar from '../components/layout/Sidebar'
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
 import FloatingHelpButton from '../components/dashboard/FloatingHelpButton'
+import MobileTabBar from '../components/layout/MobileTabBar'
 import EarlyPaymentModal from '../components/EarlyPaymentModal'
 import MakePaymentModal from '../components/dashboard/MakePaymentModal'
 import RiyalSign from '../components/icons/RiyalSign'
@@ -690,6 +691,7 @@ export default function LoanDetails() {
         </div>
       </main>
       <FloatingHelpButton />
+      <MobileTabBar />
       <MakePaymentModal open={makePaymentOpen} onClose={() => setMakePaymentOpen(false)} />
       <EarlyPaymentModal open={earlyPaymentOpen} onClose={() => setEarlyPaymentOpen(false)} />
     </div>

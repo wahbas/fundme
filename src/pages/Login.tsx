@@ -85,7 +85,6 @@ export default function Login() {
         background: 'linear-gradient(155deg, #000814 0%, #001233 40%, #002E83 70%, #0052B9 100%)',
         display: 'flex',
         flexDirection: 'column',
-        fontFamily: 'Poppins, sans-serif',
         position: 'relative',
       }}
     >

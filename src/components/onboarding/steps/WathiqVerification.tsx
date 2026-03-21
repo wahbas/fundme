@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Building2, Search, CheckCircle2, ArrowRight, AlertCircle, ShieldCheck, Upload, FileText, Users, MapPin, Hash, Info, ArrowLeft } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useTheme } from '../../../ThemeContext'
+import { useI18n } from '../../../i18n'
 import type { BusinessVerificationData, CommercialRegistration, Signatory } from '../types'
 import { WathiqLogo } from '../logos'
 import CompanyIllustration from '../CompanyIllustration'
@@ -25,6 +26,16 @@ type WathiqState =
 
 // ─── Mock Data ──────────────────────────────────────────────
 
+// Arabic translations for mock data
+const arData: Record<string, Record<string, string>> = {
+  companyType: { 'Limited Liability Company (LLC)': 'شركة ذات مسؤولية محدودة', 'Branch': 'فرع' },
+  city: { 'Riyadh': 'الرياض', 'Jeddah': 'جدة', 'Dammam': 'الدمام' },
+  district: { 'Al Olaya': 'العليا', 'Al Rawdah': 'الروضة', 'Al Shatie': 'الشاطئ' },
+  activity: { 'Wholesale Trade': 'تجارة الجملة', 'Import & Export': 'الاستيراد والتصدير' },
+  role: { 'owner': 'مالك', 'partner': 'شريك', 'manager': 'مدير' },
+  permission: { 'full': 'كاملة', 'limited': 'محدودة' },
+}
+
 const MOCK_CRS: CommercialRegistration[] = [
   {
     crNumber: '1010456789',
@@ -36,7 +47,7 @@ const MOCK_CRS: CommercialRegistration[] = [
     expiryDate: '12/06/2028',
     isicActivities: ['Wholesale Trade', 'Import & Export'],
     nationalAddress: {
-      buildingNumber: '4280',
+      buildingNumber: '٤٢٨٠',
       street: 'King Fahd Road',
       district: 'Al Olaya',
       city: 'Riyadh',
@@ -60,7 +71,7 @@ const MOCK_CRS: CommercialRegistration[] = [
     expiryDate: '03/01/2031',
     isicActivities: ['Wholesale Trade'],
     nationalAddress: {
-      buildingNumber: '1120',
+      buildingNumber: '١١٢٠',
       street: 'Prince Sultan Road',
       district: 'Al Rawdah',
       city: 'Jeddah',
@@ -81,6 +92,7 @@ const CURRENT_USER_ID = '1088765442' // matches Nafath mock
 
 function FetchingScreen() {
   const { theme } = useTheme()
+  const { t } = useI18n()
   return (
     <div style={{ textAlign: 'center', padding: '64px 0' }}>
       <motion.div
@@ -88,16 +100,18 @@ function FetchingScreen() {
         transition={{ repeat: Infinity, duration: 1.2, ease: 'linear' }}
         style={{ width: 56, height: 56, borderRadius: '50%', margin: '0 auto 24px', border: '4px solid #E5E7EB', borderTopColor: '#0D82F9' }}
       />
-      <h3 style={{ fontSize: 18, fontWeight: 600, color: theme.textPrimary, marginBottom: 6 }}>Looking up your businesses...</h3>
+      <h3 style={{ fontSize: 18, fontWeight: 600, color: theme.textPrimary, marginBottom: 6 }}>{t('onboarding.lookingUp')}</h3>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginTop: 12 }}>
         <WathiqLogo size={20} />
-        <p style={{ fontSize: 13, color: '#9CA3AF' }}>Fetching CRs linked to your National ID via Wathiq</p>
+        <p style={{ fontSize: 13, color: theme.textMuted }}>{t('onboarding.fetchingCRs')}</p>
       </div>
     </div>
   )
 }
 
 function NoCRFoundScreen({ onManualLookup }: { onManualLookup: () => void }) {
+  const { theme } = useTheme()
+  const { t } = useI18n()
   return (
     <div style={{ textAlign: 'center', padding: '32px 0' }}>
       <div style={{
@@ -106,9 +120,9 @@ function NoCRFoundScreen({ onManualLookup }: { onManualLookup: () => void }) {
       }}>
         <AlertCircle size={36} color="#F59E0B" />
       </div>
-      <h2 style={{ fontSize: 22, fontWeight: 700, color: '#111827', marginBottom: 8 }}>No Businesses Found</h2>
-      <p style={{ fontSize: 14, color: '#6B7280', maxWidth: 380, margin: '0 auto 28px', lineHeight: 1.6 }}>
-        We couldn't find any commercial registrations linked to your National ID. You can enter a CR number manually.
+      <h2 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary, marginBottom: 8 }}>{t('onboarding.noBusinesses')}</h2>
+      <p style={{ fontSize: 14, color: theme.textMuted, maxWidth: 380, margin: '0 auto 28px', lineHeight: 1.6 }}>
+        {t('onboarding.noBusinessesDesc')}
       </p>
       <motion.button
         whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
@@ -120,7 +134,7 @@ function NoCRFoundScreen({ onManualLookup }: { onManualLookup: () => void }) {
         }}
       >
         <Search size={18} />
-        Enter CR Number Manually
+        {t('onboarding.enterCRManually')}
       </motion.button>
     </div>
   )
@@ -137,6 +151,7 @@ const RELATIONSHIP_OPTIONS = [
 
 function ManualLookupScreen({ onResult, onBack }: { onResult: (cr: CommercialRegistration, relationship: string) => void; onBack?: () => void }) {
   const { theme } = useTheme()
+  const { t, isRTL } = useI18n()
   const [crNumber, setCrNumber] = useState('')
   const [relationship, setRelationship] = useState('')
   const [isSearching, setIsSearching] = useState(false)
@@ -181,8 +196,8 @@ function ManualLookupScreen({ onResult, onBack }: { onResult: (cr: CommercialReg
       {/* Illustration + Header */}
       <div style={{ textAlign: 'center', marginBottom: 32 }}>
         <CompanyIllustration size={130} />
-        <h2 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary, marginTop: 24, marginBottom: 8 }}>Company Information</h2>
-        <p style={{ fontSize: 14, color: '#6B7280' }}>Provide your company details</p>
+        <h2 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary, marginTop: 24, marginBottom: 8 }}>{t('onboarding.companyInfo' as any)}</h2>
+        <p style={{ fontSize: 14, color: theme.textMuted }}>{t('onboarding.provideDetails' as any)}</p>
       </div>
 
       {/* Back link */}
@@ -215,7 +230,7 @@ function ManualLookupScreen({ onResult, onBack }: { onResult: (cr: CommercialReg
             <Building2 size={20} color="#002E83" />
           </div>
           <div style={{ flex: 1 }}>
-            <p style={{ fontSize: 14, fontWeight: 600, color: '#111827', marginBottom: 2 }}>{verifiedCR.companyNameEn}</p>
+            <p style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary, marginBottom: 2 }}>{isRTL ? verifiedCR.companyNameAr : verifiedCR.companyNameEn}</p>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
               <span style={{ fontSize: 12, color: '#9CA3AF' }}>CR: {verifiedCR.crNumber}</span>
               <span style={{ fontSize: 10, fontWeight: 600, padding: '2px 8px', borderRadius: 10, background: '#D1FAE5', color: '#047857' }}>Active</span>
@@ -423,12 +438,15 @@ function ManualLookupScreen({ onResult, onBack }: { onResult: (cr: CommercialReg
 
 function CRCard({ cr, selected, onSelect }: { cr: CommercialRegistration; selected?: boolean; onSelect: () => void }) {
   const { theme } = useTheme()
+  const { t, isRTL } = useI18n()
+  const primaryName = isRTL ? cr.companyNameAr : cr.companyNameEn
+  const secondaryName = isRTL ? cr.companyNameEn : cr.companyNameAr
   return (
     <motion.button
       whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}
       onClick={onSelect}
       style={{
-        width: '100%', padding: 20, borderRadius: 14, textAlign: 'left', cursor: 'pointer',
+        width: '100%', padding: 20, borderRadius: 14, textAlign: isRTL ? 'right' : 'left', cursor: 'pointer',
         border: `2px solid ${selected ? '#0D82F9' : theme.border}`,
         background: selected ? '#EFF6FF' : theme.cardBg,
         transition: 'border-color 0.2s, background 0.2s',
@@ -437,12 +455,12 @@ function CRCard({ cr, selected, onSelect }: { cr: CommercialRegistration; select
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 12 }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-            <span style={{ fontSize: 15, fontWeight: 700, color: '#111827' }}>{cr.companyNameEn}</span>
+            <span style={{ fontSize: 15, fontWeight: 700, color: theme.textPrimary }}>{primaryName}</span>
             {cr.crType === 'branch' && (
-              <span style={{ fontSize: 10, fontWeight: 600, padding: '2px 8px', background: '#F3F4F6', color: '#6B7280', borderRadius: 10 }}>BRANCH</span>
+              <span style={{ fontSize: 10, fontWeight: 600, padding: '2px 8px', background: '#F3F4F6', color: '#6B7280', borderRadius: 10 }}>{t('onboarding.branch')}</span>
             )}
           </div>
-          <p style={{ fontSize: 13, color: '#6B7280' }}>{cr.companyNameAr}</p>
+          <p style={{ fontSize: 13, color: theme.textMuted }}>{secondaryName}</p>
         </div>
         <div style={{
           width: 22, height: 22, borderRadius: '50%',
@@ -453,13 +471,18 @@ function CRCard({ cr, selected, onSelect }: { cr: CommercialRegistration; select
         </div>
       </div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, fontSize: 12 }}>
-        <span style={{ color: '#9CA3AF' }}>CR: <span style={{ color: '#374151', fontWeight: 500 }}>{cr.crNumber}</span></span>
-        <span style={{ color: '#9CA3AF' }}>Type: <span style={{ color: '#374151', fontWeight: 500 }}>{cr.companyType}</span></span>
-        <span style={{ color: '#9CA3AF' }}>Expires: <span style={{ color: '#374151', fontWeight: 500 }}>{cr.expiryDate}</span></span>
+        <span style={{ color: theme.textMuted }}>{t('onboarding.cr')} <span style={{ color: theme.textSecondary, fontWeight: 500 }}>{cr.crNumber}</span></span>
+        <span style={{ color: theme.textMuted }}>{t('onboarding.type')} <span style={{ color: theme.textSecondary, fontWeight: 500 }}>{isRTL ? (arData.companyType[cr.companyType] || cr.companyType) : cr.companyType}</span></span>
+        <span style={{ color: theme.textMuted }}>{t('onboarding.expires')} <span style={{ color: theme.textSecondary, fontWeight: 500 }}>{cr.expiryDate}</span></span>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 8 }}>
-        <MapPin size={12} color="#9CA3AF" />
-        <span style={{ fontSize: 12, color: '#9CA3AF' }}>{cr.nationalAddress.district}, {cr.nationalAddress.city}</span>
+        <MapPin size={12} color={theme.textMuted} />
+        <span style={{ fontSize: 12, color: theme.textMuted }}>
+          {isRTL
+            ? `${arData.district[cr.nationalAddress.district] || cr.nationalAddress.district}، ${arData.city[cr.nationalAddress.city] || cr.nationalAddress.city}`
+            : `${cr.nationalAddress.district}, ${cr.nationalAddress.city}`
+          }
+        </span>
       </div>
     </motion.button>
   )
@@ -467,6 +490,7 @@ function CRCard({ cr, selected, onSelect }: { cr: CommercialRegistration; select
 
 function SelectCRScreen({ crs, onSelect, onAddManually }: { crs: CommercialRegistration[]; onSelect: (cr: CommercialRegistration) => void; onAddManually: () => void }) {
   const { theme } = useTheme()
+  const { t, isRTL } = useI18n()
   const [selectedId, setSelectedId] = useState<string | null>(null)
 
   return (
@@ -480,13 +504,13 @@ function SelectCRScreen({ crs, onSelect, onAddManually }: { crs: CommercialRegis
         }}>
           <Building2 size={32} color="#fff" />
         </div>
-        <h2 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary, marginBottom: 8 }}>Select Your Business</h2>
+        <h2 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary, marginBottom: 8 }}>{t('onboarding.selectBusiness')}</h2>
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 14px', background: '#E0F2F1', borderRadius: 20, marginBottom: 12 }}>
           <WathiqLogo size={20} />
-          <span style={{ fontSize: 12, fontWeight: 600, color: '#00695C' }}>Verified by Wathiq</span>
+          <span style={{ fontSize: 12, fontWeight: 600, color: '#00695C' }}>{t('onboarding.verifiedByWathiq')}</span>
         </div>
         <p style={{ fontSize: 14, color: '#6B7280' }}>
-          We found {crs.length} commercial registration{crs.length > 1 ? 's' : ''} linked to your ID
+          {t('onboarding.foundCRs')}
         </p>
       </div>
 
@@ -510,7 +534,7 @@ function SelectCRScreen({ crs, onSelect, onAddManually }: { crs: CommercialRegis
         onMouseLeave={(e) => (e.currentTarget.style.background = '#fff')}
       >
         <span style={{ fontSize: 18, lineHeight: 1 }}>+</span>
-        Add Another Company Manually
+        {t('onboarding.addManually')}
       </button>
 
       <motion.button
@@ -525,8 +549,8 @@ function SelectCRScreen({ crs, onSelect, onAddManually }: { crs: CommercialRegis
           display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
         }}
       >
-        Continue with Selected Business
-        <ArrowRight size={18} />
+        {t('onboarding.continueSelected' as any)}
+        <ArrowRight size={18} style={{ transform: isRTL ? 'scaleX(-1)' : 'none' }} />
       </motion.button>
     </div>
   )
@@ -534,6 +558,7 @@ function SelectCRScreen({ crs, onSelect, onAddManually }: { crs: CommercialRegis
 
 function ConfirmCRScreen({ cr, onConfirm, onBack }: { cr: CommercialRegistration; onConfirm: () => void; onBack: () => void }) {
   const { theme } = useTheme()
+  const { t, isRTL } = useI18n()
   const addr = cr.nationalAddress
   const fullAddress = `${addr.buildingNumber} ${addr.street}, ${addr.district}, ${addr.city} ${addr.postalCode}`
 
@@ -550,30 +575,30 @@ function ConfirmCRScreen({ cr, onConfirm, onBack }: { cr: CommercialRegistration
         >
           <CheckCircle2 size={32} color="#047857" />
         </motion.div>
-        <h2 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary, marginBottom: 6 }}>Business Found</h2>
-        <p style={{ fontSize: 14, color: '#6B7280' }}>Please confirm your business details below</p>
+        <h2 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary, marginBottom: 6 }}>{t('onboarding.businessFound')}</h2>
+        <p style={{ fontSize: 14, color: theme.textMuted }}>{t('onboarding.confirmDetails')}</p>
       </div>
 
       {/* Business details */}
       <div style={{ background: theme.bgPrimary, borderRadius: 16, padding: 24, marginBottom: 16 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
           <Building2 size={16} color="#0D82F9" />
-          <span style={{ fontSize: 14, fontWeight: 600, color: '#111827' }}>Business Information</span>
+          <span style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary }}>{t('onboarding.businessInfo')}</span>
         </div>
         {[
-          ['CR Number', cr.crNumber],
-          ['Company Name (EN)', cr.companyNameEn],
-          ['Company Name (AR)', cr.companyNameAr],
-          ['Company Type', cr.companyType],
-          ['CR Type', cr.crType === 'main' ? 'Main Registration' : 'Branch'],
-          ['Registration Date', cr.registrationDate],
-          ['Expiry Date', cr.expiryDate],
-          ['Capital', `${cr.capital.toLocaleString()} ر.س`],
-          ['Activities', cr.isicActivities.join(', ')],
+          [t('onboarding.crNumber'), cr.crNumber],
+          [t('onboarding.companyNameEn'), cr.companyNameEn],
+          [t('onboarding.companyNameAr'), cr.companyNameAr],
+          [t('onboarding.companyType'), isRTL ? (arData.companyType[cr.companyType] || cr.companyType) : cr.companyType],
+          [t('onboarding.crType'), cr.crType === 'main' ? t('onboarding.mainReg') : t('onboarding.branch')],
+          [t('onboarding.regDate'), cr.registrationDate],
+          [t('onboarding.expiryDate'), cr.expiryDate],
+          [t('onboarding.capital'), `${cr.capital.toLocaleString()} ر.س`],
+          [t('onboarding.activities'), isRTL ? cr.isicActivities.map(a => arData.activity[a] || a).join('، ') : cr.isicActivities.join(', ')],
         ].map(([label, value]) => (
           <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10, fontSize: 13 }}>
-            <span style={{ color: '#9CA3AF', flexShrink: 0, marginRight: 16 }}>{label}</span>
-            <span style={{ fontWeight: 500, color: '#111827', textAlign: 'right' }}>{value}</span>
+            <span style={{ color: theme.textMuted, flexShrink: 0, marginRight: isRTL ? 0 : 16, marginLeft: isRTL ? 16 : 0 }}>{label}</span>
+            <span style={{ fontWeight: 500, color: theme.textPrimary, textAlign: isRTL ? 'left' : 'right' }}>{value}</span>
           </div>
         ))}
       </div>
@@ -582,7 +607,7 @@ function ConfirmCRScreen({ cr, onConfirm, onBack }: { cr: CommercialRegistration
       <div style={{ background: theme.bgPrimary, borderRadius: 16, padding: 24, marginBottom: 16 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
           <MapPin size={16} color="#0D82F9" />
-          <span style={{ fontSize: 14, fontWeight: 600, color: '#111827' }}>National Address</span>
+          <span style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary }}>{t('onboarding.nationalAddress')}</span>
         </div>
         <p style={{ fontSize: 13, color: '#374151', lineHeight: 1.6 }}>{fullAddress}</p>
       </div>
@@ -591,7 +616,7 @@ function ConfirmCRScreen({ cr, onConfirm, onBack }: { cr: CommercialRegistration
       <div style={{ background: theme.bgPrimary, borderRadius: 16, padding: 24, marginBottom: 28 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
           <Users size={16} color="#0D82F9" />
-          <span style={{ fontSize: 14, fontWeight: 600, color: '#111827' }}>Signatories ({cr.signatories.length})</span>
+          <span style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary }}>{t('onboarding.signatories')} ({cr.signatories.length})</span>
         </div>
         {cr.signatories.map((sig, i) => (
           <div key={sig.nationalId} style={{
@@ -599,19 +624,19 @@ function ConfirmCRScreen({ cr, onConfirm, onBack }: { cr: CommercialRegistration
             marginBottom: i < cr.signatories.length - 1 ? 8 : 0,
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
-              <span style={{ fontSize: 13, fontWeight: 600, color: '#111827' }}>{sig.name}</span>
+              <span style={{ fontSize: 13, fontWeight: 600, color: theme.textPrimary }}>{isRTL ? sig.nameAr : sig.name}</span>
               <span style={{
                 fontSize: 10, fontWeight: 600, padding: '2px 8px', borderRadius: 10,
                 background: sig.permission === 'full' ? '#D1FAE5' : '#FEF3C7',
                 color: sig.permission === 'full' ? '#047857' : '#92400E',
               }}>
-                {sig.role.replace('-', ' ').toUpperCase()}
+                {isRTL ? (arData.role[sig.role] || sig.role) : sig.role.replace('-', ' ').toUpperCase()}
               </span>
             </div>
             <div style={{ display: 'flex', gap: 16, fontSize: 11, color: '#9CA3AF' }}>
               <span>{sig.nameAr}</span>
               <span>ID: {sig.nationalId.slice(0, 4)}****{sig.nationalId.slice(-2)}</span>
-              <span>Permission: {sig.permission}</span>
+              <span>{t('onboarding.permission')}: {isRTL ? (arData.permission[sig.permission] || sig.permission) : sig.permission}</span>
             </div>
           </div>
         ))}
@@ -622,7 +647,7 @@ function ConfirmCRScreen({ cr, onConfirm, onBack }: { cr: CommercialRegistration
           flex: 1, padding: '12px 0', background: '#fff', color: '#374151', fontWeight: 600,
           fontSize: 14, borderRadius: 12, border: '1px solid #D1D5DB', cursor: 'pointer',
         }}>
-          Not My Business
+          {t('onboarding.notMyBusiness')}
         </button>
         <motion.button
           whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
@@ -633,8 +658,8 @@ function ConfirmCRScreen({ cr, onConfirm, onBack }: { cr: CommercialRegistration
             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
           }}
         >
-          Confirm & Continue
-          <ArrowRight size={18} />
+          {t('onboarding.confirmContinue')}
+          <ArrowRight size={18} style={{ transform: isRTL ? 'scaleX(-1)' : 'none' }} />
         </motion.button>
       </div>
     </div>
@@ -847,7 +872,7 @@ export default function WathiqVerification({ data, onComplete, nationalId: _nati
         setWathiqState('no-cr-found')
       } else if (MOCK_CRS.length === 1) {
         setSelectedCR(MOCK_CRS[0])
-        setWathiqState('confirm-cr')
+        setWathiqState('checking-signatory')
       } else {
         setWathiqState('select-cr')
       }
@@ -857,15 +882,13 @@ export default function WathiqVerification({ data, onComplete, nationalId: _nati
 
   function handleCRSelected(cr: CommercialRegistration) {
     setSelectedCR(cr)
-    setWathiqState('confirm-cr')
+    setWathiqState('checking-signatory')
   }
 
-  function handleCRConfirmed() {
-    if (!selectedCR) return
-    setWathiqState('checking-signatory')
-
-    // Mock: check if user is an authorized signatory
-    setTimeout(() => {
+  // Auto-check signatory when entering checking-signatory state
+  useEffect(() => {
+    if (wathiqState !== 'checking-signatory' || !selectedCR) return
+    const t = setTimeout(() => {
       const userSig = selectedCR.signatories.find((s) => s.nationalId === CURRENT_USER_ID)
       if (userSig && userSig.permission === 'full') {
         setIsAuthorized(true)
@@ -875,7 +898,8 @@ export default function WathiqVerification({ data, onComplete, nationalId: _nati
         setWathiqState('not-authorized')
       }
     }, 1500)
-  }
+    return () => clearTimeout(t)
+  }, [wathiqState, selectedCR])
 
   function handleLetterUploaded() {
     setLetterUploaded(true)
@@ -915,13 +939,11 @@ export default function WathiqVerification({ data, onComplete, nationalId: _nati
       return <NoCRFoundScreen onManualLookup={() => setWathiqState('manual-lookup')} />
     case 'manual-lookup':
       return <ManualLookupScreen
-        onResult={(cr, _relationship) => { setSelectedCR(cr); setFetchedCRs((prev) => [...prev, cr]); setWathiqState('confirm-cr') }}
+        onResult={(cr, _relationship) => { setSelectedCR(cr); setFetchedCRs((prev) => [...prev, cr]); setWathiqState('checking-signatory') }}
         onBack={fetchedCRs.length > 0 ? () => setWathiqState('select-cr') : undefined}
       />
     case 'select-cr':
       return <SelectCRScreen crs={fetchedCRs} onSelect={handleCRSelected} onAddManually={() => setWathiqState('manual-lookup')} />
-    case 'confirm-cr':
-      return selectedCR ? <ConfirmCRScreen cr={selectedCR} onConfirm={handleCRConfirmed} onBack={goBack} /> : null
     case 'checking-signatory':
       return <CheckingSignatoryScreen />
     case 'not-authorized':

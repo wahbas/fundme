@@ -3,28 +3,23 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { X, Check, CheckCircle2, Building2, Landmark, ArrowRight } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useTheme } from '../ThemeContext'
+import { useI18n } from '../i18n'
 import { STEP_ORDER, INITIAL_ONBOARDING_STATE, type OnboardingStep, type OnboardingState } from '../components/onboarding/types'
 import WathiqVerification from '../components/onboarding/steps/WathiqVerification'
 import BankConnection from '../components/onboarding/steps/BankConnection'
 import logo from '../assets/logo.png'
 
-// ─── Step metadata ───────────────────────────────────────────
-
-const WIZARD_STEPS = [
-  { id: 'verify-business' as const, label: 'Verify Business', icon: Building2 },
-  { id: 'connect-bank' as const, label: 'Connect Bank', icon: Landmark },
-]
-
 // ─── Account Verified Screen ────────────────────────────────
-
-const CHECKLIST_ITEMS = [
-  'Account Created & Identity Verified',
-  'Business Verified',
-  'Bank Account Connected',
-]
 
 function AccountVerifiedScreen({ onGoToDashboard }: { onGoToDashboard: () => void }) {
   const { theme } = useTheme()
+  const { t } = useI18n()
+
+  const CHECKLIST_ITEMS = [
+    t('onboarding.accountCreated'),
+    t('onboarding.businessVerified'),
+    t('onboarding.bankConnected'),
+  ]
   return (
     <div style={{ textAlign: 'center', padding: '24px 0', maxWidth: 440, margin: '0 auto' }}>
       {/* Success icon */}
@@ -48,7 +43,7 @@ function AccountVerifiedScreen({ onGoToDashboard }: { onGoToDashboard: () => voi
         transition={{ delay: 0.2 }}
         style={{ fontSize: 26, fontWeight: 700, color: theme.textPrimary, marginBottom: 8 }}
       >
-        Your Account is Verified!
+        {t('onboarding.accountVerified')}
       </motion.h2>
       <motion.p
         initial={{ opacity: 0, y: 10 }}
@@ -56,7 +51,7 @@ function AccountVerifiedScreen({ onGoToDashboard }: { onGoToDashboard: () => voi
         transition={{ delay: 0.3 }}
         style={{ fontSize: 14, color: theme.textMuted, lineHeight: 1.6, marginBottom: 28 }}
       >
-        Congratulations! Your account setup is complete. You can now start requesting financing.
+        {t('onboarding.accountVerifiedDesc')}
       </motion.p>
 
       {/* Setup Complete Checklist */}
@@ -96,7 +91,7 @@ function AccountVerifiedScreen({ onGoToDashboard }: { onGoToDashboard: () => voi
           display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
         }}
       >
-        Go to Dashboard
+        {t('onboarding.goToDashboard')}
         <ArrowRight size={20} />
       </motion.button>
     </div>
@@ -107,6 +102,7 @@ function AccountVerifiedScreen({ onGoToDashboard }: { onGoToDashboard: () => voi
 
 export default function Onboarding() {
   const { theme } = useTheme()
+  const { t } = useI18n()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const initialStepParam = searchParams.get('step') as OnboardingStep | null
@@ -121,6 +117,11 @@ export default function Onboarding() {
 
   const [completed, setCompleted] = useState(false)
   const [showExitModal, setShowExitModal] = useState(false)
+
+  const WIZARD_STEPS = [
+    { id: 'verify-business' as const, label: t('onboarding.verifyBusiness'), icon: Building2 },
+    { id: 'connect-bank' as const, label: t('onboarding.connectBank'), icon: Landmark },
+  ]
 
   const hasProgress = state.completedSteps.length > 1 // more than just create-account
 
@@ -169,7 +170,7 @@ export default function Onboarding() {
 
   if (completed) {
     return (
-      <div style={{ minHeight: '100vh', background: theme.bgPrimary, fontFamily: 'Poppins, sans-serif', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ minHeight: '100vh', background: theme.bgPrimary, display: 'flex', flexDirection: 'column' }}>
         <div style={{ background: theme.cardBg, borderBottom: `1px solid ${theme.border}` }}>
           <div style={{ display: 'flex', alignItems: 'center', padding: '14px 32px' }}>
             <img src={logo} alt="FundMe" style={{ height: 32, filter: 'brightness(0) saturate(100%)' }} />
@@ -194,14 +195,14 @@ export default function Onboarding() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: theme.bgPrimary, fontFamily: 'Poppins, sans-serif', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ minHeight: '100vh', background: theme.bgPrimary, display: 'flex', flexDirection: 'column' }}>
       {/* Top bar — matches RequestFinancing */}
       <div style={{ background: theme.cardBg, borderBottom: `1px solid ${theme.border}`, position: 'relative' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 32px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
             <img src={logo} alt="FundMe" style={{ height: 32, filter: 'brightness(0) saturate(100%)' }} />
             <div style={{ width: 1, height: 20, background: '#E5E5E5' }} />
-            <span style={{ fontSize: 15, fontWeight: 600, color: theme.textPrimary }}>Account Setup</span>
+            <span style={{ fontSize: 15, fontWeight: 600, color: theme.textPrimary }}>{t('onboarding.accountSetup')}</span>
           </div>
           <button onClick={handleClose} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 6 }}>
             <X size={22} color="#6B7280" />
@@ -303,11 +304,11 @@ export default function Onboarding() {
       <div style={{ borderTop: `1px solid ${theme.border}`, background: theme.cardBg, padding: '14px 32px', position: 'sticky', bottom: 0 }}>
         <div style={{ maxWidth: 1120, margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <span style={{ fontSize: 13, color: '#9CA3AF' }}>
-            Step {currentStepIndex + 1} of {WIZARD_STEPS.length}
+            {t('onboarding.step')} {currentStepIndex + 1} / {WIZARD_STEPS.length}
           </span>
           <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: '#9CA3AF' }}>
             <CheckCircle2 size={14} color="#22C55E" />
-            Progress saved automatically
+            {t('onboarding.progressSaved')}
           </span>
         </div>
       </div>
@@ -349,10 +350,10 @@ export default function Onboarding() {
               </div>
 
               <h3 style={{ fontSize: 18, fontWeight: 700, color: theme.textPrimary, textAlign: 'center', marginBottom: 8 }}>
-                Leave Account Setup?
+                {t('onboarding.exitSetup')}
               </h3>
               <p style={{ fontSize: 14, color: theme.textMuted, textAlign: 'center', lineHeight: 1.6, marginBottom: 8 }}>
-                Don't worry — your progress has been saved. You can pick up right where you left off anytime.
+                {t('onboarding.exitDesc')}
               </p>
 
               {/* Progress summary */}
@@ -395,7 +396,7 @@ export default function Onboarding() {
                     fontWeight: 600, fontSize: 14, borderRadius: 10, border: 'none', cursor: 'pointer',
                   }}
                 >
-                  Continue Setup
+                  {t('onboarding.stayButton')}
                 </button>
                 <button
                   onClick={() => navigate('/dashboard')}
@@ -405,7 +406,7 @@ export default function Onboarding() {
                     border: '1px solid #D1D5DB', cursor: 'pointer',
                   }}
                 >
-                  Exit
+                  {t('onboarding.exitButton')}
                 </button>
               </div>
             </motion.div>

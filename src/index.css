@@ -7,7 +7,7 @@
 }
 
 body {
-  font-family: 'DM Sans', 'Poppins', sans-serif;
+  font-family: 'IBM Plex Sans Arabic', 'DM Sans', 'Poppins', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: var(--bg-primary);
@@ -16,7 +16,7 @@ body {
 }
 
 button {
-  font-family: 'DM Sans', 'Poppins', sans-serif;
+  font-family: 'IBM Plex Sans Arabic', 'DM Sans', 'Poppins', sans-serif;
   cursor: pointer;
   border: none;
   background: none;
@@ -97,50 +97,98 @@ button {
   border-right: 3px solid transparent;
 }
 
-/* Fix text alignment for RTL */
-[dir="rtl"] p,
-[dir="rtl"] span,
-[dir="rtl"] h1,
-[dir="rtl"] h2,
-[dir="rtl"] h3,
-[dir="rtl"] label {
-  text-align: right;
-}
+/* Note: text alignment in RTL is handled by the browser's dir="rtl" attribute
+   which automatically makes text-align default to 'right' for block elements.
+   We don't force text-align: right here to avoid overriding inline textAlign: 'center'. */
 
 /* ─── Responsive Breakpoints ─── */
 
-/* Tablet: 768px - 1200px */
+/* Tablet: 768px – 1200px — sidebar collapses to icon-only */
 @media (max-width: 1200px) {
-  /* Dashboard KPI cards: 3-col → 2-col */
+  /* Force sidebar to collapsed width */
+  aside {
+    width: 72px !important;
+  }
+
+  /* Adjust main content margin */
+  main {
+    margin-left: 72px !important;
+  }
+  [dir="rtl"] main {
+    margin-left: 0 !important;
+    margin-right: 72px !important;
+  }
+
+  /* Hide sidebar text labels */
+  aside nav span,
+  aside > div:last-child span {
+    display: none !important;
+  }
+
   .quick-stats-grid {
     grid-template-columns: repeat(2, 1fr) !important;
   }
 
-  /* Dashboard main grid: remove right sidebar column */
   .dashboard-grid {
     grid-template-columns: 1fr !important;
   }
 
-  /* Profile fields: 3-col → 2-col */
   .profile-fields-3 {
     grid-template-columns: repeat(2, 1fr) !important;
   }
 
-  /* Loan details summary: 5-col → 3-col */
   .loan-summary-grid {
     grid-template-columns: repeat(3, 1fr) !important;
   }
+
+  /* Loan card grid: 2 col */
+  .loans-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
 }
 
-/* Mobile: < 768px */
+/* Mobile: < 768px — sidebar becomes bottom tab bar */
 @media (max-width: 768px) {
-  /* Dashboard KPI cards: 1-col */
+  /* Hide the sidebar completely */
+  aside {
+    display: none !important;
+  }
+
+  /* Remove sidebar margin from main content */
+  main {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-bottom: 72px !important;
+  }
+  [dir="rtl"] main {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  /* Reduce content padding */
+  main > div {
+    padding: 16px !important;
+  }
+
+  /* Header: stack on small screens */
+  header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+
+  /* KPI cards: single column */
   .quick-stats-grid {
     grid-template-columns: 1fr !important;
   }
 
-  /* All dashboard widgets stack */
+  /* Dashboard widgets: single column */
   .dashboard-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Onboarding grid: stack */
+  .onboarding-grid {
     grid-template-columns: 1fr !important;
   }
 
@@ -149,34 +197,62 @@ button {
     grid-template-columns: 1fr !important;
   }
 
-  /* Profile fields: 1-col */
+  /* Profile fields: single column */
   .profile-fields-3,
   .profile-fields-2 {
     grid-template-columns: 1fr !important;
   }
 
-  /* Loan details summary: stack */
+  /* Loan details summary: 2-col */
   .loan-summary-grid {
     grid-template-columns: repeat(2, 1fr) !important;
   }
 
-  /* Loan details info grid: stack */
+  /* Loan details info & fields: stack */
   .loan-info-grid {
     grid-template-columns: 1fr !important;
   }
-
-  /* Loan details fields: 2-col */
   .loan-detail-fields {
     grid-template-columns: repeat(2, 1fr) !important;
   }
 
-  /* Onboarding grid: stack */
-  .onboarding-grid {
+  /* Loan card grid: single column */
+  .loans-grid {
     grid-template-columns: 1fr !important;
   }
 
-  /* Main content padding reduce */
-  .main-content {
-    padding: 16px !important;
+  /* Modals: full width */
+  .modal-card {
+    max-width: 100% !important;
+    width: 100% !important;
+    min-height: 100vh !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
   }
+
+  /* Bottom tab bar for mobile navigation */
+  .mobile-tab-bar {
+    display: flex !important;
+  }
+}
+
+/* Bottom tab bar — hidden by default, shown on mobile */
+.mobile-tab-bar {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: var(--bg-card);
+  border-top: 1px solid var(--border);
+  z-index: 100;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 8px;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+}
+
+[data-theme="dark"] .mobile-tab-bar {
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
 }

@@ -6,6 +6,7 @@ import Sidebar from '../components/layout/Sidebar'
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
 import FloatingHelpButton from '../components/dashboard/FloatingHelpButton'
+import MobileTabBar from '../components/layout/MobileTabBar'
 import { useTheme } from '../ThemeContext'
 import { useI18n } from '../i18n'
 
@@ -153,6 +154,7 @@ export default function Notifications() {
         </div>
       </main>
       <FloatingHelpButton />
+      <MobileTabBar />
     </div>
   )
 }
