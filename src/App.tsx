@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useTheme } from './ThemeContext'
+import { useI18n } from './i18n'
 import Sidebar from './components/layout/Sidebar'
 import Header from './components/layout/Header'
 import OnboardingChecklist from './components/dashboard/OnboardingChecklist'
@@ -20,13 +21,9 @@ import Footer from './components/layout/Footer'
 
 export type UserState = 'first-time' | 'verified'
 
-const DEMO_BUTTONS: { state: UserState; label: string; activeColor: string }[] = [
-  { state: 'first-time', label: 'Not Verified', activeColor: '#1B2A3D' },
-  { state: 'verified', label: 'Verified', activeColor: '#10B981' },
-]
-
 function App() {
   const { theme } = useTheme()
+  const { t, isRTL } = useI18n()
   const [searchParams, setSearchParams] = useSearchParams()
   const stateParam = searchParams.get('state') as UserState | null
   const legacyVerified = searchParams.get('verified') === 'true'
@@ -48,8 +45,9 @@ function App() {
       <Sidebar verified={verified} collapsed={sidebarCollapsed} onToggle={() => setSidebarCollapsed((c) => !c)} activeTab="home" />
       <main
         style={{
-          marginLeft: sidebarCollapsed ? 72 : 240,
-          transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          marginLeft: isRTL ? 0 : (sidebarCollapsed ? 72 : 240),
+          marginRight: isRTL ? (sidebarCollapsed ? 72 : 240) : 0,
+          transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1), margin-right 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
           flex: 1,
           minWidth: 0,
           overflow: 'hidden',
@@ -86,8 +84,11 @@ function App() {
                 border: `1px dashed ${theme.border}`,
               }}
             >
-              <span style={{ fontSize: 11, color: theme.textMuted, fontWeight: 500, paddingLeft: 8 }}>Demo:</span>
-              {DEMO_BUTTONS.map((btn) => (
+              <span style={{ fontSize: 11, color: theme.textMuted, fontWeight: 500, paddingLeft: 8 }}>{t('dashboard.demo')}</span>
+              {([
+                { state: 'first-time' as UserState, label: t('dashboard.notVerified'), activeColor: '#1B2A3D' },
+                { state: 'verified' as UserState, label: t('dashboard.verified'), activeColor: '#10B981' },
+              ]).map((btn) => (
                 <button
                   key={btn.state}
                   onClick={() => setUserState(btn.state)}

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { Lock, ChevronRight } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useTheme } from '../../ThemeContext'
+import { useI18n } from '../../i18n'
 
 // ─── Abstract circle illustrations (navy + green strokes) ────
 
@@ -66,45 +67,26 @@ function Illustration3() {
 
 // ─── Products ────────────────────────────────────────────────
 
-const products = [
-  {
-    id: 'sadad',
-    tag: 'Payments',
-    tagColor: '#3B82F6',
-    tagBg: 'rgba(59, 130, 246, 0.1)',
-    name: 'SADAD Financing',
-    desc: 'Finance your SADAD bills and government payments with flexible repayment terms.',
-    illustration: Illustration3,
-    available: true,
-  },
-  {
-    id: 'working-capital',
-    tag: 'Business Growth',
-    tagColor: '#3B82F6',
-    tagBg: 'rgba(59, 130, 246, 0.1)',
-    name: 'Working Capital',
-    desc: 'Access flexible funding to manage cash flow, invest in inventory, or scale your operations.',
-    illustration: Illustration1,
-    available: false,
-  },
-  {
-    id: 'invoice',
-    tag: 'Cash Flow',
-    tagColor: '#3B82F6',
-    tagBg: 'rgba(59, 130, 246, 0.1)',
-    name: 'Invoice Financing',
-    desc: 'Turn your outstanding invoices into immediate cash. Don\'t wait 60–90 days for payment.',
-    illustration: Illustration2,
-    available: false,
-  },
-]
+// ─── Product type ────────────────────────────────────────────
+
+interface Product {
+  id: string
+  tag: string
+  tagColor: string
+  tagBg: string
+  name: string
+  desc: string
+  illustration: () => JSX.Element
+  available: boolean
+}
 
 // ─── Card ────────────────────────────────────────────────────
 
-function ProductCard({ p, i }: { p: typeof products[0]; i: number }) {
+function ProductCard({ p, i }: { p: Product; i: number }) {
   const navigate = useNavigate()
   const [hovered, setHovered] = useState(false)
   const { theme } = useTheme()
+  const { t, isRTL } = useI18n()
   const Illust = p.illustration
 
   return (
@@ -159,7 +141,7 @@ function ProductCard({ p, i }: { p: typeof products[0]; i: number }) {
             }}
           >
             <Lock size={14} color="#64748B" />
-            <span style={{ fontSize: 13, fontWeight: 700, color: '#475569', letterSpacing: 0.3 }}>Coming Soon</span>
+            <span style={{ fontSize: 13, fontWeight: 700, color: '#475569', letterSpacing: 0.3 }}>{t('product.comingSoon')}</span>
           </div>
         </div>
       )}
@@ -196,7 +178,7 @@ function ProductCard({ p, i }: { p: typeof products[0]; i: number }) {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           {p.available ? (
             <>
-              <span style={{ fontSize: 12, color: '#16A34A', fontWeight: 500 }}>Available now</span>
+              <span style={{ fontSize: 12, color: '#16A34A', fontWeight: 500 }}>{t('product.availableNow')}</span>
               <button
                 onClick={(e) => {
                   e.stopPropagation()
@@ -215,15 +197,15 @@ function ProductCard({ p, i }: { p: typeof products[0]; i: number }) {
                   padding: 0,
                 }}
               >
-                Apply
-                <ChevronRight size={16} />
+                {t('product.apply')}
+                <ChevronRight size={16} style={{ transform: isRTL ? 'scaleX(-1)' : 'none' }} />
               </button>
             </>
           ) : (
             <>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: theme.textMuted }}>
                 <Lock size={13} />
-                Coming soon
+                {t('product.comingSoon')}
               </div>
               <span
                 style={{
@@ -236,8 +218,8 @@ function ProductCard({ p, i }: { p: typeof products[0]; i: number }) {
                   cursor: 'pointer',
                 }}
               >
-                Learn
-                <ChevronRight size={16} />
+                {t('product.learn')}
+                <ChevronRight size={16} style={{ transform: isRTL ? 'scaleX(-1)' : 'none' }} />
               </span>
             </>
           )}
@@ -251,11 +233,46 @@ function ProductCard({ p, i }: { p: typeof products[0]; i: number }) {
 
 export default function FinancingOptions() {
   const { theme } = useTheme()
+  const { t, isRTL } = useI18n()
+
+  const products: Product[] = [
+    {
+      id: 'sadad',
+      tag: t('product.payments'),
+      tagColor: '#3B82F6',
+      tagBg: 'rgba(59, 130, 246, 0.1)',
+      name: t('product.sadadFinancing'),
+      desc: t('product.sadadDesc'),
+      illustration: Illustration3,
+      available: true,
+    },
+    {
+      id: 'working-capital',
+      tag: t('product.businessGrowth'),
+      tagColor: '#3B82F6',
+      tagBg: 'rgba(59, 130, 246, 0.1)',
+      name: t('product.workingCapital'),
+      desc: t('product.workingCapitalDesc'),
+      illustration: Illustration1,
+      available: false,
+    },
+    {
+      id: 'invoice',
+      tag: t('product.cashFlow'),
+      tagColor: '#3B82F6',
+      tagBg: 'rgba(59, 130, 246, 0.1)',
+      name: t('product.invoiceFinancing'),
+      desc: t('product.invoiceFinancingDesc'),
+      illustration: Illustration2,
+      available: false,
+    },
+  ]
+
   return (
     <section style={{ marginBottom: 28 }}>
       <div style={{ marginBottom: 18 }}>
-        <h3 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary, marginBottom: 4 }}>Explore Financing Options</h3>
-        <p style={{ fontSize: 13, color: theme.textMuted }}>Choose the right financing product for your business</p>
+        <h3 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary, marginBottom: 4 }}>{t('financing.options')}</h3>
+        <p style={{ fontSize: 13, color: theme.textMuted }}>{t('product.chooseRight')}</p>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>

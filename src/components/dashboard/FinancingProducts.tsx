@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { LockIcon } from '../icons/NavIcons'
 import { ArrowRightIcon } from '../icons/WidgetIcons'
 import { useTheme } from '../../ThemeContext'
+import { useI18n } from '../../i18n'
 
 // ─── Cover Art SVGs ─────────────────────────────────────────────
 
@@ -61,38 +62,40 @@ function SADADFinancingCover() {
 
 // ─── Product data ───────────────────────────────────────────────
 
-const products = [
-  {
-    Cover: WorkingCapitalCover,
-    tag: 'Business Growth',
-    title: 'Working Capital',
-    description: 'Access flexible funding to manage cash flow, invest in inventory, or scale your operations.',
-  },
-  {
-    Cover: InvoiceFinancingCover,
-    tag: 'Cash Flow',
-    title: 'Invoice Financing',
-    description: "Turn your outstanding invoices into immediate cash. Don't wait 60–90 days for payment.",
-  },
-  {
-    Cover: SADADFinancingCover,
-    tag: 'Payments',
-    title: 'SADAD Financing',
-    description: 'Finance your SADAD bills and government payments with flexible repayment terms.',
-  },
-]
-
 // ─── Component ──────────────────────────────────────────────────
 
 export default function FinancingProducts({ lockText = 'Unlock after verification' }: { lockText?: string }) {
   const { theme } = useTheme()
+  const { t, isRTL } = useI18n()
+
+  const products = [
+    {
+      Cover: WorkingCapitalCover,
+      tag: t('product.businessGrowth'),
+      title: t('product.workingCapital'),
+      description: t('product.workingCapitalDesc'),
+    },
+    {
+      Cover: InvoiceFinancingCover,
+      tag: t('product.cashFlow'),
+      title: t('product.invoiceFinancing'),
+      description: t('product.invoiceFinancingDesc'),
+    },
+    {
+      Cover: SADADFinancingCover,
+      tag: t('product.payments'),
+      title: t('product.sadadFinancing'),
+      description: t('product.sadadDesc'),
+    },
+  ]
+
   return (
     <div>
       <h3 style={{ fontSize: 15, fontWeight: 600, color: theme.textPrimary, margin: '0 0 4px' }}>
-        Explore Financing Options
+        {t('financing.products')}
       </h3>
       <p style={{ fontSize: 12, color: theme.textSecondary, margin: '0 0 16px' }}>
-        Complete your profile to apply for financing
+        {t('product.completeToApply')}
       </p>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }}>
@@ -147,8 +150,8 @@ export default function FinancingProducts({ lockText = 'Unlock after verificatio
                     cursor: 'pointer',
                   }}
                 >
-                  Learn
-                  <ArrowRightIcon size={14} color="#2563EB" />
+                  {t('product.learn')}
+                  <span style={{ display: 'inline-flex', transform: isRTL ? 'scaleX(-1)' : 'none' }}><ArrowRightIcon size={14} color="#2563EB" /></span>
                 </motion.a>
               </div>
             </div>

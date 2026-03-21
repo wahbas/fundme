@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import Sidebar from '../components/layout/Sidebar'
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
 import FloatingHelpButton from '../components/dashboard/FloatingHelpButton'
 import { useTheme } from '../ThemeContext'
+import { useI18n } from '../i18n'
 
 export default function Settings() {
   const [searchParams] = useSearchParams()
@@ -13,16 +14,7 @@ export default function Settings() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
 
   const { theme, isDark, toggleTheme } = useTheme()
-  const [language, setLanguage] = useState<'en' | 'ar'>(() => (localStorage.getItem('fundme-language') as 'en' | 'ar') || 'en')
-
-  useEffect(() => {
-    document.documentElement.setAttribute('dir', language === 'ar' ? 'rtl' : 'ltr')
-  }, [language])
-
-  function handleLanguageChange(lang: 'en' | 'ar') {
-    setLanguage(lang)
-    localStorage.setItem('fundme-language', lang)
-  }
+  const { t, lang, setLang, isRTL } = useI18n()
 
   const pillStyle = (active: boolean): React.CSSProperties => ({
     padding: '8px 20px',
@@ -40,15 +32,16 @@ export default function Settings() {
     <div style={{ display: 'flex', minHeight: '100vh' }}>
       <Sidebar verified={verified} collapsed={sidebarCollapsed} onToggle={() => setSidebarCollapsed(c => !c)} />
       <main style={{
-        marginLeft: sidebarCollapsed ? 72 : 240,
-        transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        marginLeft: isRTL ? 0 : (sidebarCollapsed ? 72 : 240),
+        marginRight: isRTL ? (sidebarCollapsed ? 72 : 240) : 0,
+        transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1), margin-right 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         flex: 1, minWidth: 0, overflow: 'hidden', minHeight: '100vh', background: theme.bgPrimary, padding: 0,
       }}>
         <div style={{ background: theme.bgPrimary, minHeight: '100vh', padding: '28px 32px', display: 'flex', flexDirection: 'column' }}>
           <div style={{ flex: 1, minWidth: 0 }}>
             <Header />
 
-            <h1 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary, marginBottom: 24 }}>Settings</h1>
+            <h1 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary, marginBottom: 24 }}>{t('settings.title')}</h1>
 
             {/* Card 1: Appearance */}
             <div style={{
@@ -59,12 +52,12 @@ export default function Settings() {
               boxShadow: theme.shadow,
               marginBottom: 20,
             }}>
-              <h2 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary, marginBottom: 20 }}>Appearance</h2>
+              <h2 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary, marginBottom: 20 }}>{t('settings.appearance')}</h2>
 
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <div>
-                  <p style={{ fontSize: 14, fontWeight: 500, color: theme.textPrimary, marginBottom: 4 }}>Dark Mode</p>
-                  <p style={{ fontSize: 12, color: theme.textMuted }}>Switch to dark theme</p>
+                  <p style={{ fontSize: 14, fontWeight: 500, color: theme.textPrimary, marginBottom: 4 }}>{t('settings.darkMode')}</p>
+                  <p style={{ fontSize: 12, color: theme.textMuted }}>{t('settings.switchDarkTheme')}</p>
                 </div>
 
                 {/* Toggle switch */}
@@ -106,19 +99,19 @@ export default function Settings() {
               boxShadow: theme.shadow,
               marginBottom: 20,
             }}>
-              <h2 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary, marginBottom: 20 }}>Language &amp; Region</h2>
+              <h2 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary, marginBottom: 20 }}>{t('settings.languageRegion')}</h2>
 
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <div>
-                  <p style={{ fontSize: 14, fontWeight: 500, color: theme.textPrimary, marginBottom: 4 }}>Language</p>
-                  <p style={{ fontSize: 12, color: theme.textMuted }}>Switch between English and Arabic</p>
+                  <p style={{ fontSize: 14, fontWeight: 500, color: theme.textPrimary, marginBottom: 4 }}>{t('settings.language')}</p>
+                  <p style={{ fontSize: 12, color: theme.textMuted }}>{t('settings.switchLanguage')}</p>
                 </div>
 
                 <div style={{ display: 'flex', gap: 8 }}>
-                  <button onClick={() => handleLanguageChange('en')} style={pillStyle(language === 'en')}>
+                  <button onClick={() => setLang('en')} style={pillStyle(lang === 'en')}>
                     EN
                   </button>
-                  <button onClick={() => handleLanguageChange('ar')} style={pillStyle(language === 'ar')}>
+                  <button onClick={() => setLang('ar')} style={pillStyle(lang === 'ar')}>
                     عربية
                   </button>
                 </div>

@@ -2,19 +2,21 @@ import { motion } from 'framer-motion'
 import { AccountManagerIcon, PhoneIcon, EmailIcon, CalendarIcon, VideoIcon, ChatIcon } from '../icons/SupportIcons'
 import { ArrowRightIcon } from '../icons/WidgetIcons'
 import { useTheme } from '../../ThemeContext'
+import { useI18n } from '../../i18n'
 
 export default function SupportWidget() {
   const { theme } = useTheme()
+  const { t } = useI18n()
   return (
     <div style={{ background: theme.cardBg, border: `1px solid ${theme.border}`, borderRadius: 12, padding: '20px 22px' }}>
       <h3 style={{ fontSize: 15, fontWeight: 600, color: theme.textPrimary, margin: '0 0 16px' }}>
-        Your Support
+        {t('support.yourSupport')}
       </h3>
 
       {/* Account Manager */}
       <div style={{ marginBottom: 16 }}>
         <p style={{ fontSize: 10, fontWeight: 600, color: '#94A3B8', margin: '0 0 10px', textTransform: 'uppercase', letterSpacing: 1 }}>
-          Your Account Manager
+          {t('support.yourAccountManager')}
         </p>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
           <div style={{ flexShrink: 0, display: 'flex', alignItems: 'center' }}>
@@ -53,7 +55,7 @@ export default function SupportWidget() {
           }}
         >
           <CalendarIcon size={14} color="#2563EB" />
-          Schedule a Call
+          {t('support.scheduleCall')}
           <ArrowRightIcon size={14} color="#2563EB" />
         </motion.button>
       </div>
@@ -81,8 +83,8 @@ export default function SupportWidget() {
             <VideoIcon size={20} color="#2563EB" />
           </div>
           <div>
-            <p style={{ fontSize: 13, fontWeight: 600, color: theme.textPrimary, margin: 0 }}>Watch Video</p>
-            <p style={{ fontSize: 11, color: theme.textMuted, margin: 0 }}>See how FundMe works</p>
+            <p style={{ fontSize: 13, fontWeight: 600, color: theme.textPrimary, margin: 0 }}>{t('support.watchVideo')}</p>
+            <p style={{ fontSize: 11, color: theme.textMuted, margin: 0 }}>{t('support.seeHow')}</p>
           </div>
         </motion.button>
 
@@ -104,8 +106,8 @@ export default function SupportWidget() {
             <ChatIcon size={20} color="#2563EB" />
           </div>
           <div>
-            <p style={{ fontSize: 13, fontWeight: 600, color: theme.textPrimary, margin: 0 }}>Contact Support</p>
-            <p style={{ fontSize: 11, color: theme.textMuted, margin: 0 }}>Chat with our team</p>
+            <p style={{ fontSize: 13, fontWeight: 600, color: theme.textPrimary, margin: 0 }}>{t('support.contactSupport')}</p>
+            <p style={{ fontSize: 11, color: theme.textMuted, margin: 0 }}>{t('support.chatWithTeam')}</p>
           </div>
         </motion.button>
       </div>

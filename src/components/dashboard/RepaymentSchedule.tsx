@@ -2,6 +2,7 @@ import { CalendarClock, ChevronRight } from 'lucide-react'
 import { motion } from 'framer-motion'
 import RiyalSign from '../icons/RiyalSign'
 import { useTheme } from '../../ThemeContext'
+import { useI18n } from '../../i18n'
 
 interface Payment {
   month: string
@@ -21,24 +22,26 @@ const payments: Payment[] = [
 ]
 
 function StatusIndicator({ status, daysUntil }: { status: 'due' | 'upcoming'; daysUntil?: number }) {
+  const { t } = useI18n()
   if (status === 'due') {
     return (
       <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
         <div style={{ width: 7, height: 7, borderRadius: '50%', background: '#2563EB' }} />
-        <span style={{ fontSize: 12, color: '#2563EB', fontWeight: 500 }}>Due in {daysUntil} days</span>
+        <span style={{ fontSize: 12, color: '#2563EB', fontWeight: 500 }}>{t('repayment.dueIn')} {daysUntil} {t('repayment.days')}</span>
       </div>
     )
   }
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
       <div style={{ width: 7, height: 7, borderRadius: '50%', border: '1.5px solid #94A3B8' }} />
-      <span style={{ fontSize: 12, color: '#94A3B8' }}>Upcoming</span>
+      <span style={{ fontSize: 12, color: '#94A3B8' }}>{t('repayment.upcoming')}</span>
     </div>
   )
 }
 
 function PaymentRow({ payment, showPay, onPayClick }: { payment: Payment; showPay: boolean; onPayClick?: () => void }) {
   const { theme } = useTheme()
+  const { t } = useI18n()
   const isDue = payment.status === 'due'
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 0' }}>
@@ -67,7 +70,7 @@ function PaymentRow({ payment, showPay, onPayClick }: { payment: Payment; showPa
       {/* Middle info */}
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary }}>{payment.fullDate}</div>
-        <div style={{ fontSize: 12, color: theme.textMuted }}>{payment.label} · {payment.invoiceId}</div>
+        <div style={{ fontSize: 12, color: theme.textMuted }}>{t('repayment.sadadFinancing')} · {payment.invoiceId}</div>
       </div>
 
       {/* Right side */}
@@ -93,7 +96,7 @@ function PaymentRow({ payment, showPay, onPayClick }: { payment: Payment; showPa
               whiteSpace: 'nowrap',
             }}
           >
-            Pay →
+            {t('repayment.pay')}
           </button>
         )}
       </div>
@@ -103,6 +106,7 @@ function PaymentRow({ payment, showPay, onPayClick }: { payment: Payment; showPa
 
 export default function RepaymentSchedule({ onPayClick }: { onPayClick?: () => void }) {
   const { theme } = useTheme()
+  const { t, isRTL } = useI18n()
   return (
     <motion.section
       initial={{ opacity: 0, y: 16 }}
@@ -133,7 +137,7 @@ export default function RepaymentSchedule({ onPayClick }: { onPayClick?: () => v
           >
             <CalendarClock size={18} color="#3B82F6" />
           </div>
-          <h3 style={{ fontSize: 15, fontWeight: 700, color: theme.textPrimary, margin: 0 }}>Upcoming Payments</h3>
+          <h3 style={{ fontSize: 15, fontWeight: 700, color: theme.textPrimary, margin: 0 }}>{t('repayment.upcomingPayments')}</h3>
         </div>
         <a
           href="#"
@@ -147,7 +151,7 @@ export default function RepaymentSchedule({ onPayClick }: { onPayClick?: () => v
             gap: 2,
           }}
         >
-          View All <ChevronRight size={14} />
+          {t('repayment.viewAll')} <ChevronRight size={14} style={{ transform: isRTL ? 'scaleX(-1)' : 'none' }} />
         </a>
       </div>
 

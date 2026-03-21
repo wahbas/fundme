@@ -2,9 +2,11 @@ import { Outlet, useNavigate } from 'react-router-dom'
 import logo from '../../assets/logo.png'
 import GreenCircles from './components/GreenCircles'
 import { RegisterProvider } from './RegisterContext'
+import { useI18n } from '../../i18n'
 
 export default function RegisterLayout() {
   const navigate = useNavigate()
+  const { t } = useI18n()
 
   return (
     <RegisterProvider>
@@ -33,12 +35,12 @@ export default function RegisterLayout() {
         >
           <img src={logo} alt="FundMe" style={{ height: 72, objectFit: 'contain' }} />
           <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)' }}>
-            Already have an account?{' '}
+            {t('register.alreadyHaveAccount')}{' '}
             <span
               onClick={() => navigate('/login')}
               style={{ color: '#fff', fontWeight: 600, cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: 2 }}
             >
-              Sign in
+              {t('register.signIn')}
             </span>
           </p>
         </div>
@@ -79,7 +81,7 @@ export default function RegisterLayout() {
           }}
         >
           <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.25)', letterSpacing: 0.5 }}>
-            256-bit encryption · Bank-level security · SAMA regulated
+            {t('footer.encryption')}
           </p>
         </div>
       </div>

@@ -1,45 +1,48 @@
 import { CompleteProfileIllust, ChooseProductIllust, GetFundedIllust } from '../icons/SpotIllustrations'
 import { ApplyFastIcon, FundsQuickIcon, ShariaIcon, NoCollateralIcon, SAMAIcon } from '../icons/TrustBadgeIcons'
 import { useTheme } from '../../ThemeContext'
-
-const processSteps = [
-  {
-    Illustration: CompleteProfileIllust,
-    label: 'STEP 1',
-    title: 'Complete your profile',
-    description: 'Verify your identity & business',
-    color: '#2563EB',
-  },
-  {
-    Illustration: ChooseProductIllust,
-    label: 'STEP 2',
-    title: 'Choose a product',
-    description: 'Pick the financing that fits your needs',
-    color: '#2563EB',
-  },
-  {
-    Illustration: GetFundedIllust,
-    label: 'STEP 3',
-    title: 'Get funded',
-    description: 'Receive funds in as little as 24 hours',
-    color: '#2563EB',
-  },
-]
-
-const badges = [
-  { Icon: ApplyFastIcon, label: 'Apply in minutes' },
-  { Icon: FundsQuickIcon, label: 'Funds in 24 hours' },
-  { Icon: ShariaIcon, label: 'Sharia-compliant' },
-  { Icon: NoCollateralIcon, label: 'No collateral' },
-  { Icon: SAMAIcon, label: 'SAMA regulated' },
-]
+import { useI18n } from '../../i18n'
 
 export default function HowFundMeWorks() {
   const { theme } = useTheme()
+  const { t } = useI18n()
+
+  const processSteps = [
+    {
+      Illustration: CompleteProfileIllust,
+      label: t('howItWorks.step1Num'),
+      title: t('howItWorks.step1Title'),
+      description: t('howItWorks.step1Desc'),
+      color: '#2563EB',
+    },
+    {
+      Illustration: ChooseProductIllust,
+      label: t('howItWorks.step2Num'),
+      title: t('howItWorks.step2Title'),
+      description: t('howItWorks.step2Desc'),
+      color: '#2563EB',
+    },
+    {
+      Illustration: GetFundedIllust,
+      label: t('howItWorks.step3Num'),
+      title: t('howItWorks.step3Title'),
+      description: t('howItWorks.step3Desc'),
+      color: '#2563EB',
+    },
+  ]
+
+  const badges = [
+    { Icon: ApplyFastIcon, label: t('howItWorks.applyMinutes') },
+    { Icon: FundsQuickIcon, label: t('howItWorks.funds24h') },
+    { Icon: ShariaIcon, label: t('howItWorks.shariaCompliant') },
+    { Icon: NoCollateralIcon, label: t('howItWorks.noCollateral') },
+    { Icon: SAMAIcon, label: t('howItWorks.samaRegulated') },
+  ]
+
   return (
     <div style={{ background: theme.cardBg, border: `1px solid ${theme.border}`, borderRadius: 12, padding: '20px 22px' }}>
       <h3 style={{ fontSize: 15, fontWeight: 600, color: theme.textPrimary, margin: '0 0 24px' }}>
-        How FundMe Works
+        {t('howItWorks.title')}
       </h3>
 
       {/* 3-step process */}

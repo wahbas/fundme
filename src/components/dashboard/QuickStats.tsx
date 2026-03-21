@@ -3,10 +3,12 @@ import { motion } from 'framer-motion'
 import { useState } from 'react'
 import RiyalSign from '../icons/RiyalSign'
 import { useTheme } from '../../ThemeContext'
+import { useI18n } from '../../i18n'
 
 interface StatDef {
   icon: typeof CreditCard
   label: string
+  labelKey?: string
   value: string
   currency: string
   sub: string
@@ -20,6 +22,7 @@ const activeStats: StatDef[] = [
   {
     icon: CreditCard,
     label: 'Total Financed',
+    labelKey: 'stats.totalFinancing',
     value: '500,000',
     currency: 'ر.س',
     sub: 'Across 3 active financings',
@@ -31,6 +34,7 @@ const activeStats: StatDef[] = [
   {
     icon: Clock,
     label: 'Outstanding Balance',
+    labelKey: 'stats.nextPayment',
     value: '125,000',
     currency: 'ر.س',
     sub: 'Next payment: Apr 1, 2026',
@@ -42,6 +46,7 @@ const activeStats: StatDef[] = [
   {
     icon: Activity,
     label: 'Active Financings',
+    labelKey: 'stats.activeLoans',
     value: '3',
     currency: '',
     sub: '1 under review \u00b7 4/4 docs verified',
@@ -56,6 +61,7 @@ const emptyStats: StatDef[] = [
   {
     icon: CreditCard,
     label: 'Total Financed',
+    labelKey: 'stats.totalFinancing',
     value: '0',
     currency: 'ر.س',
     sub: 'No financings yet',
@@ -67,6 +73,7 @@ const emptyStats: StatDef[] = [
   {
     icon: Clock,
     label: 'Outstanding Balance',
+    labelKey: 'stats.nextPayment',
     value: '0',
     currency: 'ر.س',
     sub: 'No payments due',
@@ -78,6 +85,7 @@ const emptyStats: StatDef[] = [
   {
     icon: Activity,
     label: 'Active Financings',
+    labelKey: 'stats.activeLoans',
     value: '0',
     currency: '',
     sub: 'Apply for your first financing',
@@ -91,6 +99,7 @@ const emptyStats: StatDef[] = [
 function StatCard({ s, delay }: { s: StatDef; delay: number }) {
   const [hovered, setHovered] = useState(false)
   const { theme } = useTheme()
+  const { t } = useI18n()
   const Icon = s.icon
   const isEmpty = s.value === '0'
 
@@ -159,7 +168,7 @@ function StatCard({ s, delay }: { s: StatDef; delay: number }) {
             letterSpacing: 0.8, color: theme.textMuted, marginBottom: 8,
           }}
         >
-          {s.label}
+          {s.labelKey ? t(s.labelKey as any) : s.label}
         </p>
 
         {/* Value */}

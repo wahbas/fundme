@@ -14,6 +14,7 @@ import EarlyPaymentModal from '../components/EarlyPaymentModal'
 import MakePaymentModal from '../components/dashboard/MakePaymentModal'
 import RiyalSign from '../components/icons/RiyalSign'
 import { useTheme } from '../ThemeContext'
+import { useI18n } from '../i18n'
 
 /* ─── Types & Data ─── */
 
@@ -216,6 +217,7 @@ function MetricBox({ value, label, sub, color }: { value: string; label: string;
 
 function InfoTab({ loan }: { loan: LoanData }) {
   const { theme } = useTheme()
+  const { t } = useI18n()
   return (
     <div className="loan-info-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
       {/* Loan Pricing & Fees */}
@@ -228,29 +230,29 @@ function InfoTab({ loan }: { loan: LoanData }) {
           padding: 28, boxShadow: theme.shadow,
         }}
       >
-        <h3 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary, marginBottom: 24 }}>Loan Pricing & Fees</h3>
+        <h3 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary, marginBottom: 24 }}>{t('loanDetail.loanPricing')}</h3>
 
         {/* Loan Amount section */}
-        <p style={{ fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.6, color: theme.textMuted, marginBottom: 12 }}>Loan Amount</p>
+        <p style={{ fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.6, color: theme.textMuted, marginBottom: 12 }}>{t('loanDetail.loanAmount')}</p>
         <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: `1px solid ${theme.borderLight}` }}>
-          <span style={{ fontSize: 14, color: theme.textSecondary }}>Approved Amount</span>
+          <span style={{ fontSize: 14, color: theme.textSecondary }}>{t('loanDetail.approvedAmount')}</span>
           <span style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary }}>{loan.approvedAmount.toLocaleString()} <RiyalSign size="sm" /></span>
         </div>
 
         {/* Profit & Fees section */}
-        <p style={{ fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.6, color: theme.textMuted, marginTop: 24, marginBottom: 12 }}>Profit & Fees</p>
+        <p style={{ fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.6, color: theme.textMuted, marginTop: 24, marginBottom: 12 }}>{t('loanDetail.profitFees')}</p>
         <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: `1px solid ${theme.borderLight}` }}>
-          <span style={{ fontSize: 14, color: theme.textSecondary }}>Effective Profit Rate (APR)</span>
+          <span style={{ fontSize: 14, color: theme.textSecondary }}>{t('loanDetail.profitRate')}</span>
           <span style={{ fontSize: 14, fontWeight: 600, color: '#2563EB' }}>{loan.apr}</span>
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: `1px solid ${theme.borderLight}` }}>
-          <span style={{ fontSize: 14, color: theme.textSecondary }}>Origination Fee</span>
+          <span style={{ fontSize: 14, color: theme.textSecondary }}>{t('loanDetail.originationFee')}</span>
           <span style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary }}>{loan.originationFee.toLocaleString()} <RiyalSign size="sm" /></span>
         </div>
 
         {/* Total */}
         <div style={{ display: 'flex', justifyContent: 'space-between', padding: '16px 0 0', marginTop: 8 }}>
-          <span style={{ fontSize: 15, fontWeight: 700, color: theme.textPrimary }}>Total Repayable</span>
+          <span style={{ fontSize: 15, fontWeight: 700, color: theme.textPrimary }}>{t('loanDetail.totalRepayable')}</span>
           <span style={{ fontSize: 15, fontWeight: 700, color: theme.textPrimary }}>{loan.totalRepayable.toLocaleString()} <RiyalSign size="sm" /></span>
         </div>
       </motion.div>
@@ -267,13 +269,13 @@ function InfoTab({ loan }: { loan: LoanData }) {
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 24 }}>
           <TrendingUp size={18} color="#2563EB" />
-          <h3 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary }}>Performance & Insights</h3>
+          <h3 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary }}>{t('loanDetail.performance')}</h3>
         </div>
 
         <div style={{ display: 'flex', gap: 12, marginBottom: 20 }}>
           <MetricBox
             value={`${loan.onTimeRate}%`}
-            label="On-time Payments"
+            label={t('loanDetail.onTimePayments')}
             color={loan.onTimeRate === 100 ? '#16A34A' : '#D97706'}
           />
           <MetricBox
@@ -283,7 +285,7 @@ function InfoTab({ loan }: { loan: LoanData }) {
           />
           <MetricBox
             value={`${loan.installmentsPaid} / ${loan.totalInstallments}`}
-            label="Installments paid"
+            label={t('loanDetail.installmentsPaid')}
           />
         </div>
 
@@ -308,13 +310,13 @@ function InfoTab({ loan }: { loan: LoanData }) {
           padding: 28, boxShadow: theme.shadow, gridColumn: '1 / -1',
         }}
       >
-        <h3 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary, marginBottom: 20 }}>Loan Details</h3>
+        <h3 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary, marginBottom: 20 }}>{t('loanDetail.loanDetails')}</h3>
         <div className="loan-detail-fields" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 24 }}>
           {[
-            { label: 'Disbursement Date', value: loan.disbursementDate },
-            { label: 'Maturity Date', value: loan.maturityDate },
-            { label: 'Repayment Frequency', value: loan.repaymentFrequency },
-            { label: 'Total Installments', value: String(loan.totalInstallments) },
+            { label: t('loanDetail.disbursementDate'), value: loan.disbursementDate },
+            { label: t('loanDetail.maturityDate'), value: loan.maturityDate },
+            { label: t('loanDetail.repaymentFrequency'), value: loan.repaymentFrequency },
+            { label: t('loanDetail.totalInstallments'), value: String(loan.totalInstallments) },
           ].map(f => (
             <div key={f.label}>
               <p style={{ fontSize: 12, fontWeight: 600, color: theme.textMuted, marginBottom: 6 }}>{f.label}</p>
@@ -329,6 +331,7 @@ function InfoTab({ loan }: { loan: LoanData }) {
 
 function RepaymentTab({ loan }: { loan: LoanData }) {
   const { theme } = useTheme()
+  const { t } = useI18n()
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
@@ -339,7 +342,7 @@ function RepaymentTab({ loan }: { loan: LoanData }) {
       }}
     >
       <div style={{ padding: '24px 28px 16px' }}>
-        <h3 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary, marginBottom: 4 }}>Repayment Schedule</h3>
+        <h3 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary, marginBottom: 4 }}>{t('loanDetail.repaymentSchedule')}</h3>
         <p style={{ fontSize: 13, color: theme.textMuted }}>{loan.totalInstallments} installments · {loan.repaymentFrequency}</p>
       </div>
 
@@ -351,11 +354,11 @@ function RepaymentTab({ loan }: { loan: LoanData }) {
           fontSize: 11, fontWeight: 600, color: theme.textMuted, textTransform: 'uppercase', letterSpacing: 0.5,
         }}>
           <span>#</span>
-          <span>Due Date</span>
-          <span style={{ textAlign: 'right' }}>Principal</span>
-          <span style={{ textAlign: 'right' }}>Profit</span>
-          <span style={{ textAlign: 'right' }}>Total</span>
-          <span style={{ textAlign: 'right' }}>Status</span>
+          <span>{t('loanDetail.dueDate')}</span>
+          <span style={{ textAlign: 'right' }}>{t('loanDetail.principal')}</span>
+          <span style={{ textAlign: 'right' }}>{t('loanDetail.profit')}</span>
+          <span style={{ textAlign: 'right' }}>{t('loanDetail.total')}</span>
+          <span style={{ textAlign: 'right' }}>{t('loanDetail.status')}</span>
         </div>
         {loan.schedule.map((row) => (
           <div key={row.installment} style={{
@@ -375,7 +378,7 @@ function RepaymentTab({ loan }: { loan: LoanData }) {
                 color: row.status === 'paid' ? '#16A34A' : row.status === 'overdue' ? '#EF4444' : '#D97706',
                 background: row.status === 'paid' ? '#F0FDF4' : row.status === 'overdue' ? '#FEF2F2' : '#FFFBEB',
               }}>
-                {row.status === 'paid' ? 'Paid' : row.status === 'overdue' ? 'Overdue' : 'Upcoming'}
+                {row.status === 'paid' ? t('loanDetail.paid') : row.status === 'overdue' ? t('loanDetail.overdue') : t('repayment.upcoming')}
               </span>
             </span>
           </div>
@@ -387,6 +390,7 @@ function RepaymentTab({ loan }: { loan: LoanData }) {
 
 function TransactionsTab({ loan }: { loan: LoanData }) {
   const { theme } = useTheme()
+  const { t } = useI18n()
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
@@ -397,7 +401,7 @@ function TransactionsTab({ loan }: { loan: LoanData }) {
       }}
     >
       <div style={{ padding: '24px 28px 16px' }}>
-        <h3 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary, marginBottom: 4 }}>Transaction History</h3>
+        <h3 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary, marginBottom: 4 }}>{t('loanDetail.transactionHistory')}</h3>
         <p style={{ fontSize: 13, color: theme.textMuted }}>{loan.transactions.length} transactions</p>
       </div>
 
@@ -431,7 +435,7 @@ function TransactionsTab({ loan }: { loan: LoanData }) {
               <span style={{
                 fontSize: 11, fontWeight: 600, color: '#16A34A',
               }}>
-                {txn.status === 'completed' ? 'Completed' : 'Pending'}
+                {txn.status === 'completed' ? t('loanDetail.completed') : t('loanDetail.pending')}
               </span>
             </div>
           </div>
@@ -443,6 +447,7 @@ function TransactionsTab({ loan }: { loan: LoanData }) {
 
 function DocumentsTab({ loan }: { loan: LoanData }) {
   const { theme } = useTheme()
+  const { t } = useI18n()
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
@@ -453,7 +458,7 @@ function DocumentsTab({ loan }: { loan: LoanData }) {
       }}
     >
       <div style={{ padding: '24px 28px 16px' }}>
-        <h3 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary, marginBottom: 4 }}>Loan Documents</h3>
+        <h3 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary, marginBottom: 4 }}>{t('loanDetail.loanDocuments')}</h3>
         <p style={{ fontSize: 13, color: theme.textMuted }}>{loan.documents.length} documents</p>
       </div>
 
@@ -478,7 +483,7 @@ function DocumentsTab({ loan }: { loan: LoanData }) {
             display: 'flex', alignItems: 'center', gap: 6,
           }}>
             <Download size={14} />
-            Download
+            {t('loanDetail.download')}
           </button>
         </div>
       ))}
@@ -486,19 +491,11 @@ function DocumentsTab({ loan }: { loan: LoanData }) {
   )
 }
 
-/* ─── Tabs Config ─── */
-
-const TABS: { key: TabKey; label: string; icon: typeof Info }[] = [
-  { key: 'info', label: 'Info', icon: Info },
-  { key: 'repayment', label: 'Repayment', icon: CreditCard },
-  { key: 'transactions', label: 'Transactions', icon: ArrowUpDown },
-  { key: 'documents', label: 'Documents', icon: FileText },
-]
-
 /* ─── Page ─── */
 
 export default function LoanDetails() {
   const { theme } = useTheme()
+  const { t, isRTL } = useI18n()
   const { loanId } = useParams<{ loanId: string }>()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
@@ -512,12 +509,20 @@ export default function LoanDetails() {
   const loan = getLoan(loanId || 'LOAN-2024-001')
   const query = verified ? '?state=verified' : ''
 
+  const TABS: { key: TabKey; labelKey: 'loanDetail.info' | 'loanDetail.repayment' | 'loanDetail.transactions' | 'loanDetail.documents'; icon: typeof Info }[] = [
+    { key: 'info', labelKey: 'loanDetail.info', icon: Info },
+    { key: 'repayment', labelKey: 'loanDetail.repayment', icon: CreditCard },
+    { key: 'transactions', labelKey: 'loanDetail.transactions', icon: ArrowUpDown },
+    { key: 'documents', labelKey: 'loanDetail.documents', icon: FileText },
+  ]
+
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
       <Sidebar verified={verified} collapsed={sidebarCollapsed} onToggle={() => setSidebarCollapsed(c => !c)} activeTab="my-loans" />
       <main style={{
-        marginLeft: sidebarCollapsed ? 72 : 240,
-        transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        marginLeft: isRTL ? 0 : (sidebarCollapsed ? 72 : 240),
+        marginRight: isRTL ? (sidebarCollapsed ? 72 : 240) : 0,
+        transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1), margin-right 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         flex: 1, minWidth: 0, overflow: 'hidden', minHeight: '100vh', background: theme.bgPrimary, padding: 0,
       }}>
         <div style={{ background: theme.bgPrimary, minHeight: '100vh', padding: '28px 32px', display: 'flex', flexDirection: 'column' }}>
@@ -541,7 +546,7 @@ export default function LoanDetails() {
                 <ArrowLeft size={18} color={theme.textSecondary} />
               </button>
               <div>
-                <h2 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary }}>Loan Details</h2>
+                <h2 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary }}>{t('loanDetail.loanDetails')}</h2>
                 <p style={{ fontSize: 13, color: theme.textMuted, fontFamily: 'monospace' }}>{loan.id}</p>
               </div>
             </motion.div>
@@ -559,23 +564,23 @@ export default function LoanDetails() {
               }}
             >
               <div>
-                <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 4 }}>Facility Type</p>
+                <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 4 }}>{t('loanDetail.facilityType')}</p>
                 <p style={{ fontSize: 15, fontWeight: 600, color: theme.textPrimary }}>{loan.facilityType}</p>
               </div>
               <div>
-                <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 4 }}>Loan ID</p>
+                <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 4 }}>{t('loanDetail.loanId')}</p>
                 <p style={{ fontSize: 15, fontWeight: 600, color: theme.textPrimary, fontFamily: 'monospace' }}>{loan.id}</p>
               </div>
               <div>
-                <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 4 }}>Outstanding Balance</p>
+                <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 4 }}>{t('loanDetail.outstandingBalance')}</p>
                 <p style={{ fontSize: 18, fontWeight: 700, color: '#2563EB' }}>{loan.outstandingBalance.toLocaleString()} <RiyalSign color="#2563EB" /></p>
               </div>
               <div>
-                <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 4 }}>Status</p>
+                <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 4 }}>{t('loanDetail.status')}</p>
                 <StatusBadge label={loan.statusLabel} status={loan.status} />
               </div>
               <div>
-                <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 6 }}>Loan Progress</p>
+                <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 6 }}>{t('loanDetail.loanProgress')}</p>
                 <ProgressBar progress={loan.progress} />
               </div>
             </motion.div>
@@ -600,18 +605,18 @@ export default function LoanDetails() {
 
               <div style={{ flex: 1, display: 'flex', gap: 40, alignItems: 'center' }}>
                 <div>
-                  <p style={{ fontSize: 15, fontWeight: 700, color: theme.textPrimary, marginBottom: 8 }}>Next Payment</p>
+                  <p style={{ fontSize: 15, fontWeight: 700, color: theme.textPrimary, marginBottom: 8 }}>{t('loanDetail.nextPayment')}</p>
                   <div style={{ display: 'flex', gap: 32 }}>
                     <div>
-                      <p style={{ fontSize: 11, color: theme.textMuted, marginBottom: 4 }}>Amount Due</p>
+                      <p style={{ fontSize: 11, color: theme.textMuted, marginBottom: 4 }}>{t('loanDetail.amountDue')}</p>
                       <p style={{ fontSize: 22, fontWeight: 700, color: '#2563EB' }}>{loan.nextPayment.amount.toLocaleString()} <RiyalSign size="lg" color="#2563EB" /></p>
                     </div>
                     <div>
-                      <p style={{ fontSize: 11, color: theme.textMuted, marginBottom: 4 }}>Due Date</p>
+                      <p style={{ fontSize: 11, color: theme.textMuted, marginBottom: 4 }}>{t('loanDetail.dueDate')}</p>
                       <p style={{ fontSize: 15, fontWeight: 600, color: theme.textPrimary }}>{loan.nextPayment.dueDate}</p>
                     </div>
                     <div>
-                      <p style={{ fontSize: 11, color: theme.textMuted, marginBottom: 4 }}>Days Remaining</p>
+                      <p style={{ fontSize: 11, color: theme.textMuted, marginBottom: 4 }}>{t('loanDetail.daysRemaining')}</p>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                         <Clock size={14} color={theme.textSecondary} />
                         <p style={{ fontSize: 15, fontWeight: 600, color: theme.textPrimary }}>{loan.nextPayment.daysRemaining} days</p>
@@ -631,7 +636,7 @@ export default function LoanDetails() {
                   }}
                 >
                   <CreditCard size={16} />
-                  Make Payment
+                  {t('loanDetail.makePayment')}
                 </button>
                 <button
                   onClick={() => setEarlyPaymentOpen(true)}
@@ -642,7 +647,7 @@ export default function LoanDetails() {
                   }}
                 >
                   <Zap size={16} />
-                  Early Repayment
+                  {t('loanDetail.earlyRepayment')}
                 </button>
               </div>
             </motion.div>
@@ -669,7 +674,7 @@ export default function LoanDetails() {
                     }}
                   >
                     <tab.icon size={16} />
-                    {tab.label}
+                    {t(tab.labelKey)}
                   </button>
                 )
               })}

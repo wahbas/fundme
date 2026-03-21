@@ -7,6 +7,7 @@ import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
 import FloatingHelpButton from '../components/dashboard/FloatingHelpButton'
 import { useTheme } from '../ThemeContext'
+import { useI18n } from '../i18n'
 
 interface Notification {
   id: number
@@ -25,8 +26,15 @@ const initialNotifications: Notification[] = [
   { id: 5, title: 'Profile updated', desc: 'Your company information has been updated via Wathiq', time: '3 days ago', read: true, group: 'Earlier' },
 ]
 
+const GROUP_KEYS: Record<string, string> = {
+  'Today': 'notifications.today',
+  'Yesterday': 'notifications.yesterday',
+  'Earlier': 'notifications.earlier',
+}
+
 export default function Notifications() {
   const { theme } = useTheme()
+  const { t, isRTL } = useI18n()
   const [searchParams] = useSearchParams()
   const stateParam = searchParams.get('state')
   const verified = stateParam === 'verified' || searchParams.get('verified') === 'true'
@@ -47,8 +55,9 @@ export default function Notifications() {
     <div style={{ display: 'flex', minHeight: '100vh' }}>
       <Sidebar verified={verified} collapsed={sidebarCollapsed} onToggle={() => setSidebarCollapsed((c) => !c)} activeTab="notifications" />
       <main style={{
-        marginLeft: sidebarCollapsed ? 72 : 240,
-        transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        marginLeft: isRTL ? 0 : (sidebarCollapsed ? 72 : 240),
+        marginRight: isRTL ? (sidebarCollapsed ? 72 : 240) : 0,
+        transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1), margin-right 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         flex: 1, minWidth: 0, overflow: 'hidden', minHeight: '100vh', background: theme.bgPrimary, padding: 0,
       }}>
         <div style={{ background: theme.bgPrimary, minHeight: '100vh', padding: '28px 32px', display: 'flex', flexDirection: 'column' }}>
@@ -57,7 +66,7 @@ export default function Notifications() {
 
             {/* Header row */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-              <h2 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary }}>Notifications</h2>
+              <h2 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary }}>{t('notifications.title')}</h2>
               <button
                 onClick={markAllRead}
                 style={{
@@ -65,13 +74,14 @@ export default function Notifications() {
                   background: 'transparent', border: 'none', cursor: 'pointer',
                 }}
               >
-                Mark all as read
+                {t('notifications.markAllRead')}
               </button>
             </div>
 
             {/* Notification groups */}
             {groups.map((group, gi) => {
               const items = notifications.filter((n) => n.group === group)
+              const groupKey = GROUP_KEYS[group] as keyof typeof GROUP_KEYS
               return (
                 <div key={group}>
                   <p style={{
@@ -79,7 +89,7 @@ export default function Notifications() {
                     textTransform: 'uppercase', letterSpacing: 0.5,
                     marginBottom: 12, marginTop: gi === 0 ? 0 : 24,
                   }}>
-                    {group}
+                    {groupKey ? t(groupKey as any) : group}
                   </p>
                   {items.map((notification, i) => (
                     <motion.div

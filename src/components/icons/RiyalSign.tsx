@@ -25,7 +25,7 @@ export default function RiyalSign({ size = 'md', color = '#94A3B8' }: RiyalSignP
       height={s.height}
       viewBox="0 0 24 24"
       fill="none"
-      style={{ display: 'inline-block', verticalAlign: 'baseline', marginLeft: s.gap }}
+      style={{ display: 'inline-block', verticalAlign: 'middle', marginLeft: s.gap, position: 'relative', top: -1 }}
       aria-label="SAR"
     >
       <path

@@ -3,6 +3,7 @@ import { ArrowRight } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import RiyalSign from '../icons/RiyalSign'
 import { useTheme } from '../../ThemeContext'
+import { useI18n } from '../../i18n'
 
 type Status = 'all' | 'submitted' | 'under-review' | 'approved' | 'rejected'
 
@@ -58,17 +59,18 @@ const APPLICATIONS: Application[] = [
   },
 ]
 
-const FILTERS: { key: Status; label: string }[] = [
-  { key: 'all', label: 'All' },
-  { key: 'submitted', label: 'Submitted' },
-  { key: 'under-review', label: 'Under Review' },
-  { key: 'approved', label: 'Approved' },
-  { key: 'rejected', label: 'Rejected' },
-]
-
 export default function RecentApplication() {
   const [activeFilter, setActiveFilter] = useState<Status>('all')
   const { theme } = useTheme()
+  const { t } = useI18n()
+
+  const FILTERS: { key: Status; label: string }[] = [
+    { key: 'all', label: t('recent.all') },
+    { key: 'submitted', label: t('recent.submitted') },
+    { key: 'under-review', label: t('recent.underReview') },
+    { key: 'approved', label: t('recent.approved') },
+    { key: 'rejected', label: t('recent.rejected') },
+  ]
 
   const filtered = activeFilter === 'all'
     ? APPLICATIONS
@@ -85,7 +87,7 @@ export default function RecentApplication() {
   return (
     <section>
       <div style={{ marginBottom: 16 }}>
-        <h3 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary, marginBottom: 12 }}>My Recent Applications</h3>
+        <h3 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary, marginBottom: 12 }}>{t('recent.myRecentApps')}</h3>
 
         {/* Filter pills */}
         <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
@@ -153,7 +155,7 @@ export default function RecentApplication() {
                 fontSize: 13,
               }}
             >
-              No applications with this status
+              {t('recent.noApps')}
             </motion.div>
           ) : (
             filtered.map((app) => (
@@ -205,7 +207,7 @@ export default function RecentApplication() {
                 {/* Amount + Date */}
                 <div style={{ padding: '16px 22px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
                   <div>
-                    <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 4 }}>Financing Amount</p>
+                    <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 4 }}>{t('recent.financingAmount')}</p>
                     <p style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary }}>{app.amount.toLocaleString()} <RiyalSign size="lg" /></p>
                   </div>
                   <p style={{ fontSize: 12, color: theme.textMuted }}>{app.date}</p>
@@ -236,7 +238,7 @@ export default function RecentApplication() {
                     onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = theme.bgPrimary }}
                     onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = theme.cardBg }}
                   >
-                    View Status
+                    {t('recent.viewStatus')}
                     <ArrowRight size={16} />
                   </button>
                 </div>

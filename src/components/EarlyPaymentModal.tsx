@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, CheckCircle2, Zap } from 'lucide-react'
 import RiyalSign from './icons/RiyalSign'
 import { useTheme } from '../ThemeContext'
+import { useI18n } from '../i18n'
 
 interface EarlyPaymentModalProps {
   open: boolean
@@ -15,6 +16,7 @@ export default function EarlyPaymentModal({ open, onClose }: EarlyPaymentModalPr
   const [state, setState] = useState<ModalState>('form')
   const [loading, setLoading] = useState(false)
   const { theme } = useTheme()
+  const { t } = useI18n()
 
   if (!open) return null
 
@@ -72,7 +74,7 @@ export default function EarlyPaymentModal({ open, onClose }: EarlyPaymentModalPr
             >
               {/* Header */}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-                <h2 style={{ fontSize: 20, fontWeight: 700, color: theme.textPrimary, margin: 0 }}>Early Settlement</h2>
+                <h2 style={{ fontSize: 20, fontWeight: 700, color: theme.textPrimary, margin: 0 }}>{t('modal.earlySettlement')}</h2>
                 <button
                   onClick={onClose}
                   style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
@@ -88,7 +90,7 @@ export default function EarlyPaymentModal({ open, onClose }: EarlyPaymentModalPr
                 padding: 20,
                 marginBottom: 20,
               }}>
-                <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 4 }}>Remaining Balance</p>
+                <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 4 }}>{t('modal.remainingBalance')}</p>
                 <p style={{ fontSize: 28, fontWeight: 700, color: theme.textPrimary, marginBottom: 4 }}>350,000 <RiyalSign size="lg" /></p>
                 <p style={{ fontSize: 13, color: theme.textSecondary }}>LOAN-2024-001 · Working Capital</p>
               </div>
@@ -96,9 +98,9 @@ export default function EarlyPaymentModal({ open, onClose }: EarlyPaymentModalPr
               {/* Breakdown rows */}
               <div>
                 {[
-                  { label: 'Remaining Principal', value: '350,000 ر.س' },
-                  { label: 'Accrued Profit', value: '3,917 ر.س' },
-                  { label: 'Early Settlement Fee (2%)', value: '7,000 ر.س' },
+                  { label: t('modal.remainingPrincipal'), value: '350,000 ر.س' },
+                  { label: t('modal.accruedProfit'), value: '3,917 ر.س' },
+                  { label: t('modal.earlySettlementFee'), value: '7,000 ر.س' },
                 ].map((row) => (
                   <div
                     key={row.label}
@@ -120,7 +122,7 @@ export default function EarlyPaymentModal({ open, onClose }: EarlyPaymentModalPr
                   justifyContent: 'space-between',
                   paddingTop: 16,
                 }}>
-                  <span style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary }}>Total Early Payment</span>
+                  <span style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary }}>{t('modal.totalEarlyPayment')}</span>
                   <span style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary }}>360,917 <RiyalSign /></span>
                 </div>
               </div>
@@ -138,7 +140,7 @@ export default function EarlyPaymentModal({ open, onClose }: EarlyPaymentModalPr
               }}>
                 <CheckCircle2 size={18} color="#16A34A" style={{ flexShrink: 0 }} />
                 <span style={{ fontSize: 13, color: '#16A34A', fontWeight: 500 }}>
-                  You save 15,583 <RiyalSign size="sm" color="#10B981" /> compared to continuing installments
+                  {t('modal.youSave')} 15,583 <RiyalSign size="sm" color="#10B981" /> {t('modal.comparedToContinuing')}
                 </span>
               </div>
 
@@ -176,10 +178,10 @@ export default function EarlyPaymentModal({ open, onClose }: EarlyPaymentModalPr
                         borderRadius: '50%',
                       }}
                     />
-                    Processing...
+                    {t('modal.processing')}
                   </>
                 ) : (
-                  <>Pay Full Balance &rarr;</>
+                  t('modal.payFullBalance')
                 )}
               </button>
             </motion.div>
@@ -206,11 +208,11 @@ export default function EarlyPaymentModal({ open, onClose }: EarlyPaymentModalPr
               </div>
 
               <h2 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary, marginTop: 20, marginBottom: 0 }}>
-                Settlement Successful
+                {t('modal.settlementSuccessful')}
               </h2>
 
               <p style={{ fontSize: 14, color: theme.textSecondary, textAlign: 'center', marginTop: 8, marginBottom: 0 }}>
-                Your early settlement of 360,917 <RiyalSign size="sm" /> has been processed successfully.
+                {t('modal.settlementProcessed')}
               </p>
 
               {/* Receipt details */}
@@ -222,13 +224,13 @@ export default function EarlyPaymentModal({ open, onClose }: EarlyPaymentModalPr
                 marginTop: 20,
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0' }}>
-                  <span style={{ fontSize: 13, color: theme.textMuted }}>Transaction ID</span>
+                  <span style={{ fontSize: 13, color: theme.textMuted }}>{t('modal.transactionId')}</span>
                   <span style={{ fontSize: 13, fontWeight: 600, color: theme.textPrimary, fontFamily: 'monospace' }}>
                     TXN-2026-0415
                   </span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0' }}>
-                  <span style={{ fontSize: 13, color: theme.textMuted }}>Date</span>
+                  <span style={{ fontSize: 13, color: theme.textMuted }}>{t('modal.date')}</span>
                   <span style={{ fontSize: 13, fontWeight: 600, color: theme.textPrimary }}>March 20, 2026</span>
                 </div>
               </div>
@@ -249,7 +251,7 @@ export default function EarlyPaymentModal({ open, onClose }: EarlyPaymentModalPr
                   cursor: 'pointer',
                 }}
               >
-                Done
+                {t('modal.done')}
               </button>
             </motion.div>
           )}

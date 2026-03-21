@@ -4,6 +4,7 @@ import {
 } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useTheme } from '../../ThemeContext'
+import { useI18n } from '../../i18n'
 
 // cardBase is now computed inside the components via useTheme
 
@@ -12,6 +13,7 @@ import { useTheme } from '../../ThemeContext'
 function VerifiedSupportWidget() {
   const [contactHovered, setContactHovered] = useState(false)
   const { theme } = useTheme()
+  const { t } = useI18n()
   const cardBase: React.CSSProperties = {
     background: theme.cardBg,
     border: `1px solid ${theme.border}`,
@@ -26,7 +28,7 @@ function VerifiedSupportWidget() {
       transition={{ delay: 0.4, duration: 0.5, ease: 'easeOut' }}
       style={{ ...cardBase, display: 'flex', flexDirection: 'column' }}
     >
-      <h3 style={{ fontSize: 15, fontWeight: 700, color: theme.textPrimary, marginBottom: 20 }}>Your Support</h3>
+      <h3 style={{ fontSize: 15, fontWeight: 700, color: theme.textPrimary, marginBottom: 20 }}>{t('support.yourSupport')}</h3>
 
       {/* Account Manager */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
@@ -46,7 +48,7 @@ function VerifiedSupportWidget() {
         </div>
         <div>
           <h4 style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary, marginBottom: 1 }}>Ahmed Al-Mansour</h4>
-          <p style={{ fontSize: 11, color: theme.textMuted, margin: 0 }}>Account Manager</p>
+          <p style={{ fontSize: 11, color: theme.textMuted, margin: 0 }}>{t('support.accountManager')}</p>
         </div>
       </div>
 
@@ -85,7 +87,7 @@ function VerifiedSupportWidget() {
         onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = 'transparent' }}
       >
         <Calendar size={15} />
-        Schedule a Call
+        {t('support.scheduleCall')}
       </button>
 
       {/* Divider */}
@@ -119,8 +121,8 @@ function VerifiedSupportWidget() {
           <MessageCircle size={16} color="#64748B" />
         </div>
         <div>
-          <p style={{ fontSize: 13, fontWeight: 600, color: theme.textPrimary, marginBottom: 1 }}>Contact Support</p>
-          <p style={{ fontSize: 11, color: theme.textMuted, margin: 0 }}>Get help with your account</p>
+          <p style={{ fontSize: 13, fontWeight: 600, color: theme.textPrimary, marginBottom: 1 }}>{t('support.contactSupport')}</p>
+          <p style={{ fontSize: 11, color: theme.textMuted, margin: 0 }}>{t('support.getHelp')}</p>
         </div>
       </div>
     </motion.div>
@@ -131,6 +133,7 @@ function VerifiedSupportWidget() {
 
 export default function SupportCards({ verified = false }: { verified?: boolean }) {
   const { theme } = useTheme()
+  const { t } = useI18n()
   if (verified) {
     return <VerifiedSupportWidget />
   }
@@ -158,7 +161,7 @@ export default function SupportCards({ verified = false }: { verified?: boolean 
             <HelpCircle size={20} color="#fff" />
           </div>
           <div>
-            <h4 style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary }}>Need Help?</h4>
+            <h4 style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary }}>{t('support.needHelp')}</h4>
             <p style={{ fontSize: 12, color: '#999' }}>Watch how FundMe works or contact support</p>
           </div>
         </div>
@@ -176,11 +179,11 @@ export default function SupportCards({ verified = false }: { verified?: boolean 
             cursor: 'pointer',
           }}
         >
-          Watch Video
+          {t('actions.watchVideo')}
         </button>
         <div style={{ textAlign: 'center' }}>
           <a href="#" style={{ color: '#0D82F9', fontSize: 13, fontWeight: 500, textDecoration: 'underline' }}>
-            Contact Support
+            {t('support.contactSupport')}
           </a>
         </div>
       </div>

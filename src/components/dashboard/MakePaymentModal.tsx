@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, CheckCircle2, Building2, CreditCard } from 'lucide-react'
 import RiyalSign from '../icons/RiyalSign'
 import { useTheme } from '../../ThemeContext'
+import { useI18n } from '../../i18n'
 
 interface MakePaymentModalProps {
   open: boolean
@@ -19,6 +20,7 @@ export default function MakePaymentModal({ open, onClose }: MakePaymentModalProp
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethod>('bank')
   const [loading, setLoading] = useState(false)
   const { theme } = useTheme()
+  const { t } = useI18n()
 
   if (!open) return null
 
@@ -36,9 +38,9 @@ export default function MakePaymentModal({ open, onClose }: MakePaymentModalProp
   }
 
   const paymentMethods: { id: PaymentMethod; label: string; icon: typeof Building2 }[] = [
-    { id: 'bank', label: 'Connected Bank (Al Rajhi ****1234)', icon: Building2 },
-    { id: 'sadad', label: 'SADAD', icon: CreditCard },
-    { id: 'mada', label: 'Mada Card', icon: CreditCard },
+    { id: 'bank', label: t('modal.connectedBank'), icon: Building2 },
+    { id: 'sadad', label: t('modal.sadad'), icon: CreditCard },
+    { id: 'mada', label: t('modal.madaCard'), icon: CreditCard },
   ]
 
   return (
@@ -82,7 +84,7 @@ export default function MakePaymentModal({ open, onClose }: MakePaymentModalProp
             >
               {/* Header */}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-                <h2 style={{ fontSize: 20, fontWeight: 700, color: theme.textPrimary, margin: 0 }}>Make Payment</h2>
+                <h2 style={{ fontSize: 20, fontWeight: 700, color: theme.textPrimary, margin: 0 }}>{t('modal.makePayment')}</h2>
                 <button
                   onClick={onClose}
                   style={{
@@ -101,7 +103,7 @@ export default function MakePaymentModal({ open, onClose }: MakePaymentModalProp
 
               {/* Payment Amount */}
               <div style={{ marginBottom: 24 }}>
-                <div style={{ fontSize: 13, fontWeight: 600, color: theme.textSecondary, marginBottom: 8 }}>Payment Amount</div>
+                <div style={{ fontSize: 13, fontWeight: 600, color: theme.textSecondary, marginBottom: 8 }}>{t('modal.paymentAmount')}</div>
                 <div
                   style={{
                     fontSize: 28,
@@ -120,11 +122,11 @@ export default function MakePaymentModal({ open, onClose }: MakePaymentModalProp
 
               {/* Payment Details */}
               <div style={{ marginBottom: 24 }}>
-                <div style={{ fontSize: 13, fontWeight: 600, color: theme.textSecondary, marginBottom: 12 }}>Payment Details</div>
+                <div style={{ fontSize: 13, fontWeight: 600, color: theme.textSecondary, marginBottom: 12 }}>{t('modal.paymentDetails')}</div>
                 {[
-                  { label: 'Financing', value: 'SADAD INV-2024-001' },
-                  { label: 'Due Date', value: 'April 1, 2026' },
-                  { label: 'Installment', value: '3 of 12' },
+                  { label: t('modal.financing'), value: 'SADAD INV-2024-001' },
+                  { label: t('loanDetail.dueDate'), value: 'April 1, 2026' },
+                  { label: t('modal.installment'), value: '3 of 12' },
                 ].map((row) => (
                   <div
                     key={row.label}
@@ -142,7 +144,7 @@ export default function MakePaymentModal({ open, onClose }: MakePaymentModalProp
 
               {/* Payment Method */}
               <div style={{ marginBottom: 0 }}>
-                <div style={{ fontSize: 13, fontWeight: 600, color: theme.textSecondary, marginBottom: 12 }}>Payment Method</div>
+                <div style={{ fontSize: 13, fontWeight: 600, color: theme.textSecondary, marginBottom: 12 }}>{t('modal.paymentMethod')}</div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                   {paymentMethods.map((method) => {
                     const selected = selectedMethod === method.id
@@ -228,10 +230,10 @@ export default function MakePaymentModal({ open, onClose }: MakePaymentModalProp
                         borderRadius: '50%',
                       }}
                     />
-                    Processing...
+                    {t('modal.processing')}
                   </>
                 ) : (
-                  'Confirm Payment →'
+                  t('modal.confirmPayment')
                 )}
               </button>
             </motion.div>
@@ -260,11 +262,11 @@ export default function MakePaymentModal({ open, onClose }: MakePaymentModalProp
               </div>
 
               <h2 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary, marginTop: 20, marginBottom: 0 }}>
-                Payment Successful
+                {t('modal.paymentSuccessful')}
               </h2>
 
               <p style={{ fontSize: 14, color: theme.textSecondary, textAlign: 'center', marginTop: 8, marginBottom: 0 }}>
-                Your payment of 10,677 <RiyalSign size="sm" /> has been processed successfully.
+                {t('modal.paymentProcessed')}
               </p>
 
               {/* Receipt details */}
@@ -278,13 +280,13 @@ export default function MakePaymentModal({ open, onClose }: MakePaymentModalProp
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0' }}>
-                  <span style={{ fontSize: 13, color: theme.textMuted }}>Transaction ID</span>
+                  <span style={{ fontSize: 13, color: theme.textMuted }}>{t('modal.transactionId')}</span>
                   <span style={{ fontSize: 13, fontWeight: 600, color: theme.textPrimary, fontFamily: 'monospace' }}>
                     TXN-2026-0412
                   </span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0' }}>
-                  <span style={{ fontSize: 13, color: theme.textMuted }}>Date</span>
+                  <span style={{ fontSize: 13, color: theme.textMuted }}>{t('modal.date')}</span>
                   <span style={{ fontSize: 13, fontWeight: 600, color: theme.textPrimary }}>March 20, 2026</span>
                 </div>
               </div>
@@ -305,7 +307,7 @@ export default function MakePaymentModal({ open, onClose }: MakePaymentModalProp
                   cursor: 'pointer',
                 }}
               >
-                Done
+                {t('modal.done')}
               </button>
             </motion.div>
           )}

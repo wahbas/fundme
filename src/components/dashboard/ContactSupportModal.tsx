@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { X, Phone, Mail, MessageCircle } from 'lucide-react'
 import { useTheme } from '../../ThemeContext'
+import { useI18n } from '../../i18n'
 
 interface ContactSupportModalProps {
   open: boolean
@@ -14,6 +15,7 @@ export default function ContactSupportModal({ open, onClose }: ContactSupportMod
   const [subject, setSubject] = useState('')
   const [message, setMessage] = useState('')
   const { theme } = useTheme()
+  const { t } = useI18n()
 
   if (!open) return null
 
@@ -51,7 +53,7 @@ export default function ContactSupportModal({ open, onClose }: ContactSupportMod
       >
         {/* Header */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
-          <h2 style={{ fontSize: 18, fontWeight: 700, color: theme.textPrimary, margin: 0 }}>Contact Support</h2>
+          <h2 style={{ fontSize: 18, fontWeight: 700, color: theme.textPrimary, margin: 0 }}>{t('modal.contactSupport')}</h2>
           <button
             onClick={onClose}
             style={{
@@ -90,7 +92,7 @@ export default function ContactSupportModal({ open, onClose }: ContactSupportMod
           </div>
           <div style={{ flex: 1 }}>
             <div style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary }}>Ahmed Al-Mansour</div>
-            <div style={{ fontSize: 13, color: theme.textMuted, marginBottom: 8 }}>Your Account Manager</div>
+            <div style={{ fontSize: 13, color: theme.textMuted, marginBottom: 8 }}>{t('support.accountManager')}</div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
               <Phone size={13} style={{ color: theme.textSecondary }} />
               <span style={{ fontSize: 13, color: theme.textSecondary }}>+966 12 345 6789</span>
@@ -111,7 +113,7 @@ export default function ContactSupportModal({ open, onClose }: ContactSupportMod
                 cursor: 'pointer',
               }}
             >
-              Schedule a Call
+              {t('support.scheduleCall')}
             </button>
           </div>
         </div>
@@ -121,7 +123,7 @@ export default function ContactSupportModal({ open, onClose }: ContactSupportMod
 
         {/* Message Form */}
         <div style={{ fontSize: 15, fontWeight: 600, color: theme.textPrimary, marginBottom: 16 }}>
-          Or send us a message
+          {t('modal.orSendMessage')}
         </div>
 
         <select
@@ -141,16 +143,16 @@ export default function ContactSupportModal({ open, onClose }: ContactSupportMod
             boxSizing: 'border-box',
           }}
         >
-          <option value="">Select a subject</option>
-          <option value="General Inquiry">General Inquiry</option>
-          <option value="Payment Issue">Payment Issue</option>
-          <option value="Financing Question">Financing Question</option>
-          <option value="Technical Support">Technical Support</option>
-          <option value="Other">Other</option>
+          <option value="">{t('modal.selectSubject')}</option>
+          <option value="General Inquiry">{t('modal.generalInquiry')}</option>
+          <option value="Payment Issue">{t('modal.paymentIssue')}</option>
+          <option value="Financing Question">{t('modal.financingQuestion')}</option>
+          <option value="Technical Support">{t('modal.technicalSupport')}</option>
+          <option value="Other">{t('modal.other')}</option>
         </select>
 
         <textarea
-          placeholder="Your message..."
+          placeholder={t('modal.yourMessage')}
           rows={4}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
@@ -184,7 +186,7 @@ export default function ContactSupportModal({ open, onClose }: ContactSupportMod
             cursor: 'pointer',
           }}
         >
-          Send Message →
+          {t('modal.sendMessage')}
         </button>
 
         {/* Bottom Row */}
@@ -207,7 +209,7 @@ export default function ContactSupportModal({ open, onClose }: ContactSupportMod
             }}
           >
             <MessageCircle size={15} />
-            Live Chat
+            {t('modal.liveChat')}
           </button>
           <button
             style={{
@@ -227,7 +229,7 @@ export default function ContactSupportModal({ open, onClose }: ContactSupportMod
             }}
           >
             <Phone size={15} />
-            Call Now
+            {t('modal.callNow')}
           </button>
         </div>
       </motion.div>

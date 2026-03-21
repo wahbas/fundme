@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useTheme } from '../../ThemeContext'
+import { useI18n } from '../../i18n'
 import {
   HomeIcon,
   LoansIcon,
@@ -21,10 +22,11 @@ interface NavItemProps {
   locked?: boolean
   hasNotification?: boolean
   collapsed?: boolean
+  isRTL?: boolean
   onClick?: () => void
 }
 
-function NavItem({ icon: Icon, label, active, locked, hasNotification, collapsed, onClick }: NavItemProps) {
+function NavItem({ icon: Icon, label, active, locked, hasNotification, collapsed, isRTL, onClick }: NavItemProps) {
   const color = active ? '#FFFFFF' : locked ? '#94A3B8' : '#CBD5E1'
 
   return (
@@ -42,7 +44,8 @@ function NavItem({ icon: Icon, label, active, locked, hasNotification, collapsed
         fontWeight: active ? 600 : 500,
         color,
         background: active ? 'rgba(37,99,235,0.12)' : 'transparent',
-        borderLeft: active ? '3px solid #2563EB' : '3px solid transparent',
+        borderLeft: isRTL ? '3px solid transparent' : (active ? '3px solid #2563EB' : '3px solid transparent'),
+        borderRight: isRTL ? (active ? '3px solid #2563EB' : '3px solid transparent') : 'none',
         cursor: locked ? 'not-allowed' : 'pointer',
         transition: 'background 0.15s, padding 0.3s, gap 0.3s',
         position: 'relative',
@@ -90,6 +93,7 @@ interface SidebarProps {
 
 export default function Sidebar({ verified = false, collapsed = false, onToggle, activeTab }: SidebarProps) {
   const { theme } = useTheme()
+  const { t, isRTL } = useI18n()
   const navigate = useNavigate()
   const location = useLocation()
   const width = collapsed ? 72 : 240
@@ -208,17 +212,17 @@ export default function Sidebar({ verified = false, collapsed = false, onToggle,
           transition: 'padding 0.3s',
         }}
       >
-        <NavItem icon={HomeIcon} label="Home" active={getActive('home')} collapsed={collapsed} onClick={() => navigate(`/dashboard${query}`)} />
-        <NavItem icon={LoansIcon} label="My Loans" locked={!verified} active={getActive('my-loans')} collapsed={collapsed} onClick={() => navigate(`/my-loans${query}`)} />
-        <NavItem icon={DataHubIcon} label="Data Hub" locked={!verified} active={getActive('data-hub')} collapsed={collapsed} onClick={() => navigate(`/data-hub${query}`)} />
-        <NavItem icon={ProfileIcon} label="My Profile" hasNotification active={getActive('profile')} collapsed={collapsed} onClick={() => navigate(`/profile${query}`)} />
+        <NavItem icon={HomeIcon} label={t('nav.home')} active={getActive('home')} collapsed={collapsed} isRTL={isRTL} onClick={() => navigate(`/dashboard${query}`)} />
+        <NavItem icon={LoansIcon} label={t('nav.myLoans')} locked={!verified} active={getActive('my-loans')} collapsed={collapsed} isRTL={isRTL} onClick={() => navigate(`/my-loans${query}`)} />
+        <NavItem icon={DataHubIcon} label={t('nav.dataHub')} locked={!verified} active={getActive('data-hub')} collapsed={collapsed} isRTL={isRTL} onClick={() => navigate(`/data-hub${query}`)} />
+        <NavItem icon={ProfileIcon} label={t('nav.myProfile')} hasNotification active={getActive('profile')} collapsed={collapsed} isRTL={isRTL} onClick={() => navigate(`/profile${query}`)} />
       </nav>
 
       {/* Bottom */}
       <div ref={bottomRef} style={{ padding: collapsed ? '0 8px 20px' : '0 12px 20px', transition: 'padding 0.3s', position: 'relative' }}>
         <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', marginBottom: 8, paddingTop: 8 }} />
-        <NavItem icon={HelpSupportIcon} label="Help & Support" collapsed={collapsed} />
-        <NavItem icon={SettingsIcon} label="Settings" collapsed={collapsed} onClick={() => navigate(`/settings${query}`)} />
+        <NavItem icon={HelpSupportIcon} label={t('nav.helpSupport')} collapsed={collapsed} isRTL={isRTL} />
+        <NavItem icon={SettingsIcon} label={t('nav.settings')} collapsed={collapsed} isRTL={isRTL} onClick={() => navigate(`/settings${query}`)} />
 
         {/* Profile switcher dropdown */}
         {profileMenuOpen && !collapsed && (
@@ -325,7 +329,7 @@ export default function Sidebar({ verified = false, collapsed = false, onToggle,
               <span style={{ color: '#FFFFFF', fontSize: 14, fontWeight: 600, display: 'block' }}>
                 Ahmed
               </span>
-              <span style={{ color: '#94A3B8', fontSize: 11 }}>First-time user</span>
+              <span style={{ color: '#94A3B8', fontSize: 11 }}>{t('nav.firstTimeUser')}</span>
             </div>
           )}
         </div>

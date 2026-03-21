@@ -5,11 +5,13 @@ import { motion } from 'framer-motion'
 import logo from '../assets/logo.png'
 import PhoneInputComp from './register/components/PhoneInput'
 import OTPInput from './register/components/OTPInput'
+import { useI18n } from '../i18n'
 
 type Step = 'phone' | 'otp'
 
 export default function Login() {
   const navigate = useNavigate()
+  const { t, isRTL } = useI18n()
   const [step, setStep] = useState<Step>('phone')
   const [phone, setPhone] = useState('')
   const [formatted, setFormatted] = useState('')
@@ -100,12 +102,12 @@ export default function Login() {
       >
         <img src={logo} alt="FundMe" style={{ height: 72, objectFit: 'contain' }} />
         <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)' }}>
-          Don't have an account?{' '}
+          {t('login.dontHaveAccount')}{' '}
           <span
             onClick={() => navigate('/register')}
             style={{ color: '#fff', fontWeight: 600, cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: 2 }}
           >
-            Register
+            {t('login.register')}
           </span>
         </p>
       </div>
@@ -141,10 +143,10 @@ export default function Login() {
               transition={{ duration: 0.3 }}
             >
               <h2 style={{ fontSize: 24, fontWeight: 700, color: '#111', marginBottom: 6, textAlign: 'center' }}>
-                Welcome Back
+                {t('login.welcomeBack')}
               </h2>
               <p style={{ fontSize: 14, color: '#6B7280', marginBottom: 28, textAlign: 'center', lineHeight: 1.6 }}>
-                Sign in to your account
+                {t('login.signIn')}
               </p>
 
               <PhoneInputComp
@@ -184,11 +186,11 @@ export default function Login() {
                       transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
                       style={{ width: 18, height: 18, border: '2px solid rgba(15,23,42,0.3)', borderTopColor: '#0F172A', borderRadius: '50%' }}
                     />
-                    Sending...
+                    {t('common.sending')}
                   </>
                 ) : (
                   <>
-                    Continue <ArrowRight size={18} />
+                    {t('login.continue')} <ArrowRight size={18} />
                   </>
                 )}
               </motion.button>
@@ -205,11 +207,11 @@ export default function Login() {
                 onClick={goBackToPhone}
                 style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 13, color: '#6B7280', cursor: 'pointer', marginBottom: 24, background: 'none', border: 'none', padding: 0 }}
               >
-                <ArrowLeft size={16} /> Back
+                <ArrowLeft size={16} /> {t('common.back')}
               </button>
 
               <h2 style={{ fontSize: 24, fontWeight: 700, color: '#111', marginBottom: 6 }}>
-                Verify your mobile
+                {t('login.verifyMobile')}
               </h2>
               <p style={{ fontSize: 14, color: '#6B7280', marginBottom: 28, lineHeight: 1.6 }}>
                 Enter the 6-digit code sent to <strong style={{ color: '#111' }}>{maskedPhone}</strong>
@@ -231,14 +233,14 @@ export default function Login() {
               <div style={{ textAlign: 'center', marginTop: 20, marginBottom: 24 }}>
                 {countdown > 0 ? (
                   <p style={{ fontSize: 13, color: '#94A3B8' }}>
-                    Resend code in <strong style={{ color: '#6B7280' }}>{countdown}s</strong>
+                    {t('common.resendCodeIn')} <strong style={{ color: '#6B7280' }}>{countdown}s</strong>
                   </p>
                 ) : (
                   <button
                     onClick={handleResend}
                     style={{ fontSize: 13, fontWeight: 600, color: '#0D82F9', cursor: 'pointer', background: 'none', border: 'none' }}
                   >
-                    Resend code
+                    {t('common.resendCode')}
                   </button>
                 )}
               </div>
@@ -272,11 +274,11 @@ export default function Login() {
                       transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
                       style={{ width: 18, height: 18, border: '2px solid rgba(15,23,42,0.3)', borderTopColor: '#0F172A', borderRadius: '50%' }}
                     />
-                    Verifying...
+                    {t('common.verifying')}
                   </>
                 ) : (
                   <>
-                    Verify & Sign In <ArrowRight size={18} />
+                    {t('login.verifySignIn')} <ArrowRight size={18} />
                   </>
                 )}
               </motion.button>
@@ -295,7 +297,7 @@ export default function Login() {
         }}
       >
         <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.25)', letterSpacing: 0.5 }}>
-          256-bit encryption · Bank-level security · SAMA regulated
+          {t('footer.encryption')}
         </p>
       </div>
     </div>

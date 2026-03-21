@@ -5,9 +5,11 @@ import { motion } from 'framer-motion'
 import { useRegister } from './RegisterContext'
 import ProgressBar from './components/ProgressBar'
 import OTPInput from './components/OTPInput'
+import { useI18n } from '../../i18n'
 
 export default function OTPScreen() {
   const navigate = useNavigate()
+  const { t } = useI18n()
   const { data } = useRegister()
   const [otp, setOtp] = useState<string[]>(['', '', '', '', '', ''])
   const [error, setError] = useState('')
@@ -61,11 +63,11 @@ export default function OTPScreen() {
         onClick={() => navigate('/register')}
         style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 13, color: '#6B7280', cursor: 'pointer', marginBottom: 24, background: 'none', border: 'none', padding: 0 }}
       >
-        <ArrowLeft size={16} /> Back
+        <ArrowLeft size={16} /> {t('common.back')}
       </button>
 
       <h2 style={{ fontSize: 24, fontWeight: 700, color: '#111', marginBottom: 6 }}>
-        Verify your mobile
+        {t('register.verifyMobile')}
       </h2>
       <p style={{ fontSize: 14, color: '#6B7280', marginBottom: 28, lineHeight: 1.6 }}>
         Enter the 6-digit code sent to <strong style={{ color: '#111' }}>{maskedPhone}</strong>
@@ -87,14 +89,14 @@ export default function OTPScreen() {
       <div style={{ textAlign: 'center', marginTop: 20, marginBottom: 24 }}>
         {countdown > 0 ? (
           <p style={{ fontSize: 13, color: '#94A3B8' }}>
-            Resend code in <strong style={{ color: '#6B7280' }}>{countdown}s</strong>
+            {t('common.resendCodeIn')} <strong style={{ color: '#6B7280' }}>{countdown}s</strong>
           </p>
         ) : (
           <button
             onClick={handleResend}
             style={{ fontSize: 13, fontWeight: 600, color: '#2563EB', cursor: 'pointer', background: 'none', border: 'none' }}
           >
-            Resend code
+            {t('common.resendCode')}
           </button>
         )}
       </div>
@@ -128,7 +130,7 @@ export default function OTPScreen() {
               transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
               style={{ width: 18, height: 18, border: '2px solid rgba(0,0,0,0.15)', borderTopColor: '#0F172A', borderRadius: '50%' }}
             />
-            Verifying...
+            {t('common.verifying')}
           </>
         ) : (
           <>

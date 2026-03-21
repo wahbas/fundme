@@ -1,7 +1,9 @@
 import { useTheme } from '../../ThemeContext'
+import { useI18n } from '../../i18n'
 
 export default function Footer() {
   const { theme } = useTheme()
+  const { t, isRTL } = useI18n()
 
   return (
     <footer
@@ -16,14 +18,7 @@ export default function Footer() {
         color: theme.textMuted,
       }}
     >
-      <span>&copy; 2025 FundMe. All rights reserved.</span>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
-        <a href="#" style={{ color: theme.textSecondary, textDecoration: 'none' }}>Terms and Conditions</a>
-        <span style={{ color: theme.borderLight }}>|</span>
-        <a href="#" style={{ color: theme.textSecondary, textDecoration: 'none' }}>Privacy Policy</a>
-        <span style={{ color: theme.borderLight }}>|</span>
-        <a href="#" style={{ color: theme.textSecondary, textDecoration: 'none' }}>Support</a>
-      </div>
+      <span>{t('footer.encryption')}</span>
     </footer>
   )
 }

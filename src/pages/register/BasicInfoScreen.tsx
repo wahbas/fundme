@@ -5,9 +5,11 @@ import { motion } from 'framer-motion'
 import { useRegister } from './RegisterContext'
 import ProgressBar from './components/ProgressBar'
 import PasswordInput from './components/PasswordInput'
+import { useI18n } from '../../i18n'
 
 export default function BasicInfoScreen() {
   const navigate = useNavigate()
+  const { t } = useI18n()
   const { setBasicInfo } = useRegister()
   const [nationalId, setNationalId] = useState('')
   const [email, setEmail] = useState('')
@@ -50,32 +52,32 @@ export default function BasicInfoScreen() {
         onClick={() => navigate('/register/verify-otp')}
         style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 13, color: '#6B7280', cursor: 'pointer', marginBottom: 24, background: 'none', border: 'none', padding: 0 }}
       >
-        <ArrowLeft size={16} /> Back
+        <ArrowLeft size={16} /> {t('common.back')}
       </button>
 
       <h2 style={{ fontSize: 24, fontWeight: 700, color: '#111', marginBottom: 6 }}>
-        Complete your profile
+        {t('register.completeProfile')}
       </h2>
       <p style={{ fontSize: 14, color: '#6B7280', marginBottom: 28, lineHeight: 1.6 }}>
-        Enter your details to set up your account
+        {t('register.enterDetails')}
       </p>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
         {/* National ID */}
-        <Field label="National ID / Iqama Number" error={errors.nationalId}>
+        <Field label={t('register.nationalIdLabel')} error={errors.nationalId}>
           <InputWithIcon
             icon={<IdCard size={18} color="#9CA3AF" />}
             type="text"
             inputMode="numeric"
             value={nationalId}
             onChange={(v) => { setNationalId(v.replace(/\D/g, '').slice(0, 10)); if (errors.nationalId) setErrors((p) => ({ ...p, nationalId: '' })) }}
-            placeholder="10-digit National ID"
+            placeholder={t('register.nationalIdPlaceholder')}
             error={!!errors.nationalId}
           />
         </Field>
 
         {/* Email */}
-        <Field label="Email Address" error={errors.email}>
+        <Field label={t('register.emailLabel')} error={errors.email}>
           <InputWithIcon
             icon={<Mail size={18} color="#9CA3AF" />}
             type="email"
@@ -87,22 +89,22 @@ export default function BasicInfoScreen() {
         </Field>
 
         {/* Password */}
-        <Field label="Password" error={errors.password}>
+        <Field label={t('register.passwordLabel')} error={errors.password}>
           <PasswordInput
             value={password}
             onChange={(v) => { setPassword(v); if (errors.password) setErrors((p) => ({ ...p, password: '' })) }}
-            placeholder="Min. 8 characters"
+            placeholder={t('register.passwordPlaceholder')}
             error={!!errors.password}
             showStrength
           />
         </Field>
 
         {/* Confirm Password */}
-        <Field label="Confirm Password" error={errors.confirmPw}>
+        <Field label={t('register.confirmPassword')} error={errors.confirmPw}>
           <PasswordInput
             value={confirmPw}
             onChange={(v) => { setConfirmPw(v); if (errors.confirmPw) setErrors((p) => ({ ...p, confirmPw: '' })) }}
-            placeholder="Re-enter password"
+            placeholder={t('register.reenterPassword')}
             error={!!errors.confirmPw}
           />
         </Field>
@@ -137,11 +139,11 @@ export default function BasicInfoScreen() {
                 transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
                 style={{ width: 18, height: 18, border: '2px solid rgba(0,0,0,0.15)', borderTopColor: '#0F172A', borderRadius: '50%' }}
               />
-              Saving...
+              {t('common.saving')}
             </>
           ) : (
             <>
-              Continue <ArrowRight size={18} />
+              {t('login.continue')} <ArrowRight size={18} />
             </>
           )}
         </motion.button>

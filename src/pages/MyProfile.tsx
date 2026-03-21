@@ -11,6 +11,7 @@ import Footer from '../components/layout/Footer'
 import FloatingHelpButton from '../components/dashboard/FloatingHelpButton'
 import ChangeContactModal from '../components/ChangeContactModal'
 import { useTheme } from '../ThemeContext'
+import { useI18n } from '../i18n'
 
 /* ─── Helpers ─── */
 
@@ -71,6 +72,7 @@ function EditableField({ label, value, onEdit }: { label: string; value: string;
 
 export default function MyProfile() {
   const { theme } = useTheme()
+  const { t, isRTL } = useI18n()
   const [searchParams] = useSearchParams()
   const stateParam = searchParams.get('state')
   const verified = stateParam === 'verified' || searchParams.get('verified') === 'true'
@@ -81,8 +83,9 @@ export default function MyProfile() {
     <div style={{ display: 'flex', minHeight: '100vh' }}>
       <Sidebar verified={verified} collapsed={sidebarCollapsed} onToggle={() => setSidebarCollapsed(c => !c)} activeTab="profile" />
       <main style={{
-        marginLeft: sidebarCollapsed ? 72 : 240,
-        transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        marginLeft: isRTL ? 0 : (sidebarCollapsed ? 72 : 240),
+        marginRight: isRTL ? (sidebarCollapsed ? 72 : 240) : 0,
+        transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1), margin-right 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         flex: 1, minWidth: 0, overflow: 'hidden', minHeight: '100vh', background: theme.bgPrimary, padding: 0,
       }}>
         <div style={{ background: theme.bgPrimary, minHeight: '100vh', padding: '28px 32px', display: 'flex', flexDirection: 'column' }}>
@@ -114,14 +117,14 @@ export default function MyProfile() {
                       padding: '6px 16px', borderRadius: 20, fontSize: 13, fontWeight: 600,
                       background: '#2563EB', color: '#fff', marginBottom: 12,
                     }}>
-                      Verified Account
+                      {t('profile.verifiedAccount')}
                     </span>
 
                     <p style={{ fontSize: 13, color: theme.textSecondary, lineHeight: 1.5, marginBottom: 12 }}>
-                      Your account has been successfully verified. You can now apply for financing
+                      {t('profile.accountVerifiedDesc')}
                     </p>
 
-                    <p style={{ fontSize: 12, color: theme.textMuted }}>Member since November 14, 2025</p>
+                    <p style={{ fontSize: 12, color: theme.textMuted }}>{t('profile.memberSince')} November 14, 2025</p>
                   </div>
                 </SectionCard>
 
@@ -129,10 +132,10 @@ export default function MyProfile() {
                 <SectionCard delay={0.12}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
                     <Shield size={20} color={theme.textPrimary} />
-                    <h3 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary }}>SIMAH Consent</h3>
+                    <h3 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary }}>{t('profile.simahConsent')}</h3>
                   </div>
                   <p style={{ fontSize: 13, color: theme.textMuted, marginBottom: 20 }}>
-                    Your SIMAH consent is approved and ready to download.
+                    {t('profile.simahDesc')}
                   </p>
                   <button style={{
                     width: '100%', padding: '12px 0', background: '#2563EB', color: '#fff',
@@ -140,17 +143,17 @@ export default function MyProfile() {
                     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
                   }}>
                     <Download size={16} />
-                    Download Document
+                    {t('profile.downloadDocument')}
                   </button>
                 </SectionCard>
 
                 {/* Important Links */}
                 <SectionCard delay={0.19}>
-                  <h3 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary, marginBottom: 16 }}>Important Links</h3>
+                  <h3 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary, marginBottom: 16 }}>{t('profile.importantLinks')}</h3>
                   {[
-                    { icon: FileText, label: 'Terms & Conditions' },
-                    { icon: Shield, label: 'Privacy Policy' },
-                    { icon: Shield, label: 'Customer Protection' },
+                    { icon: FileText, label: t('profile.termsConditions') },
+                    { icon: Shield, label: t('profile.privacyPolicy') },
+                    { icon: Shield, label: t('profile.customerProtection') },
                   ].map((link, i) => (
                     <div key={link.label} style={{
                       display: 'flex', alignItems: 'center', gap: 12, padding: '14px 0',
@@ -177,32 +180,32 @@ export default function MyProfile() {
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                       <User size={20} color={theme.textPrimary} />
-                      <h3 style={{ fontSize: 17, fontWeight: 700, color: theme.textPrimary }}>Personal Information</h3>
+                      <h3 style={{ fontSize: 17, fontWeight: 700, color: theme.textPrimary }}>{t('profile.personalInfo')}</h3>
                     </div>
                     <span style={{
                       padding: '4px 14px', borderRadius: 20, fontSize: 12, fontWeight: 600,
                       background: '#2563EB', color: '#fff',
                     }}>
-                      Verified
+                      {t('dashboard.verified')}
                     </span>
                   </div>
 
                   {/* Row 1: Name, NID, DOB */}
                   <div className="profile-fields-3" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, marginBottom: 20 }}>
-                    <ReadOnlyField label="Full Name" value="Ahmed Mohammed Al-Rashid" />
-                    <ReadOnlyField label="National ID Number" value="1234567890" />
-                    <ReadOnlyField label="Date of Birth" value="15/03/1985" />
+                    <ReadOnlyField label={t('profile.fullName')} value="Ahmed Mohammed Al-Rashid" />
+                    <ReadOnlyField label={t('profile.nationalId')} value="1234567890" />
+                    <ReadOnlyField label={t('profile.dateOfBirth')} value="15/03/1985" />
                   </div>
 
                   {/* Row 2: Phone, Email */}
                   <div className="profile-fields-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24 }}>
-                    <EditableField label="Phone Number" value="+966 50 123 4567" onEdit={() => setContactModal({ open: true, type: 'phone' })} />
-                    <EditableField label="Email Address" value="ahmed.alrashid@email.com" onEdit={() => setContactModal({ open: true, type: 'email' })} />
+                    <EditableField label={t('profile.phoneNumber')} value="+966 50 123 4567" onEdit={() => setContactModal({ open: true, type: 'phone' })} />
+                    <EditableField label={t('profile.emailAddress')} value="ahmed.alrashid@email.com" onEdit={() => setContactModal({ open: true, type: 'email' })} />
                   </div>
 
                   {/* Authorization Document */}
                   <div style={{ borderTop: `1px solid ${theme.borderLight}`, paddingTop: 20 }}>
-                    <p style={{ fontSize: 13, fontWeight: 600, color: theme.textSecondary, marginBottom: 12 }}>Authorization Document</p>
+                    <p style={{ fontSize: 13, fontWeight: 600, color: theme.textSecondary, marginBottom: 12 }}>{t('profile.authorizationDocument')}</p>
                     <div style={{
                       display: 'flex', alignItems: 'center', gap: 12, padding: 16,
                       background: theme.inputBg, borderRadius: 10, border: `1px solid ${theme.borderLight}`,
@@ -228,7 +231,7 @@ export default function MyProfile() {
                         display: 'flex', alignItems: 'center', gap: 6,
                       }}>
                         <Eye size={14} />
-                        View Document
+                        {t('profile.viewDocument')}
                       </button>
                       <button style={{
                         padding: '8px 16px', background: theme.cardBg, border: `1px solid ${theme.border}`,
@@ -236,7 +239,7 @@ export default function MyProfile() {
                         display: 'flex', alignItems: 'center', gap: 6,
                       }}>
                         <Upload size={14} />
-                        Reupload
+                        {t('profile.reupload')}
                       </button>
                     </div>
                   </div>
@@ -248,32 +251,32 @@ export default function MyProfile() {
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                       <Building2 size={20} color={theme.textPrimary} />
                       <div>
-                        <h3 style={{ fontSize: 17, fontWeight: 700, color: theme.textPrimary }}>Company Information</h3>
-                        <p style={{ fontSize: 12, color: theme.textMuted }}>Source: Wathiq</p>
+                        <h3 style={{ fontSize: 17, fontWeight: 700, color: theme.textPrimary }}>{t('profile.companyInfo')}</h3>
+                        <p style={{ fontSize: 12, color: theme.textMuted }}>{t('profile.sourceWathiq')}</p>
                       </div>
                     </div>
                     <span style={{
                       padding: '4px 14px', borderRadius: 20, fontSize: 12, fontWeight: 600,
                       background: '#2563EB', color: '#fff',
                     }}>
-                      Linked
+                      {t('profile.linked')}
                     </span>
                   </div>
 
                   {/* Row 1 */}
                   <div className="profile-fields-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20 }}>
-                    <ReadOnlyField label="Company Name" value="Al-Majd Trading Company LLC" />
-                    <ReadOnlyField label="Commercial Registration (CR)" value="1010123456" />
+                    <ReadOnlyField label={t('profile.companyName')} value="Al-Majd Trading Company LLC" />
+                    <ReadOnlyField label={t('profile.commercialRegistration')} value="1010123456" />
                   </div>
 
                   {/* Row 2 */}
                   <div className="profile-fields-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20 }}>
-                    <ReadOnlyField label="Industry" value="Retail & Trading" />
-                    <ReadOnlyField label="Business Activity" value="General Trading & Import/Export" />
+                    <ReadOnlyField label={t('profile.industry')} value="Retail & Trading" />
+                    <ReadOnlyField label={t('profile.businessActivity')} value="General Trading & Import/Export" />
                   </div>
 
                   <p style={{ fontSize: 12, color: theme.textMuted, fontStyle: 'italic' }}>
-                    Company information is automatically fetched from Wathiq and cannot be edited manually.
+                    {t('profile.wathiqNote')}
                   </p>
                 </SectionCard>
               </div>

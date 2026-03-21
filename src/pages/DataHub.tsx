@@ -6,6 +6,7 @@ import {
   FileText, TrendingUp, Landmark, Building2,
 } from 'lucide-react'
 import { useTheme } from '../ThemeContext'
+import { useI18n } from '../i18n'
 import Sidebar from '../components/layout/Sidebar'
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
@@ -21,8 +22,8 @@ interface BankConnection {
 }
 
 const BANKS: BankConnection[] = [
-  { name: 'Al Rajhi Bank', syncInfo: 'Last synced 2 hours ago.', status: 'connected', statusLabel: 'Connected' },
-  { name: 'Saudi National Bank', syncInfo: 'Sync failed 5 days ago – please reconnect.', status: 'reconnect', statusLabel: 'Reconnect Required' },
+  { name: 'Al Rajhi Bank', syncInfo: 'Last synced 2 hours ago.', status: 'connected', statusLabel: 'connected' },
+  { name: 'Saudi National Bank', syncInfo: 'Sync failed 5 days ago – please reconnect.', status: 'reconnect', statusLabel: 'reconnectRequired' },
 ]
 
 interface DocCategory {
@@ -38,7 +39,7 @@ const DOC_CATEGORIES: DocCategory[] = [
   {
     icon: Building2,
     iconColor: '#2563EB',
-    label: 'Legal Documents',
+    label: 'legalDocs',
     completed: 2,
     total: 7,
     docs: [
@@ -54,7 +55,7 @@ const DOC_CATEGORIES: DocCategory[] = [
   {
     icon: TrendingUp,
     iconColor: '#2563EB',
-    label: 'Financial Documents',
+    label: 'financialDocs',
     completed: 0,
     total: 6,
     docs: [
@@ -106,6 +107,7 @@ function SectionCard({ children, delay = 0 }: { children: React.ReactNode; delay
 
 function DocCategoryRow({ cat }: { cat: DocCategory }) {
   const { theme } = useTheme()
+  const { t } = useI18n()
   const [expanded, setExpanded] = useState(false)
   const Icon = cat.icon
 
@@ -125,7 +127,7 @@ function DocCategoryRow({ cat }: { cat: DocCategory }) {
           <Icon size={18} color={cat.iconColor} />
         </div>
         <div style={{ flex: 1, textAlign: 'left' }}>
-          <p style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary, marginBottom: 4 }}>{cat.label}</p>
+          <p style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary, marginBottom: 4 }}>{t(`dataHub.${cat.label}` as any)}</p>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <div style={{ width: 80, height: 4, borderRadius: 2, background: '#E2E8F0' }}>
               <div style={{
@@ -178,6 +180,7 @@ function DocCategoryRow({ cat }: { cat: DocCategory }) {
 
 export default function DataHub() {
   const { theme } = useTheme()
+  const { t, isRTL } = useI18n()
   const [searchParams] = useSearchParams()
   const stateParam = searchParams.get('state')
   const verified = stateParam === 'verified' || searchParams.get('verified') === 'true'
@@ -192,8 +195,9 @@ export default function DataHub() {
     <div style={{ display: 'flex', minHeight: '100vh' }}>
       <Sidebar verified={verified} collapsed={sidebarCollapsed} onToggle={() => setSidebarCollapsed(c => !c)} activeTab="data-hub" />
       <main style={{
-        marginLeft: sidebarCollapsed ? 72 : 240,
-        transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        marginLeft: isRTL ? 0 : (sidebarCollapsed ? 72 : 240),
+        marginRight: isRTL ? (sidebarCollapsed ? 72 : 240) : 0,
+        transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1), margin-right 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         flex: 1, minWidth: 0, overflow: 'hidden', minHeight: '100vh', background: theme.bgPrimary, padding: 0,
       }}>
         <div style={{ background: theme.bgPrimary, minHeight: '100vh', padding: '28px 32px', display: 'flex', flexDirection: 'column' }}>
@@ -273,7 +277,7 @@ export default function DataHub() {
                     <Landmark size={20} color="#2563EB" />
                   </div>
                   <div>
-                    <h3 style={{ fontSize: 17, fontWeight: 700, color: theme.textPrimary, marginBottom: 4 }}>Bank Connections</h3>
+                    <h3 style={{ fontSize: 17, fontWeight: 700, color: theme.textPrimary, marginBottom: 4 }}>{t('dataHub.bankConnections')}</h3>
                     <p style={{ fontSize: 13, color: theme.textMuted }}>Connect and manage your bank accounts</p>
                   </div>
                 </div>
@@ -312,12 +316,12 @@ export default function DataHub() {
                         {isConnected ? (
                           <>
                             <CheckCircle2 size={16} color="#2563EB" />
-                            <span style={{ fontSize: 13, fontWeight: 600, color: '#2563EB' }}>{bank.statusLabel}</span>
+                            <span style={{ fontSize: 13, fontWeight: 600, color: '#2563EB' }}>{t(`dataHub.${bank.statusLabel}` as any)}</span>
                           </>
                         ) : (
                           <>
                             <AlertCircle size={16} color="#D97706" />
-                            <span style={{ fontSize: 13, fontWeight: 600, color: '#D97706' }}>{bank.statusLabel}</span>
+                            <span style={{ fontSize: 13, fontWeight: 600, color: '#D97706' }}>{t(`dataHub.${bank.statusLabel}` as any)}</span>
                           </>
                         )}
                       </div>

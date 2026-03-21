@@ -10,106 +10,37 @@ import FloatingHelpButton from '../components/dashboard/FloatingHelpButton'
 import { LoansIcon } from '../components/icons/NavIcons'
 import RiyalSign from '../components/icons/RiyalSign'
 import { useTheme } from '../ThemeContext'
+import { useI18n } from '../i18n'
 
 type LoanStatus = 'active' | 'in-progress' | 'closed'
 type FilterKey = 'all' | LoanStatus
 
 interface Loan {
   id: string
-  product: string
-  subtitle: string
+  productKey: string
+  subtitleKey: string
   amount: number
   status: LoanStatus
-  statusLabel: string
-  ctaLabel: string
+  statusKey: string
+  ctaKey: string
   ctaStyle: 'filled' | 'outlined'
 }
 
 const LOANS: Loan[] = [
-  {
-    id: 'LOAN-2024-001',
-    product: 'Working Capital',
-    subtitle: 'Next payment on 15 Dec 2024',
-    amount: 350000,
-    status: 'active',
-    statusLabel: 'Active',
-    ctaLabel: 'View Loan',
-    ctaStyle: 'filled',
-  },
-  {
-    id: 'LOAN-2024-002',
-    product: 'Invoice Financing',
-    subtitle: 'Next payment on 20 Dec 2024',
-    amount: 180000,
-    status: 'active',
-    statusLabel: 'Active',
-    ctaLabel: 'View Loan',
-    ctaStyle: 'filled',
-  },
-  {
-    id: 'LOAN-2024-003',
-    product: 'Working Capital',
-    subtitle: 'Your application has been received',
-    amount: 500000,
-    status: 'in-progress',
-    statusLabel: 'Request Submitted',
-    ctaLabel: 'View Status',
-    ctaStyle: 'outlined',
-  },
-  {
-    id: 'LOAN-2024-004',
-    product: 'Invoice Financing',
-    subtitle: 'Your offer is ready',
-    amount: 250000,
-    status: 'in-progress',
-    statusLabel: 'Offer',
-    ctaLabel: 'View Offer',
-    ctaStyle: 'filled',
-  },
-  {
-    id: 'LOAN-2024-005',
-    product: 'Working Capital',
-    subtitle: 'Facility contract ready',
-    amount: 700000,
-    status: 'in-progress',
-    statusLabel: 'Facility Contract',
-    ctaLabel: 'Continue Loan',
-    ctaStyle: 'filled',
-  },
-  {
-    id: 'LOAN-2024-006',
-    product: 'Equipment Financing',
-    subtitle: '65% funded · 8 days left',
-    amount: 1000000,
-    status: 'in-progress',
-    statusLabel: 'Crowdfunding',
-    ctaLabel: 'View Status',
-    ctaStyle: 'outlined',
-  },
-  {
-    id: 'LOAN-2023-045',
-    product: 'Trade Finance',
-    subtitle: 'Congratulations! Loan fully paid',
-    amount: 0,
-    status: 'closed',
-    statusLabel: 'Settled',
-    ctaLabel: 'View Loan',
-    ctaStyle: 'filled',
-  },
+  { id: 'LOAN-2024-001', productKey: 'loan.workingCapital', subtitleKey: 'loan.nextPaymentOn', amount: 350000, status: 'active', statusKey: 'loan.statusActive', ctaKey: 'loans.viewLoan', ctaStyle: 'filled' },
+  { id: 'LOAN-2024-002', productKey: 'loan.invoiceFinancing', subtitleKey: 'loan.nextPaymentOn', amount: 180000, status: 'active', statusKey: 'loan.statusActive', ctaKey: 'loans.viewLoan', ctaStyle: 'filled' },
+  { id: 'LOAN-2024-003', productKey: 'loan.workingCapital', subtitleKey: 'loan.appReceived', amount: 500000, status: 'in-progress', statusKey: 'loan.statusSubmitted', ctaKey: 'loans.viewStatus', ctaStyle: 'outlined' },
+  { id: 'LOAN-2024-004', productKey: 'loan.invoiceFinancing', subtitleKey: 'loan.offerReady', amount: 250000, status: 'in-progress', statusKey: 'loan.statusOffer', ctaKey: 'loans.viewLoan', ctaStyle: 'filled' },
+  { id: 'LOAN-2024-005', productKey: 'loan.workingCapital', subtitleKey: 'loan.facilityReady', amount: 700000, status: 'in-progress', statusKey: 'loan.statusContract', ctaKey: 'loans.continueLoan', ctaStyle: 'filled' },
+  { id: 'LOAN-2024-006', productKey: 'loan.equipmentFinancing', subtitleKey: 'loan.funded65', amount: 1000000, status: 'in-progress', statusKey: 'loan.statusCrowdfunding', ctaKey: 'loans.viewStatus', ctaStyle: 'outlined' },
+  { id: 'LOAN-2023-045', productKey: 'loan.tradeFinance', subtitleKey: 'loan.fullyPaid', amount: 0, status: 'closed', statusKey: 'loan.statusSettled', ctaKey: 'loans.viewLoan', ctaStyle: 'filled' },
 ]
 
-const FILTERS: { key: FilterKey; label: string }[] = [
-  { key: 'all', label: 'All Loans' },
-  { key: 'active', label: 'Active' },
-  { key: 'in-progress', label: 'In Progress' },
-  { key: 'closed', label: 'Closed' },
-]
-
-function getStatusStyle(label: string): { color: string; bg: string; border: string } {
-  switch (label) {
-    case 'Active':
+function getStatusStyle(key: string): { color: string; bg: string; border: string } {
+  switch (key) {
+    case 'loan.statusActive':
       return { color: '#2563EB', bg: '#EFF6FF', border: '#BFDBFE' }
-    case 'Settled':
+    case 'loan.statusSettled':
       return { color: '#64748B', bg: '#F8FAFC', border: '#E2E8F0' }
     default:
       return { color: '#2563EB', bg: '#EFF6FF', border: '#BFDBFE' }
@@ -118,9 +49,11 @@ function getStatusStyle(label: string): { color: string; bg: string; border: str
 
 function LoanCard({ loan, delay, query }: { loan: Loan; delay: number; query: string }) {
   const { theme } = useTheme()
+  const { t } = useI18n()
   const nav = useNav()
   const [hovered, setHovered] = useState(false)
-  const statusStyle = getStatusStyle(loan.statusLabel)
+  const statusLabel = t(loan.statusKey as any)
+  const statusStyle = getStatusStyle(loan.statusKey)
   const isFilled = loan.ctaStyle === 'filled'
 
   return (
@@ -150,21 +83,21 @@ function LoanCard({ loan, delay, query }: { loan: Loan; delay: number; query: st
           color: statusStyle.color, background: statusStyle.bg, border: `1px solid ${statusStyle.border}`,
           whiteSpace: 'nowrap',
         }}>
-          {loan.statusLabel}
+          {statusLabel}
         </span>
       </div>
 
       {/* Product */}
-      <p style={{ fontSize: 14, color: theme.textSecondary, marginBottom: 4 }}>{loan.product}</p>
+      <p style={{ fontSize: 14, color: theme.textSecondary, marginBottom: 4 }}>{t(loan.productKey as any)}</p>
 
       {/* Subtitle */}
-      <p style={{ fontSize: 13, color: theme.textMuted, marginBottom: 20 }}>{loan.subtitle}</p>
+      <p style={{ fontSize: 13, color: theme.textMuted, marginBottom: 20 }}>{t(loan.subtitleKey as any)}</p>
 
       {/* Divider */}
       <div style={{ height: 1, background: theme.borderLight, marginBottom: 16 }} />
 
       {/* Amount */}
-      <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 4 }}>Financing Amount</p>
+      <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 4 }}>{t('loan.financingAmount' as any)}</p>
       <p style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary, marginBottom: 20 }}>
         {loan.amount.toLocaleString()} <RiyalSign size="sm" />
       </p>
@@ -192,7 +125,7 @@ function LoanCard({ loan, delay, query }: { loan: Loan; delay: number; query: st
             : { background: theme.cardBg, color: theme.textPrimary, border: `1px solid ${theme.border}` }),
         }}
       >
-        {loan.ctaLabel}
+        {t(loan.ctaKey as any)}
         <ArrowRight size={16} />
       </button>
     </motion.div>
@@ -201,6 +134,7 @@ function LoanCard({ loan, delay, query }: { loan: Loan; delay: number; query: st
 
 export default function MyLoans() {
   const { theme } = useTheme()
+  const { t, isRTL } = useI18n()
   const [searchParams] = useSearchParams()
   const stateParam = searchParams.get('state')
   const verified = stateParam === 'verified' || searchParams.get('verified') === 'true'
@@ -211,12 +145,20 @@ export default function MyLoans() {
   const filtered = activeFilter === 'all' ? LOANS : LOANS.filter(l => l.status === activeFilter)
   const query = verified ? '?state=verified' : ''
 
+  const FILTERS: { key: FilterKey; labelKey: 'loans.all' | 'loans.active' | 'loans.inProgress' | 'loans.closed' }[] = [
+    { key: 'all', labelKey: 'loans.all' },
+    { key: 'active', labelKey: 'loans.active' },
+    { key: 'in-progress', labelKey: 'loans.inProgress' },
+    { key: 'closed', labelKey: 'loans.closed' },
+  ]
+
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
       <Sidebar verified={verified} collapsed={sidebarCollapsed} onToggle={() => setSidebarCollapsed(c => !c)} activeTab="my-loans" />
       <main style={{
-        marginLeft: sidebarCollapsed ? 72 : 240,
-        transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        marginLeft: isRTL ? 0 : (sidebarCollapsed ? 72 : 240),
+        marginRight: isRTL ? (sidebarCollapsed ? 72 : 240) : 0,
+        transition: 'margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1), margin-right 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         flex: 1, minWidth: 0, overflow: 'hidden', minHeight: '100vh', background: theme.bgPrimary, padding: 0,
       }}>
         <div style={{ background: theme.bgPrimary, minHeight: '100vh', padding: '28px 32px', display: 'flex', flexDirection: 'column' }}>
@@ -227,7 +169,7 @@ export default function MyLoans() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <LoansIcon size={24} color={theme.textPrimary} />
-                <h2 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary }}>My Loans</h2>
+                <h2 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary }}>{t('loans.myLoans')}</h2>
               </div>
               <motion.button
                 whileHover={{ scale: 1.03 }}
@@ -240,7 +182,7 @@ export default function MyLoans() {
                 }}
               >
                 <Plus size={16} />
-                New Loan Request
+                {t('header.newLoanRequest')}
               </motion.button>
             </div>
 
@@ -255,7 +197,7 @@ export default function MyLoans() {
                     border: isActive ? 'none' : `1px solid ${theme.border}`, cursor: 'pointer',
                     transition: 'all 0.15s',
                   }}>
-                    {f.label}
+                    {t(f.labelKey)}
                   </button>
                 )
               })}

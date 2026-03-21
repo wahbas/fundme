@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './index.css'
 import { ThemeProvider } from './ThemeContext'
+import { I18nProvider } from './i18n'
 import App from './App.tsx'
 import LoanApplication from './pages/LoanApplication.tsx'
 import RequestFinancing from './pages/RequestFinancing.tsx'
@@ -19,6 +20,7 @@ import Settings from './pages/Settings.tsx'
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ThemeProvider>
+    <I18nProvider>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Register />} />
@@ -36,6 +38,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/settings" element={<Settings />} />
       </Routes>
     </BrowserRouter>
+    </I18nProvider>
     </ThemeProvider>
   </StrictMode>,
 )

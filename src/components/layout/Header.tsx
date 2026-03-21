@@ -1,27 +1,30 @@
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { Sun, Moon } from 'lucide-react'
 import { NotificationBellIcon, PlusIcon } from '../icons/WidgetIcons'
 import { useTheme } from '../../ThemeContext'
-
-function getGreeting() {
-  const hour = new Date().getHours()
-  if (hour < 12) return 'Good morning'
-  if (hour < 17) return 'Good afternoon'
-  return 'Good evening'
-}
-
-function getFormattedDate() {
-  return new Date().toLocaleDateString('en-US', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  })
-}
+import { useI18n } from '../../i18n'
 
 export default function Header({ showNewLoanButton = false, showVerifiedLoanButton = false }: { showNewLoanButton?: boolean; showVerifiedLoanButton?: boolean }) {
-  const { theme } = useTheme()
+  const { theme, isDark, toggleTheme } = useTheme()
   const navigate = useNavigate()
+  const { t, isRTL } = useI18n()
+
+  function getGreeting() {
+    const hour = new Date().getHours()
+    if (hour < 12) return t('header.goodMorning')
+    if (hour < 17) return t('header.goodAfternoon')
+    return t('header.goodEvening')
+  }
+
+  function getFormattedDate() {
+    return new Date().toLocaleDateString(isRTL ? 'ar-SA' : 'en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+  }
 
   return (
     <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
@@ -53,7 +56,7 @@ export default function Header({ showNewLoanButton = false, showVerifiedLoanButt
             }}
           >
             <PlusIcon size={14} color="#fff" />
-            New Loan Request
+            {t('header.newLoanRequest')}
           </motion.button>
         )}
         {showVerifiedLoanButton && (
@@ -77,9 +80,23 @@ export default function Header({ showNewLoanButton = false, showVerifiedLoanButt
             }}
           >
             <PlusIcon size={14} color="#fff" />
-            New Loan Request
+            {t('header.newLoanRequest')}
           </motion.button>
         )}
+        {/* Dark/Light mode toggle */}
+        <div
+          onClick={toggleTheme}
+          style={{
+            ...iconBtn,
+            background: isDark ? 'rgba(255,255,255,0.08)' : '#F1F5F9',
+            cursor: 'pointer',
+            transition: 'background 0.2s',
+          }}
+          title={isDark ? 'Light mode' : 'Dark mode'}
+        >
+          {isDark ? <Sun size={18} color="#F59E0B" /> : <Moon size={18} color="#64748B" />}
+        </div>
+
         <div onClick={() => navigate('/notifications')} style={{ ...iconBtn, position: 'relative', cursor: 'pointer' }}>
           <NotificationBellIcon size={20} color="#64748B" />
           <span

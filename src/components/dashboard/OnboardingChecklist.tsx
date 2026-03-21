@@ -3,38 +3,40 @@ import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { StepCompleteIcon, StepCurrentIcon, StepUpcomingIcon, ChevronUpIcon, ChevronDownIcon, ArrowRightIcon } from '../icons/WidgetIcons'
 import { useTheme } from '../../ThemeContext'
-
-const steps = [
-  {
-    title: 'Create Account',
-    description: 'Identity verified with Nafath',
-    status: 'completed' as const,
-    stepId: 'create-account',
-  },
-  {
-    title: 'Verify Your Business',
-    description: 'Connect your Commercial Registration via Wathiq.',
-    status: 'current' as const,
-    timeLabel: '~3 min',
-    actionLabel: 'Verify Now',
-    stepId: 'verify-business',
-  },
-  {
-    title: 'Connect Your Bank',
-    status: 'pending' as const,
-    stepId: 'connect-bank',
-  },
-  {
-    title: 'Upload Documents',
-    status: 'pending' as const,
-    stepId: 'upload-documents',
-  },
-]
+import { useI18n } from '../../i18n'
 
 export default function OnboardingChecklist() {
   const navigate = useNavigate()
   const [minimized, setMinimized] = useState(false)
   const { theme } = useTheme()
+  const { t, isRTL } = useI18n()
+
+  const steps = [
+    {
+      title: t('onboarding.verifyIdentity'),
+      description: 'Identity verified with Nafath',
+      status: 'completed' as const,
+      stepId: 'create-account',
+    },
+    {
+      title: t('onboarding.verifyIdentity'),
+      description: 'Connect your Commercial Registration via Wathiq.',
+      status: 'current' as const,
+      timeLabel: '~3 min',
+      actionLabel: t('onboarding.getStarted'),
+      stepId: 'verify-business',
+    },
+    {
+      title: t('onboarding.connectBank'),
+      status: 'pending' as const,
+      stepId: 'connect-bank',
+    },
+    {
+      title: t('onboarding.uploadDocuments'),
+      status: 'pending' as const,
+      stepId: 'upload-documents',
+    },
+  ]
 
   const completed = steps.filter((s) => s.status === 'completed').length
   const total = steps.length
@@ -44,7 +46,7 @@ export default function OnboardingChecklist() {
     <div style={{ background: theme.cardBg, border: `1px solid ${theme.border}`, borderRadius: 12, padding: '20px 22px' }}>
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: minimized ? 0 : 4 }}>
-        <h3 style={{ fontSize: 15, fontWeight: 600, color: theme.textPrimary, margin: 0 }}>Complete Your Profile</h3>
+        <h3 style={{ fontSize: 15, fontWeight: 600, color: theme.textPrimary, margin: 0 }}>{t('onboarding.completeProfile')}</h3>
         <button
           onClick={() => setMinimized((v) => !v)}
           style={{
@@ -65,7 +67,7 @@ export default function OnboardingChecklist() {
 
       {!minimized && (
         <p style={{ fontSize: 12, color: theme.textSecondary, margin: '0 0 16px' }}>
-          Finish setup to unlock financing options
+          {t('onboarding.finishSetup')}
         </p>
       )}
 
@@ -88,7 +90,7 @@ export default function OnboardingChecklist() {
                   style={{ height: '100%', background: '#2563EB', borderRadius: 3 }}
                 />
               </div>
-              <span style={{ fontSize: 12, fontWeight: 600, color: theme.textPrimary, flexShrink: 0 }}>{completed}/{total} Complete</span>
+              <span style={{ fontSize: 12, fontWeight: 600, color: theme.textPrimary, flexShrink: 0 }}>{completed}/{total} {t('onboarding.complete')}</span>
             </div>
 
             {/* Step list */}
@@ -137,7 +139,7 @@ export default function OnboardingChecklist() {
                       {/* Completed badge */}
                       {isCompleted && (
                         <span style={{ fontSize: 11, fontWeight: 500, color: '#10B981', background: '#ECFDF5', padding: '2px 8px', borderRadius: 4 }}>
-                          Completed
+                          {t('onboarding.completed')}
                         </span>
                       )}
                     </div>
@@ -180,7 +182,7 @@ export default function OnboardingChecklist() {
                             }}
                           >
                             {step.actionLabel}
-                            <ArrowRightIcon size={14} color="#fff" />
+                            <span style={{ display: 'inline-flex', transform: isRTL ? 'scaleX(-1)' : 'none' }}><ArrowRightIcon size={14} color="#fff" /></span>
                           </motion.button>
                         </div>
                       </div>

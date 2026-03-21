@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, CheckCircle2, Mail, Phone } from 'lucide-react'
 import { useTheme } from '../ThemeContext'
+import { useI18n } from '../i18n'
 
 interface ChangeContactModalProps {
   open: boolean
@@ -18,6 +19,7 @@ export default function ChangeContactModal({ open, onClose, type }: ChangeContac
   const [countdown, setCountdown] = useState(60)
   const otpRefs = useRef<(HTMLInputElement | null)[]>([])
   const { theme } = useTheme()
+  const { t } = useI18n()
 
   // Reset state when modal opens/closes
   useEffect(() => {
@@ -126,7 +128,7 @@ export default function ChangeContactModal({ open, onClose, type }: ChangeContac
               {/* Header */}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
                 <h2 style={{ fontSize: 20, fontWeight: 700, color: theme.textPrimary, margin: 0 }}>
-                  {isPhone ? 'Change Phone Number' : 'Change Email Address'}
+                  {isPhone ? t('modal.changePhone') : t('modal.changeEmail')}
                 </h2>
                 <button
                   onClick={handleClose}
@@ -139,7 +141,7 @@ export default function ChangeContactModal({ open, onClose, type }: ChangeContac
               {/* Current value */}
               <div style={{ marginBottom: 16 }}>
                 <p style={{ fontSize: 12, fontWeight: 600, color: theme.textSecondary, marginBottom: 8 }}>
-                  {isPhone ? 'Current Number' : 'Current Email'}
+                  {isPhone ? t('modal.currentNumber') : t('modal.currentEmail')}
                 </p>
                 <div style={{
                   padding: '12px 14px',
@@ -156,7 +158,7 @@ export default function ChangeContactModal({ open, onClose, type }: ChangeContac
               {/* New value input */}
               <div style={{ marginBottom: 24 }}>
                 <p style={{ fontSize: 12, fontWeight: 600, color: theme.textSecondary, marginBottom: 8 }}>
-                  {isPhone ? 'New Phone Number' : 'New Email Address'}
+                  {isPhone ? t('modal.newPhone') : t('modal.newEmail')}
                 </p>
                 <input
                   type={isPhone ? 'tel' : 'email'}
@@ -192,7 +194,7 @@ export default function ChangeContactModal({ open, onClose, type }: ChangeContac
                   cursor: 'pointer',
                 }}
               >
-                {isPhone ? 'Send OTP' : 'Send Verification'}
+                {isPhone ? t('modal.sendOtp') : t('modal.sendVerification')}
               </button>
             </motion.div>
           )}
@@ -218,7 +220,7 @@ export default function ChangeContactModal({ open, onClose, type }: ChangeContac
                   </div>
 
                   <p style={{ fontSize: 14, color: theme.textSecondary, marginBottom: 24 }}>
-                    Enter the 6-digit code sent to your new number
+                    {t('modal.enterOtp')}
                   </p>
 
                   {/* OTP inputs */}
@@ -253,7 +255,7 @@ export default function ChangeContactModal({ open, onClose, type }: ChangeContac
                   <div style={{ textAlign: 'center', marginBottom: 24 }}>
                     {countdown > 0 ? (
                       <p style={{ fontSize: 13, color: theme.textMuted }}>
-                        Resend code in <span style={{ fontWeight: 600, color: theme.textPrimary }}>{countdown}s</span>
+                        {t('common.resendCodeIn')} <span style={{ fontWeight: 600, color: theme.textPrimary }}>{countdown}s</span>
                       </p>
                     ) : (
                       <button
@@ -268,7 +270,7 @@ export default function ChangeContactModal({ open, onClose, type }: ChangeContac
                           textDecoration: 'underline',
                         }}
                       >
-                        Resend code
+                        {t('common.resendCode')}
                       </button>
                     )}
                   </div>
@@ -288,7 +290,7 @@ export default function ChangeContactModal({ open, onClose, type }: ChangeContac
                       cursor: 'pointer',
                     }}
                   >
-                    Verify
+                    {t('modal.verify')}
                   </button>
                 </>
               ) : (
@@ -304,7 +306,7 @@ export default function ChangeContactModal({ open, onClose, type }: ChangeContac
                   </div>
 
                   <p style={{ fontSize: 14, color: theme.textSecondary, marginBottom: 24, textAlign: 'center' }}>
-                    We've sent a verification link to your new email address
+                    {t('modal.emailSent')}
                   </p>
 
                   {/* Email icon */}
@@ -339,7 +341,7 @@ export default function ChangeContactModal({ open, onClose, type }: ChangeContac
                       marginBottom: 12,
                     }}
                   >
-                    Open Email App
+                    {t('modal.openEmailApp')}
                   </button>
 
                   {/* Resend link */}
@@ -356,7 +358,7 @@ export default function ChangeContactModal({ open, onClose, type }: ChangeContac
                         textDecoration: 'underline',
                       }}
                     >
-                      Resend email
+                      {t('modal.resendEmail')}
                     </button>
                   </div>
                 </>
@@ -376,13 +378,13 @@ export default function ChangeContactModal({ open, onClose, type }: ChangeContac
               <CheckCircle2 size={48} color="#16A34A" />
 
               <h2 style={{ fontSize: 20, fontWeight: 700, color: theme.textPrimary, marginTop: 16, marginBottom: 8 }}>
-                {isPhone ? 'Phone Number Updated' : 'Email Address Updated'}
+                {isPhone ? t('modal.phoneUpdated') : t('modal.emailUpdated')}
               </h2>
 
               <p style={{ fontSize: 14, color: theme.textSecondary, textAlign: 'center', marginBottom: 24 }}>
                 {isPhone
-                  ? 'Your phone number has been updated successfully.'
-                  : 'Your email address has been updated successfully.'}
+                  ? t('modal.phoneUpdateSuccess')
+                  : t('modal.emailUpdateSuccess')}
               </p>
 
               <button
@@ -399,7 +401,7 @@ export default function ChangeContactModal({ open, onClose, type }: ChangeContac
                   cursor: 'pointer',
                 }}
               >
-                Done
+                {t('modal.done')}
               </button>
             </motion.div>
           )}

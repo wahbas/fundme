@@ -61,6 +61,52 @@ button {
   color: var(--text-muted);
 }
 
+/* ─── RTL Support ─── */
+
+[dir="rtl"] body {
+  font-family: 'IBM Plex Sans Arabic', 'DM Sans', sans-serif;
+}
+
+[dir="rtl"] button {
+  font-family: 'IBM Plex Sans Arabic', 'DM Sans', sans-serif;
+}
+
+[dir="rtl"] input,
+[dir="rtl"] select,
+[dir="rtl"] textarea {
+  font-family: 'IBM Plex Sans Arabic', 'DM Sans', sans-serif;
+}
+
+/* Flip sidebar to right side in RTL */
+[dir="rtl"] aside {
+  left: auto !important;
+  right: 0 !important;
+}
+
+/* Flip main content margin in RTL */
+[dir="rtl"] main {
+  margin-left: 0 !important;
+  margin-right: 240px;
+}
+
+/* Handle collapsed sidebar in RTL — JS will handle the exact value */
+
+/* Flip border-left active indicator on nav items */
+[dir="rtl"] nav > div {
+  border-left: none !important;
+  border-right: 3px solid transparent;
+}
+
+/* Fix text alignment for RTL */
+[dir="rtl"] p,
+[dir="rtl"] span,
+[dir="rtl"] h1,
+[dir="rtl"] h2,
+[dir="rtl"] h3,
+[dir="rtl"] label {
+  text-align: right;
+}
+
 /* ─── Responsive Breakpoints ─── */
 
 /* Tablet: 768px - 1200px */

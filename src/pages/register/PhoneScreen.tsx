@@ -5,9 +5,11 @@ import { motion } from 'framer-motion'
 import { useRegister } from './RegisterContext'
 import ProgressBar from './components/ProgressBar'
 import PhoneInputComp from './components/PhoneInput'
+import { useI18n } from '../../i18n'
 
 export default function PhoneScreen() {
   const navigate = useNavigate()
+  const { t } = useI18n()
   const { setPhone: savePhone } = useRegister()
   const [phone, setPhone] = useState('')
   const [formatted, setFormatted] = useState('')
@@ -40,10 +42,10 @@ export default function PhoneScreen() {
       <ProgressBar current={1} />
 
       <h2 style={{ fontSize: 24, fontWeight: 700, color: '#111', marginBottom: 6 }}>
-        Get started
+        {t('register.getStarted')}
       </h2>
       <p style={{ fontSize: 14, color: '#6B7280', marginBottom: 28, lineHeight: 1.6 }}>
-        Enter your mobile number to create your account
+        {t('register.enterMobile')}
       </p>
 
       <PhoneInputComp
@@ -83,11 +85,11 @@ export default function PhoneScreen() {
               transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
               style={{ width: 18, height: 18, border: '2px solid rgba(0,0,0,0.15)', borderTopColor: '#0F172A', borderRadius: '50%' }}
             />
-            Sending...
+            {t('common.sending')}
           </>
         ) : (
           <>
-            Continue <ArrowRight size={18} />
+            {t('login.continue')} <ArrowRight size={18} />
           </>
         )}
       </motion.button>
