@@ -1,15 +1,15 @@
 import { useState } from 'react'
-import { ChevronRight, CalendarClock, ArrowUpRight, Layers, Video, Headphones } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { ChevronRight, Upload, Building2, Briefcase, Plus } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useTheme } from '../../ThemeContext'
 import { useI18n } from '../../i18n'
 
 const actions = [
-  { icon: CalendarClock, labelKey: 'actions.repaymentSchedule' as const, descKey: 'actions.trackPayments' as const, key: 'repayment' },
-  { icon: ArrowUpRight, labelKey: 'actions.transactions' as const, descKey: 'actions.viewActivity' as const, key: 'transactions' },
-  { icon: Headphones, labelKey: 'actions.contactSupport' as const, descKey: 'actions.getHelp' as const, key: 'support' },
-  { icon: Layers, labelKey: 'actions.knowledgeHub' as const, descKey: 'actions.learnFinancing' as const, key: 'knowledge' },
-  { icon: Video, labelKey: 'actions.watchVideo' as const, descKey: 'actions.seeHowWorks' as const, key: 'video' },
+  { icon: Upload, labelKey: 'actions.uploadDocuments' as const, descKey: 'actions.uploadDocumentsDesc' as const, key: 'upload', route: '/data-hub' },
+  { icon: Building2, labelKey: 'actions.connectBank' as const, descKey: 'actions.connectBankDesc' as const, key: 'bank', route: '/data-hub' },
+  { icon: Briefcase, labelKey: 'actions.companyProfile' as const, descKey: 'actions.companyProfileDesc' as const, key: 'profile', route: '/profile' },
+  { icon: Plus, labelKey: 'actions.requestFinancing' as const, descKey: 'actions.requestFinancingDesc' as const, key: 'financing', route: '/request-financing' },
 ]
 
 function ActionRow({ icon: Icon, label, desc, isLast, onClick }: { icon: React.ElementType; label: string; desc: string; isLast: boolean; onClick?: () => void }) {
@@ -55,9 +55,10 @@ function ActionRow({ icon: Icon, label, desc, isLast, onClick }: { icon: React.E
   )
 }
 
-export default function QuickActions({ onContactSupport }: { onContactSupport?: () => void } = {}) {
+export default function QuickActions() {
   const { theme } = useTheme()
   const { t } = useI18n()
+  const navigate = useNavigate()
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
@@ -80,7 +81,7 @@ export default function QuickActions({ onContactSupport }: { onContactSupport?: 
           label={t(a.labelKey)}
           desc={t(a.descKey)}
           isLast={i === actions.length - 1}
-          onClick={a.key === 'support' ? onContactSupport : undefined}
+          onClick={() => navigate(a.route)}
         />
       ))}
     </motion.div>

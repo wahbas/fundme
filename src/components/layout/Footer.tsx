@@ -3,7 +3,7 @@ import { useI18n } from '../../i18n'
 
 export default function Footer() {
   const { theme } = useTheme()
-  const { t, isRTL } = useI18n()
+  const { t } = useI18n()
 
   return (
     <footer

@@ -12,6 +12,7 @@ interface StatDef {
   value: string
   currency: string
   sub: string
+  subKey?: string
   accentLine: string
   iconBg: string
   iconColor: string
@@ -26,6 +27,7 @@ const activeStats: StatDef[] = [
     value: '500,000',
     currency: 'ر.س',
     sub: 'Across 3 active financings',
+    subKey: 'stats.across3Active',
     accentLine: '#2563EB',
     iconBg: 'rgba(37, 99, 235, 0.06)',
     iconColor: '#3B82F6',
@@ -38,6 +40,7 @@ const activeStats: StatDef[] = [
     value: '125,000',
     currency: 'ر.س',
     sub: 'Next payment: Apr 1, 2026',
+    subKey: 'stats.nextPaymentDate',
     accentLine: '#16A34A',
     iconBg: 'rgba(22, 163, 74, 0.06)',
     iconColor: '#16A34A',
@@ -49,7 +52,8 @@ const activeStats: StatDef[] = [
     labelKey: 'stats.activeLoans',
     value: '3',
     currency: '',
-    sub: '1 under review \u00b7 4/4 docs verified',
+    sub: '1 under review · 4/4 docs verified',
+    subKey: 'stats.underReview',
     accentLine: '#14B8A6',
     iconBg: 'rgba(20, 184, 166, 0.06)',
     iconColor: '#14B8A6',
@@ -65,6 +69,7 @@ const emptyStats: StatDef[] = [
     value: '0',
     currency: 'ر.س',
     sub: 'No financings yet',
+    subKey: 'stats.noFinancings',
     accentLine: '#E2E8F0',
     iconBg: 'rgba(37, 99, 235, 0.06)',
     iconColor: '#3B82F6',
@@ -77,6 +82,7 @@ const emptyStats: StatDef[] = [
     value: '0',
     currency: 'ر.س',
     sub: 'No payments due',
+    subKey: 'stats.noPayments',
     accentLine: '#E2E8F0',
     iconBg: 'rgba(22, 163, 74, 0.06)',
     iconColor: '#16A34A',
@@ -89,6 +95,7 @@ const emptyStats: StatDef[] = [
     value: '0',
     currency: '',
     sub: 'Apply for your first financing',
+    subKey: 'stats.getStarted',
     accentLine: '#E2E8F0',
     iconBg: 'rgba(20, 184, 166, 0.06)',
     iconColor: '#14B8A6',
@@ -180,7 +187,7 @@ function StatCard({ s, delay }: { s: StatDef; delay: number }) {
         </div>
 
         {/* Sub text */}
-        <p style={{ fontSize: 12, color: theme.textMuted, margin: 0 }}>{s.sub}</p>
+        <p style={{ fontSize: 12, color: theme.textMuted, margin: 0 }}>{s.subKey ? t(s.subKey as any) : s.sub}</p>
       </div>
     </motion.div>
   )

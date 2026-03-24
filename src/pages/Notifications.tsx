@@ -54,7 +54,7 @@ export default function Notifications() {
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
-      <Sidebar verified={verified} collapsed={sidebarCollapsed} onToggle={() => setSidebarCollapsed((c) => !c)} activeTab="notifications" />
+      <Sidebar verified={verified} collapsed={sidebarCollapsed} onToggle={() => setSidebarCollapsed((c) => !c)} activeTab={undefined} />
       <main style={{
         marginLeft: isRTL ? 0 : (sidebarCollapsed ? 72 : 240),
         marginRight: isRTL ? (sidebarCollapsed ? 72 : 240) : 0,

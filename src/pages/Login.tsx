@@ -11,7 +11,7 @@ type Step = 'phone' | 'otp'
 
 export default function Login() {
   const navigate = useNavigate()
-  const { t, isRTL } = useI18n()
+  const { t } = useI18n()
   const [step, setStep] = useState<Step>('phone')
   const [phone, setPhone] = useState('')
   const [formatted, setFormatted] = useState('')

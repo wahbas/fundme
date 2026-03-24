@@ -13,6 +13,7 @@ import {
   ChevronsLeftIcon,
   ChevronsRightIcon,
 } from '../icons/NavIcons'
+import { LogOut, ArrowLeftRight } from 'lucide-react'
 import logo from '../../assets/logo.png'
 
 interface NavItemProps {
@@ -224,6 +225,30 @@ export default function Sidebar({ verified = false, collapsed = false, onToggle,
         <NavItem icon={HelpSupportIcon} label={t('nav.helpSupport')} collapsed={collapsed} isRTL={isRTL} />
         <NavItem icon={SettingsIcon} label={t('nav.settings')} collapsed={collapsed} isRTL={isRTL} onClick={() => navigate(`/settings${query}`)} />
 
+        {/* Sign Out */}
+        <div
+          title={collapsed ? t('nav.signOut') : undefined}
+          onClick={() => navigate('/login')}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: collapsed ? 0 : 12,
+            padding: collapsed ? '10px 0' : '10px 16px',
+            justifyContent: collapsed ? 'center' : 'flex-start',
+            borderRadius: 10,
+            fontSize: 14,
+            fontWeight: 500,
+            color: '#EF4444',
+            cursor: 'pointer',
+            transition: 'background 0.15s',
+          }}
+          onMouseEnter={e => e.currentTarget.style.background = 'rgba(239,68,68,0.08)'}
+          onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+        >
+          <LogOut size={20} color="#EF4444" style={{ flexShrink: 0 }} />
+          {!collapsed && <span>{t('nav.signOut')}</span>}
+        </div>
+
         {/* Profile switcher dropdown */}
         {profileMenuOpen && !collapsed && (
           <div style={{
@@ -325,12 +350,15 @@ export default function Sidebar({ verified = false, collapsed = false, onToggle,
             A
           </div>
           {!collapsed && (
-            <div style={{ overflow: 'hidden', whiteSpace: 'nowrap' }}>
+            <div style={{ overflow: 'hidden', whiteSpace: 'nowrap', flex: 1 }}>
               <span style={{ color: '#FFFFFF', fontSize: 14, fontWeight: 600, display: 'block' }}>
                 Ahmed
               </span>
               <span style={{ color: '#94A3B8', fontSize: 11 }}>{t('nav.firstTimeUser')}</span>
             </div>
+          )}
+          {!collapsed && (
+            <ArrowLeftRight size={14} color="#94A3B8" style={{ flexShrink: 0 }} title={t('nav.switchProfile')} />
           )}
         </div>
       </div>

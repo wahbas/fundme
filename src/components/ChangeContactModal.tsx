@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, CheckCircle2, Mail, Phone } from 'lucide-react'
+import { X, CheckCircle2, Mail } from 'lucide-react'
 import { useTheme } from '../ThemeContext'
 import { useI18n } from '../i18n'
 

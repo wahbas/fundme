@@ -556,6 +556,8 @@ function SelectCRScreen({ crs, onSelect, onAddManually }: { crs: CommercialRegis
   )
 }
 
+// @ts-expect-error -- component is defined for future use
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function ConfirmCRScreen({ cr, onConfirm, onBack }: { cr: CommercialRegistration; onConfirm: () => void; onBack: () => void }) {
   const { theme } = useTheme()
   const { t, isRTL } = useI18n()
