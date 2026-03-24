@@ -68,7 +68,7 @@ function GreenCircles() {
 
 export default function RequestFinancing() {
   const { theme } = useTheme()
-  const { t } = useI18n()
+  const { t, isRTL } = useI18n()
   const navigate = useNavigate()
   const [data, setData] = useState<WizardData>({ ...INITIAL_WIZARD_DATA })
   const [stepIdx, setStepIdx] = useState(0)
@@ -406,7 +406,7 @@ export default function RequestFinancing() {
                 display: 'flex', alignItems: 'center',
               }}
             >
-              <ArrowLeft size={20} color="#475569" />
+              <ArrowLeft size={20} color="#475569" style={{ transform: isRTL ? 'scaleX(-1)' : 'none' }} />
             </button>
             <span style={{ fontSize: 14, color: theme.textMuted }}>
               {t('wizard.step' as any)} {stepIdx + 1} {t('wizard.of' as any)} {TOTAL_STEPS}

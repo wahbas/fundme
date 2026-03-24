@@ -229,6 +229,12 @@ const translations = {
   'wizard.selectBillCategory': { en: 'Select Bill Category', ar: 'اختر فئة الفاتورة' },
   'wizard.chooseCategoryDesc': { en: 'Choose a category to browse billers', ar: 'اختر فئة لتصفح مقدمي الخدمات' },
   'wizard.continue': { en: 'Continue', ar: 'متابعة' },
+  'wizard.catGovernment': { en: 'Government', ar: 'حكومي' },
+  'wizard.catUtilities': { en: 'Utilities', ar: 'خدمات المرافق' },
+  'wizard.catTelecom': { en: 'Telecom', ar: 'اتصالات' },
+  'wizard.catBanks': { en: 'Banks', ar: 'بنوك' },
+  'wizard.catServices': { en: 'Services', ar: 'خدمات' },
+  'wizard.catOthers': { en: 'Others', ar: 'أخرى' },
 
   // ─── Register ───
   'register.getStarted': { en: 'Get started', ar: 'ابدأ الآن' },

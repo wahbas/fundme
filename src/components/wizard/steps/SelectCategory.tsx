@@ -74,17 +74,17 @@ function OthersIcon({ color }: { color: string }) {
 // ─── Category definitions ─────────────────────────────────────
 
 const categories = [
-  { id: 'government', label: 'Government', Icon: GovernmentIcon, iconColor: '#B45309', bg: '#FEF3C7' },
-  { id: 'utilities', label: 'Utilities', Icon: UtilitiesIcon, iconColor: '#7C3AED', bg: '#EDE9FE' },
-  { id: 'telecom', label: 'Telecom', Icon: TelecomIcon, iconColor: '#4F46E5', bg: '#E0E7FF' },
-  { id: 'banks', label: 'Banks', Icon: BanksIcon, iconColor: '#059669', bg: '#D1FAE5' },
-  { id: 'services', label: 'Services', Icon: ServicesIcon, iconColor: '#DB2777', bg: '#FCE7F3' },
-  { id: 'others', label: 'Others', Icon: OthersIcon, iconColor: '#64748B', bg: '#F1F5F9' },
+  { id: 'government', labelKey: 'wizard.catGovernment', Icon: GovernmentIcon, iconColor: '#B45309', bg: '#FEF3C7' },
+  { id: 'utilities', labelKey: 'wizard.catUtilities', Icon: UtilitiesIcon, iconColor: '#7C3AED', bg: '#EDE9FE' },
+  { id: 'telecom', labelKey: 'wizard.catTelecom', Icon: TelecomIcon, iconColor: '#4F46E5', bg: '#E0E7FF' },
+  { id: 'banks', labelKey: 'wizard.catBanks', Icon: BanksIcon, iconColor: '#059669', bg: '#D1FAE5' },
+  { id: 'services', labelKey: 'wizard.catServices', Icon: ServicesIcon, iconColor: '#DB2777', bg: '#FCE7F3' },
+  { id: 'others', labelKey: 'wizard.catOthers', Icon: OthersIcon, iconColor: '#64748B', bg: '#F1F5F9' },
 ]
 
 export default function SelectCategory({ data, onChange }: Props) {
   const { theme } = useTheme()
-  const { t } = useI18n()
+  const { t, isRTL } = useI18n()
   return (
     <div>
       <h2 style={{ fontSize: 24, fontWeight: 700, color: theme.textPrimary, marginBottom: 6, textAlign: 'center' }}>
@@ -150,8 +150,8 @@ export default function SelectCategory({ data, onChange }: Props) {
               </div>
 
               {/* Label */}
-              <span style={{ flex: 1, fontSize: 15, fontWeight: 600, color: theme.textPrimary }}>
-                {cat.label}
+              <span style={{ flex: 1, fontSize: 15, fontWeight: 600, color: theme.textPrimary, textAlign: isRTL ? 'right' : 'left' }}>
+                {t(cat.labelKey as any)}
               </span>
 
               {/* Arrow */}
@@ -168,7 +168,7 @@ export default function SelectCategory({ data, onChange }: Props) {
                   transition: 'background 0.2s',
                 }}
               >
-                <ChevronRight size={14} color={isSelected ? '#fff' : theme.textMuted} />
+                <ChevronRight size={14} color={isSelected ? '#fff' : theme.textMuted} style={{ transform: isRTL ? 'scaleX(-1)' : 'none' }} />
               </div>
             </motion.button>
           )
