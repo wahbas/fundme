@@ -93,15 +93,15 @@ export default function RequestFinancing() {
 
   function validate(): boolean {
     if (stepIdx === 0 && !data.category) {
-      setValidationError('Please select a category')
+      setValidationError(t('wizard.errCategory' as any))
       return false
     }
     if (stepIdx === 1 && !data.biller) {
-      setValidationError('Please select a biller')
+      setValidationError(t('wizard.errBiller' as any))
       return false
     }
     if (stepIdx === 2 && data.selectedBills.length === 0) {
-      setValidationError('Please select at least one bill')
+      setValidationError(t('wizard.errBills' as any))
       return false
     }
     setValidationError('')
@@ -157,7 +157,7 @@ export default function RequestFinancing() {
           />
         </div>
         <p style={{ marginTop: 32, fontSize: 20, fontWeight: 600, color: '#0F172A' }}>
-          Submitting your request<motion.span animate={{ opacity: [0, 1, 0] }} transition={{ repeat: Infinity, duration: 1.5 }}>...</motion.span>
+          {t('wizard.submitting' as any)}<motion.span animate={{ opacity: [0, 1, 0] }} transition={{ repeat: Infinity, duration: 1.5 }}>...</motion.span>
         </p>
       </motion.div>
     )
@@ -186,12 +186,12 @@ export default function RequestFinancing() {
 
           <motion.h1 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
             style={{ fontSize: 24, fontWeight: 700, color: theme.textPrimary, marginBottom: 8 }}>
-            Request Created!
+            {t('wizard.requestCreated' as any)}
           </motion.h1>
 
           <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
             style={{ fontSize: 14, color: theme.textSecondary, marginBottom: 24 }}>
-            Your financing request has been successfully created.
+            {t('wizard.requestCreatedDesc' as any)}
           </motion.p>
 
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
@@ -200,7 +200,7 @@ export default function RequestFinancing() {
               padding: 20, marginBottom: 16,
             }}
           >
-            <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 6 }}>Application Reference</p>
+            <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 6 }}>{t('wizard.applicationRef' as any)}</p>
             <p style={{ fontSize: 18, fontWeight: 600, color: '#2563EB', fontFamily: 'monospace' }}>{refId.current}</p>
           </motion.div>
 
@@ -210,11 +210,11 @@ export default function RequestFinancing() {
               padding: 20, marginBottom: 24, textAlign: 'left',
             }}
           >
-            <p style={{ fontSize: 15, fontWeight: 700, color: theme.textPrimary, marginBottom: 14 }}>What's Next?</p>
+            <p style={{ fontSize: 15, fontWeight: 700, color: theme.textPrimary, marginBottom: 14 }}>{t('wizard.whatsNext' as any)}</p>
             {[
-              'Our team reviews your application',
-              'Receive your financing offer',
-              'Accept and get funded',
+              t('wizard.nextStep1' as any),
+              t('wizard.nextStep2' as any),
+              t('wizard.nextStep3' as any),
             ].map((text, i) => (
               <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: i < 2 ? 10 : 0 }}>
                 <span style={{ fontSize: 14, fontWeight: 600, color: '#2563EB', width: 20, flexShrink: 0 }}>{i + 1}.</span>
@@ -233,7 +233,7 @@ export default function RequestFinancing() {
               border: 'none', borderRadius: 12, fontSize: 16, fontWeight: 700, cursor: 'pointer',
             }}
           >
-            Go to Application Dashboard
+            {t('wizard.goToDashboard' as any)}
           </motion.button>
         </div>
       </div>
@@ -281,10 +281,10 @@ export default function RequestFinancing() {
         {/* Title */}
         <div style={{ position: 'relative', zIndex: 1, marginBottom: 48 }}>
           <h1 style={{ fontSize: 22, fontWeight: 700, color: '#fff', marginBottom: 6 }}>
-            SADAD Financing
+            {t('wizard.sadadFinancing' as any)}
           </h1>
           <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', lineHeight: 1.5 }}>
-            Complete the steps below to submit your financing request
+            {t('wizard.completeSteps' as any)}
           </p>
         </div>
 
