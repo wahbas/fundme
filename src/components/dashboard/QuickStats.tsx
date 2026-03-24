@@ -1,9 +1,35 @@
 import { CreditCard, Clock, Activity, ChevronUp, Minus } from 'lucide-react'
 import { motion } from 'framer-motion'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import RiyalSign from '../icons/RiyalSign'
 import { useTheme } from '../../ThemeContext'
 import { useI18n } from '../../i18n'
+
+function AnimatedValue({ value, isEmpty, color }: { value: string; isEmpty: boolean; color: string }) {
+  const num = parseInt(value.replace(/,/g, ''), 10)
+  const animated = useCountUp(isNaN(num) ? 0 : num)
+  const display = isNaN(num) ? value : animated.toLocaleString()
+  return <span style={{ fontSize: 32, fontWeight: 700, color }}>{isEmpty ? value : display}</span>
+}
+
+function useCountUp(target: number, duration = 1200) {
+  const [value, setValue] = useState(0)
+  const started = useRef(false)
+  useEffect(() => {
+    if (started.current || target === 0) { setValue(target); return }
+    started.current = true
+    const start = performance.now()
+    function tick(now: number) {
+      const elapsed = now - start
+      const progress = Math.min(elapsed / duration, 1)
+      const eased = 1 - Math.pow(1 - progress, 3)
+      setValue(Math.round(eased * target))
+      if (progress < 1) requestAnimationFrame(tick)
+    }
+    requestAnimationFrame(tick)
+  }, [target, duration])
+  return value
+}
 
 interface StatDef {
   icon: typeof CreditCard
@@ -180,7 +206,7 @@ function StatCard({ s, delay }: { s: StatDef; delay: number }) {
 
         {/* Value */}
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 6 }}>
-          <span style={{ fontSize: 32, fontWeight: 700, color: isEmpty ? '#CBD5E1' : theme.textPrimary }}>{s.value}</span>
+          <AnimatedValue value={s.value} isEmpty={isEmpty} color={isEmpty ? '#CBD5E1' : theme.textPrimary} />
           {s.currency && (
             <span style={{ fontSize: 14, fontWeight: 500, color: isEmpty ? '#CBD5E1' : theme.textSecondary }}><RiyalSign size="lg" /></span>
           )}
