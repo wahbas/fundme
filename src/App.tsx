@@ -121,7 +121,7 @@ function App() {
                   </div>
                   {/* Right column — sticky on scroll */}
                   <div style={{ position: 'sticky', top: 28, display: 'flex', flexDirection: 'column', gap: 20 }}>
-                    <QuickActions onContactSupport={() => setSupportModalOpen(true)} />
+                    <QuickActions />
                     <SupportCards verified />
                   </div>
                 </div>

@@ -14,7 +14,6 @@ export default function Login() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const isValid = nationalId.length === 10 && password.length >= 6
 
   function handleSubmit() {
     if (!nationalId || nationalId.length !== 10) {

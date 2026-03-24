@@ -55,7 +55,7 @@ const categoryConfig: Record<string, { label: string; bg: string; color: string 
 
 export default function SelectBiller({ data, onChange }: Props) {
   const { theme } = useTheme()
-  const { t, isRTL } = useI18n()
+  const { t } = useI18n()
   const [search, setSearch] = useState('')
   const [showManualForm, setShowManualForm] = useState(false)
   const [manualBiller, setManualBiller] = useState({ name: '', accountNumber: '', billNumber: '', amount: '', dueDate: '' })

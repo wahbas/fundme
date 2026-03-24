@@ -89,7 +89,6 @@ export default function EarlyPaymentModal({ open, onClose }: EarlyPaymentModalPr
     setNotes('')
   }
 
-  const stateIndex = state === 'options' ? 0 : state === 'confirm' ? 1 : 2
 
   return (
     <div

@@ -361,7 +361,7 @@ export default function Sidebar({ verified = false, collapsed = false, onToggle,
             </div>
           )}
           {!collapsed && (
-            <ArrowLeftRight size={14} color="#94A3B8" style={{ flexShrink: 0 }} title={t('nav.switchProfile')} />
+            <span title={t('nav.switchProfile')}><ArrowLeftRight size={14} color="#94A3B8" style={{ flexShrink: 0 }} /></span>
           )}
         </div>
       </div>

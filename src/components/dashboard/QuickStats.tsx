@@ -10,7 +10,7 @@ interface StatDef {
   label: string
   labelKey?: string
   value: string
-  currency: string
+  currency: boolean | string
   sub: string
   subKey?: string
   accentLine: string
