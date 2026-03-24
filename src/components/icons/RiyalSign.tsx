@@ -1,7 +1,6 @@
 /**
- * Saudi Riyal Currency Sign — NEW official symbol (U+20C1)
- * Uses the bundled @emran-alhaddad/saudi-riyal-font package.
- * Symbol position: always LEFT of the number (per SAMA rules).
+ * Saudi Riyal Currency Sign — NEW official symbol
+ * Uses the bundled @emran-alhaddad/saudi-riyal-font package via CSS classes.
  */
 
 const fontSizes = {
@@ -26,13 +25,13 @@ interface RiyalSignProps {
   bold?: boolean
 }
 
-export default function RiyalSign({ size = 'md', color = 'currentColor', bold = false }: RiyalSignProps) {
+export default function RiyalSign({ size = 'md', color, bold = false }: RiyalSignProps) {
   return (
     <span
+      className={bold ? 'icon-saudi_riyal_bold' : 'icon-saudi_riyal'}
       style={{
-        fontFamily: bold ? 'saudi_riyal_bold' : 'saudi_riyal',
         fontSize: fontSizes[size],
-        color,
+        color: color || 'currentColor',
         display: 'inline-block',
         verticalAlign: 'middle',
         marginInlineStart: gaps[size],
@@ -41,8 +40,6 @@ export default function RiyalSign({ size = 'md', color = 'currentColor', bold = 
         top: -1,
       }}
       aria-label="SAR"
-    >
-      {'\ue900'}
-    </span>
+    />
   )
 }
