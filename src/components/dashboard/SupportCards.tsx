@@ -5,6 +5,7 @@ import {
 import { motion } from 'framer-motion'
 import { useTheme } from '../../ThemeContext'
 import { useI18n } from '../../i18n'
+import ContactSupportModal from './ContactSupportModal'
 
 // cardBase is now computed inside the components via useTheme
 
@@ -12,6 +13,7 @@ import { useI18n } from '../../i18n'
 
 function VerifiedSupportWidget() {
   const [contactHovered, setContactHovered] = useState(false)
+  const [supportOpen, setSupportOpen] = useState(false)
   const { theme } = useTheme()
   const { t } = useI18n()
   const cardBase: React.CSSProperties = {
@@ -95,6 +97,7 @@ function VerifiedSupportWidget() {
 
       {/* Contact Support */}
       <div
+        onClick={() => setSupportOpen(true)}
         onMouseEnter={() => setContactHovered(true)}
         onMouseLeave={() => setContactHovered(false)}
         style={{
@@ -125,6 +128,7 @@ function VerifiedSupportWidget() {
           <p style={{ fontSize: 11, color: theme.textMuted, margin: 0 }}>{t('support.getHelp')}</p>
         </div>
       </div>
+      <ContactSupportModal open={supportOpen} onClose={() => setSupportOpen(false)} />
     </motion.div>
   )
 }
@@ -134,6 +138,7 @@ function VerifiedSupportWidget() {
 export default function SupportCards({ verified = false }: { verified?: boolean }) {
   const { theme } = useTheme()
   const { t } = useI18n()
+  const [supportOpen, setSupportOpen] = useState(false)
   if (verified) {
     return <VerifiedSupportWidget />
   }
@@ -182,11 +187,12 @@ export default function SupportCards({ verified = false }: { verified?: boolean 
           {t('actions.watchVideo')}
         </button>
         <div style={{ textAlign: 'center' }}>
-          <a href="/settings" style={{ color: '#0D82F9', fontSize: 13, fontWeight: 500, textDecoration: 'underline' }}>
+          <span onClick={() => setSupportOpen(true)} style={{ color: '#0D82F9', fontSize: 13, fontWeight: 500, textDecoration: 'underline', cursor: 'pointer' }}>
             {t('support.contactSupport')}
-          </a>
+          </span>
         </div>
       </div>
+      <ContactSupportModal open={supportOpen} onClose={() => setSupportOpen(false)} />
     </section>
   )
 }
