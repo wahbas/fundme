@@ -1,6 +1,7 @@
 import { ChevronRight } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useTheme } from '../../../ThemeContext'
+import { useI18n } from '../../../i18n'
 import type { WizardData } from '../../../pages/RequestFinancing'
 
 interface Props {
@@ -83,13 +84,14 @@ const categories = [
 
 export default function SelectCategory({ data, onChange }: Props) {
   const { theme } = useTheme()
+  const { t } = useI18n()
   return (
     <div>
       <h2 style={{ fontSize: 24, fontWeight: 700, color: theme.textPrimary, marginBottom: 6, textAlign: 'center' }}>
-        Select Bill Category
+        {t('wizard.selectBillCategory' as any)}
       </h2>
       <p style={{ fontSize: 14, color: theme.textSecondary, marginBottom: 32, textAlign: 'center' }}>
-        Choose a category to browse billers
+        {t('wizard.chooseCategoryDesc' as any)}
       </p>
 
       {/* Category list */}

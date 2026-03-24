@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { Check, ArrowLeft, ArrowRight, Send, Info, Building2, FileText, Upload, LayoutGrid, Landmark } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useTheme } from '../ThemeContext'
+import { useI18n } from '../i18n'
 import SelectCategory from '../components/wizard/steps/SelectCategory'
 import SelectBiller from '../components/wizard/steps/SelectBiller'
 import InvoiceDetails from '../components/wizard/steps/InvoiceDetails'
@@ -37,11 +38,11 @@ export const INITIAL_WIZARD_DATA: WizardData = {
 // ─── Steps config ─────────────────────────────────────────────
 
 const STEPS = [
-  { id: 'category', label: 'Select Category', desc: 'Choose bill category', icon: LayoutGrid },
-  { id: 'biller', label: 'Select Biller', desc: 'Pick your biller', icon: Building2 },
-  { id: 'invoices', label: 'Invoice Details', desc: 'Enter bill details', icon: FileText },
-  { id: 'documents', label: 'Documents', desc: 'Upload required docs', icon: Upload },
-  { id: 'bank', label: 'Connect Bank', desc: 'Link your bank account', icon: Landmark },
+  { id: 'category', labelKey: 'wizard.selectCategory', descKey: 'wizard.selectCategoryDesc', icon: LayoutGrid },
+  { id: 'biller', labelKey: 'wizard.selectBiller', descKey: 'wizard.selectBillerDesc', icon: Building2 },
+  { id: 'invoices', labelKey: 'wizard.invoiceDetails', descKey: 'wizard.invoiceDetailsDesc', icon: FileText },
+  { id: 'documents', labelKey: 'wizard.documents', descKey: 'wizard.documentsDesc', icon: Upload },
+  { id: 'bank', labelKey: 'wizard.connectBank', descKey: 'wizard.connectBankDesc', icon: Landmark },
 ]
 
 const TOTAL_STEPS = STEPS.length
@@ -67,6 +68,7 @@ function GreenCircles() {
 
 export default function RequestFinancing() {
   const { theme } = useTheme()
+  const { t } = useI18n()
   const navigate = useNavigate()
   const [data, setData] = useState<WizardData>({ ...INITIAL_WIZARD_DATA })
   const [stepIdx, setStepIdx] = useState(0)
@@ -350,7 +352,7 @@ export default function RequestFinancing() {
                       transition: 'color 0.3s',
                     }}
                   >
-                    {step.label}
+                    {t(step.labelKey as any)}
                   </p>
                   <p
                     style={{
@@ -359,7 +361,7 @@ export default function RequestFinancing() {
                       transition: 'color 0.3s',
                     }}
                   >
-                    {step.desc}
+                    {t(step.descKey as any)}
                   </p>
                 </div>
               </div>
@@ -407,7 +409,7 @@ export default function RequestFinancing() {
               <ArrowLeft size={20} color="#475569" />
             </button>
             <span style={{ fontSize: 14, color: theme.textMuted }}>
-              Step {stepIdx + 1} of {TOTAL_STEPS}
+              {t('wizard.step' as any)} {stepIdx + 1} {t('wizard.of' as any)} {TOTAL_STEPS}
             </span>
           </div>
           <button
@@ -417,7 +419,7 @@ export default function RequestFinancing() {
               padding: '6px 16px', fontSize: 13, color: theme.textSecondary, cursor: 'pointer',
             }}
           >
-            Save & Exit
+            {t('wizard.saveExit' as any)}
           </button>
         </div>
 
@@ -534,7 +536,7 @@ export default function RequestFinancing() {
                   transition: 'background 0.15s, color 0.15s',
                 }}
               >
-                Continue
+                {t('wizard.continue' as any)}
                 <motion.span
                   animate={canContinue ? { x: [0, 4, 0] } : {}}
                   transition={{ repeat: Infinity, duration: 1.5 }}

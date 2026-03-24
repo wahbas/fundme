@@ -190,48 +190,81 @@ export default function ContactSupportModal({ open, onClose }: ContactSupportMod
           {t('modal.sendMessage')}
         </button>
 
-        {/* Bottom Row */}
-        <div style={{ display: 'flex', gap: 12, marginTop: 16 }}>
-          <button
+        {/* Quick Contact Actions */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 16 }}>
+          <a
+            href="tel:+966920012345"
             style={{
-              background: theme.bgPrimary,
-              border: `1px solid ${theme.border}`,
-              borderRadius: 10,
-              padding: 12,
-              flex: 1,
-              fontSize: 13,
-              fontWeight: 600,
-              color: theme.textSecondary,
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 6,
+              display: 'flex', alignItems: 'center', gap: 14,
+              padding: '14px 16px', borderRadius: 12,
+              border: `1px solid ${theme.border}`, background: theme.cardBg,
+              textDecoration: 'none', cursor: 'pointer', transition: 'all 0.15s',
             }}
+            onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#002E83'; e.currentTarget.style.background = 'rgba(0,46,131,0.03)' }}
+            onMouseLeave={(e) => { e.currentTarget.style.borderColor = theme.border; e.currentTarget.style.background = theme.cardBg }}
           >
-            <MessageCircle size={15} />
-            {t('modal.liveChat')}
-          </button>
-          <button
+            <div style={{
+              width: 40, height: 40, borderRadius: 10,
+              background: '#EFF6FF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+            }}>
+              <Phone size={18} color="#2563EB" />
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary }}>{t('modal.callNow')}</div>
+              <div style={{ fontSize: 13, color: theme.textMuted }}>920 012 345</div>
+            </div>
+            <span style={{ fontSize: 12, fontWeight: 600, color: '#2563EB' }}>{t('modal.callAction')}</span>
+          </a>
+
+          <a
+            href="mailto:support@fundme.sa"
             style={{
-              background: theme.bgPrimary,
-              border: `1px solid ${theme.border}`,
-              borderRadius: 10,
-              padding: 12,
-              flex: 1,
-              fontSize: 13,
-              fontWeight: 600,
-              color: theme.textSecondary,
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 6,
+              display: 'flex', alignItems: 'center', gap: 14,
+              padding: '14px 16px', borderRadius: 12,
+              border: `1px solid ${theme.border}`, background: theme.cardBg,
+              textDecoration: 'none', cursor: 'pointer', transition: 'all 0.15s',
             }}
+            onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#002E83'; e.currentTarget.style.background = 'rgba(0,46,131,0.03)' }}
+            onMouseLeave={(e) => { e.currentTarget.style.borderColor = theme.border; e.currentTarget.style.background = theme.cardBg }}
           >
-            <Phone size={15} />
-            {t('modal.callNow')}
-          </button>
+            <div style={{
+              width: 40, height: 40, borderRadius: 10,
+              background: '#F0FDF4', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+            }}>
+              <Mail size={18} color="#10B981" />
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary }}>{t('modal.emailUs')}</div>
+              <div style={{ fontSize: 13, color: theme.textMuted }}>support@fundme.sa</div>
+            </div>
+            <span style={{ fontSize: 12, fontWeight: 600, color: '#10B981' }}>{t('modal.sendEmail')}</span>
+          </a>
+
+          <a
+            href="https://wa.me/966920012345"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'flex', alignItems: 'center', gap: 14,
+              padding: '14px 16px', borderRadius: 12,
+              border: `1px solid ${theme.border}`, background: theme.cardBg,
+              textDecoration: 'none', cursor: 'pointer', transition: 'all 0.15s',
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#002E83'; e.currentTarget.style.background = 'rgba(0,46,131,0.03)' }}
+            onMouseLeave={(e) => { e.currentTarget.style.borderColor = theme.border; e.currentTarget.style.background = theme.cardBg }}
+          >
+            <div style={{
+              width: 40, height: 40, borderRadius: 10,
+              background: '#FEF3C7', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+            }}>
+              <MessageCircle size={18} color="#D97706" />
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary }}>{t('modal.liveChat')}</div>
+              <div style={{ fontSize: 13, color: theme.textMuted }}>WhatsApp</div>
+            </div>
+            <span style={{ fontSize: 12, fontWeight: 600, color: '#D97706' }}>{t('modal.openChat')}</span>
+          </a>
         </div>
       </motion.div>
     </div>
