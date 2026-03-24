@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Headphones, Phone, Mail, Calendar, HelpCircle, PlayCircle, CheckCircle2 } from 'lucide-react'
+import ContactSupportModal from './ContactSupportModal'
 
 // ─── Quick Stats Card ──────────────────────────────────────────
 
@@ -153,6 +155,7 @@ function AccountManagerCard() {
 // ─── Need Help Card ───────────────────────────────────────────
 
 function NeedHelpCard() {
+  const [supportOpen, setSupportOpen] = useState(false)
   return (
     <div style={cardStyle}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
@@ -197,10 +200,11 @@ function NeedHelpCard() {
         Watch Video
       </button>
       <div style={{ textAlign: 'center' }}>
-        <a href="/settings" style={{ color: '#0D82F9', fontSize: 12, fontWeight: 500, textDecoration: 'underline' }}>
+        <span onClick={() => setSupportOpen(true)} style={{ color: '#0D82F9', fontSize: 12, fontWeight: 500, textDecoration: 'underline', cursor: 'pointer' }}>
           Contact Support
-        </a>
+        </span>
       </div>
+      <ContactSupportModal open={supportOpen} onClose={() => setSupportOpen(false)} />
     </div>
   )
 }

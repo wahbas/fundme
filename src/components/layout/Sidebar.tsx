@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useTheme } from '../../ThemeContext'
 import { useI18n } from '../../i18n'
+import ContactSupportModal from '../dashboard/ContactSupportModal'
 import {
   HomeIcon,
   LoansIcon,
@@ -97,6 +98,7 @@ export default function Sidebar({ verified = false, collapsed = false, onToggle,
   const { t, isRTL } = useI18n()
   const navigate = useNavigate()
   const location = useLocation()
+  const [supportOpen, setSupportOpen] = useState(false)
   const width = collapsed ? 72 : 240
   const [profileMenuOpen, setProfileMenuOpen] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
@@ -126,6 +128,7 @@ export default function Sidebar({ verified = false, collapsed = false, onToggle,
   }
 
   return (
+    <>
     <aside
       style={{
         width,
@@ -222,7 +225,7 @@ export default function Sidebar({ verified = false, collapsed = false, onToggle,
       {/* Bottom */}
       <div ref={bottomRef} style={{ padding: collapsed ? '0 8px 20px' : '0 12px 20px', transition: 'padding 0.3s', position: 'relative' }}>
         <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', marginBottom: 8, paddingTop: 8 }} />
-        <NavItem icon={HelpSupportIcon} label={t('nav.helpSupport')} collapsed={collapsed} isRTL={isRTL} />
+        <NavItem icon={HelpSupportIcon} label={t('nav.helpSupport')} collapsed={collapsed} isRTL={isRTL} onClick={() => setSupportOpen(true)} />
         <NavItem icon={SettingsIcon} label={t('nav.settings')} collapsed={collapsed} isRTL={isRTL} onClick={() => navigate(`/settings${query}`)} />
 
         {/* Sign Out */}
@@ -363,5 +366,7 @@ export default function Sidebar({ verified = false, collapsed = false, onToggle,
         </div>
       </div>
     </aside>
+    <ContactSupportModal open={supportOpen} onClose={() => setSupportOpen(false)} />
+    </>
   )
 }

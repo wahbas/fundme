@@ -7,6 +7,7 @@ import {
 import { motion } from 'framer-motion'
 import { NafathLogo } from '../../components/onboarding/logos'
 import ProgressBar from './components/ProgressBar'
+import ContactSupportModal from '../../components/dashboard/ContactSupportModal'
 
 type NafathState = 'intro' | 'requesting' | 'waiting' | 'verifying' | 'success' | 'failed'
 
@@ -320,6 +321,7 @@ function SuccessView() {
 // ─── Failed/Expired ─────────────────────────────────────────
 
 function FailedView({ onRetry }: { onRetry: () => void }) {
+  const [supportOpen, setSupportOpen] = useState(false)
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
       <div style={{ textAlign: 'center' }}>
@@ -351,7 +353,8 @@ function FailedView({ onRetry }: { onRetry: () => void }) {
         </motion.button>
 
         <p style={{ fontSize: 12, color: '#94A3B8' }}>
-          Need help? <span style={{ color: '#0D82F9', cursor: 'pointer', fontWeight: 500 }}>Contact Support</span>
+          Need help? <span onClick={() => setSupportOpen(true)} style={{ color: '#0D82F9', cursor: 'pointer', fontWeight: 500 }}>Contact Support</span>
+          <ContactSupportModal open={supportOpen} onClose={() => setSupportOpen(false)} />
         </p>
       </div>
     </motion.div>

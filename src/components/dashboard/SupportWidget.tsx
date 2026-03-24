@@ -1,12 +1,15 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { AccountManagerIcon, PhoneIcon, EmailIcon, CalendarIcon, VideoIcon, ChatIcon } from '../icons/SupportIcons'
 import { ArrowRightIcon } from '../icons/WidgetIcons'
 import { useTheme } from '../../ThemeContext'
 import { useI18n } from '../../i18n'
+import ContactSupportModal from './ContactSupportModal'
 
 export default function SupportWidget() {
   const { theme } = useTheme()
   const { t } = useI18n()
+  const [supportOpen, setSupportOpen] = useState(false)
   return (
     <div style={{ background: theme.cardBg, border: `1px solid ${theme.border}`, borderRadius: 12, padding: '20px 22px' }}>
       <h3 style={{ fontSize: 15, fontWeight: 600, color: theme.textPrimary, margin: '0 0 16px' }}>
@@ -89,6 +92,7 @@ export default function SupportWidget() {
         </motion.button>
 
         <motion.button
+          onClick={() => setSupportOpen(true)}
           whileHover={{ background: theme.bgHover }}
           style={{
             padding: '14px 16px',
@@ -111,6 +115,7 @@ export default function SupportWidget() {
           </div>
         </motion.button>
       </div>
+      <ContactSupportModal open={supportOpen} onClose={() => setSupportOpen(false)} />
     </div>
   )
 }
