@@ -26,7 +26,7 @@ export default function BenefitsRow() {
   return (
     <section style={{ marginBottom: 20 }}>
       <h3 style={{ fontSize: 15, fontWeight: 600, color: '#111', marginBottom: 12 }}>Why Complete Setup?</h3>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
+      <div className="benefits-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
         {benefits.map((b) => (
           <motion.div
             key={b.title}

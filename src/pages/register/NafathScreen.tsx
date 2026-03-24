@@ -266,11 +266,6 @@ function SuccessView() {
           <CheckCircle2 size={36} color="#fff" />
         </motion.div>
 
-        <h2 style={{ fontSize: 24, fontWeight: 700, color: '#111', marginBottom: 6 }}>Welcome to FundMe!</h2>
-        <p style={{ fontSize: 14, color: '#6B7280', marginBottom: 24, lineHeight: 1.6 }}>
-          Your identity is verified. Your account is ready.
-        </p>
-
         {/* Verified info card */}
         <div style={{ background: '#F8FAFC', borderRadius: 14, padding: 20, marginBottom: 20, textAlign: 'left' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>

@@ -143,7 +143,7 @@ function SelectBankScreen({ onSelect }: { onSelect: (bank: SupportedBank) => voi
       {popular.length > 0 && (
         <div style={{ marginBottom: 20 }}>
           <p style={{ fontSize: 12, fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10 }}>Popular Banks</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10 }}>
+          <div className="bank-connections-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10 }}>
             {popular.map((bank) => {
               const active = selectedId === bank.id
               return (

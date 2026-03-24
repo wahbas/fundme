@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import { CalendarClock, ChevronRight } from 'lucide-react'
 import { motion } from 'framer-motion'
 import RiyalSign from '../icons/RiyalSign'
@@ -107,6 +108,7 @@ function PaymentRow({ payment, showPay, onPayClick }: { payment: Payment; showPa
 export default function RepaymentSchedule({ onPayClick }: { onPayClick?: () => void }) {
   const { theme } = useTheme()
   const { t, isRTL } = useI18n()
+  const navigate = useNavigate()
   return (
     <motion.section
       initial={{ opacity: 0, y: 16 }}
@@ -139,8 +141,8 @@ export default function RepaymentSchedule({ onPayClick }: { onPayClick?: () => v
           </div>
           <h3 style={{ fontSize: 15, fontWeight: 700, color: theme.textPrimary, margin: 0 }}>{t('repayment.upcomingPayments')}</h3>
         </div>
-        <a
-          href="#"
+        <span
+          onClick={() => navigate('/my-loans')}
           style={{
             color: '#2563EB',
             fontSize: 13,
@@ -149,10 +151,11 @@ export default function RepaymentSchedule({ onPayClick }: { onPayClick?: () => v
             display: 'flex',
             alignItems: 'center',
             gap: 2,
+            cursor: 'pointer',
           }}
         >
           {t('repayment.viewAll')} <ChevronRight size={14} style={{ transform: isRTL ? 'scaleX(-1)' : 'none' }} />
-        </a>
+        </span>
       </div>
 
       {/* Payment rows */}

@@ -11,6 +11,8 @@ const translations = {
   'nav.helpSupport': { en: 'Help & Support', ar: 'المساعدة والدعم' },
   'nav.settings': { en: 'Settings', ar: 'الإعدادات' },
   'nav.firstTimeUser': { en: 'First-time user', ar: 'مستخدم جديد' },
+  'nav.signOut': { en: 'Sign Out', ar: 'تسجيل الخروج' },
+  'nav.switchProfile': { en: 'Switch Profile', ar: 'تبديل الملف الشخصي' },
 
   // ─── Header ───
   'header.goodMorning': { en: 'Good morning', ar: 'صباح الخير' },
@@ -29,6 +31,12 @@ const translations = {
   'stats.nextPayment': { en: 'Next Payment', ar: 'الدفعة القادمة' },
   'stats.creditScore': { en: 'Credit Score', ar: 'التصنيف الائتماني' },
   'stats.noActiveLoans': { en: 'No active loans', ar: 'لا توجد تمويلات نشطة' },
+  'stats.across3Active': { en: 'Across 3 active financings', ar: 'عبر 3 تمويلات نشطة' },
+  'stats.nextPaymentDate': { en: 'Next payment: Apr 1, 2026', ar: 'الدفعة القادمة: 1 أبريل 2026' },
+  'stats.underReview': { en: 'Under review', ar: 'قيد المراجعة' },
+  'stats.noFinancings': { en: 'Apply for your first financing', ar: 'تقدم بطلب تمويلك الأول' },
+  'stats.noPayments': { en: 'No upcoming payments', ar: 'لا توجد دفعات قادمة' },
+  'stats.getStarted': { en: 'Get started today', ar: 'ابدأ اليوم' },
 
   // ─── Quick Actions ───
   'actions.quickActions': { en: 'Quick Actions', ar: 'إجراءات سريعة' },
@@ -42,6 +50,14 @@ const translations = {
   'actions.learnFinancing': { en: 'Learn about business financing', ar: 'تعرف على تمويل الأعمال' },
   'actions.watchVideo': { en: 'Watch Video', ar: 'شاهد الفيديو' },
   'actions.seeHowWorks': { en: 'See how FundMe works', ar: 'شاهد كيف يعمل FundMe' },
+  'actions.uploadDocuments': { en: 'Upload Documents', ar: 'رفع المستندات' },
+  'actions.uploadDocumentsDesc': { en: 'Submit required files', ar: 'تقديم الملفات المطلوبة' },
+  'actions.connectBank': { en: 'Connect Bank', ar: 'ربط البنك' },
+  'actions.connectBankDesc': { en: 'Link your bank account', ar: 'ربط حسابك البنكي' },
+  'actions.companyProfile': { en: 'Company Profile', ar: 'ملف الشركة' },
+  'actions.companyProfileDesc': { en: 'View business details', ar: 'عرض تفاصيل الشركة' },
+  'actions.requestFinancing': { en: 'Request New Financing', ar: 'طلب تمويل جديد' },
+  'actions.requestFinancingDesc': { en: 'Start a new application', ar: 'بدء طلب جديد' },
 
   // ─── Repayment Schedule ───
   'repayment.upcomingPayments': { en: 'Upcoming Payments', ar: 'الدفعات القادمة' },
@@ -64,6 +80,9 @@ const translations = {
   'support.scheduleCall': { en: 'Schedule a Call', ar: 'جدولة مكالمة' },
   'support.accountManager': { en: 'Account Manager', ar: 'مدير الحساب' },
   'support.getHelp': { en: 'Get help with your account', ar: 'احصل على مساعدة لحسابك' },
+  'support.emailLabel': { en: 'Email', ar: 'البريد الإلكتروني' },
+  'support.phoneLabel': { en: 'Phone', ar: 'الهاتف' },
+  'support.contactInfo': { en: 'Contact Information', ar: 'معلومات التواصل' },
 
   // ─── Onboarding Checklist ───
   'onboarding.completeProfile': { en: 'Complete Your Profile', ar: 'أكمل ملفك الشخصي' },
@@ -163,6 +182,13 @@ const translations = {
   'modal.paymentSuccessful': { en: 'Payment Successful', ar: 'تمت عملية الدفع بنجاح' },
   'modal.done': { en: 'Done', ar: 'تم' },
   'modal.processing': { en: 'Processing...', ar: 'جارٍ المعالجة...' },
+  'modal.repayViaBankTransfer': { en: 'Repay Your Loan via Bank Transfer', ar: 'سداد القرض عبر التحويل البنكي' },
+  'modal.bankTransferSubtitle': { en: 'Use the details below to complete your loan repayment.\nFor other banks, please use the IBAN number.', ar: 'استخدم التفاصيل أدناه لإتمام سداد القرض.\nللبنوك الأخرى، يرجى استخدام رقم الآيبان.' },
+  'modal.bankName': { en: 'Bank Name', ar: 'اسم البنك' },
+  'modal.accountNumber': { en: 'Account Number', ar: 'رقم الحساب' },
+  'modal.iban': { en: 'IBAN', ar: 'آيبان' },
+  'modal.beneficiaryName': { en: 'Beneficiary Name', ar: 'اسم المستفيد' },
+  'modal.bankTransferNote': { en: 'Repayment processing may take 24-48 business hours.', ar: 'قد تستغرق معالجة السداد من 24 إلى 48 ساعة عمل.' },
   'modal.earlySettlement': { en: 'Early Settlement', ar: 'السداد المبكر' },
   'modal.remainingBalance': { en: 'Remaining Balance', ar: 'الرصيد المتبقي' },
   'modal.payFullBalance': { en: 'Pay Full Balance →', ar: '← دفع كامل الرصيد' },
@@ -195,6 +221,14 @@ const translations = {
   'dataHub.title': { en: 'Data Hub', ar: 'مركز البيانات' },
   'dataHub.documents': { en: 'Documents', ar: 'المستندات' },
   'dataHub.bankConnections': { en: 'Bank Connections', ar: 'الربط البنكي' },
+  'dataHub.uploadDocuments': { en: 'Upload Documents', ar: 'رفع المستندات' },
+  'dataHub.requiredDocuments': { en: 'Required Documents', ar: 'المستندات المطلوبة' },
+  'dataHub.showMissing': { en: 'Show Missing Only', ar: 'عرض الناقصة فقط' },
+  'dataHub.uploaded': { en: 'Uploaded', ar: 'مرفوع' },
+  'dataHub.pending': { en: 'Pending', ar: 'قيد الانتظار' },
+  'dataHub.legal': { en: 'Legal', ar: 'قانوني' },
+  'dataHub.financial': { en: 'Financial', ar: 'مالي' },
+  'dataHub.all': { en: 'All', ar: 'الكل' },
 
   // ─── Common ───
   'common.of': { en: 'of', ar: 'من' },
@@ -208,6 +242,9 @@ const translations = {
   'common.saving': { en: 'Saving...', ar: 'جارٍ الحفظ...' },
   'common.resendCode': { en: 'Resend code', ar: 'إعادة إرسال الرمز' },
   'common.resendCodeIn': { en: 'Resend code in', ar: 'إعادة إرسال الرمز خلال' },
+  'common.viewAll': { en: 'View All', ar: 'عرض الكل' },
+  'common.confirm': { en: 'Confirm', ar: 'تأكيد' },
+  'common.processing': { en: 'Processing...', ar: 'جارٍ المعالجة...' },
 
   // ─── Footer ───
   'footer.encryption': { en: '256-bit encryption · Bank-level security · SAMA regulated', ar: 'تشفير 256 بت · أمان بمستوى البنوك · منظم من ساما' },
@@ -288,6 +325,41 @@ const translations = {
   'modal.settlementProcessed': { en: 'Your early settlement has been processed successfully.', ar: 'تم معالجة السداد المبكر بنجاح.' },
   'modal.youSave': { en: 'You save', ar: 'توفر' },
   'modal.comparedToContinuing': { en: 'compared to continuing installments', ar: 'مقارنة بالاستمرار في الأقساط' },
+  'modal.earlyRepaymentOptions': { en: 'Early Repayment Options', ar: 'خيارات السداد المبكر' },
+  'modal.earlyRepaymentSubtitle': { en: "Tell us how you'd like to adjust your loan. We'll review your request and contact you with the best option.", ar: 'أخبرنا كيف تريد تعديل قرضك. سنراجع طلبك ونتواصل معك بأفضل خيار.' },
+  'modal.finishLoanEarlier': { en: 'Finish your loan earlier', ar: 'إنهاء القرض مبكراً' },
+  'modal.finishLoanEarlierDesc': { en: 'Keep a similar installment amount but reduce the total remaining time.', ar: 'حافظ على مبلغ قسط مماثل مع تقليل المدة المتبقية.' },
+  'modal.lowerInstallment': { en: 'Lower your monthly installment', ar: 'تخفيض القسط الشهري' },
+  'modal.lowerInstallmentDesc': { en: 'Extend the remaining duration to make each payment more affordable.', ar: 'تمديد المدة المتبقية لجعل كل دفعة أكثر ملاءمة.' },
+  'modal.whenFinishLoan': { en: 'When would you like to finish your loan?', ar: 'متى تريد إنهاء قرضك؟' },
+  'modal.selectTiming': { en: 'Select timing', ar: 'اختر المدة' },
+  'modal.requestSubmitted': { en: 'Request Submitted', ar: 'تم تقديم الطلب' },
+  'modal.earlyRepaymentSuccess': { en: "We've received your early repayment request. Our team will review it and get back to you within 1-2 business days.", ar: 'لقد تلقينا طلب السداد المبكر. سيقوم فريقنا بمراجعته والتواصل معك خلال 1-2 أيام عمل.' },
+  'modal.requestType': { en: 'Request Type', ar: 'نوع الطلب' },
+  'modal.targetDuration': { en: 'Target Duration', ar: 'المدة المستهدفة' },
+  'modal.status': { en: 'Status', ar: 'الحالة' },
+  'modal.underReview': { en: 'Under Review', ar: 'قيد المراجعة' },
+  'modal.targetInstallment': { en: 'Target installment amount (approx.)', ar: 'مبلغ القسط المستهدف (تقريبي)' },
+  'modal.confirmRequest': { en: 'Confirm your early repayment request', ar: 'تأكيد طلب السداد المبكر' },
+  'modal.confirmRequestSubtitle': { en: 'Your account manager will contact you to explain the options and confirm the new plan.', ar: 'سيتواصل معك مدير حسابك لشرح الخيارات وتأكيد الخطة الجديدة.' },
+  'modal.youChose': { en: 'You chose', ar: 'اخترت' },
+  'modal.target': { en: 'Target', ar: 'الهدف' },
+  'modal.howContacted': { en: 'How would you like to be contacted?', ar: 'كيف تفضل أن نتواصل معك؟' },
+  'modal.call': { en: 'Call', ar: 'اتصال' },
+  'modal.whatsapp': { en: 'WhatsApp', ar: 'واتساب' },
+  'modal.email': { en: 'Email', ar: 'بريد إلكتروني' },
+  'modal.preferredContactTime': { en: 'Preferred contact time (optional)', ar: 'وقت التواصل المفضل (اختياري)' },
+  'modal.selectTimePreference': { en: 'Select time preference', ar: 'اختر وقت التواصل' },
+  'modal.additionalNotes': { en: 'Additional notes (optional)', ar: 'ملاحظات إضافية (اختياري)' },
+  'modal.notesPlaceholder': { en: 'Add any details that can help us (for example: preferred monthly budget or target date).', ar: 'أضف أي تفاصيل تساعدنا (مثال: الميزانية الشهرية المفضلة أو التاريخ المستهدف).' },
+  'modal.yourLoanDetails': { en: 'Your loan details', ar: 'تفاصيل القرض' },
+  'modal.loanId': { en: 'Loan ID', ar: 'رقم القرض' },
+  'modal.outstandingBalance': { en: 'Outstanding Balance', ar: 'الرصيد المتبقي' },
+  'modal.installmentAmount': { en: 'Installment Amount', ar: 'مبلغ القسط' },
+  'modal.phone': { en: 'Phone', ar: 'الهاتف' },
+  'modal.accountManager': { en: 'Account Manager', ar: 'مدير الحساب' },
+  'modal.submitRequest': { en: 'Submit Request', ar: 'تقديم الطلب' },
+  'modal.contactVia': { en: 'Contact via', ar: 'التواصل عبر' },
 
   // ─── Change Contact extras ───
   'modal.currentNumber': { en: 'Current Number', ar: 'الرقم الحالي' },
@@ -442,6 +514,11 @@ interface I18nContextValue {
   setLang: (lang: Lang) => void
   t: (key: TranslationKey) => string
   isRTL: boolean
+  formatNumber: (n: number) => string
+}
+
+function formatNumber(n: number): string {
+  return n.toLocaleString('en-US')
 }
 
 const I18nContext = createContext<I18nContextValue>({
@@ -449,6 +526,7 @@ const I18nContext = createContext<I18nContextValue>({
   setLang: () => {},
   t: (key) => key,
   isRTL: false,
+  formatNumber,
 })
 
 export function I18nProvider({ children }: { children: ReactNode }) {
@@ -474,7 +552,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <I18nContext.Provider value={{ lang, setLang, t, isRTL: lang === 'ar' }}>
+    <I18nContext.Provider value={{ lang, setLang, t, isRTL: lang === 'ar', formatNumber }}>
       {children}
     </I18nContext.Provider>
   )

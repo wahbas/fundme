@@ -64,7 +64,7 @@ export default function StepReview() {
         }}
       >
         <h3 style={{ fontSize: 13, color: 'rgba(255,255,255,0.7)', marginBottom: 12 }}>Loan Request Summary</h3>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }}>
+        <div className="review-summary-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }}>
           <div>
             <p style={{ fontSize: 22, fontWeight: 700 }}>200,000<RiyalSign size="lg" color="#FFFFFF" /></p>
             <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.55)' }}>Requested Amount</p>
@@ -82,7 +82,7 @@ export default function StepReview() {
 
       {/* Business Info */}
       <ReviewSection icon={Building2} title="Business Information" onEdit={() => {}}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+        <div className="review-fields-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
           <InfoField label="Company Name" value="Al Mansour Trading Co." />
           <InfoField label="CR Number" value="1010123456" />
           <InfoField label="Industry" value="Retail & E-commerce" />
@@ -92,7 +92,7 @@ export default function StepReview() {
 
       {/* Financial Info */}
       <ReviewSection icon={BarChart3} title="Financial Information" onEdit={() => {}}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+        <div className="review-fields-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
           <InfoField label="Annual Revenue" value="1,200,000 ر.س" />
           <InfoField label="Monthly Revenue" value="100,000 ر.س" />
           <InfoField label="Existing Loans" value="None" />
@@ -133,8 +133,8 @@ export default function StepReview() {
           />
           <span style={{ fontSize: 13, color: theme.textSecondary, lineHeight: 1.6 }}>
             I confirm that all information provided is accurate and complete. I agree to the{' '}
-            <a href="#" style={{ color: '#0D82F9' }}>Terms of Service</a> and{' '}
-            <a href="#" style={{ color: '#0D82F9' }}>Privacy Policy</a>.
+            <a href="/terms" style={{ color: '#0D82F9' }}>Terms of Service</a> and{' '}
+            <a href="/privacy" style={{ color: '#0D82F9' }}>Privacy Policy</a>.
             I authorize FundMe to verify my information and conduct credit checks.
           </span>
         </label>

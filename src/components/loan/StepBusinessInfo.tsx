@@ -33,7 +33,7 @@ export default function StepBusinessInfo() {
         <p style={{ fontSize: 14, color: theme.textMuted }}>This helps us understand your business better</p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+      <div className="loan-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
         <div>
           <label style={labelStyle}>Company Name (Arabic)</label>
           <input type="text" placeholder="اسم الشركة" style={{ ...inputStyle, direction: 'rtl' }} />

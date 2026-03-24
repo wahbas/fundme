@@ -254,9 +254,10 @@ export default function RequestFinancing() {
   const isLast = stepIdx === TOTAL_STEPS - 1
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh' }}>
+    <div className="request-financing-layout" style={{ display: 'flex', minHeight: '100vh' }}>
       {/* ── Left panel (380px) ─── Steps sidebar ─────────────── */}
       <div
+        className="request-financing-sidebar"
         style={{
           width: 380,
           flexShrink: 0,
@@ -420,8 +421,17 @@ export default function RequestFinancing() {
           </button>
         </div>
 
+        {/* Progress bar */}
+        <div style={{ height: 4, background: theme.border }}>
+          <motion.div
+            animate={{ width: `${progress}%` }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
+            style={{ height: 4, background: 'linear-gradient(90deg, #002E83, #2563EB)', borderRadius: '0 2px 2px 0' }}
+          />
+        </div>
+
         {/* Content */}
-        <div style={{ flex: 1, padding: '32px 48px' }}>
+        <div className="request-financing-main" style={{ flex: 1, padding: '32px 48px' }}>
           <div style={{ maxWidth: 860, margin: '0 auto', width: '100%' }}>
             <AnimatePresence mode="wait">
               <motion.div

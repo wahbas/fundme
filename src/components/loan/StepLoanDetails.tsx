@@ -57,7 +57,7 @@ export default function StepLoanDetails() {
       </div>
 
       {/* Loan Type Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+      <div className="loan-type-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
         {loanTypes.map((type) => {
           const selected = loanType === type.id
           const Icon = type.icon

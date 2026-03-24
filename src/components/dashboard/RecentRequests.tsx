@@ -147,7 +147,7 @@ function RequestCard({ request, index }: { request: FinancingRequest; index: num
       transition={{ delay: index * 0.07 }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      onClick={() => navigate(`/requests/${request.id}`)}
+      onClick={() => navigate(`/my-loans/${request.id}`)}
       style={{
         width: CARD_WIDTH,
         minWidth: CARD_WIDTH,
@@ -215,7 +215,7 @@ function RequestCard({ request, index }: { request: FinancingRequest; index: num
           <button
             onClick={(e) => {
               e.stopPropagation()
-              navigate(`/requests/${request.id}`)
+              navigate(`/my-loans/${request.id}`)
             }}
             style={{
               width: '100%',

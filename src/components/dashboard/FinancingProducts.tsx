@@ -98,7 +98,7 @@ export default function FinancingProducts({ lockText = 'Unlock after verificatio
         {t('product.completeToApply')}
       </p>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }}>
+      <div className="financing-products-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }}>
         {products.map((p) => (
           <motion.div
             key={p.title}
@@ -136,7 +136,7 @@ export default function FinancingProducts({ lockText = 'Unlock after verificatio
 
                 {/* Learn link */}
                 <motion.a
-                  href="#"
+                  href="/request-financing"
                   whileHover={{ gap: 6 }}
                   onClick={(e) => e.preventDefault()}
                   style={{

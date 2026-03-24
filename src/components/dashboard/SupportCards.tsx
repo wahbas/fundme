@@ -182,7 +182,7 @@ export default function SupportCards({ verified = false }: { verified?: boolean 
           {t('actions.watchVideo')}
         </button>
         <div style={{ textAlign: 'center' }}>
-          <a href="#" style={{ color: '#0D82F9', fontSize: 13, fontWeight: 500, textDecoration: 'underline' }}>
+          <a href="/settings" style={{ color: '#0D82F9', fontSize: 13, fontWeight: 500, textDecoration: 'underline' }}>
             {t('support.contactSupport')}
           </a>
         </div>

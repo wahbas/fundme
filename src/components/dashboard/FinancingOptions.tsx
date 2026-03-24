@@ -76,7 +76,7 @@ interface Product {
   tagBg: string
   name: string
   desc: string
-  illustration: () => JSX.Element
+  illustration: () => React.ReactNode
   available: boolean
 }
 
@@ -233,7 +233,7 @@ function ProductCard({ p, i }: { p: Product; i: number }) {
 
 export default function FinancingOptions() {
   const { theme } = useTheme()
-  const { t, isRTL } = useI18n()
+  const { t } = useI18n()
 
   const products: Product[] = [
     {
@@ -275,7 +275,7 @@ export default function FinancingOptions() {
         <p style={{ fontSize: 13, color: theme.textMuted }}>{t('product.chooseRight')}</p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+      <div className="financing-options-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
         {products.map((p, i) => (
           <ProductCard key={p.id} p={p} i={i} />
         ))}

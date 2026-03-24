@@ -49,6 +49,7 @@ export default function ReviewSubmit({ data, onGoToStep }: Props) {
           gridTemplateColumns: '1fr 1fr 1fr',
           gap: 20,
         }}
+        className="wizard-summary-grid"
       >
         <div>
           <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.65)', marginBottom: 4 }}>Amount</p>
@@ -210,8 +211,8 @@ export default function ReviewSubmit({ data, onGoToStep }: Props) {
           />
           <span style={{ fontSize: 13, color: theme.textSecondary, lineHeight: 1.6 }}>
             I confirm that all information is accurate. I agree to the{' '}
-            <a href="#" style={{ color: '#002E83' }}>Terms of Service</a> and{' '}
-            <a href="#" style={{ color: '#002E83' }}>Privacy Policy</a>.
+            <a href="/terms" style={{ color: '#002E83' }}>Terms of Service</a> and{' '}
+            <a href="/privacy" style={{ color: '#002E83' }}>Privacy Policy</a>.
             I authorize FundMe to verify my information and conduct credit checks.
           </span>
         </label>

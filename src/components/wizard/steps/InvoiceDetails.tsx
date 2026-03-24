@@ -475,7 +475,7 @@ export default function InvoiceDetails({ data, onChange }: Props) {
                   style={{ width: '100%', padding: '12px 14px', background: theme.inputBg, border: `1px solid ${theme.borderLight}`, borderRadius: 10, fontSize: 14, outline: 'none' }}
                 />
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
+              <div className="invoice-fields-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
                 <div>
                   <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: theme.textMuted, marginBottom: 6 }}>Client Name</label>
                   <input

@@ -33,7 +33,7 @@ export default function StepFinancialInfo() {
         <p style={{ fontSize: 14, color: theme.textMuted }}>Help us assess your financing eligibility</p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+      <div className="loan-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
         <div>
           <label style={labelStyle}>Annual Revenue (<RiyalSign size="sm" />)</label>
           <input type="text" placeholder="e.g., 1,000,000" style={inputStyle} />

@@ -35,7 +35,7 @@ export default function WhatToExpect() {
       </h3>
 
       {/* 3 info cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 24 }}>
+      <div className="what-to-expect-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 24 }}>
         {infoCards.map((c) => (
           <div key={c.title} style={infoCardStyle}>
             <div style={{ marginBottom: 12, display: 'flex', alignItems: 'center' }}>

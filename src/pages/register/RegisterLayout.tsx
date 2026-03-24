@@ -6,7 +6,7 @@ import { useI18n } from '../../i18n'
 
 export default function RegisterLayout() {
   const navigate = useNavigate()
-  const { t } = useI18n()
+  const { t, lang, setLang } = useI18n()
 
   return (
     <RegisterProvider>
@@ -33,15 +33,36 @@ export default function RegisterLayout() {
           }}
         >
           <img src={logo} alt="FundMe" style={{ height: 72, objectFit: 'contain' }} />
-          <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)' }}>
-            {t('register.alreadyHaveAccount')}{' '}
-            <span
-              onClick={() => navigate('/login')}
-              style={{ color: '#fff', fontWeight: 600, cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: 2 }}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <button
+              onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
+              style={{
+                padding: '6px 14px',
+                borderRadius: 8,
+                border: '1px solid rgba(255,255,255,0.2)',
+                background: 'rgba(255,255,255,0.08)',
+                color: '#fff',
+                fontSize: 13,
+                fontWeight: 600,
+                cursor: 'pointer',
+                backdropFilter: 'blur(8px)',
+                transition: 'all 0.2s',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.15)' }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)' }}
             >
-              {t('register.signIn')}
-            </span>
-          </p>
+              {lang === 'en' ? 'عربية' : 'EN'}
+            </button>
+            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', margin: 0 }}>
+              {t('register.alreadyHaveAccount')}{' '}
+              <span
+                onClick={() => navigate('/login')}
+                style={{ color: '#fff', fontWeight: 600, cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: 2 }}
+              >
+                {t('register.signIn')}
+              </span>
+            </p>
+          </div>
         </div>
 
         {/* Card */}
@@ -57,6 +78,7 @@ export default function RegisterLayout() {
           }}
         >
           <div
+            className="register-card"
             style={{
               width: '100%',
               maxWidth: 520,

@@ -27,7 +27,7 @@ export default function CompletedChecklist() {
       </div>
 
       {/* 2-column checklist grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+      <div className="loan-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
         {completedItems.map((item, i) => (
           <div
             key={item}

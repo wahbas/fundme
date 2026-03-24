@@ -159,7 +159,7 @@ export default function SelectBiller({ data, onChange }: Props) {
           </div>
 
           {/* 2-column grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+          <div className="biller-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
             <div>
               <label style={labelStyle}>Biller ID / Account Number</label>
               <input

@@ -110,10 +110,24 @@ function DocCategoryRow({ cat }: { cat: DocCategory }) {
   const { theme } = useTheme()
   const { t } = useI18n()
   const [expanded, setExpanded] = useState(false)
+  const [uploadingDoc, setUploadingDoc] = useState<string | null>(null)
   const Icon = cat.icon
+  const pct = cat.total > 0 ? (cat.completed / cat.total) * 100 : 0
+  const allDone = cat.completed === cat.total
+
+  const handleUpload = (docName: string) => {
+    const input = document.createElement('input')
+    input.type = 'file'
+    input.accept = '.pdf,.jpg,.jpeg,.png'
+    input.onchange = () => {
+      setUploadingDoc(docName)
+      setTimeout(() => setUploadingDoc(null), 1500)
+    }
+    input.click()
+  }
 
   return (
-    <div style={{ borderTop: `1px solid ${theme.borderLight}` }}>
+    <div style={{ borderTop: `1px solid ${theme.border}` }}>
       <button
         onClick={() => setExpanded(!expanded)}
         style={{
@@ -122,21 +136,50 @@ function DocCategoryRow({ cat }: { cat: DocCategory }) {
         }}
       >
         <div style={{
-          width: 40, height: 40, borderRadius: 10, background: '#EFF6FF',
+          width: 42, height: 42, borderRadius: 12,
+          background: allDone ? 'linear-gradient(135deg, #10B981, #059669)' : '#EFF6FF',
           display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
         }}>
-          <Icon size={18} color={cat.iconColor} />
+          {allDone
+            ? <CheckCircle2 size={18} color="#fff" />
+            : <Icon size={18} color={cat.iconColor} />
+          }
         </div>
         <div style={{ flex: 1, textAlign: 'left' }}>
-          <p style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary, marginBottom: 4 }}>{t(`dataHub.${cat.label}` as any)}</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+            <p style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary, margin: 0 }}>
+              {t(`dataHub.${cat.label}` as any)}
+            </p>
+            {!allDone && (
+              <span style={{
+                fontSize: 11, fontWeight: 600, padding: '2px 8px', borderRadius: 10,
+                background: '#FEF3C7', color: '#D97706',
+              }}>
+                {cat.total - cat.completed} missing
+              </span>
+            )}
+            {allDone && (
+              <span style={{
+                fontSize: 11, fontWeight: 600, padding: '2px 8px', borderRadius: 10,
+                background: '#DCFCE7', color: '#166534',
+              }}>
+                Complete
+              </span>
+            )}
+          </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ width: 80, height: 4, borderRadius: 2, background: '#E2E8F0' }}>
-              <div style={{
-                width: `${cat.total > 0 ? (cat.completed / cat.total) * 100 : 0}%`,
-                height: 4, borderRadius: 2, background: cat.completed > 0 ? '#2563EB' : '#E2E8F0',
-              }} />
+            <div style={{ width: 100, height: 5, borderRadius: 3, background: '#E2E8F0' }}>
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${pct}%` }}
+                transition={{ duration: 0.5 }}
+                style={{
+                  height: 5, borderRadius: 3,
+                  background: allDone ? '#10B981' : pct > 0 ? '#2563EB' : '#E2E8F0',
+                }}
+              />
             </div>
-            <span style={{ fontSize: 12, color: theme.textMuted }}>{cat.completed} / {cat.total}</span>
+            <span style={{ fontSize: 12, color: theme.textMuted, fontWeight: 500 }}>{cat.completed} / {cat.total}</span>
           </div>
         </div>
         <ChevronDown
@@ -155,20 +198,85 @@ function DocCategoryRow({ cat }: { cat: DocCategory }) {
             transition={{ duration: 0.2 }}
             style={{ overflow: 'hidden' }}
           >
-            <div style={{ paddingBottom: 16, paddingLeft: 54, display: 'flex', flexDirection: 'column', gap: 8 }}>
-              {cat.docs.map(doc => (
-                <div key={doc.name} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13 }}>
-                  {doc.status === 'uploaded' ? (
-                    <CheckCircle2 size={16} color="#2563EB" />
-                  ) : (
-                    <div style={{ width: 16, height: 16, borderRadius: '50%', border: '1.5px solid #CBD5E1' }} />
-                  )}
-                  <span style={{ color: doc.status === 'uploaded' ? theme.textPrimary : theme.textMuted }}>{doc.name}</span>
-                  {doc.status === 'uploaded' && (
-                    <span style={{ fontSize: 11, color: '#2563EB', fontWeight: 600 }}>Uploaded</span>
-                  )}
-                </div>
-              ))}
+            <div style={{ paddingBottom: 20, paddingLeft: 14, paddingRight: 4, display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {cat.docs.map(doc => {
+                const uploaded = doc.status === 'uploaded'
+                const isUploading = uploadingDoc === doc.name
+                return (
+                  <div
+                    key={doc.name}
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: 12,
+                      padding: '12px 14px', borderRadius: 10,
+                      background: uploaded ? 'rgba(37,99,235,0.04)' : theme.cardBg,
+                      border: `1px solid ${uploaded ? 'rgba(37,99,235,0.12)' : theme.border}`,
+                    }}
+                  >
+                    {/* Status icon */}
+                    {uploaded ? (
+                      <div style={{
+                        width: 28, height: 28, borderRadius: 8,
+                        background: '#EFF6FF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                      }}>
+                        <CheckCircle2 size={15} color="#2563EB" />
+                      </div>
+                    ) : (
+                      <div style={{
+                        width: 28, height: 28, borderRadius: 8,
+                        background: '#FEF3C7', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                      }}>
+                        <AlertCircle size={15} color="#D97706" />
+                      </div>
+                    )}
+
+                    {/* Doc name */}
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <span style={{
+                        fontSize: 13, fontWeight: uploaded ? 500 : 400,
+                        color: uploaded ? theme.textPrimary : theme.textSecondary,
+                      }}>
+                        {doc.name}
+                      </span>
+                    </div>
+
+                    {/* Action */}
+                    {uploaded ? (
+                      <span style={{
+                        fontSize: 11, fontWeight: 600, color: '#2563EB',
+                        background: '#EFF6FF', padding: '3px 10px', borderRadius: 6,
+                      }}>
+                        Uploaded
+                      </span>
+                    ) : isUploading ? (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                        <motion.div
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                          style={{
+                            width: 14, height: 14,
+                            border: '2px solid #E2E8F0', borderTopColor: '#2563EB', borderRadius: '50%',
+                          }}
+                        />
+                        <span style={{ fontSize: 11, color: theme.textMuted }}>Uploading...</span>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => handleUpload(doc.name)}
+                        style={{
+                          display: 'flex', alignItems: 'center', gap: 5,
+                          padding: '5px 12px', borderRadius: 8,
+                          background: '#7CFF01', color: '#0F172A',
+                          border: 'none', cursor: 'pointer',
+                          fontSize: 12, fontWeight: 600,
+                        }}
+                      >
+                        <Upload size={13} />
+                        Upload
+                      </button>
+                    )}
+                  </div>
+                )
+              })}
             </div>
           </motion.div>
         )}
@@ -292,7 +400,7 @@ export default function DataHub() {
                 </button>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+              <div className="bank-connections-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
                 {BANKS.map(bank => {
                   const isConnected = bank.status === 'connected'
                   return (

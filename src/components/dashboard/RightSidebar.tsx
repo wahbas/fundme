@@ -197,7 +197,7 @@ function NeedHelpCard() {
         Watch Video
       </button>
       <div style={{ textAlign: 'center' }}>
-        <a href="#" style={{ color: '#0D82F9', fontSize: 12, fontWeight: 500, textDecoration: 'underline' }}>
+        <a href="/settings" style={{ color: '#0D82F9', fontSize: 12, fontWeight: 500, textDecoration: 'underline' }}>
           Contact Support
         </a>
       </div>

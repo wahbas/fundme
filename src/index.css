@@ -236,6 +236,131 @@ button {
   }
 }
 
+/* ─── Additional Responsive: Tablet ─── */
+@media (max-width: 1200px) {
+  .financing-products-grid,
+  .benefits-grid,
+  .loan-type-grid,
+  .review-summary-grid,
+  .wizard-summary-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .bank-connections-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .loan-form-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ─── Additional Responsive: Mobile ─── */
+@media (max-width: 768px) {
+  /* All 2-3 col grids → 1 col */
+  .financing-products-grid,
+  .benefits-grid,
+  .loan-type-grid,
+  .review-summary-grid,
+  .review-fields-grid,
+  .wizard-summary-grid,
+  .bank-connections-grid,
+  .loan-form-grid,
+  .biller-grid,
+  .invoice-fields-grid,
+  .early-payment-details-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Financing options: stack */
+  .financing-options-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* What to expect: stack */
+  .what-to-expect-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Registration card: full width, less padding */
+  .register-card {
+    max-width: 100% !important;
+    padding: 24px 20px !important;
+    border-radius: 12px !important;
+  }
+
+  /* Request financing: full width layout */
+  .request-financing-layout {
+    flex-direction: column !important;
+  }
+  .request-financing-sidebar {
+    display: none !important;
+  }
+  .request-financing-main {
+    padding: 20px 16px !important;
+  }
+
+  /* Side sheet → full screen on mobile */
+  .side-sheet {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Wizard step content: reduce padding */
+  .wizard-content {
+    padding: 20px 16px !important;
+  }
+
+  /* Onboarding: full width stepper */
+  .onboarding-stepper {
+    overflow-x: auto !important;
+    padding: 0 8px !important;
+  }
+
+  /* DataHub section cards: reduce padding */
+  .datahub-section {
+    padding: 16px !important;
+  }
+
+  /* Compact header buttons on mobile */
+  .header-actions {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  /* Settings: stack layout */
+  .settings-layout {
+    flex-direction: column !important;
+  }
+  .settings-sidebar {
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    width: 100% !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--border) !important;
+  }
+
+  /* Footer: reduce padding */
+  footer {
+    padding: 16px !important;
+  }
+}
+
+/* Small mobile: < 480px */
+@media (max-width: 480px) {
+  .loan-summary-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .loan-detail-fields {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Even less padding */
+  main > div {
+    padding: 12px !important;
+  }
+}
+
 /* Bottom tab bar — hidden by default, shown on mobile */
 .mobile-tab-bar {
   display: none;
