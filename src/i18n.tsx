@@ -211,6 +211,14 @@ const translations = {
   'login.register': { en: 'Register', ar: 'تسجيل' },
   'login.verifyMobile': { en: 'Verify your mobile', ar: 'تحقق من رقم هاتفك' },
   'login.verifySignIn': { en: 'Verify & Sign In', ar: 'تحقق وسجّل الدخول' },
+  'login.signInWithId': { en: 'Sign in with your National ID', ar: 'تسجيل الدخول برقم الهوية الوطنية' },
+  'login.nationalId': { en: 'National ID', ar: 'رقم الهوية الوطنية' },
+  'login.nationalIdPlaceholder': { en: '10-digit National ID', ar: 'رقم الهوية (10 أرقام)' },
+  'login.password': { en: 'Password', ar: 'كلمة المرور' },
+  'login.forgotPassword': { en: 'Forgot password?', ar: 'نسيت كلمة المرور؟' },
+  'login.signInBtn': { en: 'Sign In', ar: 'تسجيل الدخول' },
+  'login.errNationalId': { en: 'Please enter a valid 10-digit National ID', ar: 'يرجى إدخال رقم هوية وطنية صحيح (10 أرقام)' },
+  'login.errPassword': { en: 'Password must be at least 6 characters', ar: 'كلمة المرور يجب أن تكون 6 أحرف على الأقل' },
 
   // ─── Wizard / Request Financing ───
   'wizard.step': { en: 'Step', ar: 'خطوة' },
@@ -249,6 +257,8 @@ const translations = {
   'wizard.errCategory': { en: 'Please select a category', ar: 'يرجى اختيار فئة' },
   'wizard.errBiller': { en: 'Please select a biller', ar: 'يرجى اختيار مفوتر' },
   'wizard.errBills': { en: 'Please select at least one bill', ar: 'يرجى اختيار فاتورة واحدة على الأقل' },
+  'wizard.skipForNow': { en: 'Skip for Now', ar: 'تخطي الآن' },
+  'wizard.submitRequest': { en: 'Submit Request', ar: 'تقديم الطلب' },
 
   // ─── Register ───
   'register.getStarted': { en: 'Get started', ar: 'ابدأ الآن' },

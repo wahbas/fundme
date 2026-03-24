@@ -476,28 +476,28 @@ export default function RequestFinancing() {
           background: theme.cardBg, borderTop: `1px solid ${theme.border}`,
           padding: '16px 48px', zIndex: 5,
         }}>
-          <div style={{ maxWidth: 860, margin: '0 auto', width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ maxWidth: 860, margin: '0 auto', width: '100%', display: 'flex', flexDirection: isRTL ? 'row-reverse' : 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             {stepIdx > 0 ? (
               <motion.button
                 onClick={handleBack}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 style={{
-                  display: 'flex', alignItems: 'center', gap: 6,
+                  display: 'flex', flexDirection: isRTL ? 'row-reverse' : 'row', alignItems: 'center', gap: 6,
                   padding: '12px 24px', background: theme.cardBg,
                   border: `1px solid ${theme.border}`, borderRadius: 10,
                   fontSize: 14, color: theme.textSecondary, cursor: 'pointer', fontWeight: 500,
                 }}
               >
-                <ArrowLeft size={16} />
-                Back
+                <ArrowLeft size={16} style={{ transform: isRTL ? 'scaleX(-1)' : 'none' }} />
+                {t('common.back')}
               </motion.button>
             ) : (
               <div />
             )}
 
             {isLast ? (
-              <div style={{ display: 'flex', gap: 10 }}>
+              <div style={{ display: 'flex', flexDirection: isRTL ? 'row-reverse' : 'row', gap: 10 }}>
                 <button
                   onClick={() => navigate('/dashboard?state=verified&submitted=true')}
                   style={{
@@ -505,19 +505,19 @@ export default function RequestFinancing() {
                     border: `1px solid ${theme.border}`, borderRadius: 10, fontSize: 14, fontWeight: 500, cursor: 'pointer',
                   }}
                 >
-                  Skip for Now
+                  {t('wizard.skipForNow' as any)}
                 </button>
                 <motion.button
                   onClick={handleSubmit}
                   whileHover={{ scale: 1.02, boxShadow: '0 4px 16px rgba(37,99,235,0.3)' }}
                   whileTap={{ scale: 0.98 }}
                   style={{
-                    display: 'flex', alignItems: 'center', gap: 8,
+                    display: 'flex', flexDirection: isRTL ? 'row-reverse' : 'row', alignItems: 'center', gap: 8,
                     padding: '12px 28px', background: '#2563EB', color: '#fff',
                     border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: 'pointer',
                   }}
                 >
-                  Submit Request
+                  {t('wizard.submitRequest' as any)}
                   <Send size={16} />
                 </motion.button>
               </div>
@@ -527,7 +527,7 @@ export default function RequestFinancing() {
                 whileHover={canContinue ? { y: -1, boxShadow: '0 6px 20px rgba(37,99,235,0.3)' } : {}}
                 whileTap={canContinue ? { scale: 0.98 } : {}}
                 style={{
-                  display: 'flex', alignItems: 'center', gap: 8,
+                  display: 'flex', flexDirection: isRTL ? 'row-reverse' : 'row', alignItems: 'center', gap: 8,
                   padding: '13px 28px',
                   background: canContinue ? '#2563EB' : '#E2E8F0',
                   color: canContinue ? '#fff' : '#94A3B8',
@@ -538,11 +538,11 @@ export default function RequestFinancing() {
               >
                 {t('wizard.continue' as any)}
                 <motion.span
-                  animate={canContinue ? { x: [0, 4, 0] } : {}}
+                  animate={canContinue ? { x: isRTL ? [0, -4, 0] : [0, 4, 0] } : {}}
                   transition={{ repeat: Infinity, duration: 1.5 }}
                   style={{ display: 'flex', alignItems: 'center' }}
                 >
-                  <ArrowRight size={16} />
+                  <ArrowRight size={16} style={{ transform: isRTL ? 'scaleX(-1)' : 'none' }} />
                 </motion.span>
               </motion.button>
             )}
