@@ -12,7 +12,7 @@ function AnimatedValue({ value, isEmpty, color }: { value: string; isEmpty: bool
   return <span style={{ fontSize: 32, fontWeight: 700, color }}>{isEmpty ? value : display}</span>
 }
 
-function useCountUp(target: number, duration = 1200) {
+function useCountUp(target: number, duration = 2400) {
   const [value, setValue] = useState(0)
   const started = useRef(false)
   useEffect(() => {
@@ -22,7 +22,8 @@ function useCountUp(target: number, duration = 1200) {
     function tick(now: number) {
       const elapsed = now - start
       const progress = Math.min(elapsed / duration, 1)
-      const eased = 1 - Math.pow(1 - progress, 3)
+      // ease-out quart for a slower, smoother deceleration
+      const eased = 1 - Math.pow(1 - progress, 4)
       setValue(Math.round(eased * target))
       if (progress < 1) requestAnimationFrame(tick)
     }
