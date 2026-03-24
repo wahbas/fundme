@@ -251,7 +251,7 @@ export default function EarlyPaymentModal({ open, onClose }: EarlyPaymentModalPr
                               style={{ marginTop: 10, padding: '8px 12px', borderRadius: 8, background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.15)', display: 'flex', alignItems: 'center', gap: 6 }}
                             >
                               <CheckCircle2 size={14} color="#10B981" />
-                              <span style={{ fontSize: 12, color: '#10B981', fontWeight: 500 }}>{t('modal.youSave')} {selectedTiming.savings} SAR {t('modal.comparedToContinuing')}</span>
+                              <span style={{ fontSize: 12, color: '#10B981', fontWeight: 500 }}>{t('modal.youSave')} {selectedTiming.savings} {t('modal.comparedToContinuing')}</span>
                             </motion.div>
                           )}
                         </div>
@@ -379,7 +379,7 @@ export default function EarlyPaymentModal({ open, onClose }: EarlyPaymentModalPr
                   <div style={{ fontSize: 13, color: '#2563EB', fontWeight: 500 }}>
                     {selected === 'finish-earlier' && selectedTiming
                       ? `${t('modal.target')}: ${lang === 'ar' ? selectedTiming.labelAr : selectedTiming.labelEn}`
-                      : targetAmount ? `${t('modal.target')}: SAR ${Number(targetAmount).toLocaleString()}` : ''
+                      : targetAmount ? `${t('modal.target')}: ${Number(targetAmount).toLocaleString()}` : ''
                     }
                   </div>
                 </div>
@@ -499,8 +499,8 @@ export default function EarlyPaymentModal({ open, onClose }: EarlyPaymentModalPr
                   <div className="early-payment-details-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px 20px' }}>
                     {[
                       { icon: FileText, label: t('modal.loanId'), value: 'LOAN-2024-001' },
-                      { icon: CreditCard, label: t('modal.outstandingBalance'), value: 'SAR 350,000' },
-                      { icon: Building2, label: t('modal.installmentAmount'), value: 'SAR 45,208' },
+                      { icon: CreditCard, label: t('modal.outstandingBalance'), value: '350,000' },
+                      { icon: Building2, label: t('modal.installmentAmount'), value: '45,208' },
                       { icon: Phone, label: t('modal.phone'), value: '+966 5XX XXX XXXX' },
                       { icon: Mail, label: t('modal.email'), value: 'user@example.com' },
                       { icon: User, label: t('modal.accountManager'), value: 'Ahmed Al-Farsi' },
@@ -581,7 +581,7 @@ export default function EarlyPaymentModal({ open, onClose }: EarlyPaymentModalPr
                 {[
                   { label: t('modal.requestType'), value: selected === 'finish-earlier' ? t('modal.finishLoanEarlier') : t('modal.lowerInstallment') },
                   ...(selected === 'finish-earlier' && selectedTiming ? [{ label: t('modal.targetDuration'), value: lang === 'ar' ? selectedTiming.labelAr : selectedTiming.labelEn }] : []),
-                  ...(selected === 'lower-installment' && targetAmount ? [{ label: t('modal.targetInstallment'), value: `SAR ${Number(targetAmount).toLocaleString()}` }] : []),
+                  ...(selected === 'lower-installment' && targetAmount ? [{ label: t('modal.targetInstallment'), value: `${Number(targetAmount).toLocaleString()}` }] : []),
                   { label: t('modal.contactVia'), value: contactMethod === 'call' ? t('modal.call') : contactMethod === 'whatsapp' ? t('modal.whatsapp') : t('modal.email') },
                 ].map((row, i, arr) => (
                   <div key={row.label} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: i < arr.length - 1 ? `1px solid ${theme.border}` : 'none' }}>

@@ -18,10 +18,10 @@ const purposeLabels: Record<string, string> = {
 }
 
 const revenueLabels: Record<string, string> = {
-  '<1M': 'Less than 1M ر.س',
-  '1-5M': '1M \u2013 5M ر.س',
-  '5-20M': '5M \u2013 20M ر.س',
-  '>20M': 'More than 20M ر.س',
+  '<1M': 'Less than 1M',
+  '1-5M': '1M \u2013 5M',
+  '5-20M': '5M \u2013 20M',
+  '>20M': 'More than 20M',
 }
 
 export default function ReviewSubmit({ data, onGoToStep }: Props) {
@@ -108,7 +108,7 @@ export default function ReviewSubmit({ data, onGoToStep }: Props) {
             onEdit={() => onGoToStep(2)}
             items={[
               { label: 'Invoices uploaded', value: String(data.invoices.length) },
-              { label: 'Total value', value: `${data.invoices.reduce((s, i) => s + i.amount, 0).toLocaleString()} ر.س` },
+              { label: 'Total value', value: `${data.invoices.reduce((s, i) => s + i.amount, 0).toLocaleString()}` },
             ]}
           />
         )}
@@ -118,7 +118,7 @@ export default function ReviewSubmit({ data, onGoToStep }: Props) {
             onEdit={() => onGoToStep(2)}
             items={[
               { label: 'Bills selected', value: String(data.selectedBills.length) },
-              { label: 'Total amount', value: `${data.amount.toLocaleString()} ر.س` },
+              { label: 'Total amount', value: `${data.amount.toLocaleString()}` },
             ]}
           />
         )}
@@ -128,7 +128,7 @@ export default function ReviewSubmit({ data, onGoToStep }: Props) {
           title="Amount & Terms"
           onEdit={() => onGoToStep(isSadad || isInvoice ? 3 : 2)}
           items={[
-            { label: 'Amount', value: `${data.amount.toLocaleString()} ر.س` },
+            { label: 'Amount', value: `${data.amount.toLocaleString()}` },
             ...(!isSadad ? [{ label: 'Term', value: `${data.term} months` }] : []),
             ...(data.purposeDescription ? [{ label: 'Purpose', value: data.purposeDescription }] : []),
           ]}

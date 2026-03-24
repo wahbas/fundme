@@ -1,40 +1,48 @@
 /**
- * Saudi Riyal Currency Sign
- * Official symbol adopted by SAMA in 2022.
- * Stroke-based SVG icon with sm/md/lg sizes.
+ * Saudi Riyal Currency Sign — NEW official symbol (U+20C1)
+ * Uses the bundled @emran-alhaddad/saudi-riyal-font package.
+ * Symbol position: always LEFT of the number (per SAMA rules).
  */
 
-const sizes = {
-  sm: { width: 12, height: 12, strokeWidth: 2.5, gap: 3 },
-  md: { width: 16, height: 16, strokeWidth: 2.2, gap: 4 },
-  lg: { width: 22, height: 22, strokeWidth: 2, gap: 6 },
+const fontSizes = {
+  sm: 11,
+  md: 14,
+  lg: 20,
+  xl: 28,
 }
 
-type RiyalSize = 'sm' | 'md' | 'lg'
+const gaps = {
+  sm: 2,
+  md: 3,
+  lg: 4,
+  xl: 6,
+}
+
+type RiyalSize = 'sm' | 'md' | 'lg' | 'xl'
 
 interface RiyalSignProps {
   size?: RiyalSize
   color?: string
+  bold?: boolean
 }
 
-export default function RiyalSign({ size = 'md', color = '#94A3B8' }: RiyalSignProps) {
-  const s = sizes[size]
+export default function RiyalSign({ size = 'md', color = 'currentColor', bold = false }: RiyalSignProps) {
   return (
-    <svg
-      width={s.width}
-      height={s.height}
-      viewBox="0 0 24 24"
-      fill="none"
-      style={{ display: 'inline-block', verticalAlign: 'middle', marginLeft: s.gap, position: 'relative', top: -1 }}
+    <span
+      style={{
+        fontFamily: bold ? 'saudi_riyal_bold' : 'saudi_riyal',
+        fontSize: fontSizes[size],
+        color,
+        display: 'inline-block',
+        verticalAlign: 'middle',
+        marginInlineStart: gaps[size],
+        lineHeight: 1,
+        position: 'relative',
+        top: -1,
+      }}
       aria-label="SAR"
     >
-      <path
-        d="M2.5 8.5H6.5M2.5 12.5H6.5M9 4V20M9 4L4 8M9 20L14 16M14.5 8.5H20.5M14.5 12.5H18.5M14.5 8.5V16.5L18 20"
-        stroke={color}
-        strokeWidth={s.strokeWidth}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
+      {'\ue900'}
+    </span>
   )
 }

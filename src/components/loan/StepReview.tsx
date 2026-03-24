@@ -93,8 +93,8 @@ export default function StepReview() {
       {/* Financial Info */}
       <ReviewSection icon={BarChart3} title="Financial Information" onEdit={() => {}}>
         <div className="review-fields-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-          <InfoField label="Annual Revenue" value="1,200,000 ر.س" />
-          <InfoField label="Monthly Revenue" value="100,000 ر.س" />
+          <InfoField label="Annual Revenue" value="1,200,000" />
+          <InfoField label="Monthly Revenue" value="100,000" />
           <InfoField label="Existing Loans" value="None" />
           <InfoField label="Bank Account" value="Al Rajhi ---- 4521" />
         </div>

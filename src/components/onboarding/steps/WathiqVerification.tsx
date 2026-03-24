@@ -595,7 +595,7 @@ function ConfirmCRScreen({ cr, onConfirm, onBack }: { cr: CommercialRegistration
           [t('onboarding.crType'), cr.crType === 'main' ? t('onboarding.mainReg') : t('onboarding.branch')],
           [t('onboarding.regDate'), cr.registrationDate],
           [t('onboarding.expiryDate'), cr.expiryDate],
-          [t('onboarding.capital'), `${cr.capital.toLocaleString()} ر.س`],
+          [t('onboarding.capital'), `${cr.capital.toLocaleString()}`],
           [t('onboarding.activities'), isRTL ? cr.isicActivities.map(a => arData.activity[a] || a).join('، ') : cr.isicActivities.join(', ')],
         ].map(([label, value]) => (
           <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10, fontSize: 13 }}>

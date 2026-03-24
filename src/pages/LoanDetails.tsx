@@ -281,7 +281,7 @@ function InfoTab({ loan }: { loan: LoanData }) {
           />
           <MetricBox
             value={`${loan.repaidPercent}%`}
-            label={`${loan.repaidAmount.toLocaleString()} ر.س of ${loan.totalAmount.toLocaleString()} ر.س repaid`}
+            label={`${loan.repaidAmount.toLocaleString()} of ${loan.totalAmount.toLocaleString()} repaid`}
             color="#2563EB"
           />
           <MetricBox

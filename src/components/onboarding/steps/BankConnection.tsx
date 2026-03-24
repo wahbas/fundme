@@ -59,7 +59,7 @@ const MOCK_ACCOUNTS: MockAccount[] = [
     iban: 'SA0380000000608010167519',
     type: 'current',
     holderName: 'Al-Mansour Trading Co.',
-    currency: 'ر.س',
+    currency: 'SAR',
     balance: 125000,
   },
   {
@@ -68,7 +68,7 @@ const MOCK_ACCOUNTS: MockAccount[] = [
     iban: 'SA0380000000608010167620',
     type: 'savings',
     holderName: 'Al-Mansour Trading Co.',
-    currency: 'ر.س',
+    currency: 'SAR',
     balance: 48500,
   },
 ]

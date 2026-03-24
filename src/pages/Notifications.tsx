@@ -21,7 +21,7 @@ interface Notification {
 
 const initialNotifications: Notification[] = [
   { id: 1, title: 'Application approved — INV-2024-001', desc: 'Your financing request has been approved', time: '2 hours ago', read: false, group: 'Today' },
-  { id: 2, title: 'Payment reminder — Due in 3 days', desc: 'Installment #3 of 10,677 ر.س', time: '5 hours ago', read: false, group: 'Today' },
+  { id: 2, title: 'Payment reminder — Due in 3 days', desc: 'Installment #3 of 10,677', time: '5 hours ago', read: false, group: 'Today' },
   { id: 3, title: 'Document verified', desc: 'authorization-letter.pdf has been approved', time: '1 day ago', read: true, group: 'Yesterday' },
   { id: 4, title: 'Bank connection successful', desc: 'Al Rajhi Bank has been connected to your account', time: '2 days ago', read: true, group: 'Earlier' },
   { id: 5, title: 'Profile updated', desc: 'Your company information has been updated via Wathiq', time: '3 days ago', read: true, group: 'Earlier' },
