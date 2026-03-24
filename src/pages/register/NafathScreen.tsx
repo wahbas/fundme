@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
-  ArrowLeft, ArrowRight, Fingerprint, Smartphone, Clock,
+  ArrowRight, Smartphone, Clock,
   CheckCircle2, AlertTriangle, RefreshCw,
 } from 'lucide-react'
 import { motion } from 'framer-motion'
@@ -56,7 +56,6 @@ function useMockNafath() {
 }
 
 export default function NafathScreen() {
-  const navigate = useNavigate()
   const { state, number, timeLeft, initiate, retry } = useMockNafath()
   const autoStarted = useRef(false)
 
@@ -74,74 +73,6 @@ export default function NafathScreen() {
   if (state === 'verifying') return <VerifyingView />
   if (state === 'success') return <SuccessView />
   return <FailedView onRetry={retry} />
-}
-
-// ─── Intro ──────────────────────────────────────────────────
-
-function IntroView({ onStart, onBack }: { onStart: () => void; onBack: () => void }) {
-  return (
-    <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -16 }} transition={{ duration: 0.3 }}>
-      <ProgressBar current={4} />
-
-      <button
-        onClick={onBack}
-        style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 13, color: '#6B7280', cursor: 'pointer', marginBottom: 24, background: 'none', border: 'none', padding: 0 }}
-      >
-        <ArrowLeft size={16} /> Back
-      </button>
-
-      {/* Icon */}
-      <div style={{
-        width: 56, height: 56, borderRadius: 16,
-        background: 'linear-gradient(135deg, #0D9488, #0D82F9)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        marginBottom: 24,
-      }}>
-        <Fingerprint size={28} color="#fff" />
-      </div>
-
-      <h2 style={{ fontSize: 24, fontWeight: 700, color: '#111', marginBottom: 6 }}>
-        Verify your identity
-      </h2>
-      <p style={{ fontSize: 14, color: '#6B7280', marginBottom: 24, lineHeight: 1.6 }}>
-        We use <strong style={{ color: '#111' }}>Nafath</strong> to securely verify your identity. Open the app and select the matching number.
-      </p>
-
-      {/* Info badges */}
-      <div style={{ display: 'flex', gap: 10, marginBottom: 28 }}>
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 6, padding: '10px 12px', background: '#F8FAFC', borderRadius: 10, border: '1px solid #E2E8F0' }}>
-          <Smartphone size={15} color="#6B7280" />
-          <span style={{ fontSize: 12, color: '#6B7280' }}>Nafath app required</span>
-        </div>
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 6, padding: '10px 12px', background: '#F8FAFC', borderRadius: 10, border: '1px solid #E2E8F0' }}>
-          <Clock size={15} color="#6B7280" />
-          <span style={{ fontSize: 12, color: '#6B7280' }}>Takes ~2 minutes</span>
-        </div>
-      </div>
-
-      <motion.button
-        whileHover={{ scale: 1.01 }}
-        whileTap={{ scale: 0.98 }}
-        onClick={onStart}
-        style={{
-          width: '100%', height: 48,
-          background: 'linear-gradient(135deg, #000D1F, #002E83, #0052B9)',
-          color: '#fff', fontWeight: 600, fontSize: 15, borderRadius: 12, border: 'none',
-          cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15)',
-        }}
-      >
-        Start Verification <ArrowRight size={18} />
-      </motion.button>
-
-      <p style={{ textAlign: 'center', marginTop: 16, fontSize: 12, color: '#94A3B8' }}>
-        Don't have Nafath?{' '}
-        <a href="https://nafath.sa" target="_blank" rel="noreferrer" style={{ color: '#0D82F9', textDecoration: 'none', fontWeight: 500 }}>
-          Download the app →
-        </a>
-      </p>
-    </motion.div>
-  )
 }
 
 // ─── Waiting ────────────────────────────────────────────────
