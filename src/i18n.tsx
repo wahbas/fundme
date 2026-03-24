@@ -197,6 +197,7 @@ const translations = {
   'modal.remainingBalance': { en: 'Remaining Balance', ar: 'الرصيد المتبقي' },
   'modal.payFullBalance': { en: 'Pay Full Balance →', ar: '← دفع كامل الرصيد' },
   'modal.contactSupport': { en: 'Contact Support', ar: 'اتصل بالدعم' },
+  'modal.contactSupportDesc': { en: 'Reach out to us anytime', ar: 'تواصل معنا في أي وقت' },
   'modal.sendMessage': { en: 'Send Message →', ar: '← إرسال رسالة' },
   'modal.liveChat': { en: 'Live Chat', ar: 'محادثة مباشرة' },
   'modal.callNow': { en: 'Call Now', ar: 'اتصل الآن' },
