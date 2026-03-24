@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Search, ChevronRight, Plus } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useTheme } from '../../../ThemeContext'
+import { useI18n } from '../../../i18n'
 import type { WizardData } from '../../../pages/RequestFinancing'
 import RiyalSign from '../../icons/RiyalSign'
 
@@ -54,6 +55,7 @@ const categoryConfig: Record<string, { label: string; bg: string; color: string 
 
 export default function SelectBiller({ data, onChange }: Props) {
   const { theme } = useTheme()
+  const { t, isRTL } = useI18n()
   const [search, setSearch] = useState('')
   const [showManualForm, setShowManualForm] = useState(false)
   const [manualBiller, setManualBiller] = useState({ name: '', accountNumber: '', billNumber: '', amount: '', dueDate: '' })
@@ -76,14 +78,14 @@ export default function SelectBiller({ data, onChange }: Props) {
 
   return (
     <div>
-      <h2 style={{ fontSize: 24, fontWeight: 700, color: theme.textPrimary, marginBottom: 6, textAlign: 'center' }}>Select Biller</h2>
+      <h2 style={{ fontSize: 24, fontWeight: 700, color: theme.textPrimary, marginBottom: 6, textAlign: 'center' }}>{t('wizard.selectBillerTitle' as any)}</h2>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 32 }}>
-        <p style={{ fontSize: 14, color: theme.textSecondary }}>Showing billers in</p>
+        <p style={{ fontSize: 14, color: theme.textSecondary }}>{t('wizard.showingBillersIn' as any)}</p>
         <span style={{
           padding: '3px 10px', borderRadius: 20, background: theme.bgPrimary,
           fontSize: 11, fontWeight: 600, color: theme.textMuted,
         }}>
-          {catConf.label}
+          {t(`wizard.cat${data.category.charAt(0).toUpperCase()}${data.category.slice(1)}` as any)}
         </span>
       </div>
 
@@ -92,7 +94,7 @@ export default function SelectBiller({ data, onChange }: Props) {
         <Search size={18} color="#94A3B8" style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)' }} />
         <input
           type="text"
-          placeholder="Search biller name or ID..."
+          placeholder={t('wizard.searchBiller' as any)}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           style={{
@@ -132,7 +134,7 @@ export default function SelectBiller({ data, onChange }: Props) {
         }}
       >
         <Plus size={18} />
-        Manual Biller Entry
+        {t('wizard.manualBillerEntry' as any)}
       </button>
 
       {/* Manual form */}
@@ -148,40 +150,40 @@ export default function SelectBiller({ data, onChange }: Props) {
         >
           {/* Biller Name - full width */}
           <div style={{ marginBottom: 12 }}>
-            <label style={labelStyle}>Biller Name</label>
+            <label style={labelStyle}>{t('wizard.billerName' as any)}</label>
             <input
               type="text"
               value={manualBiller.name}
               onChange={(e) => setManualBiller((p) => ({ ...p, name: e.target.value }))}
               style={inputStyle}
-              placeholder="Enter biller name"
+              placeholder={t('wizard.enterBillerName' as any)}
             />
           </div>
 
           {/* 2-column grid */}
           <div className="biller-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
             <div>
-              <label style={labelStyle}>Biller ID / Account Number</label>
+              <label style={labelStyle}>{t('wizard.billerAccountNo' as any)}</label>
               <input
                 type="text"
                 value={manualBiller.accountNumber}
                 onChange={(e) => setManualBiller((p) => ({ ...p, accountNumber: e.target.value }))}
                 style={inputStyle}
-                placeholder="Enter account number"
+                placeholder={t('wizard.enterAccountNo' as any)}
               />
             </div>
             <div>
-              <label style={labelStyle}>Bill Number</label>
+              <label style={labelStyle}>{t('wizard.billNumber' as any)}</label>
               <input
                 type="text"
                 value={manualBiller.billNumber}
                 onChange={(e) => setManualBiller((p) => ({ ...p, billNumber: e.target.value }))}
                 style={inputStyle}
-                placeholder="Enter bill number"
+                placeholder={t('wizard.enterBillNo' as any)}
               />
             </div>
             <div>
-              <label style={labelStyle}>Amount (<RiyalSign size="sm" />)</label>
+              <label style={labelStyle}>{t('wizard.amount' as any)} (<RiyalSign size="sm" />)</label>
               <input
                 type="number"
                 value={manualBiller.amount}
@@ -191,7 +193,7 @@ export default function SelectBiller({ data, onChange }: Props) {
               />
             </div>
             <div>
-              <label style={labelStyle}>Due Date</label>
+              <label style={labelStyle}>{t('wizard.dueDate' as any)}</label>
               <input
                 type="date"
                 value={manualBiller.dueDate}
@@ -213,7 +215,7 @@ export default function SelectBiller({ data, onChange }: Props) {
               cursor: 'pointer', marginTop: 12,
             }}
           >
-            Add Bill
+            {t('wizard.addBill' as any)}
           </button>
 
           {/* Cancel link */}
