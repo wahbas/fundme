@@ -113,10 +113,11 @@ function App() {
             {verified ? (
               <>
                 <QuickStats hasLoans={hasSubmitted} />
+                {hasSubmitted ? <RecentApplication headerOnly /> : null}
                 <div className="dashboard-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: 20, alignItems: 'start' }}>
-                  {/* Left column — scrolls naturally */}
+                  {/* Left column */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
-                    {hasSubmitted ? <RecentApplication /> : <FinancingOptions />}
+                    {hasSubmitted ? <RecentApplication cardsOnly /> : <FinancingOptions />}
                     <RepaymentSchedule onPayClick={() => setPaymentModalOpen(true)} />
                   </div>
                   {/* Right column — sticky on scroll */}

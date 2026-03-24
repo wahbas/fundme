@@ -59,7 +59,7 @@ const APPLICATIONS: Application[] = [
   },
 ]
 
-export default function RecentApplication() {
+export default function RecentApplication({ headerOnly, cardsOnly }: { headerOnly?: boolean; cardsOnly?: boolean } = {}) {
   const [activeFilter, setActiveFilter] = useState<Status>('all')
   const { theme } = useTheme()
   const { t } = useI18n()
@@ -84,8 +84,45 @@ export default function RecentApplication() {
     rejected: APPLICATIONS.filter((a) => a.status === 'rejected').length,
   }
 
+  if (headerOnly) {
+    return (
+      <section style={{ marginBottom: 16 }}>
+        <h3 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary, marginBottom: 12 }}>{t('recent.myRecentApps')}</h3>
+        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+          {FILTERS.map((f) => {
+            const isActive = activeFilter === f.key
+            const count = counts[f.key]
+            return (
+              <button
+                key={f.key}
+                onClick={() => setActiveFilter(f.key)}
+                style={{
+                  padding: '6px 14px', borderRadius: 20, fontSize: 12, fontWeight: 600,
+                  background: isActive ? '#1B2A3D' : theme.cardBg,
+                  color: isActive ? '#fff' : theme.textSecondary,
+                  border: isActive ? 'none' : `1px solid ${theme.border}`,
+                  cursor: 'pointer', transition: 'all 0.15s', display: 'flex', alignItems: 'center', gap: 6,
+                }}
+              >
+                {f.label}
+                {count > 0 && (
+                  <span style={{
+                    fontSize: 10, fontWeight: 700, padding: '1px 6px', borderRadius: 10,
+                    background: isActive ? 'rgba(255,255,255,0.2)' : theme.bgPrimary,
+                    color: isActive ? '#fff' : theme.textMuted, minWidth: 18, textAlign: 'center',
+                  }}>{count}</span>
+                )}
+              </button>
+            )
+          })}
+        </div>
+      </section>
+    )
+  }
+
   return (
     <section>
+      {!cardsOnly && (
       <div style={{ marginBottom: 16 }}>
         <h3 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary, marginBottom: 12 }}>{t('recent.myRecentApps')}</h3>
 
@@ -135,6 +172,7 @@ export default function RecentApplication() {
           })}
         </div>
       </div>
+      )}
 
       {/* Application cards */}
       <AnimatePresence mode="popLayout">
