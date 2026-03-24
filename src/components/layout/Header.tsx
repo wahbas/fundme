@@ -1,14 +1,17 @@
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { useState } from 'react'
 import { Sun, Moon } from 'lucide-react'
 import { NotificationBellIcon, PlusIcon } from '../icons/WidgetIcons'
 import { useTheme } from '../../ThemeContext'
+import NotificationSheet from '../NotificationSheet'
 import { useI18n } from '../../i18n'
 
 export default function Header({ showNewLoanButton = false, showVerifiedLoanButton = false }: { showNewLoanButton?: boolean; showVerifiedLoanButton?: boolean }) {
   const { theme, isDark, toggleTheme } = useTheme()
   const navigate = useNavigate()
   const { t, isRTL } = useI18n()
+  const [notifOpen, setNotifOpen] = useState(false)
 
   function getGreeting() {
     const hour = new Date().getHours()
@@ -27,6 +30,7 @@ export default function Header({ showNewLoanButton = false, showVerifiedLoanButt
   }
 
   return (
+    <>
     <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
       <div>
         <h1 style={{ fontSize: showVerifiedLoanButton ? 26 : 20, fontWeight: 700, color: theme.textHeading }}>
@@ -97,7 +101,7 @@ export default function Header({ showNewLoanButton = false, showVerifiedLoanButt
           {isDark ? <Sun size={18} color="#F59E0B" /> : <Moon size={18} color="#64748B" />}
         </div>
 
-        <div onClick={() => navigate('/notifications')} style={{ ...iconBtn, position: 'relative', cursor: 'pointer' }}>
+        <div onClick={() => setNotifOpen(true)} style={{ ...iconBtn, position: 'relative', cursor: 'pointer' }}>
           <NotificationBellIcon size={20} color="#64748B" />
           <span
             style={{
@@ -119,6 +123,8 @@ export default function Header({ showNewLoanButton = false, showVerifiedLoanButt
         >A</div>
       </div>
     </header>
+    <NotificationSheet open={notifOpen} onClose={() => setNotifOpen(false)} />
+    </>
   )
 }
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   ArrowLeft, ArrowRight, Fingerprint, Smartphone, Clock,
@@ -58,8 +58,17 @@ function useMockNafath() {
 export default function NafathScreen() {
   const navigate = useNavigate()
   const { state, number, timeLeft, initiate, retry } = useMockNafath()
+  const autoStarted = useRef(false)
 
-  if (state === 'intro') return <IntroView onStart={initiate} onBack={() => navigate('/register/info')} />
+  // Skip intro — auto-start verification
+  useEffect(() => {
+    if (state === 'intro' && !autoStarted.current) {
+      autoStarted.current = true
+      initiate()
+    }
+  }, [state, initiate])
+
+  if (state === 'intro') return <LoadingView />
   if (state === 'requesting') return <LoadingView />
   if (state === 'waiting') return <WaitingView number={number} timeLeft={timeLeft} onCancel={retry} />
   if (state === 'verifying') return <VerifyingView />
