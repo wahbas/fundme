@@ -351,6 +351,7 @@ function RepaymentTab({ loan }: { loan: LoanData }) {
       <div style={{ overflowX: 'auto' }}>
         <div style={{
           display: 'grid', gridTemplateColumns: '60px 1fr 1fr 1fr 1fr 100px',
+          minWidth: 600,
           padding: '10px 28px', background: theme.bgPrimary, borderTop: `1px solid ${theme.border}`,
           fontSize: 11, fontWeight: 600, color: theme.textMuted, textTransform: 'uppercase', letterSpacing: 0.5,
         }}>
@@ -364,6 +365,7 @@ function RepaymentTab({ loan }: { loan: LoanData }) {
         {loan.schedule.map((row) => (
           <div key={row.installment} style={{
             display: 'grid', gridTemplateColumns: '60px 1fr 1fr 1fr 1fr 100px',
+            minWidth: 600,
             padding: '14px 28px', borderTop: `1px solid ${theme.borderLight}`,
             fontSize: 13, color: theme.textSecondary, alignItems: 'center',
             background: row.status === 'paid' ? (theme.isDark ? 'rgba(16,185,129,0.05)' : '#FAFFFE') : theme.cardBg,
@@ -588,6 +590,7 @@ export default function LoanDetails() {
 
             {/* ── Next Payment Card ── */}
             <motion.div
+              className="loan-next-payment"
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
@@ -627,13 +630,13 @@ export default function LoanDetails() {
                 </div>
               </div>
 
-              <div style={{ display: 'flex', gap: 10, flexShrink: 0 }}>
+              <div className="loan-action-buttons" style={{ display: 'flex', gap: 10, flexShrink: 0 }}>
                 <button
                   onClick={() => setMakePaymentOpen(true)}
                   style={{
                     padding: '10px 20px', background: '#2563EB', color: '#fff', fontWeight: 600,
                     fontSize: 14, borderRadius: 10, border: 'none', cursor: 'pointer',
-                    display: 'flex', alignItems: 'center', gap: 8,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
                   }}
                 >
                   <CreditCard size={16} />
@@ -644,7 +647,7 @@ export default function LoanDetails() {
                   style={{
                     padding: '10px 20px', background: theme.cardBg, color: theme.textSecondary, fontWeight: 600,
                     fontSize: 14, borderRadius: 10, border: `1px solid ${theme.border}`, cursor: 'pointer',
-                    display: 'flex', alignItems: 'center', gap: 8,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
                   }}
                 >
                   <Zap size={16} />
@@ -654,7 +657,7 @@ export default function LoanDetails() {
             </motion.div>
 
             {/* ── Tab Navigation ── */}
-            <div style={{
+            <div className="loan-tabs" style={{
               display: 'flex', gap: 4, marginBottom: 24, background: theme.cardBg,
               border: `1px solid ${theme.border}`, borderRadius: 12, padding: 4,
               boxShadow: theme.shadow,

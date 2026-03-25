@@ -285,7 +285,7 @@ export default function Onboarding() {
         </div>
 
         {/* Main content with step transitions */}
-        <div style={{ paddingBottom: 40 }}>
+        <div style={{ paddingBottom: 120 }}>
           <AnimatePresence mode="wait">
             <motion.div
               key={state.currentStep}

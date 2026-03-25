@@ -90,6 +90,7 @@ function SectionCard({ children, delay = 0 }: { children: React.ReactNode; delay
   const { theme } = useTheme()
   return (
     <motion.div
+      className="datahub-section"
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.4, ease: 'easeOut' }}
@@ -315,7 +316,7 @@ export default function DataHub() {
 
             {/* ── Section 1: Upload Documents ── */}
             <SectionCard delay={0.05}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 20 }}>
+              <div className="datahub-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 20 }}>
                 <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
                   <div style={{
                     width: 44, height: 44, borderRadius: 10, background: '#EFF6FF',
@@ -377,7 +378,7 @@ export default function DataHub() {
 
             {/* ── Section 2: Bank Connections ── */}
             <SectionCard delay={0.12}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 20 }}>
+              <div className="datahub-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 20 }}>
                 <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
                   <div style={{
                     width: 44, height: 44, borderRadius: 10, background: '#EFF6FF',
@@ -442,7 +443,7 @@ export default function DataHub() {
 
             {/* ── Section 3: Required Documents ── */}
             <SectionCard delay={0.19}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
+              <div className="datahub-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
                 <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
                   <div style={{
                     width: 44, height: 44, borderRadius: 10, background: '#EFF6FF',

@@ -216,6 +216,44 @@ button {
     grid-template-columns: repeat(2, 1fr) !important;
   }
 
+  /* Loan action buttons: stack vertically */
+  .loan-action-buttons {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+  .loan-action-buttons button {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  /* Loan tabs: horizontally scrollable */
+  .loan-tabs {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap !important;
+    scrollbar-width: none;
+  }
+  .loan-tabs::-webkit-scrollbar {
+    display: none;
+  }
+  .loan-tabs button {
+    padding: 8px 14px !important;
+    font-size: 12px !important;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Next payment card: wrap on mobile */
+  .loan-next-payment {
+    flex-wrap: wrap !important;
+    padding: 16px !important;
+    gap: 16px !important;
+  }
+  .loan-next-payment > div:nth-child(2) {
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+
   /* Loan card grid: single column */
   .loans-grid {
     grid-template-columns: 1fr !important;
@@ -320,6 +358,12 @@ button {
   /* DataHub section cards: reduce padding */
   .datahub-section {
     padding: 16px !important;
+  }
+
+  /* DataHub section headers: stack vertically */
+  .datahub-header {
+    flex-direction: column !important;
+    gap: 12px !important;
   }
 
   /* Compact header buttons on mobile */

@@ -118,7 +118,7 @@ function SelectBankScreen({ onSelect }: { onSelect: (bank: SupportedBank) => voi
   const others = filtered.filter((b) => !b.isPopular)
 
   return (
-    <div style={{ padding: '16px 0' }}>
+    <div style={{ padding: '16px 0 24px' }}>
       <div style={{ textAlign: 'center', marginBottom: 24 }}>
         <h2 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary, marginBottom: 6 }}>Select Your Bank</h2>
         <p style={{ fontSize: 14, color: '#6B7280' }}>Choose your business bank account provider</p>
@@ -315,7 +315,7 @@ function SelectAccountScreen({
   }
 
   return (
-    <div style={{ padding: '16px 0' }}>
+    <div style={{ padding: '16px 0 24px' }}>
       <div style={{ textAlign: 'center', marginBottom: 28 }}>
         <motion.div
           initial={{ scale: 0 }} animate={{ scale: 1 }}
@@ -437,7 +437,7 @@ function ErrorScreen({
   onSelectDifferent: () => void
 }) {
   return (
-    <div style={{ textAlign: 'center', padding: '32px 0' }}>
+    <div style={{ textAlign: 'center', padding: '32px 0 24px' }}>
       <div style={{
         width: 72, height: 72, borderRadius: '50%', background: '#FEE2E2',
         margin: '0 auto 24px', display: 'flex', alignItems: 'center', justifyContent: 'center',
