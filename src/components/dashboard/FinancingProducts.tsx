@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { LockIcon } from '../icons/NavIcons'
-import { ArrowRightIcon } from '../icons/WidgetIcons'
+import { ArrowRightIcon, ArrowLeftIcon } from '../icons/WidgetIcons'
 import { useTheme } from '../../ThemeContext'
 import { useI18n } from '../../i18n'
 
@@ -151,7 +151,7 @@ export default function FinancingProducts({ lockText = 'Unlock after verificatio
                   }}
                 >
                   {t('product.learn')}
-                  <span style={{ display: 'inline-flex', transform: isRTL ? 'scaleX(-1)' : 'none' }}><ArrowRightIcon size={14} color="#2563EB" /></span>
+                  <span style={{ display: 'inline-flex' }}>{isRTL ? <ArrowLeftIcon size={14} color="#2563EB" /> : <ArrowRightIcon size={14} color="#2563EB" />}</span>
                 </motion.a>
               </div>
             </div>

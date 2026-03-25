@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ArrowRight, Eye, EyeOff, User, Lock } from 'lucide-react'
+import { ArrowRight, ArrowLeft, Eye, EyeOff, User, Lock } from 'lucide-react'
 import { motion } from 'framer-motion'
 import logo from '../assets/logo.png'
 import { useI18n } from '../i18n'
 
 export default function Login() {
   const navigate = useNavigate()
-  const { t, lang, setLang } = useI18n()
+  const { t, lang, setLang, isRTL } = useI18n()
   const [nationalId, setNationalId] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -261,7 +261,7 @@ export default function Login() {
                 </>
               ) : (
                 <>
-                  {t('login.signInBtn' as any)} <ArrowRight size={18} />
+                  {t('login.signInBtn' as any)} {isRTL ? <ArrowLeft size={18} /> : <ArrowRight size={18} />}
                 </>
               )}
             </motion.button>

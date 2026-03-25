@@ -1,5 +1,6 @@
 import { ArrowLeft, ArrowRight, Send } from 'lucide-react'
 import { useTheme } from '../../ThemeContext'
+import { useI18n } from '../../i18n'
 
 interface FormNavigationProps {
   currentStep: number
@@ -11,6 +12,7 @@ interface FormNavigationProps {
 
 export default function FormNavigation({ currentStep, totalSteps, onNext, onBack, onSubmit }: FormNavigationProps) {
   const { theme } = useTheme()
+  const { isRTL } = useI18n()
   return (
     <div
       style={{
@@ -38,7 +40,7 @@ export default function FormNavigation({ currentStep, totalSteps, onNext, onBack
             cursor: 'pointer',
           }}
         >
-          <ArrowLeft size={20} />
+          {isRTL ? <ArrowRight size={20} /> : <ArrowLeft size={20} />}
           Previous
         </button>
       ) : (
@@ -63,7 +65,7 @@ export default function FormNavigation({ currentStep, totalSteps, onNext, onBack
           }}
         >
           Continue
-          <ArrowRight size={20} />
+          {isRTL ? <ArrowLeft size={20} /> : <ArrowRight size={20} />}
         </button>
       ) : (
         <button

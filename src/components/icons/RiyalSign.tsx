@@ -34,7 +34,7 @@ export default function RiyalSign({ size = 'md', color, bold = false }: RiyalSig
         color: color || 'currentColor',
         display: 'inline-block',
         verticalAlign: 'middle',
-        marginInlineStart: gaps[size],
+        marginInlineEnd: gaps[size],
         lineHeight: 1,
         position: 'relative',
         top: -1,

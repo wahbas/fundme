@@ -406,7 +406,7 @@ export default function RequestFinancing() {
                 display: 'flex', alignItems: 'center',
               }}
             >
-              <ArrowLeft size={20} color="#475569" style={{ transform: isRTL ? 'scaleX(-1)' : 'none' }} />
+              {isRTL ? <ArrowRight size={20} color="#475569" /> : <ArrowLeft size={20} color="#475569" />}
             </button>
             <span style={{ fontSize: 14, color: theme.textMuted }}>
               {t('wizard.step' as any)} {stepIdx + 1} {t('wizard.of' as any)} {TOTAL_STEPS}
@@ -479,17 +479,18 @@ export default function RequestFinancing() {
           <div style={{ maxWidth: 860, margin: '0 auto', width: '100%', display: 'flex', flexDirection: isRTL ? 'row-reverse' : 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             {stepIdx > 0 ? (
               <motion.button
+
                 onClick={handleBack}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 style={{
-                  display: 'flex', flexDirection: isRTL ? 'row-reverse' : 'row', alignItems: 'center', gap: 6,
+                  display: 'flex', alignItems: 'center', gap: 6,
                   padding: '12px 24px', background: theme.cardBg,
                   border: `1px solid ${theme.border}`, borderRadius: 10,
                   fontSize: 14, color: theme.textSecondary, cursor: 'pointer', fontWeight: 500,
                 }}
               >
-                <ArrowLeft size={16} style={{ transform: isRTL ? 'scaleX(-1)' : 'none' }} />
+                {isRTL ? <ArrowRight size={16} /> : <ArrowLeft size={16} />}
                 {t('common.back')}
               </motion.button>
             ) : (
@@ -508,11 +509,12 @@ export default function RequestFinancing() {
                   {t('wizard.skipForNow' as any)}
                 </button>
                 <motion.button
+  
                   onClick={handleSubmit}
                   whileHover={{ scale: 1.02, boxShadow: '0 4px 16px rgba(37,99,235,0.3)' }}
                   whileTap={{ scale: 0.98 }}
                   style={{
-                    display: 'flex', flexDirection: isRTL ? 'row-reverse' : 'row', alignItems: 'center', gap: 8,
+                    display: 'flex', alignItems: 'center', gap: 8,
                     padding: '12px 28px', background: '#2563EB', color: '#fff',
                     border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 700, cursor: 'pointer',
                   }}
@@ -527,7 +529,7 @@ export default function RequestFinancing() {
                 whileHover={canContinue ? { y: -1, boxShadow: '0 6px 20px rgba(37,99,235,0.3)' } : {}}
                 whileTap={canContinue ? { scale: 0.98 } : {}}
                 style={{
-                  display: 'flex', flexDirection: isRTL ? 'row-reverse' : 'row', alignItems: 'center', gap: 8,
+                  display: 'flex', alignItems: 'center', gap: 8,
                   padding: '13px 28px',
                   background: canContinue ? '#2563EB' : '#E2E8F0',
                   color: canContinue ? '#fff' : '#94A3B8',
@@ -542,7 +544,7 @@ export default function RequestFinancing() {
                   transition={{ repeat: Infinity, duration: 1.5 }}
                   style={{ display: 'flex', alignItems: 'center' }}
                 >
-                  <ArrowRight size={16} style={{ transform: isRTL ? 'scaleX(-1)' : 'none' }} />
+                  {isRTL ? <ArrowLeft size={16} /> : <ArrowRight size={16} />}
                 </motion.span>
               </motion.button>
             )}

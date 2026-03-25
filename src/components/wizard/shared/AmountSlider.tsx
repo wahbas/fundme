@@ -16,7 +16,7 @@ export default function AmountSlider({ value, min, max, step = 10000, onChange }
     <div>
       <div style={{ textAlign: 'center', marginBottom: 20 }}>
         <span style={{ fontSize: 36, fontWeight: 700, color: '#002E83' }}>
-          {value.toLocaleString()}<RiyalSign size="lg" />
+          <RiyalSign size="lg" />{value.toLocaleString()}
         </span>
       </div>
       <input
@@ -36,8 +36,8 @@ export default function AmountSlider({ value, min, max, step = 10000, onChange }
         }}
       />
       <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: theme.textMuted, marginTop: 8 }}>
-        <span>{min.toLocaleString()}<RiyalSign size="sm" /></span>
-        <span>{max.toLocaleString()}<RiyalSign size="sm" /></span>
+        <span><RiyalSign size="sm" />{min.toLocaleString()}</span>
+        <span><RiyalSign size="sm" />{max.toLocaleString()}</span>
       </div>
     </div>
   )

@@ -112,15 +112,15 @@ export default function AmountTerms({ data, onChange }: Props) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8, fontSize: 13 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span style={{ color: theme.textMuted }}>Bill total</span>
-                <span style={{ fontWeight: 500 }}>{data.amount.toLocaleString()}<RiyalSign size="sm" /></span>
+                <span style={{ fontWeight: 500 }}><RiyalSign size="sm" />{data.amount.toLocaleString()}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span style={{ color: theme.textMuted }}>Service fee (2%)</span>
-                <span style={{ fontWeight: 500 }}>{Math.round(data.amount * 0.02).toLocaleString()}<RiyalSign size="sm" /></span>
+                <span style={{ fontWeight: 500 }}><RiyalSign size="sm" />{Math.round(data.amount * 0.02).toLocaleString()}</span>
               </div>
               <div style={{ borderTop: `1px solid ${theme.border}`, paddingTop: 8, display: 'flex', justifyContent: 'space-between', fontWeight: 600 }}>
                 <span>Total repayment</span>
-                <span style={{ color: '#002E83' }}>{Math.round(data.amount * 1.02).toLocaleString()}<RiyalSign size="sm" /></span>
+                <span style={{ color: '#002E83' }}><RiyalSign size="sm" />{Math.round(data.amount * 1.02).toLocaleString()}</span>
               </div>
             </div>
           </div>
@@ -144,7 +144,7 @@ export default function AmountTerms({ data, onChange }: Props) {
               {isSadad ? 'Total Repayment' : 'Estimated Monthly Payment'}
             </p>
             <p style={{ fontSize: 26, fontWeight: 700, color: '#fff' }}>
-              {isSadad ? Math.round(data.amount * 1.02).toLocaleString() : monthly.toLocaleString()}<RiyalSign size="sm" />
+              <RiyalSign size="sm" />{isSadad ? Math.round(data.amount * 1.02).toLocaleString() : monthly.toLocaleString()}
             </p>
             {!isSadad && (
               <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.55)', marginTop: 2 }}>

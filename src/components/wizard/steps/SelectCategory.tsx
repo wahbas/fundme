@@ -1,4 +1,4 @@
-import { ChevronRight } from 'lucide-react'
+import { ChevronRight, ChevronLeft } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useTheme } from '../../../ThemeContext'
 import { useI18n } from '../../../i18n'
@@ -168,7 +168,7 @@ export default function SelectCategory({ data, onChange }: Props) {
                   transition: 'background 0.2s',
                 }}
               >
-                <ChevronRight size={14} color={isSelected ? '#fff' : theme.textMuted} style={{ transform: isRTL ? 'scaleX(-1)' : 'none' }} />
+                {isRTL ? <ChevronLeft size={14} color={isSelected ? '#fff' : theme.textMuted} /> : <ChevronRight size={14} color={isSelected ? '#fff' : theme.textMuted} />}
               </div>
             </motion.button>
           )

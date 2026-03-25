@@ -54,6 +54,14 @@ export function ArrowRightIcon({ size = 24, color = '#94A3B8' }: IconProps) {
   )
 }
 
+export function ArrowLeftIcon({ size = 24, color = '#94A3B8' }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <path d="M15 6L9 12L15 18" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
 export function NotificationBellIcon({ size = 24, color = '#1E293B' }: IconProps) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none">

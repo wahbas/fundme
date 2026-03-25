@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowRight, Plus } from 'lucide-react'
+import { ArrowRight, ArrowLeft, Plus } from 'lucide-react'
 import { useNavigate as useNav } from 'react-router-dom'
 import Sidebar from '../components/layout/Sidebar'
 import Header from '../components/layout/Header'
@@ -50,7 +50,7 @@ function getStatusStyle(key: string): { color: string; bg: string; border: strin
 
 function LoanCard({ loan, delay, query }: { loan: Loan; delay: number; query: string }) {
   const { theme } = useTheme()
-  const { t } = useI18n()
+  const { t, isRTL } = useI18n()
   const nav = useNav()
   const [hovered, setHovered] = useState(false)
   const statusLabel = t(loan.statusKey as any)
@@ -100,7 +100,7 @@ function LoanCard({ loan, delay, query }: { loan: Loan; delay: number; query: st
       {/* Amount */}
       <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 4 }}>{t('loan.financingAmount' as any)}</p>
       <p style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary, marginBottom: 20 }}>
-        {loan.amount.toLocaleString()} <RiyalSign size="sm" />
+        <RiyalSign size="sm" /> {loan.amount.toLocaleString()}
       </p>
 
       {/* Spacer to push button to bottom */}
@@ -127,7 +127,7 @@ function LoanCard({ loan, delay, query }: { loan: Loan; delay: number; query: st
         }}
       >
         {t(loan.ctaKey as any)}
-        <ArrowRight size={16} />
+        {isRTL ? <ArrowLeft size={16} /> : <ArrowRight size={16} />}
       </button>
     </motion.div>
   )

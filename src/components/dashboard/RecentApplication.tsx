@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, ArrowLeft } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import RiyalSign from '../icons/RiyalSign'
 import { useTheme } from '../../ThemeContext'
@@ -62,7 +62,7 @@ const APPLICATIONS: Application[] = [
 export default function RecentApplication({ headerOnly, cardsOnly }: { headerOnly?: boolean; cardsOnly?: boolean } = {}) {
   const [activeFilter, setActiveFilter] = useState<Status>('all')
   const { theme } = useTheme()
-  const { t } = useI18n()
+  const { t, isRTL } = useI18n()
 
   const FILTERS: { key: Status; label: string }[] = [
     { key: 'all', label: t('recent.all') },
@@ -246,7 +246,7 @@ export default function RecentApplication({ headerOnly, cardsOnly }: { headerOnl
                 <div style={{ padding: '16px 22px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
                   <div>
                     <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 4 }}>{t('recent.financingAmount')}</p>
-                    <p style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary }}>{app.amount.toLocaleString()} <RiyalSign size="lg" /></p>
+                    <p style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary }}><RiyalSign size="lg" /> {app.amount.toLocaleString()}</p>
                   </div>
                   <p style={{ fontSize: 12, color: theme.textMuted }}>{app.date}</p>
                 </div>
@@ -277,7 +277,7 @@ export default function RecentApplication({ headerOnly, cardsOnly }: { headerOnl
                     onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = theme.cardBg }}
                   >
                     {t('recent.viewStatus')}
-                    <ArrowRight size={16} />
+                    {isRTL ? <ArrowLeft size={16} /> : <ArrowRight size={16} />}
                   </button>
                 </div>
               </motion.div>

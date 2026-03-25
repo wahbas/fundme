@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
-  ArrowLeft, Calendar, Clock, CreditCard, Info, FileText,
+  ArrowLeft, ArrowRight, Calendar, Clock, CreditCard, Info, FileText,
   ArrowUpDown, CheckCircle2, Zap, Download,
   TrendingUp, Receipt,
 } from 'lucide-react'
@@ -237,7 +237,7 @@ function InfoTab({ loan }: { loan: LoanData }) {
         <p style={{ fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.6, color: theme.textMuted, marginBottom: 12 }}>{t('loanDetail.loanAmount')}</p>
         <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: `1px solid ${theme.borderLight}` }}>
           <span style={{ fontSize: 14, color: theme.textSecondary }}>{t('loanDetail.approvedAmount')}</span>
-          <span style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary }}>{loan.approvedAmount.toLocaleString()} <RiyalSign size="sm" /></span>
+          <span style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary }}><RiyalSign size="sm" /> {loan.approvedAmount.toLocaleString()}</span>
         </div>
 
         {/* Profit & Fees section */}
@@ -248,13 +248,13 @@ function InfoTab({ loan }: { loan: LoanData }) {
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: `1px solid ${theme.borderLight}` }}>
           <span style={{ fontSize: 14, color: theme.textSecondary }}>{t('loanDetail.originationFee')}</span>
-          <span style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary }}>{loan.originationFee.toLocaleString()} <RiyalSign size="sm" /></span>
+          <span style={{ fontSize: 14, fontWeight: 600, color: theme.textPrimary }}><RiyalSign size="sm" /> {loan.originationFee.toLocaleString()}</span>
         </div>
 
         {/* Total */}
         <div style={{ display: 'flex', justifyContent: 'space-between', padding: '16px 0 0', marginTop: 8 }}>
           <span style={{ fontSize: 15, fontWeight: 700, color: theme.textPrimary }}>{t('loanDetail.totalRepayable')}</span>
-          <span style={{ fontSize: 15, fontWeight: 700, color: theme.textPrimary }}>{loan.totalRepayable.toLocaleString()} <RiyalSign size="sm" /></span>
+          <span style={{ fontSize: 15, fontWeight: 700, color: theme.textPrimary }}><RiyalSign size="sm" /> {loan.totalRepayable.toLocaleString()}</span>
         </div>
       </motion.div>
 
@@ -370,9 +370,9 @@ function RepaymentTab({ loan }: { loan: LoanData }) {
           }}>
             <span style={{ fontWeight: 600, color: theme.textPrimary }}>{row.installment}</span>
             <span>{row.dueDate}</span>
-            <span style={{ textAlign: 'right' }}>{row.principal.toLocaleString()} <RiyalSign size="sm" /></span>
-            <span style={{ textAlign: 'right', color: theme.textMuted }}>{row.profit.toLocaleString()} <RiyalSign size="sm" /></span>
-            <span style={{ textAlign: 'right', fontWeight: 600, color: theme.textPrimary }}>{row.total.toLocaleString()} <RiyalSign size="sm" /></span>
+            <span style={{ textAlign: 'right' }}><RiyalSign size="sm" /> {row.principal.toLocaleString()}</span>
+            <span style={{ textAlign: 'right', color: theme.textMuted }}><RiyalSign size="sm" /> {row.profit.toLocaleString()}</span>
+            <span style={{ textAlign: 'right', fontWeight: 600, color: theme.textPrimary }}><RiyalSign size="sm" /> {row.total.toLocaleString()}</span>
             <span style={{ textAlign: 'right' }}>
               <span style={{
                 padding: '3px 10px', borderRadius: 12, fontSize: 11, fontWeight: 600,
@@ -431,7 +431,7 @@ function TransactionsTab({ loan }: { loan: LoanData }) {
                 fontSize: 15, fontWeight: 700,
                 color: txn.type === 'disbursement' ? '#16A34A' : txn.type === 'payment' ? theme.textPrimary : '#D97706',
               }}>
-                {txn.type === 'disbursement' ? '+' : '-'} {txn.amount.toLocaleString()} <RiyalSign size="sm" />
+                {txn.type === 'disbursement' ? '+' : '-'} <RiyalSign size="sm" /> {txn.amount.toLocaleString()}
               </p>
               <span style={{
                 fontSize: 11, fontWeight: 600, color: '#16A34A',
@@ -544,7 +544,7 @@ export default function LoanDetails() {
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}
               >
-                <ArrowLeft size={18} color={theme.textSecondary} />
+                {isRTL ? <ArrowRight size={18} color={theme.textSecondary} /> : <ArrowLeft size={18} color={theme.textSecondary} />}
               </button>
               <div>
                 <h2 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary }}>{t('loanDetail.loanDetails')}</h2>
@@ -574,7 +574,7 @@ export default function LoanDetails() {
               </div>
               <div>
                 <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 4 }}>{t('loanDetail.outstandingBalance')}</p>
-                <p style={{ fontSize: 18, fontWeight: 700, color: '#2563EB' }}>{loan.outstandingBalance.toLocaleString()} <RiyalSign color="#2563EB" /></p>
+                <p style={{ fontSize: 18, fontWeight: 700, color: '#2563EB' }}><RiyalSign color="#2563EB" /> {loan.outstandingBalance.toLocaleString()}</p>
               </div>
               <div>
                 <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 4 }}>{t('loanDetail.status')}</p>
@@ -610,7 +610,7 @@ export default function LoanDetails() {
                   <div style={{ display: 'flex', gap: 32 }}>
                     <div>
                       <p style={{ fontSize: 11, color: theme.textMuted, marginBottom: 4 }}>{t('loanDetail.amountDue')}</p>
-                      <p style={{ fontSize: 22, fontWeight: 700, color: '#2563EB' }}>{loan.nextPayment.amount.toLocaleString()} <RiyalSign size="lg" color="#2563EB" /></p>
+                      <p style={{ fontSize: 22, fontWeight: 700, color: '#2563EB' }}><RiyalSign size="lg" color="#2563EB" /> {loan.nextPayment.amount.toLocaleString()}</p>
                     </div>
                     <div>
                       <p style={{ fontSize: 11, color: theme.textMuted, marginBottom: 4 }}>{t('loanDetail.dueDate')}</p>

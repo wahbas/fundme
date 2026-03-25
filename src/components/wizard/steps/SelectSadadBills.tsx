@@ -97,7 +97,7 @@ export default function SelectSadadBills({ data, onChange }: Props) {
                   </td>
                   <td style={{ ...tdStyle, fontFamily: 'monospace', fontSize: 12 }}>{bill.billNumber}</td>
                   <td style={tdStyle}>{bill.biller}</td>
-                  <td style={{ ...tdStyle, textAlign: 'right', fontWeight: 600 }}>{bill.amount.toLocaleString()}<RiyalSign size="sm" /></td>
+                  <td style={{ ...tdStyle, textAlign: 'right', fontWeight: 600 }}><RiyalSign size="sm" />{bill.amount.toLocaleString()}</td>
                   <td style={tdStyle}>{bill.dueDate}</td>
                 </tr>
               )
@@ -122,7 +122,7 @@ export default function SelectSadadBills({ data, onChange }: Props) {
         <p style={{ fontSize: 13, color: selected.size > 0 ? 'rgba(255,255,255,0.7)' : theme.textMuted, marginBottom: 4 }}>
           Total Selected
         </p>
-        <p style={{ fontSize: 28, fontWeight: 700 }}>{total.toLocaleString()}<RiyalSign size="lg" color="#FFFFFF" /></p>
+        <p style={{ fontSize: 28, fontWeight: 700 }}><RiyalSign size="lg" color="#FFFFFF" />{total.toLocaleString()}</p>
         <p style={{ fontSize: 13, color: selected.size > 0 ? 'rgba(255,255,255,0.6)' : theme.textMuted, marginTop: 4 }}>
           {selected.size} bill{selected.size !== 1 ? 's' : ''} selected
         </p>

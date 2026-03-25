@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import {
-  CheckCircle2, ArrowRight, Lock, CreditCard,
+  CheckCircle2, ArrowRight, ArrowLeft, Lock, CreditCard,
   Wallet, Search, XCircle, AlertCircle, RefreshCw,
 } from 'lucide-react'
 import { motion } from 'framer-motion'
@@ -307,6 +307,7 @@ function SelectAccountScreen({
   onSelect: (account: MockAccount) => void
 }) {
   const { theme } = useTheme()
+  const { isRTL } = useI18n()
   const [selectedId, setSelectedId] = useState<string | null>(null)
 
   function maskIban(iban: string) {
@@ -379,7 +380,7 @@ function SelectAccountScreen({
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontSize: 12, color: '#9CA3AF', fontFamily: 'monospace' }}>{maskIban(acc.iban)}</span>
                 <span style={{ fontSize: 14, fontWeight: 700, color: '#111827' }}>
-                  {acc.balance.toLocaleString()} <span style={{ fontSize: 11, fontWeight: 400, color: '#9CA3AF' }}><RiyalSign size="sm" /></span>
+                  <span style={{ fontSize: 11, fontWeight: 400, color: '#9CA3AF' }}><RiyalSign size="sm" /></span> {acc.balance.toLocaleString()}
                 </span>
               </div>
             </motion.button>
@@ -400,7 +401,7 @@ function SelectAccountScreen({
         }}
       >
         Use Selected Account
-        <ArrowRight size={18} />
+        {isRTL ? <ArrowLeft size={18} /> : <ArrowRight size={18} />}
       </motion.button>
     </div>
   )
@@ -488,7 +489,7 @@ function ErrorScreen({
 // ─── Main Component ──────────────────────────────────────────
 
 export default function BankConnection({ onComplete }: Props) {
-  useI18n() // i18n hook ready for future translations
+  const { isRTL } = useI18n()
   const [leanState, setLeanState] = useState<LeanState>('select-bank')
   const [selectedBank, setSelectedBank] = useState<SupportedBank | null>(null)
   const [selectedAccount, setSelectedAccount] = useState<MockAccount | null>(null)

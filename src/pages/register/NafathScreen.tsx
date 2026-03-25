@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
-  ArrowRight, Smartphone, Clock,
+  ArrowRight, ArrowLeft, Smartphone, Clock,
   CheckCircle2, AlertTriangle, RefreshCw,
 } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { NafathLogo } from '../../components/onboarding/logos'
+import { useI18n } from '../../i18n'
 import ProgressBar from './components/ProgressBar'
 import ContactSupportModal from '../../components/dashboard/ContactSupportModal'
 
@@ -188,6 +189,7 @@ function VerifyingView() {
 
 function SuccessView() {
   const navigate = useNavigate()
+  const { isRTL } = useI18n()
 
   return (
     <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }}>
@@ -251,7 +253,7 @@ function SuccessView() {
             boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15)',
           }}
         >
-          Go to Dashboard <ArrowRight size={18} />
+          Go to Dashboard {isRTL ? <ArrowLeft size={18} /> : <ArrowRight size={18} />}
         </motion.button>
       </div>
     </motion.div>

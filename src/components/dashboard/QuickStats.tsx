@@ -207,10 +207,10 @@ function StatCard({ s, delay }: { s: StatDef; delay: number }) {
 
         {/* Value */}
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 6 }}>
-          <AnimatedValue value={s.value} isEmpty={isEmpty} color={isEmpty ? '#CBD5E1' : theme.textPrimary} />
           {s.currency && (
             <span style={{ fontSize: 14, fontWeight: 500, color: isEmpty ? '#CBD5E1' : theme.textSecondary }}><RiyalSign size="lg" /></span>
           )}
+          <AnimatedValue value={s.value} isEmpty={isEmpty} color={isEmpty ? '#CBD5E1' : theme.textPrimary} />
         </div>
 
         {/* Sub text */}

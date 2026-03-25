@@ -239,7 +239,7 @@ export default function InvoiceDetails({ data, onChange }: Props) {
                             overflow: 'hidden', whiteSpace: 'nowrap',
                           }}
                         >
-                          {financedAmount.toLocaleString()}<RiyalSign size="sm" color="#FFFFFF" />
+                          <RiyalSign size="sm" color="#FFFFFF" />{financedAmount.toLocaleString()}
                         </motion.div>
                         {/* Divider */}
                         <div style={{ width: 4, background: theme.cardBg, flexShrink: 0 }} />
@@ -259,11 +259,11 @@ export default function InvoiceDetails({ data, onChange }: Props) {
                       }}>
                         <span style={{ fontSize: 12, color: theme.textMuted }}>
                           Financing{' '}
-                          <span style={{ fontWeight: 700, color: '#2563EB' }}>{financedAmount.toLocaleString()}<RiyalSign size="sm" color="#2563EB" /></span>
+                          <span style={{ fontWeight: 700, color: '#2563EB' }}><RiyalSign size="sm" color="#2563EB" />{financedAmount.toLocaleString()}</span>
                         </span>
                         <span style={{ fontSize: 12, color: theme.textMuted }}>
                           Remaining{' '}
-                          <span style={{ fontWeight: 700, color: theme.textPrimary }}>{remaining.toLocaleString()}<RiyalSign size="sm" /></span>
+                          <span style={{ fontWeight: 700, color: theme.textPrimary }}><RiyalSign size="sm" />{remaining.toLocaleString()}</span>
                         </span>
                       </div>
 
@@ -375,7 +375,7 @@ export default function InvoiceDetails({ data, onChange }: Props) {
                                       }}
                                     />
                                     <span style={{ fontSize: 12, color: theme.textMuted }}>
-                                      of {bill.amount.toLocaleString()}<RiyalSign size="sm" />
+                                      of <RiyalSign size="sm" />{bill.amount.toLocaleString()}
                                     </span>
                                   </div>
                                 </motion.div>
@@ -414,7 +414,7 @@ export default function InvoiceDetails({ data, onChange }: Props) {
             <div>
               <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 4 }}>Total Financing Amount</p>
               <p style={{ fontSize: 24, fontWeight: 700, color: theme.textPrimary }}>
-                {totalFinanced.toLocaleString()} <span style={{ fontSize: 14, fontWeight: 500, color: theme.textMuted }}><RiyalSign size="lg" /></span>
+                <span style={{ fontSize: 14, fontWeight: 500, color: theme.textMuted }}><RiyalSign size="lg" /></span>{totalFinanced.toLocaleString()}
               </p>
             </div>
             <div style={{ textAlign: 'right' }}>

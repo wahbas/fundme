@@ -53,14 +53,14 @@ export default function ReviewSubmit({ data, onGoToStep }: Props) {
       >
         <div>
           <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.65)', marginBottom: 4 }}>Amount</p>
-          <p style={{ fontSize: 20, fontWeight: 700, color: '#fff' }}>{data.amount.toLocaleString()}<RiyalSign color="#FFFFFF" /></p>
+          <p style={{ fontSize: 20, fontWeight: 700, color: '#fff' }}><RiyalSign color="#FFFFFF" />{data.amount.toLocaleString()}</p>
         </div>
         <div>
           <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.65)', marginBottom: 4 }}>
             {isSadad ? 'Repayment' : 'Term'}
           </p>
           <p style={{ fontSize: 20, fontWeight: 700, color: '#fff' }}>
-            {isSadad ? <>{Math.round(data.amount * 1.02).toLocaleString()}<RiyalSign size="sm" color="#FFFFFF" /></> : `${data.term} months`}
+            {isSadad ? <><RiyalSign size="sm" color="#FFFFFF" />{Math.round(data.amount * 1.02).toLocaleString()}</> : `${data.term} months`}
           </p>
         </div>
         <div>
@@ -68,7 +68,7 @@ export default function ReviewSubmit({ data, onGoToStep }: Props) {
             {isSadad ? 'Service Fee' : 'Monthly'}
           </p>
           <p style={{ fontSize: 20, fontWeight: 700, color: '#fff' }}>
-            {isSadad ? <>{Math.round(data.amount * 0.02).toLocaleString()}<RiyalSign size="sm" color="#FFFFFF" /></> : <>~{monthly.toLocaleString()}<RiyalSign size="sm" color="#FFFFFF" /></>}
+            {isSadad ? <><RiyalSign size="sm" color="#FFFFFF" />{Math.round(data.amount * 0.02).toLocaleString()}</> : <><RiyalSign size="sm" color="#FFFFFF" />~{monthly.toLocaleString()}</>}
           </p>
         </div>
       </div>

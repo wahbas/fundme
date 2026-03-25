@@ -102,7 +102,7 @@ export default function UploadInvoices({ data, onChange }: Props) {
                 >
                   <td style={tdStyle}>{inv.number}</td>
                   <td style={tdStyle}>{inv.client}</td>
-                  <td style={{ ...tdStyle, textAlign: 'right', fontWeight: 600 }}>{inv.amount.toLocaleString()}<RiyalSign size="sm" /></td>
+                  <td style={{ ...tdStyle, textAlign: 'right', fontWeight: 600 }}><RiyalSign size="sm" />{inv.amount.toLocaleString()}</td>
                   <td style={tdStyle}>{inv.dueDate}</td>
                   <td style={tdStyle}>
                     <button onClick={() => remove(inv.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }}>
@@ -129,7 +129,7 @@ export default function UploadInvoices({ data, onChange }: Props) {
           }}
         >
           <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.7)', marginBottom: 4 }}>Total Invoice Value</p>
-          <p style={{ fontSize: 28, fontWeight: 700 }}>{total.toLocaleString()}<RiyalSign size="lg" color="#FFFFFF" /></p>
+          <p style={{ fontSize: 28, fontWeight: 700 }}><RiyalSign size="lg" color="#FFFFFF" />{total.toLocaleString()}</p>
           <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', marginTop: 4 }}>
             {data.invoices.length} invoice{data.invoices.length !== 1 ? 's' : ''} uploaded
           </p>

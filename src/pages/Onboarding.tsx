@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { X, Check, CheckCircle2, Building2, Landmark, ArrowRight } from 'lucide-react'
+import { X, Check, CheckCircle2, Building2, Landmark, ArrowRight, ArrowLeft } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useTheme } from '../ThemeContext'
 import { useI18n } from '../i18n'
@@ -13,7 +13,7 @@ import logo from '../assets/logo.png'
 
 function AccountVerifiedScreen({ onGoToDashboard }: { onGoToDashboard: () => void }) {
   const { theme } = useTheme()
-  const { t } = useI18n()
+  const { t, isRTL } = useI18n()
 
   const CHECKLIST_ITEMS = [
     t('onboarding.accountCreated'),
@@ -92,7 +92,7 @@ function AccountVerifiedScreen({ onGoToDashboard }: { onGoToDashboard: () => voi
         }}
       >
         {t('onboarding.goToDashboard')}
-        <ArrowRight size={20} />
+        {isRTL ? <ArrowLeft size={20} /> : <ArrowRight size={20} />}
       </motion.button>
     </div>
   )

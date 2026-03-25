@@ -66,7 +66,7 @@ export default function StepReview() {
         <h3 style={{ fontSize: 13, color: 'rgba(255,255,255,0.7)', marginBottom: 12 }}>Loan Request Summary</h3>
         <div className="review-summary-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }}>
           <div>
-            <p style={{ fontSize: 22, fontWeight: 700 }}>200,000<RiyalSign size="lg" color="#FFFFFF" /></p>
+            <p style={{ fontSize: 22, fontWeight: 700 }}><RiyalSign size="lg" color="#FFFFFF" />200,000</p>
             <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.55)' }}>Requested Amount</p>
           </div>
           <div>
@@ -74,7 +74,7 @@ export default function StepReview() {
             <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.55)' }}>Repayment Term</p>
           </div>
           <div>
-            <p style={{ fontSize: 22, fontWeight: 700 }}>~17,500<RiyalSign size="lg" color="#FFFFFF" /></p>
+            <p style={{ fontSize: 22, fontWeight: 700 }}><RiyalSign size="lg" color="#FFFFFF" />~17,500</p>
             <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.55)' }}>Monthly Payment</p>
           </div>
         </div>

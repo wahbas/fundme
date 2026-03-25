@@ -92,7 +92,7 @@ export default function StepLoanDetails() {
               <h3 style={{ fontWeight: 600, color: theme.textPrimary, marginBottom: 4, fontSize: 14 }}>{type.name}</h3>
               <p style={{ fontSize: 13, color: theme.textMuted, marginBottom: 8 }}>{type.description}</p>
               <p style={{ fontSize: 13, fontWeight: 500, color: '#0D82F9' }}>
-                Up to {type.maxAmount.toLocaleString()}<RiyalSign size="sm" />
+                Up to <RiyalSign size="sm" />{type.maxAmount.toLocaleString()}
               </p>
             </button>
           )
@@ -106,7 +106,7 @@ export default function StepLoanDetails() {
         </label>
         <div style={{ textAlign: 'center', marginBottom: 20 }}>
           <span style={{ fontSize: 36, fontWeight: 700, color: '#002E83' }}>
-            {amount.toLocaleString()}<RiyalSign size="lg" />
+            <RiyalSign size="lg" />{amount.toLocaleString()}
           </span>
         </div>
         <input
@@ -126,8 +126,8 @@ export default function StepLoanDetails() {
           }}
         />
         <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: theme.textMuted, marginTop: 8 }}>
-          <span>10,000<RiyalSign size="sm" /></span>
-          <span>500,000<RiyalSign size="sm" /></span>
+          <span><RiyalSign size="sm" />10,000</span>
+          <span><RiyalSign size="sm" />500,000</span>
         </div>
       </div>
 
@@ -189,7 +189,7 @@ export default function StepLoanDetails() {
         <div>
           <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.7)', marginBottom: 4 }}>Estimated Monthly Payment</p>
           <p style={{ fontSize: 30, fontWeight: 700 }}>
-            {Math.round((amount / term) * 1.05).toLocaleString()}<RiyalSign size="sm" />
+            <RiyalSign size="sm" />{Math.round((amount / term) * 1.05).toLocaleString()}
           </p>
           <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)', marginTop: 4 }}>
             at ~5% APR for {term} months

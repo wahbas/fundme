@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Building2, Search, CheckCircle2, ArrowRight, AlertCircle, ShieldCheck, Upload, FileText, Users, MapPin, Hash, Info, ArrowLeft } from 'lucide-react'
+import { Building2, Search, CheckCircle2, ArrowRight, ArrowLeft, AlertCircle, ShieldCheck, Upload, FileText, Users, MapPin, Hash, Info } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useTheme } from '../../../ThemeContext'
 import { useI18n } from '../../../i18n'
@@ -212,7 +212,7 @@ function ManualLookupScreen({ onResult, onBack }: { onResult: (cr: CommercialReg
           onMouseEnter={(e) => (e.currentTarget.style.color = '#002E83')}
           onMouseLeave={(e) => (e.currentTarget.style.color = '#94A3B8')}
         >
-          <ArrowLeft size={16} />
+          {isRTL ? <ArrowRight size={16} /> : <ArrowLeft size={16} />}
           Back to linked companies
         </button>
       )}
@@ -428,7 +428,7 @@ function ManualLookupScreen({ onResult, onBack }: { onResult: (cr: CommercialReg
             }}
           >
             Complete & Continue
-            <ArrowRight size={18} />
+            {isRTL ? <ArrowLeft size={18} /> : <ArrowRight size={18} />}
           </motion.button>
         </>
       )}
@@ -550,7 +550,7 @@ function SelectCRScreen({ crs, onSelect, onAddManually }: { crs: CommercialRegis
         }}
       >
         {t('onboarding.continueSelected' as any)}
-        <ArrowRight size={18} style={{ transform: isRTL ? 'scaleX(-1)' : 'none' }} />
+        {isRTL ? <ArrowLeft size={18} /> : <ArrowRight size={18} />}
       </motion.button>
     </div>
   )
@@ -661,7 +661,7 @@ function ConfirmCRScreen({ cr, onConfirm, onBack }: { cr: CommercialRegistration
           }}
         >
           {t('onboarding.confirmContinue')}
-          <ArrowRight size={18} style={{ transform: isRTL ? 'scaleX(-1)' : 'none' }} />
+          {isRTL ? <ArrowLeft size={18} /> : <ArrowRight size={18} />}
         </motion.button>
       </div>
     </div>
@@ -735,6 +735,7 @@ function NotAuthorizedScreen({ signatory, onUploadLetter, onBack }: { signatory?
 }
 
 function UploadLetterScreen({ onUploaded, onBack }: { onUploaded: () => void; onBack: () => void }) {
+  const { isRTL } = useI18n()
   const [uploading, setUploading] = useState(false)
   const [uploaded, setUploaded] = useState(false)
 
@@ -831,7 +832,7 @@ function UploadLetterScreen({ onUploaded, onBack }: { onUploaded: () => void; on
           }}
         >
           Continue
-          <ArrowRight size={18} />
+          {isRTL ? <ArrowLeft size={18} /> : <ArrowRight size={18} />}
         </motion.button>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Lock, ChevronRight } from 'lucide-react'
+import { Lock, ChevronRight, ChevronLeft } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useTheme } from '../../ThemeContext'
 import { useI18n } from '../../i18n'
@@ -198,7 +198,7 @@ function ProductCard({ p, i }: { p: Product; i: number }) {
                 }}
               >
                 {t('product.apply')}
-                <ChevronRight size={16} style={{ transform: isRTL ? 'scaleX(-1)' : 'none' }} />
+                {isRTL ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
               </button>
             </>
           ) : (
@@ -219,7 +219,7 @@ function ProductCard({ p, i }: { p: Product; i: number }) {
                 }}
               >
                 {t('product.learn')}
-                <ChevronRight size={16} style={{ transform: isRTL ? 'scaleX(-1)' : 'none' }} />
+                {isRTL ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
               </span>
             </>
           )}

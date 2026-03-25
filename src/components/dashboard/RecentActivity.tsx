@@ -1,4 +1,5 @@
-import { CheckCircle2, ShieldCheck, Landmark, FileUp, ArrowRight } from 'lucide-react'
+import { CheckCircle2, ShieldCheck, Landmark, FileUp, ArrowRight, ArrowLeft } from 'lucide-react'
+import { useI18n } from '../../i18n'
 
 const activities = [
   {
@@ -32,6 +33,7 @@ const activities = [
 ]
 
 export default function RecentActivity() {
+  const { isRTL } = useI18n()
   return (
     <section style={{ marginBottom: 20 }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
@@ -50,7 +52,7 @@ export default function RecentActivity() {
           }}
         >
           View All
-          <ArrowRight size={14} />
+          {isRTL ? <ArrowLeft size={14} /> : <ArrowRight size={14} />}
         </button>
       </div>
       <div

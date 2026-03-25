@@ -58,7 +58,7 @@ export default function EarlyPaymentModal({ open, onClose }: EarlyPaymentModalPr
   const [notes, setNotes] = useState('')
   const [loading, setLoading] = useState(false)
   const { theme } = useTheme()
-  const { t, lang } = useI18n()
+  const { t, lang, isRTL } = useI18n()
 
   if (!open) return null
 
@@ -238,7 +238,7 @@ export default function EarlyPaymentModal({ open, onClose }: EarlyPaymentModalPr
                                       onMouseLeave={(e) => { e.currentTarget.style.background = timing === opt.value ? 'rgba(0,46,131,0.05)' : 'transparent' }}
                                     >
                                       <span>{lang === 'ar' ? opt.labelAr : opt.labelEn}</span>
-                                      <span style={{ fontSize: 11, color: '#10B981', fontWeight: 500 }}>{t('modal.youSave')} {opt.savings} SAR</span>
+                                      <span style={{ fontSize: 11, color: '#10B981', fontWeight: 500 }}>SAR {opt.savings} {t('modal.youSave')}</span>
                                     </div>
                                   ))}
                                 </motion.div>
@@ -325,7 +325,7 @@ export default function EarlyPaymentModal({ open, onClose }: EarlyPaymentModalPr
                       display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
                     }}
                   >
-                    {t('login.continue')} <ArrowRight size={16} />
+                    {t('login.continue')} {isRTL ? <ArrowLeft size={16} /> : <ArrowRight size={16} />}
                   </button>
                 </div>
               </div>
@@ -346,7 +346,7 @@ export default function EarlyPaymentModal({ open, onClose }: EarlyPaymentModalPr
               <div style={{ padding: '24px 32px 0', position: 'sticky', top: 0, background: theme.cardBg, zIndex: 2 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
                   <button onClick={() => setState('options')} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6, color: theme.textMuted, fontSize: 13, fontWeight: 500, padding: 0 }}>
-                    <ArrowLeft size={16} /> {t('common.back')}
+                    {isRTL ? <ArrowRight size={16} /> : <ArrowLeft size={16} />} {t('common.back')}
                   </button>
                   <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <X size={20} color="#64748B" />
@@ -537,7 +537,7 @@ export default function EarlyPaymentModal({ open, onClose }: EarlyPaymentModalPr
                         style={{ width: 18, height: 18, border: '2px solid rgba(15,23,42,0.15)', borderTopColor: '#0F172A', borderRadius: '50%' }}
                       />
                     ) : (
-                      <>{t('modal.submitRequest')} <ArrowRight size={16} /></>
+                      <>{t('modal.submitRequest')} {isRTL ? <ArrowLeft size={16} /> : <ArrowRight size={16} />}</>
                     )}
                   </button>
                 </div>

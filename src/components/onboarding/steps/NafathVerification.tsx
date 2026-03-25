@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
-import { ShieldCheck, Smartphone, Clock, CheckCircle2, XCircle, RefreshCw, ArrowRight } from 'lucide-react'
+import { ShieldCheck, Smartphone, Clock, CheckCircle2, XCircle, RefreshCw, ArrowRight, ArrowLeft } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useTheme } from '../../../ThemeContext'
+import { useI18n } from '../../../i18n'
 import type { IdentityVerificationData } from '../types'
 import { NafathLogo } from '../logos'
 
@@ -231,6 +232,7 @@ function LoadingScreen({ message }: { message: string }) {
 
 function SuccessScreen({ onContinue }: { onContinue: () => void }) {
   const { theme } = useTheme()
+  const { isRTL } = useI18n()
   return (
     <div style={{ textAlign: 'center', padding: '24px 0' }}>
       <motion.div
@@ -287,7 +289,7 @@ function SuccessScreen({ onContinue }: { onContinue: () => void }) {
         }}
       >
         Continue to Business Verification
-        <ArrowRight size={18} />
+        {isRTL ? <ArrowLeft size={18} /> : <ArrowRight size={18} />}
       </motion.button>
     </div>
   )

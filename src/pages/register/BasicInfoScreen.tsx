@@ -9,7 +9,7 @@ import { useI18n } from '../../i18n'
 
 export default function BasicInfoScreen() {
   const navigate = useNavigate()
-  const { t } = useI18n()
+  const { t, isRTL } = useI18n()
   const { setBasicInfo } = useRegister()
   const [nationalId, setNationalId] = useState('')
   const [email, setEmail] = useState('')
@@ -52,7 +52,7 @@ export default function BasicInfoScreen() {
         onClick={() => navigate('/register/verify-otp')}
         style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 13, color: '#6B7280', cursor: 'pointer', marginBottom: 24, background: 'none', border: 'none', padding: 0 }}
       >
-        <ArrowLeft size={16} /> {t('common.back')}
+        {isRTL ? <ArrowRight size={16} /> : <ArrowLeft size={16} />} {t('common.back')}
       </button>
 
       <h2 style={{ fontSize: 24, fontWeight: 700, color: '#111', marginBottom: 6 }}>
@@ -143,7 +143,7 @@ export default function BasicInfoScreen() {
             </>
           ) : (
             <>
-              {t('login.continue')} <ArrowRight size={18} />
+              {t('login.continue')} {isRTL ? <ArrowLeft size={18} /> : <ArrowRight size={18} />}
             </>
           )}
         </motion.button>

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, ArrowLeft } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useRegister } from './RegisterContext'
 import ProgressBar from './components/ProgressBar'
@@ -9,7 +9,7 @@ import { useI18n } from '../../i18n'
 
 export default function PhoneScreen() {
   const navigate = useNavigate()
-  const { t } = useI18n()
+  const { t, isRTL } = useI18n()
   const { setPhone: savePhone } = useRegister()
   const [phone, setPhone] = useState('')
   const [formatted, setFormatted] = useState('')
@@ -89,7 +89,7 @@ export default function PhoneScreen() {
           </>
         ) : (
           <>
-            {t('login.continue')} <ArrowRight size={18} />
+            {t('login.continue')} {isRTL ? <ArrowLeft size={18} /> : <ArrowRight size={18} />}
           </>
         )}
       </motion.button>

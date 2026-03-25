@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ChevronRight, Upload, Building2, Briefcase, Plus } from 'lucide-react'
+import { ChevronRight, ChevronLeft, Upload, Building2, Briefcase, Plus } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useTheme } from '../../ThemeContext'
 import { useI18n } from '../../i18n'
@@ -50,7 +50,7 @@ function ActionRow({ icon: Icon, label, desc, isLast, onClick }: { icon: React.E
         <p style={{ fontSize: 13, fontWeight: 600, color: theme.textPrimary, marginBottom: 2 }}>{label}</p>
         <p style={{ fontSize: 11, color: theme.textMuted, margin: 0 }}>{desc}</p>
       </div>
-      <ChevronRight size={16} color={theme.textSecondary} style={{ flexShrink: 0, transform: isRTL ? 'scaleX(-1)' : 'none' }} />
+      {isRTL ? <ChevronLeft size={16} color={theme.textSecondary} style={{ flexShrink: 0 }} /> : <ChevronRight size={16} color={theme.textSecondary} style={{ flexShrink: 0 }} />}
     </div>
   )
 }

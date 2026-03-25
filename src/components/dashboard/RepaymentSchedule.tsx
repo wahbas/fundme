@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { CalendarClock, ChevronRight } from 'lucide-react'
+import { CalendarClock, ChevronRight, ChevronLeft } from 'lucide-react'
 import { motion } from 'framer-motion'
 import RiyalSign from '../icons/RiyalSign'
 import { useTheme } from '../../ThemeContext'
@@ -78,7 +78,7 @@ function PaymentRow({ payment, showPay, onPayClick }: { payment: Payment; showPa
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
         <div style={{ textAlign: 'right' }}>
           <div style={{ fontSize: 15, fontWeight: 700, color: theme.textPrimary, whiteSpace: 'nowrap' }}>
-            {payment.amount.toLocaleString()} <RiyalSign />
+            <RiyalSign /> {payment.amount.toLocaleString()}
           </div>
           <StatusIndicator status={payment.status} daysUntil={payment.daysUntil} />
         </div>
@@ -154,7 +154,7 @@ export default function RepaymentSchedule({ onPayClick }: { onPayClick?: () => v
             cursor: 'pointer',
           }}
         >
-          {t('repayment.viewAll')} <ChevronRight size={14} style={{ transform: isRTL ? 'scaleX(-1)' : 'none' }} />
+          {t('repayment.viewAll')} {isRTL ? <ChevronLeft size={14} /> : <ChevronRight size={14} />}
         </span>
       </div>
 

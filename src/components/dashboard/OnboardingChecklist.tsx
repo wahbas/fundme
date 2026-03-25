@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { StepCompleteIcon, StepCurrentIcon, StepUpcomingIcon, ChevronUpIcon, ChevronDownIcon, ArrowRightIcon } from '../icons/WidgetIcons'
+import { StepCompleteIcon, StepCurrentIcon, StepUpcomingIcon, ChevronUpIcon, ChevronDownIcon, ArrowRightIcon, ArrowLeftIcon } from '../icons/WidgetIcons'
 import { useTheme } from '../../ThemeContext'
 import { useI18n } from '../../i18n'
 
@@ -182,7 +182,7 @@ export default function OnboardingChecklist() {
                             }}
                           >
                             {step.actionLabel}
-                            <span style={{ display: 'inline-flex', transform: isRTL ? 'scaleX(-1)' : 'none' }}><ArrowRightIcon size={14} color="#fff" /></span>
+                            <span style={{ display: 'inline-flex' }}>{isRTL ? <ArrowLeftIcon size={14} color="#fff" /> : <ArrowRightIcon size={14} color="#fff" />}</span>
                           </motion.button>
                         </div>
                       </div>

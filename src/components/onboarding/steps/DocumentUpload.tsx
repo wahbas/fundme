@@ -6,6 +6,7 @@ import {
 } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useTheme } from '../../../ThemeContext'
+import { useI18n } from '../../../i18n'
 import type { DocumentUploadData, UploadedDocument, DocumentType } from '../types'
 
 export type DocSubStep = 'intro' | 'legal' | 'financial' | 'review' | 'success'
@@ -285,6 +286,7 @@ function UploadSubStep({
   onNext: () => void; onBack: () => void
   nextLabel: string; isComplete: boolean
 }) {
+  const { isRTL } = useI18n()
   return (
     <div style={{ padding: '8px 0' }}>
       {/* Header */}
@@ -346,7 +348,7 @@ function UploadSubStep({
             display: 'flex', alignItems: 'center', gap: 6,
           }}
         >
-          <ArrowLeft size={16} />
+          {isRTL ? <ArrowRight size={16} /> : <ArrowLeft size={16} />}
           Back
         </button>
         <motion.button
@@ -362,7 +364,7 @@ function UploadSubStep({
           }}
         >
           {nextLabel}
-          <ArrowRight size={18} />
+          {isRTL ? <ArrowLeft size={18} /> : <ArrowRight size={18} />}
         </motion.button>
       </div>
     </div>
@@ -379,6 +381,7 @@ function ReviewScreen({
   onBack: () => void
 }) {
   const { theme } = useTheme()
+  const { isRTL } = useI18n()
   const legalUploaded = documents.filter((d) => d.category === 'legal')
   const financialUploaded = documents.filter((d) => d.category === 'financial')
 
@@ -461,7 +464,7 @@ function ReviewScreen({
             display: 'flex', alignItems: 'center', gap: 6,
           }}
         >
-          <ArrowLeft size={16} />
+          {isRTL ? <ArrowRight size={16} /> : <ArrowLeft size={16} />}
           Edit
         </button>
         <motion.button
@@ -474,7 +477,7 @@ function ReviewScreen({
           }}
         >
           Submit All Documents
-          <ArrowRight size={18} />
+          {isRTL ? <ArrowLeft size={18} /> : <ArrowRight size={18} />}
         </motion.button>
       </div>
     </div>
@@ -485,6 +488,7 @@ function ReviewScreen({
 
 function SuccessScreen({ onContinue }: { onContinue: () => void }) {
   const { theme } = useTheme()
+  const { isRTL } = useI18n()
   return (
     <div style={{ textAlign: 'center', padding: '24px 0' }}>
       <motion.div
@@ -536,7 +540,7 @@ function SuccessScreen({ onContinue }: { onContinue: () => void }) {
         }}
       >
         Complete Onboarding
-        <ArrowRight size={18} />
+        {isRTL ? <ArrowLeft size={18} /> : <ArrowRight size={18} />}
       </motion.button>
     </div>
   )

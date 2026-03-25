@@ -3,10 +3,11 @@ import { useNavigate } from 'react-router-dom'
 import {
   FileText, Clock, CheckCircle, XCircle, Send,
   TrendingUp, Gift, Plus, Briefcase, Building2,
-  CheckCircle2, ArrowRight, ChevronLeft, ChevronRight,
+  CheckCircle2, ArrowRight, ArrowLeft, ChevronLeft, ChevronRight,
 } from 'lucide-react'
 import { motion } from 'framer-motion'
 import RiyalSign from '../icons/RiyalSign'
+import { useI18n } from '../../i18n'
 
 // ─── Types ────────────────────────────────────────────────────
 
@@ -135,6 +136,7 @@ function ensureScrollbarStyles() {
 
 function RequestCard({ request, index }: { request: FinancingRequest; index: number }) {
   const navigate = useNavigate()
+  const { isRTL } = useI18n()
   const [hovered, setHovered] = useState(false)
   const status = statusConfig[request.status]
   const StatusIcon = status.icon
@@ -206,7 +208,7 @@ function RequestCard({ request, index }: { request: FinancingRequest; index: num
 
       {/* Amount */}
       <p style={{ fontSize: 22, fontWeight: 700, color: '#111827', marginBottom: 6 }}>
-        {request.amountRequested.toLocaleString()} <RiyalSign size="sm" />
+        <RiyalSign size="sm" /> {request.amountRequested.toLocaleString()}
       </p>
 
       {/* Bottom area — fixed height, swaps content on hover */}
@@ -234,7 +236,7 @@ function RequestCard({ request, index }: { request: FinancingRequest; index: num
             }}
           >
             {status.action}
-            <ArrowRight size={14} />
+            {isRTL ? <ArrowLeft size={14} /> : <ArrowRight size={14} />}
           </button>
         ) : (
           <>
@@ -408,6 +410,7 @@ const STATUS_FILTERS: { value: RequestStatus | 'all'; label: string }[] = [
 ]
 
 export default function RecentRequests({ showEmpty }: { showEmpty?: boolean }) {
+  const { isRTL } = useI18n()
   const allRequests = showEmpty ? [] : MOCK_REQUESTS
   const scrollRef = useRef<HTMLDivElement>(null)
   const [canScrollLeft, setCanScrollLeft] = useState(false)
@@ -477,7 +480,7 @@ export default function RecentRequests({ showEmpty }: { showEmpty?: boolean }) {
           }}
         >
           View All
-          <ArrowRight size={14} />
+          {isRTL ? <ArrowLeft size={14} /> : <ArrowRight size={14} />}
         </button>
       </div>
 
