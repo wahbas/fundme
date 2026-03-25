@@ -140,12 +140,7 @@ function App() {
                 <div style={{ height: 1, background: theme.border }} />
 
                 {/* Row 2: Financing Products + Quick Actions */}
-                <div className="dashboard-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: 20, alignItems: 'start' }}>
-                  <FinancingProducts />
-                  <div style={{ marginTop: 50 }}>
-                    <QuickActions />
-                  </div>
-                </div>
+                <FinancingProducts quickActions={<QuickActions />} />
 
                 {/* Spacer divider */}
                 <div style={{ height: 1, background: theme.border }} />

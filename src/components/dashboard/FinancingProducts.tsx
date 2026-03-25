@@ -64,7 +64,7 @@ function SADADFinancingCover() {
 
 // ─── Component ──────────────────────────────────────────────────
 
-export default function FinancingProducts({ lockText = 'Unlock after verification' }: { lockText?: string }) {
+export default function FinancingProducts({ lockText = 'Unlock after verification', quickActions }: { lockText?: string; quickActions?: React.ReactNode }) {
   const { theme } = useTheme()
   const { t, isRTL } = useI18n()
 
@@ -98,7 +98,7 @@ export default function FinancingProducts({ lockText = 'Unlock after verificatio
         {t('product.completeToApply')}
       </p>
 
-      <div className="financing-products-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }}>
+      <div className="financing-products-grid" style={{ display: 'grid', gridTemplateColumns: quickActions ? 'repeat(3, 1fr) 340px' : 'repeat(3, 1fr)', gap: quickActions ? 20 : 24 }}>
         {products.map((p) => (
           <motion.div
             key={p.title}
@@ -157,6 +157,11 @@ export default function FinancingProducts({ lockText = 'Unlock after verificatio
             </div>
           </motion.div>
         ))}
+        {quickActions && (
+          <div style={{ alignSelf: 'start' }}>
+            {quickActions}
+          </div>
+        )}
       </div>
     </div>
   )
