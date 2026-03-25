@@ -64,7 +64,7 @@ function SADADFinancingCover() {
 
 // ─── Component ──────────────────────────────────────────────────
 
-export default function FinancingProducts({ lockText = 'Unlock after verification', quickActions }: { lockText?: string; quickActions?: React.ReactNode }) {
+export default function FinancingProducts({ lockText = 'Unlock after verification', hideHeader = false }: { lockText?: string; hideHeader?: boolean }) {
   const { theme } = useTheme()
   const { t, isRTL } = useI18n()
 
@@ -91,14 +91,18 @@ export default function FinancingProducts({ lockText = 'Unlock after verificatio
 
   return (
     <div>
-      <h3 style={{ fontSize: 15, fontWeight: 600, color: theme.textPrimary, margin: '0 0 4px' }}>
-        {t('financing.products')}
-      </h3>
-      <p style={{ fontSize: 12, color: theme.textSecondary, margin: '0 0 16px' }}>
-        {t('product.completeToApply')}
-      </p>
+      {!hideHeader && (
+        <>
+          <h3 style={{ fontSize: 15, fontWeight: 600, color: theme.textPrimary, margin: '0 0 4px' }}>
+            {t('financing.products')}
+          </h3>
+          <p style={{ fontSize: 12, color: theme.textSecondary, margin: '0 0 16px' }}>
+            {t('product.completeToApply')}
+          </p>
+        </>
+      )}
 
-      <div className="financing-products-grid" style={{ display: 'grid', gridTemplateColumns: quickActions ? 'repeat(3, 1fr) 340px' : 'repeat(3, 1fr)', gap: quickActions ? 20 : 24 }}>
+      <div className="financing-products-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }}>
         {products.map((p) => (
           <motion.div
             key={p.title}
@@ -157,11 +161,6 @@ export default function FinancingProducts({ lockText = 'Unlock after verificatio
             </div>
           </motion.div>
         ))}
-        {quickActions && (
-          <div style={{ alignSelf: 'start' }}>
-            {quickActions}
-          </div>
-        )}
       </div>
     </div>
   )

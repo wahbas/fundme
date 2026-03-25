@@ -140,7 +140,22 @@ function App() {
                 <div style={{ height: 1, background: theme.border }} />
 
                 {/* Row 2: Financing Products + Quick Actions */}
-                <FinancingProducts quickActions={<QuickActions />} />
+                <div>
+                  <h3 style={{ fontSize: 15, fontWeight: 600, color: theme.textPrimary, margin: '0 0 4px' }}>
+                    {t('financing.products')}
+                  </h3>
+                  <p style={{ fontSize: 12, color: theme.textSecondary, margin: '0 0 16px' }}>
+                    {t('product.completeToApply')}
+                  </p>
+                  <div style={{ display: 'flex', gap: 20, alignItems: 'flex-start' }}>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <FinancingProducts hideHeader />
+                    </div>
+                    <div style={{ width: 340, flexShrink: 0 }}>
+                      <QuickActions />
+                    </div>
+                  </div>
+                </div>
 
                 {/* Spacer divider */}
                 <div style={{ height: 1, background: theme.border }} />
