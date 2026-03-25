@@ -62,7 +62,8 @@ export default function InvoiceDetails({ data, onChange }: Props) {
   const { theme } = useTheme()
   const [customMode, setCustomMode] = useState<Record<string, boolean>>({})
   const [showManualForm, setShowManualForm] = useState(false)
-  const [manualInvoice, setManualInvoice] = useState({ number: '', client: '', amount: '', dueDate: '' })
+  const [manualInvoice, setManualInvoice] = useState({ number: '', amount: '' })
+  const [manualBills, setManualBills] = useState<Bill[]>([])
   const selected = new Set(data.selectedBills)
   const selectedCount = selected.size
 
@@ -434,6 +435,36 @@ export default function InvoiceDetails({ data, onChange }: Props) {
 
       {/* Manual invoice entry */}
       <h3 style={{ fontSize: 15, fontWeight: 700, color: theme.textPrimary, marginBottom: 10 }}>Manual Invoice Entry</h3>
+
+      {/* List of already-added manual invoices */}
+      {manualBills.length > 0 && (
+        <div style={{ marginBottom: 12 }}>
+          {manualBills.map((mb, i) => (
+            <div key={mb.id} style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              padding: '10px 14px', background: theme.cardBg, border: `1px solid ${theme.border}`,
+              borderRadius: 10, marginBottom: 8,
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <span style={{ fontSize: 13, fontWeight: 600, color: theme.textPrimary }}>{mb.billNumber}</span>
+                <span style={{ fontSize: 12, color: theme.textMuted }}>•</span>
+                <span style={{ fontSize: 13, color: theme.textSecondary }}><RiyalSign size="sm" />{mb.amount.toLocaleString()}</span>
+              </div>
+              <button
+                onClick={() => {
+                  setManualBills(prev => prev.filter(b => b.id !== mb.id))
+                  const currentSelected = data.selectedBills || []
+                  onChange({ selectedBills: currentSelected.filter(id => id !== mb.id) })
+                }}
+                style={{ background: 'none', border: 'none', color: '#DC2626', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+
       <button
         onClick={() => setShowManualForm(f => !f)}
         style={{
@@ -453,7 +484,7 @@ export default function InvoiceDetails({ data, onChange }: Props) {
         }}
       >
         <Plus size={16} />
-        Add Invoice
+        {manualBills.length > 0 ? 'Add Another Invoice' : 'Add Invoice'}
       </button>
 
       <AnimatePresence>
@@ -465,29 +496,42 @@ export default function InvoiceDetails({ data, onChange }: Props) {
             style={{ overflow: 'hidden', marginTop: 12 }}
           >
             <div style={{ background: theme.cardBg, border: `1px solid ${theme.border}`, borderRadius: 12, padding: 20 }}>
-              <div style={{ marginBottom: 12 }}>
-                <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: theme.textMuted, marginBottom: 6 }}>Invoice Number</label>
-                <input
-                  type="text"
-                  placeholder="e.g. INV-2024-004"
-                  value={manualInvoice.number}
-                  onChange={e => setManualInvoice(m => ({ ...m, number: e.target.value }))}
-                  style={{ width: '100%', padding: '12px 14px', background: theme.inputBg, border: `1px solid ${theme.borderLight}`, borderRadius: 10, fontSize: 14, outline: 'none' }}
-                />
-              </div>
+              {/* Biller ID & Biller Name (read-only) */}
               <div className="invoice-fields-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: theme.textMuted, marginBottom: 6 }}>Client Name</label>
+                  <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: theme.textMuted, marginBottom: 6 }}>Biller ID</label>
                   <input
                     type="text"
-                    placeholder="Client name"
-                    value={manualInvoice.client}
-                    onChange={e => setManualInvoice(m => ({ ...m, client: e.target.value }))}
+                    readOnly
+                    value={data.billerCode || '—'}
+                    style={{ width: '100%', padding: '12px 14px', background: theme.borderLight, border: `1px solid ${theme.borderLight}`, borderRadius: 10, fontSize: 14, outline: 'none', color: theme.textSecondary }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: theme.textMuted, marginBottom: 6 }}>Biller Name</label>
+                  <input
+                    type="text"
+                    readOnly
+                    value={data.biller || '—'}
+                    style={{ width: '100%', padding: '12px 14px', background: theme.borderLight, border: `1px solid ${theme.borderLight}`, borderRadius: 10, fontSize: 14, outline: 'none', color: theme.textSecondary }}
+                  />
+                </div>
+              </div>
+
+              {/* Bill Number & Bill Amount */}
+              <div className="invoice-fields-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 16 }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: theme.textMuted, marginBottom: 6 }}>Bill Number *</label>
+                  <input
+                    type="text"
+                    placeholder="Enter bill number"
+                    value={manualInvoice.number}
+                    onChange={e => setManualInvoice(m => ({ ...m, number: e.target.value }))}
                     style={{ width: '100%', padding: '12px 14px', background: theme.inputBg, border: `1px solid ${theme.borderLight}`, borderRadius: 10, fontSize: 14, outline: 'none' }}
                   />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: theme.textMuted, marginBottom: 6 }}>Amount (<RiyalSign size="sm" />)</label>
+                  <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: theme.textMuted, marginBottom: 6 }}>Bill Amount (SAR) *</label>
                   <input
                     type="number"
                     placeholder="0"
@@ -497,44 +541,41 @@ export default function InvoiceDetails({ data, onChange }: Props) {
                   />
                 </div>
               </div>
-              <div style={{ marginBottom: 16 }}>
-                <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: theme.textMuted, marginBottom: 6 }}>Due Date</label>
-                <input
-                  type="date"
-                  value={manualInvoice.dueDate}
-                  onChange={e => setManualInvoice(m => ({ ...m, dueDate: e.target.value }))}
-                  style={{ width: '100%', padding: '12px 14px', background: theme.inputBg, border: `1px solid ${theme.borderLight}`, borderRadius: 10, fontSize: 14, outline: 'none' }}
-                />
+
+              <div style={{ display: 'flex', gap: 12 }}>
+                <button
+                  onClick={() => {
+                    if (!manualInvoice.number || !manualInvoice.amount) return
+                    const newBill: Bill = {
+                      id: 'manual-' + Date.now(),
+                      billNumber: manualInvoice.number,
+                      amount: Number(manualInvoice.amount),
+                      status: 'open',
+                      dueDate: 'TBD',
+                    }
+                    setManualBills(prev => [...prev, newBill])
+                    const currentSelected = data.selectedBills || []
+                    onChange({ selectedBills: [...currentSelected, newBill.id] })
+                    setManualInvoice({ number: '', amount: '' })
+                    setShowManualForm(false)
+                  }}
+                  style={{
+                    flex: 1, height: 44, background: '#2563EB', color: '#fff',
+                    fontWeight: 600, fontSize: 14, borderRadius: 10, border: 'none', cursor: 'pointer',
+                  }}
+                >
+                  Add Invoice
+                </button>
+                <button
+                  onClick={() => { setShowManualForm(false); setManualInvoice({ number: '', amount: '' }) }}
+                  style={{
+                    flex: 1, height: 44, background: theme.cardBg, color: theme.textSecondary,
+                    fontWeight: 600, fontSize: 14, borderRadius: 10, border: `1px solid ${theme.border}`, cursor: 'pointer',
+                  }}
+                >
+                  Cancel
+                </button>
               </div>
-              <button
-                onClick={() => {
-                  if (!manualInvoice.number || !manualInvoice.amount) return
-                  const newBill: Bill = {
-                    id: 'manual-' + Date.now(),
-                    billNumber: manualInvoice.number,
-                    amount: Number(manualInvoice.amount),
-                    status: 'open',
-                    dueDate: manualInvoice.dueDate || 'TBD',
-                  }
-                  // Add to selected bills via onChange
-                  const currentSelected = data.selectedBills || []
-                  onChange({ selectedBills: [...currentSelected, newBill.id] })
-                  setManualInvoice({ number: '', client: '', amount: '', dueDate: '' })
-                  setShowManualForm(false)
-                }}
-                style={{
-                  width: '100%', height: 44, background: '#7CFF01', color: theme.textPrimary,
-                  fontWeight: 600, fontSize: 14, borderRadius: 10, border: 'none', cursor: 'pointer',
-                }}
-              >
-                Add Invoice
-              </button>
-              <p
-                onClick={() => setShowManualForm(false)}
-                style={{ textAlign: 'center', fontSize: 13, color: theme.textMuted, cursor: 'pointer', marginTop: 10 }}
-              >
-                Cancel
-              </p>
             </div>
           </motion.div>
         )}

@@ -6,10 +6,10 @@ import { useTheme } from '../../ThemeContext'
 import { useI18n } from '../../i18n'
 
 const actions = [
+  { icon: Plus, labelKey: 'actions.requestFinancing' as const, descKey: 'actions.requestFinancingDesc' as const, key: 'financing', route: '/request-financing' },
   { icon: Upload, labelKey: 'actions.uploadDocuments' as const, descKey: 'actions.uploadDocumentsDesc' as const, key: 'upload', route: '/data-hub' },
   { icon: Building2, labelKey: 'actions.connectBank' as const, descKey: 'actions.connectBankDesc' as const, key: 'bank', route: '/data-hub' },
   { icon: Briefcase, labelKey: 'actions.companyProfile' as const, descKey: 'actions.companyProfileDesc' as const, key: 'profile', route: '/profile' },
-  { icon: Plus, labelKey: 'actions.requestFinancing' as const, descKey: 'actions.requestFinancingDesc' as const, key: 'financing', route: '/request-financing' },
 ]
 
 function ActionRow({ icon: Icon, label, desc, isLast, onClick }: { icon: React.ElementType; label: string; desc: string; isLast: boolean; onClick?: () => void }) {
