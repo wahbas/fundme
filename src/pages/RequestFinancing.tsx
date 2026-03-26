@@ -476,10 +476,10 @@ export default function RequestFinancing() {
           background: theme.cardBg, borderTop: `1px solid ${theme.border}`,
           padding: '16px 48px', zIndex: 5,
         }}>
-          <div style={{ maxWidth: 860, margin: '0 auto', width: '100%', display: 'flex', flexDirection: isRTL ? 'row-reverse' : 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div className="wizard-footer-inner" style={{ maxWidth: 860, margin: '0 auto', width: '100%', display: 'flex', flexDirection: isRTL ? 'row-reverse' : 'row', justifyContent: 'space-between', alignItems: 'center' }}>
             {stepIdx > 0 ? (
               <motion.button
-
+                className="wizard-back-btn"
                 onClick={handleBack}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
@@ -498,8 +498,9 @@ export default function RequestFinancing() {
             )}
 
             {isLast ? (
-              <div style={{ display: 'flex', flexDirection: isRTL ? 'row-reverse' : 'row', gap: 10 }}>
+              <div className="wizard-last-actions" style={{ display: 'flex', flexDirection: isRTL ? 'row-reverse' : 'row', gap: 10 }}>
                 <button
+                  className="wizard-skip-btn"
                   onClick={() => navigate('/dashboard?state=verified&submitted=true')}
                   style={{
                     padding: '12px 24px', background: theme.cardBg, color: theme.textSecondary,
@@ -509,7 +510,7 @@ export default function RequestFinancing() {
                   {t('wizard.skipForNow' as any)}
                 </button>
                 <motion.button
-  
+                  className="wizard-submit-btn"
                   onClick={handleSubmit}
                   whileHover={{ scale: 1.02, boxShadow: '0 4px 16px rgba(37,99,235,0.3)' }}
                   whileTap={{ scale: 0.98 }}
@@ -525,6 +526,7 @@ export default function RequestFinancing() {
               </div>
             ) : (
               <motion.button
+                className="wizard-continue-btn"
                 onClick={handleNext}
                 whileHover={canContinue ? { y: -1, boxShadow: '0 6px 20px rgba(37,99,235,0.3)' } : {}}
                 whileTap={canContinue ? { scale: 0.98 } : {}}

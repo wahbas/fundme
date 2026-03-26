@@ -394,6 +394,44 @@ button {
     flex-shrink: 0;
   }
 
+  /* Wizard footer: stacked layout on mobile */
+  .wizard-footer-inner {
+    flex-direction: column-reverse !important;
+    gap: 10px !important;
+  }
+  .wizard-continue-btn {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 14px 0 !important;
+  }
+  .wizard-submit-btn {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 14px 0 !important;
+  }
+  .wizard-last-actions {
+    flex-direction: column !important;
+    width: 100%;
+    gap: 8px !important;
+  }
+  .wizard-last-actions .wizard-submit-btn {
+    order: -1;
+  }
+  .wizard-skip-btn {
+    width: 100% !important;
+    padding: 10px 0 !important;
+    text-align: center !important;
+    border: none !important;
+    background: transparent !important;
+  }
+  .wizard-back-btn {
+    padding: 8px 0 !important;
+    border: none !important;
+    background: transparent !important;
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
   /* Loan cards: compact on mobile */
   .loan-card {
     padding: 16px !important;
