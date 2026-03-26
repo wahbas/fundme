@@ -130,18 +130,35 @@ function App() {
                   + {t('header.newLoanRequest')}
                 </button>
                 {hasSubmitted ? <RecentApplication headerOnly /> : null}
-                <div className="dashboard-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: 20, alignItems: 'start' }}>
-                  {/* Left column */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
-                    {hasSubmitted ? <RecentApplication cardsOnly /> : <FinancingOptions />}
-                    <RepaymentSchedule onPayClick={() => setPaymentModalOpen(true)} />
+                {hasSubmitted ? (
+                  <div className="dashboard-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: 20, alignItems: 'start' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
+                      <RecentApplication cardsOnly />
+                      <RepaymentSchedule onPayClick={() => setPaymentModalOpen(true)} />
+                    </div>
+                    <div style={{ position: 'sticky', top: 28, display: 'flex', flexDirection: 'column', gap: 20 }}>
+                      <QuickActions />
+                      <SupportCards verified />
+                    </div>
                   </div>
-                  {/* Right column — sticky on scroll */}
-                  <div style={{ position: 'sticky', top: 28, display: 'flex', flexDirection: 'column', gap: 20 }}>
-                    <QuickActions />
-                    <SupportCards verified />
+                ) : (
+                  <div>
+                    <div style={{ marginBottom: 18 }}>
+                      <h3 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary, marginBottom: 4 }}>{t('financing.options')}</h3>
+                      <p style={{ fontSize: 13, color: theme.textMuted }}>{t('product.chooseRight')}</p>
+                    </div>
+                    <div className="dashboard-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: 20, alignItems: 'start' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
+                        <FinancingOptions hideHeader />
+                        <RepaymentSchedule onPayClick={() => setPaymentModalOpen(true)} />
+                      </div>
+                      <div style={{ position: 'sticky', top: 28, display: 'flex', flexDirection: 'column', gap: 20 }}>
+                        <QuickActions />
+                        <SupportCards verified />
+                      </div>
+                    </div>
                   </div>
-                </div>
+                )}
               </>
             ) : (
               /* First-time user: widget-based dashboard grid */

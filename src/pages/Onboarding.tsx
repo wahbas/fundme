@@ -164,7 +164,7 @@ export default function Onboarding() {
     })
 
     if (step === 'connect-bank') {
-      setCompleted(true)
+      navigate('/dashboard?state=verified')
     }
   }
 

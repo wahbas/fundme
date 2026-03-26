@@ -231,7 +231,7 @@ function ProductCard({ p, i }: { p: Product; i: number }) {
 
 // ─── Main ────────────────────────────────────────────────────
 
-export default function FinancingOptions() {
+export default function FinancingOptions({ hideHeader = false }: { hideHeader?: boolean }) {
   const { theme } = useTheme()
   const { t } = useI18n()
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -281,10 +281,12 @@ export default function FinancingOptions() {
 
   return (
     <section style={{ marginBottom: 28 }}>
-      <div style={{ marginBottom: 18 }}>
-        <h3 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary, marginBottom: 4 }}>{t('financing.options')}</h3>
-        <p style={{ fontSize: 13, color: theme.textMuted }}>{t('product.chooseRight')}</p>
-      </div>
+      {!hideHeader && (
+        <div style={{ marginBottom: 18 }}>
+          <h3 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary, marginBottom: 4 }}>{t('financing.options')}</h3>
+          <p style={{ fontSize: 13, color: theme.textMuted }}>{t('product.chooseRight')}</p>
+        </div>
+      )}
 
       <div ref={scrollRef} onScroll={handleScroll} className="financing-options-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
         {products.map((p, i) => (
