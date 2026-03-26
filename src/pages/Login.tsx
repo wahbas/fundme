@@ -13,7 +13,10 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-
+  const [step, setStep] = useState<'credentials' | 'otp'>('credentials')
+  const [otp, setOtp] = useState(['', '', '', '', '', ''])
+  const [otpLoading, setOtpLoading] = useState(false)
+  const [resendTimer, setResendTimer] = useState(0)
 
   function handleSubmit() {
     if (!nationalId || nationalId.length !== 10) {
@@ -28,8 +31,50 @@ export default function Login() {
     setError('')
     setTimeout(() => {
       setLoading(false)
-      navigate('/dashboard?state=verified')
+      setStep('otp')
+      setResendTimer(30)
+      const interval = setInterval(() => {
+        setResendTimer(prev => {
+          if (prev <= 1) { clearInterval(interval); return 0 }
+          return prev - 1
+        })
+      }, 1000)
     }, 1200)
+  }
+
+  function handleOtpSubmit() {
+    const code = otp.join('')
+    if (code.length !== 6) {
+      setError(t('login.errOtp' as any) || 'Please enter the 6-digit code')
+      return
+    }
+    setOtpLoading(true)
+    setError('')
+    setTimeout(() => {
+      setOtpLoading(false)
+      navigate('/dashboard?state=verified')
+    }, 1000)
+  }
+
+  function handleOtpChange(index: number, value: string) {
+    if (value.length > 1) value = value.slice(-1)
+    if (value && !/^\d$/.test(value)) return
+    const newOtp = [...otp]
+    newOtp[index] = value
+    setOtp(newOtp)
+    setError('')
+    if (value && index < 5) {
+      const next = document.getElementById(`otp-${index + 1}`)
+      next?.focus()
+    }
+  }
+
+  function handleOtpKeyDown(index: number, e: React.KeyboardEvent) {
+    if (e.key === 'Backspace' && !otp[index] && index > 0) {
+      const prev = document.getElementById(`otp-${index - 1}`)
+      prev?.focus()
+    }
+    if (e.key === 'Enter') handleOtpSubmit()
   }
 
   return (
@@ -106,7 +151,9 @@ export default function Login() {
             boxShadow: '0 20px 60px rgba(0,0,0,0.25)',
           }}
         >
+          {step === 'credentials' ? (
           <motion.div
+            key="credentials"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
@@ -266,6 +313,127 @@ export default function Login() {
               )}
             </motion.button>
           </motion.div>
+          ) : (
+          <motion.div
+            key="otp"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            {/* Back link */}
+            <button
+              onClick={() => { setStep('credentials'); setOtp(['', '', '', '', '', '']); setError('') }}
+              style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 13, color: '#6B7280', cursor: 'pointer', marginBottom: 24, background: 'none', border: 'none', padding: 0 }}
+            >
+              {isRTL ? <ArrowRight size={16} /> : <ArrowLeft size={16} />} {t('common.back')}
+            </button>
+
+            <div style={{ textAlign: 'center', marginBottom: 28 }}>
+              {/* Phone icon */}
+              <div style={{
+                width: 56, height: 56, borderRadius: '50%', background: '#EFF6FF',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px',
+              }}>
+                <Lock size={24} color="#2563EB" />
+              </div>
+              <h2 style={{ fontSize: 22, fontWeight: 700, color: '#111', marginBottom: 6 }}>
+                {t('login.verifyMobile')}
+              </h2>
+              <p style={{ fontSize: 14, color: '#6B7280', lineHeight: 1.6 }}>
+                {t('login.otpSentTo' as any) || 'We sent a verification code to'}
+              </p>
+              <p style={{ fontSize: 15, fontWeight: 600, color: '#111', marginTop: 4, direction: 'ltr' }}>
+                +966 50 *** 4567
+              </p>
+            </div>
+
+            {/* OTP Input */}
+            <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginBottom: 24 }}>
+              {otp.map((digit, i) => (
+                <input
+                  key={i}
+                  id={`otp-${i}`}
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={1}
+                  value={digit}
+                  onChange={(e) => handleOtpChange(i, e.target.value)}
+                  onKeyDown={(e) => handleOtpKeyDown(i, e)}
+                  onFocus={(e) => e.target.select()}
+                  style={{
+                    width: 48, height: 52, textAlign: 'center',
+                    fontSize: 20, fontWeight: 700, color: '#111',
+                    border: `1.5px solid ${digit ? '#2563EB' : '#E5E7EB'}`,
+                    borderRadius: 12, outline: 'none', background: '#F9FAFB',
+                    transition: 'border-color 0.15s',
+                  }}
+                />
+              ))}
+            </div>
+
+            {/* Error */}
+            {error && (
+              <p style={{ fontSize: 13, color: '#EF4444', textAlign: 'center', marginBottom: 16 }}>{error}</p>
+            )}
+
+            {/* Verify Button */}
+            <motion.button
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={handleOtpSubmit}
+              disabled={otpLoading}
+              style={{
+                width: '100%', height: 48,
+                background: otpLoading ? '#B8E67A' : '#7CFF01',
+                color: '#0F172A', fontWeight: 600, fontSize: 15,
+                borderRadius: 12, border: 'none',
+                cursor: otpLoading ? 'not-allowed' : 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                marginBottom: 20,
+              }}
+            >
+              {otpLoading ? (
+                <>
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
+                    style={{ width: 18, height: 18, border: '2px solid rgba(15,23,42,0.3)', borderTopColor: '#0F172A', borderRadius: '50%' }}
+                  />
+                  {t('common.verifying')}
+                </>
+              ) : (
+                <>
+                  {t('login.verifySignIn')} {isRTL ? <ArrowLeft size={18} /> : <ArrowRight size={18} />}
+                </>
+              )}
+            </motion.button>
+
+            {/* Resend */}
+            <p style={{ textAlign: 'center', fontSize: 13, color: '#6B7280' }}>
+              {t('login.didntReceive' as any) || "Didn't receive the code?"}{' '}
+              {resendTimer > 0 ? (
+                <span style={{ color: '#94A3B8' }}>
+                  {t('login.resendIn' as any) || 'Resend in'} {resendTimer}s
+                </span>
+              ) : (
+                <span
+                  onClick={() => {
+                    setResendTimer(30)
+                    const interval = setInterval(() => {
+                      setResendTimer(prev => {
+                        if (prev <= 1) { clearInterval(interval); return 0 }
+                        return prev - 1
+                      })
+                    }, 1000)
+                  }}
+                  style={{ color: '#2563EB', fontWeight: 600, cursor: 'pointer' }}
+                >
+                  {t('login.resend' as any) || 'Resend'}
+                </span>
+              )}
+            </p>
+          </motion.div>
+          )}
         </div>
       </div>
 
