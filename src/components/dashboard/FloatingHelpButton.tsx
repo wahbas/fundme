@@ -13,6 +13,7 @@ export default function FloatingHelpButton() {
         transition={{ delay: 0.5, type: 'spring', stiffness: 200 }}
         whileHover={{ scale: 1.05, boxShadow: '0 6px 24px rgba(37, 99, 235, 0.4)' }}
         whileTap={{ scale: 0.95 }}
+        className="floating-help-btn"
         style={{
           position: 'fixed',
           bottom: 24,

@@ -348,6 +348,11 @@ button {
     margin-bottom: 16px !important;
   }
 
+  /* Float help button above tab bar */
+  .floating-help-btn {
+    bottom: 80px !important;
+  }
+
   /* Stack products + quick actions on mobile */
   .products-quickactions-row {
     flex-direction: column !important;
