@@ -33,7 +33,7 @@ export default function Header({ showNewLoanButton = false, showVerifiedLoanButt
     <>
     <header className="app-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, flexWrap: 'nowrap', gap: 12 }}>
       <div className="app-header-greeting" style={{ minWidth: 0 }}>
-        <h1 className="app-header-title" style={{ fontSize: showVerifiedLoanButton ? 26 : 20, fontWeight: 700, color: theme.textHeading }}>
+        <h1 className="app-header-title" style={{ fontSize: 22, fontWeight: 700, color: theme.textHeading }}>
           {getGreeting()}, Ahmed
         </h1>
         <p style={{ fontSize: 12, color: theme.textSecondary, fontWeight: 400, marginTop: 2 }}>{getFormattedDate()}</p>
