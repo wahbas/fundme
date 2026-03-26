@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useNavigate } from 'react-router-dom'
+import { ArrowLeftRight, LogOut, ChevronRight, ChevronLeft } from 'lucide-react'
 import Sidebar from '../components/layout/Sidebar'
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
@@ -14,6 +15,7 @@ export default function Settings() {
   const verified = stateParam === 'verified' || searchParams.get('verified') === 'true'
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
 
+  const navigate = useNavigate()
   const { theme, isDark, toggleTheme } = useTheme()
   const { t, lang, setLang, isRTL } = useI18n()
 
@@ -116,6 +118,64 @@ export default function Settings() {
                     عربية
                   </button>
                 </div>
+              </div>
+            </div>
+            {/* Card 3: Account */}
+            <div style={{
+              background: theme.cardBg,
+              border: `1px solid ${theme.border}`,
+              borderRadius: 16,
+              padding: 28,
+              boxShadow: theme.shadow,
+              marginBottom: 20,
+            }}>
+              <h2 style={{ fontSize: 16, fontWeight: 700, color: theme.textPrimary, marginBottom: 20 }}>{t('settings.account' as any) || 'Account'}</h2>
+
+              {/* Switch Profile */}
+              <div
+                onClick={() => {/* switch profile action */}}
+                style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                  padding: '14px 0', cursor: 'pointer',
+                  borderBottom: `1px solid ${theme.borderLight}`,
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <div style={{
+                    width: 36, height: 36, borderRadius: 10, background: 'rgba(37,99,235,0.06)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}>
+                    <ArrowLeftRight size={18} color="#2563EB" />
+                  </div>
+                  <div>
+                    <p style={{ fontSize: 14, fontWeight: 500, color: theme.textPrimary, marginBottom: 2 }}>{t('nav.switchProfile')}</p>
+                    <p style={{ fontSize: 12, color: theme.textMuted }}>{t('settings.switchProfileDesc' as any) || 'Switch to another business profile'}</p>
+                  </div>
+                </div>
+                {isRTL ? <ChevronLeft size={18} color={theme.textMuted} /> : <ChevronRight size={18} color={theme.textMuted} />}
+              </div>
+
+              {/* Sign Out */}
+              <div
+                onClick={() => navigate('/login')}
+                style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                  padding: '14px 0', cursor: 'pointer',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <div style={{
+                    width: 36, height: 36, borderRadius: 10, background: 'rgba(239,68,68,0.06)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}>
+                    <LogOut size={18} color="#EF4444" />
+                  </div>
+                  <div>
+                    <p style={{ fontSize: 14, fontWeight: 500, color: '#EF4444', marginBottom: 2 }}>{t('settings.signOut' as any) || 'Sign Out'}</p>
+                    <p style={{ fontSize: 12, color: theme.textMuted }}>{t('settings.signOutDesc' as any) || 'Log out of your account'}</p>
+                  </div>
+                </div>
+                {isRTL ? <ChevronLeft size={18} color={theme.textMuted} /> : <ChevronRight size={18} color={theme.textMuted} />}
               </div>
             </div>
           </div>

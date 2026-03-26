@@ -348,6 +348,14 @@ button {
     margin-bottom: 16px !important;
   }
 
+  /* Stack products + quick actions on mobile */
+  .products-quickactions-row {
+    flex-direction: column !important;
+  }
+  .products-quickactions-sidebar {
+    width: 100% !important;
+  }
+
   /* Hide demo toggle on mobile */
   .demo-toggle {
     display: none !important;

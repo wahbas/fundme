@@ -180,11 +180,11 @@ function App() {
                   <p style={{ fontSize: 12, color: theme.textSecondary, margin: '0 0 16px' }}>
                     {t('product.completeToApply')}
                   </p>
-                  <div style={{ display: 'flex', gap: 20, alignItems: 'flex-start' }}>
+                  <div className="products-quickactions-row" style={{ display: 'flex', gap: 20, alignItems: 'flex-start' }}>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <FinancingProducts hideHeader />
                     </div>
-                    <div style={{ width: 340, flexShrink: 0 }}>
+                    <div className="products-quickactions-sidebar" style={{ width: 340, flexShrink: 0 }}>
                       <QuickActions />
                     </div>
                   </div>
