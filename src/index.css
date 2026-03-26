@@ -77,6 +77,11 @@ button {
   font-family: 'IBM Plex Sans Arabic', 'DM Sans', sans-serif;
 }
 
+/* Hide greeting header on inner pages — only show on overview/dashboard */
+.inner-page-header {
+  display: none !important;
+}
+
 /* Flip sidebar to right side in RTL */
 [dir="rtl"] aside {
   left: auto !important;
@@ -366,10 +371,7 @@ button {
     display: none !important;
   }
 
-  /* Hide greeting header on inner pages */
-  .inner-page-header {
-    display: none !important;
-  }
+  /* (moved outside media query) */
 
   /* Inner page title: compact */
   .page-title-row {
