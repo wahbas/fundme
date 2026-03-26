@@ -554,7 +554,6 @@ export default function EarlyPaymentModal({ open, onClose }: EarlyPaymentModalPr
               exit={{ opacity: 0 }}
               style={{ padding: 32, display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1, overflowY: 'auto', justifyContent: 'center' }}
             >
-              <StepIndicator current={2} total={3} />
 
               <motion.div
                 initial={{ scale: 0 }}
