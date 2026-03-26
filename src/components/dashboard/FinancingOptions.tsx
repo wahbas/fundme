@@ -147,7 +147,7 @@ function ProductCard({ p, i }: { p: Product; i: number }) {
       )}
 
       {/* Illustration banner */}
-      <div style={{ height: 160, overflow: 'hidden', borderRadius: '16px 16px 0 0' }}>
+      <div className="financing-card-illust" style={{ height: 160, overflow: 'hidden', borderRadius: '16px 16px 0 0' }}>
         <Illust />
       </div>
 

@@ -9,7 +9,7 @@ function AnimatedValue({ value, isEmpty, color }: { value: string; isEmpty: bool
   const num = parseInt(value.replace(/,/g, ''), 10)
   const animated = useCountUp(isNaN(num) ? 0 : num)
   const display = isNaN(num) ? value : animated.toLocaleString()
-  return <span style={{ fontSize: 32, fontWeight: 700, color }}>{isEmpty ? value : display}</span>
+  return <span className="stat-value" style={{ fontSize: 32, fontWeight: 700, color }}>{isEmpty ? value : display}</span>
 }
 
 function useCountUp(target: number, duration = 2400) {
@@ -157,10 +157,11 @@ function StatCard({ s, delay }: { s: StatDef; delay: number }) {
       {/* Accent line */}
       <div style={{ height: 3, background: s.accentLine }} />
 
-      <div style={{ padding: 24 }}>
+      <div className="stat-card-body" style={{ padding: 24 }}>
         {/* Header: icon + trend */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+        <div className="stat-card-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
           <div
+            className="stat-card-icon"
             style={{
               width: 44, height: 44, borderRadius: 10,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -171,6 +172,7 @@ function StatCard({ s, delay }: { s: StatDef; delay: number }) {
           </div>
           {s.trend ? (
             <div
+              className="stat-card-trend"
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: 3,
                 padding: '4px 10px', borderRadius: 20,
@@ -183,6 +185,7 @@ function StatCard({ s, delay }: { s: StatDef; delay: number }) {
             </div>
           ) : (
             <div
+              className="stat-card-trend"
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: 3,
                 padding: '4px 10px', borderRadius: 20,
@@ -197,6 +200,7 @@ function StatCard({ s, delay }: { s: StatDef; delay: number }) {
 
         {/* Label */}
         <p
+          className="stat-card-label"
           style={{
             fontSize: 11, fontWeight: 600, textTransform: 'uppercase',
             letterSpacing: 0.8, color: theme.textMuted, marginBottom: 8,
@@ -214,7 +218,7 @@ function StatCard({ s, delay }: { s: StatDef; delay: number }) {
         </div>
 
         {/* Sub text */}
-        <p style={{ fontSize: 12, color: theme.textMuted, margin: 0 }}>{s.subKey ? t(s.subKey as any) : s.sub}</p>
+        <p className="stat-card-sub" style={{ fontSize: 12, color: theme.textMuted, margin: 0 }}>{s.subKey ? t(s.subKey as any) : s.sub}</p>
       </div>
     </motion.div>
   )
@@ -224,7 +228,7 @@ export default function QuickStats({ hasLoans = true }: { hasLoans?: boolean }) 
   const stats = hasLoans ? activeStats : emptyStats
 
   return (
-    <section style={{ marginBottom: 28 }}>
+    <section className="quick-stats-section" style={{ marginBottom: 28 }}>
       <div className="quick-stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
         {stats.map((s, i) => (
           <StatCard key={s.label} s={s} delay={0.08 + i * 0.08} />

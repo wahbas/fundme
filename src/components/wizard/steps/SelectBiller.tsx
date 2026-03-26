@@ -1,6 +1,6 @@
-import { useState } from 'react'
-import { Search, ChevronRight, Plus } from 'lucide-react'
-import { motion } from 'framer-motion'
+import { useState, useEffect } from 'react'
+import { Search, ChevronRight, Plus, X } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useTheme } from '../../../ThemeContext'
 import { useI18n } from '../../../i18n'
 import type { WizardData } from '../../../pages/RequestFinancing'
@@ -114,9 +114,9 @@ export default function SelectBiller({ data, onChange }: Props) {
         />
       </div>
 
-      {/* Manual entry */}
+      {/* Manual entry trigger */}
       <button
-        onClick={() => setShowManualForm((v) => !v)}
+        onClick={() => setShowManualForm(true)}
         style={{
           width: '100%', padding: 16, background: theme.cardBg,
           border: `1px dashed ${theme.textMuted}`, borderRadius: 12,
@@ -137,99 +137,14 @@ export default function SelectBiller({ data, onChange }: Props) {
         {t('wizard.manualBillerEntry' as any)}
       </button>
 
-      {/* Manual form */}
-      {showManualForm && (
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: 'auto' }}
-          transition={{ duration: 0.25, ease: 'easeOut' }}
-          style={{
-            background: theme.cardBg, border: `1px solid ${theme.border}`, borderRadius: 12,
-            padding: 20, marginBottom: 16, overflow: 'hidden',
-          }}
-        >
-          {/* Biller Name - full width */}
-          <div style={{ marginBottom: 12 }}>
-            <label style={labelStyle}>{t('wizard.billerName' as any)}</label>
-            <input
-              type="text"
-              value={manualBiller.name}
-              onChange={(e) => setManualBiller((p) => ({ ...p, name: e.target.value }))}
-              style={inputStyle}
-              placeholder={t('wizard.enterBillerName' as any)}
-            />
-          </div>
-
-          {/* 2-column grid */}
-          <div className="biller-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-            <div>
-              <label style={labelStyle}>{t('wizard.billerAccountNo' as any)}</label>
-              <input
-                type="text"
-                value={manualBiller.accountNumber}
-                onChange={(e) => setManualBiller((p) => ({ ...p, accountNumber: e.target.value }))}
-                style={inputStyle}
-                placeholder={t('wizard.enterAccountNo' as any)}
-              />
-            </div>
-            <div>
-              <label style={labelStyle}>{t('wizard.billNumber' as any)}</label>
-              <input
-                type="text"
-                value={manualBiller.billNumber}
-                onChange={(e) => setManualBiller((p) => ({ ...p, billNumber: e.target.value }))}
-                style={inputStyle}
-                placeholder={t('wizard.enterBillNo' as any)}
-              />
-            </div>
-            <div>
-              <label style={labelStyle}>{t('wizard.amount' as any)} (<RiyalSign size="sm" />)</label>
-              <input
-                type="number"
-                value={manualBiller.amount}
-                onChange={(e) => setManualBiller((p) => ({ ...p, amount: e.target.value }))}
-                style={inputStyle}
-                placeholder="0.00"
-              />
-            </div>
-            <div>
-              <label style={labelStyle}>{t('wizard.dueDate' as any)}</label>
-              <input
-                type="date"
-                value={manualBiller.dueDate}
-                onChange={(e) => setManualBiller((p) => ({ ...p, dueDate: e.target.value }))}
-                style={inputStyle}
-              />
-            </div>
-          </div>
-
-          {/* Add Bill button */}
-          <button
-            onClick={() => {
-              onChange({ biller: manualBiller.name, billerCode: 'MANUAL-' + Date.now() })
-              setShowManualForm(false)
-            }}
-            style={{
-              background: '#7CFF01', color: '#0F172A', fontWeight: 600, fontSize: 14,
-              width: '100%', height: 44, borderRadius: 10, border: 'none',
-              cursor: 'pointer', marginTop: 12,
-            }}
-          >
-            {t('wizard.addBill' as any)}
-          </button>
-
-          {/* Cancel link */}
-          <p
-            onClick={() => setShowManualForm(false)}
-            style={{
-              fontSize: 13, color: '#94A3B8', cursor: 'pointer', textAlign: 'center',
-              marginTop: 10,
-            }}
-          >
-            Cancel
-          </p>
-        </motion.div>
-      )}
+      {/* Manual biller side sheet */}
+      <ManualBillerSheet
+        open={showManualForm}
+        onClose={() => { setShowManualForm(false); setManualBiller({ name: '', accountNumber: '', billNumber: '', amount: '', dueDate: '' }) }}
+        onAdd={(name, code) => { onChange({ biller: name, billerCode: code }); setShowManualForm(false) }}
+        manualBiller={manualBiller}
+        setManualBiller={setManualBiller}
+      />
 
       {/* Biller list */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -293,5 +208,191 @@ export default function SelectBiller({ data, onChange }: Props) {
         })}
       </div>
     </div>
+  )
+}
+
+/* ─── Manual Biller Side Sheet ─── */
+
+interface ManualBillerSheetProps {
+  open: boolean
+  onClose: () => void
+  onAdd: (name: string, code: string) => void
+  manualBiller: { name: string; accountNumber: string; billNumber: string; amount: string; dueDate: string }
+  setManualBiller: React.Dispatch<React.SetStateAction<{ name: string; accountNumber: string; billNumber: string; amount: string; dueDate: string }>>
+}
+
+function ManualBillerSheet({ open, onClose, onAdd, manualBiller, setManualBiller }: ManualBillerSheetProps) {
+  const { theme } = useTheme()
+  const { t } = useI18n()
+
+  useEffect(() => {
+    if (!open) return
+    const handleKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    document.addEventListener('keydown', handleKey)
+    return () => document.removeEventListener('keydown', handleKey)
+  }, [open, onClose])
+
+  const labelStyle: React.CSSProperties = {
+    display: 'block', fontSize: 12, fontWeight: 600, color: theme.textMuted, marginBottom: 6,
+  }
+  const inputStyle: React.CSSProperties = {
+    width: '100%', padding: '12px 14px', background: theme.inputBg,
+    border: `1px solid ${theme.inputBorder}`, borderRadius: 10, fontSize: 14, outline: 'none',
+    boxSizing: 'border-box', color: theme.textPrimary,
+  }
+
+  const canAdd = manualBiller.name.trim() && manualBiller.billNumber.trim() && manualBiller.amount.trim()
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <>
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            style={{
+              position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+              background: 'rgba(0,0,0,0.35)', zIndex: 9998,
+              backdropFilter: 'blur(3px)',
+            }}
+          />
+
+          {/* Sheet */}
+          <motion.div
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+            className="side-sheet"
+            style={{
+              position: 'fixed', top: 0, right: 0, bottom: 0,
+              width: 440, maxWidth: '100%',
+              background: theme.cardBg,
+              boxShadow: '-8px 0 40px rgba(0,0,0,0.15)',
+              zIndex: 9999,
+              display: 'flex', flexDirection: 'column',
+              overflow: 'hidden',
+            }}
+          >
+            {/* Header */}
+            <div style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              padding: '20px 24px', borderBottom: `1px solid ${theme.border}`,
+            }}>
+              <h3 style={{ fontSize: 17, fontWeight: 700, color: theme.textPrimary, margin: 0 }}>
+                {t('wizard.manualBillerEntry' as any)}
+              </h3>
+              <button
+                onClick={onClose}
+                style={{
+                  width: 32, height: 32, borderRadius: 8, border: 'none',
+                  background: theme.bgPrimary, cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}
+              >
+                <X size={16} color={theme.textMuted} />
+              </button>
+            </div>
+
+            {/* Form body */}
+            <div style={{ flex: 1, overflowY: 'auto', padding: 24 }}>
+              {/* Biller Name */}
+              <div style={{ marginBottom: 16 }}>
+                <label style={labelStyle}>{t('wizard.billerName' as any)} *</label>
+                <input
+                  type="text"
+                  value={manualBiller.name}
+                  onChange={(e) => setManualBiller((p) => ({ ...p, name: e.target.value }))}
+                  style={inputStyle}
+                  placeholder={t('wizard.enterBillerName' as any)}
+                />
+              </div>
+
+              {/* Biller ID / Account Number */}
+              <div style={{ marginBottom: 16 }}>
+                <label style={labelStyle}>{t('wizard.billerAccountNo' as any)}</label>
+                <input
+                  type="text"
+                  value={manualBiller.accountNumber}
+                  onChange={(e) => setManualBiller((p) => ({ ...p, accountNumber: e.target.value }))}
+                  style={inputStyle}
+                  placeholder={t('wizard.enterAccountNo' as any)}
+                />
+              </div>
+
+              {/* Bill Number */}
+              <div style={{ marginBottom: 16 }}>
+                <label style={labelStyle}>{t('wizard.billNumber' as any)} *</label>
+                <input
+                  type="text"
+                  value={manualBiller.billNumber}
+                  onChange={(e) => setManualBiller((p) => ({ ...p, billNumber: e.target.value }))}
+                  style={inputStyle}
+                  placeholder={t('wizard.enterBillNo' as any)}
+                />
+              </div>
+
+              {/* Amount */}
+              <div style={{ marginBottom: 16 }}>
+                <label style={labelStyle}>{t('wizard.amount' as any)} (<RiyalSign size="sm" />) *</label>
+                <input
+                  type="number"
+                  value={manualBiller.amount}
+                  onChange={(e) => setManualBiller((p) => ({ ...p, amount: e.target.value }))}
+                  style={inputStyle}
+                  placeholder="0.00"
+                />
+              </div>
+
+              {/* Due Date */}
+              <div style={{ marginBottom: 24 }}>
+                <label style={labelStyle}>{t('wizard.dueDate' as any)}</label>
+                <input
+                  type="date"
+                  value={manualBiller.dueDate}
+                  onChange={(e) => setManualBiller((p) => ({ ...p, dueDate: e.target.value }))}
+                  style={inputStyle}
+                />
+              </div>
+            </div>
+
+            {/* Footer buttons */}
+            <div style={{
+              padding: '16px 24px', borderTop: `1px solid ${theme.border}`,
+              display: 'flex', gap: 12,
+            }}>
+              <button
+                onClick={() => {
+                  if (!canAdd) return
+                  onAdd(manualBiller.name, 'MANUAL-' + Date.now())
+                }}
+                style={{
+                  flex: 1, height: 44, borderRadius: 10, border: 'none',
+                  background: canAdd ? '#2563EB' : '#E2E8F0',
+                  color: canAdd ? '#fff' : '#94A3B8',
+                  fontWeight: 600, fontSize: 14,
+                  cursor: canAdd ? 'pointer' : 'not-allowed',
+                }}
+              >
+                {t('wizard.addBill' as any)}
+              </button>
+              <button
+                onClick={onClose}
+                style={{
+                  flex: 1, height: 44, borderRadius: 10,
+                  border: `1px solid ${theme.border}`, background: theme.cardBg,
+                  color: theme.textSecondary, fontWeight: 600, fontSize: 14, cursor: 'pointer',
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
   )
 }

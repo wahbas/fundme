@@ -97,37 +97,7 @@ export default function MyProfile() {
             <div className="profile-layout" style={{ display: 'grid', gridTemplateColumns: '340px 1fr', gap: 20, alignItems: 'start' }}>
 
               {/* ── Left Column ── */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-
-                {/* Verification Card */}
-                <SectionCard delay={0.05}>
-                  <div style={{
-                    display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center',
-                    padding: '12px 0',
-                  }}>
-                    {/* Shield icon */}
-                    <div style={{
-                      width: 72, height: 72, borderRadius: '50%', background: '#EFF6FF',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16,
-                      border: '2px solid #BFDBFE',
-                    }}>
-                      <Shield size={32} color="#2563EB" />
-                    </div>
-
-                    <span style={{
-                      padding: '6px 16px', borderRadius: 20, fontSize: 13, fontWeight: 600,
-                      background: '#2563EB', color: '#fff', marginBottom: 12,
-                    }}>
-                      {t('profile.verifiedAccount')}
-                    </span>
-
-                    <p style={{ fontSize: 13, color: theme.textSecondary, lineHeight: 1.5, marginBottom: 12 }}>
-                      {t('profile.accountVerifiedDesc')}
-                    </p>
-
-                    <p style={{ fontSize: 12, color: theme.textMuted }}>{t('profile.memberSince')} November 14, 2025</p>
-                  </div>
-                </SectionCard>
+              <div className="profile-left-col" style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
 
                 {/* SIMAH Consent */}
                 <SectionCard delay={0.12}>
@@ -174,21 +144,24 @@ export default function MyProfile() {
               </div>
 
               {/* ── Right Column ── */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+              <div className="profile-right-col" style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
 
                 {/* Personal Information */}
                 <SectionCard delay={0.08}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, flexWrap: 'wrap', gap: 8 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                       <User size={20} color={theme.textPrimary} />
                       <h3 style={{ fontSize: 17, fontWeight: 700, color: theme.textPrimary }}>{t('profile.personalInfo')}</h3>
                     </div>
-                    <span style={{
-                      padding: '4px 14px', borderRadius: 20, fontSize: 12, fontWeight: 600,
-                      background: '#2563EB', color: '#fff',
-                    }}>
-                      {t('dashboard.verified')}
-                    </span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+                      <span style={{
+                        padding: '4px 14px', borderRadius: 20, fontSize: 12, fontWeight: 600,
+                        background: '#2563EB', color: '#fff',
+                      }}>
+                        {t('profile.verifiedAccount')}
+                      </span>
+                      <span style={{ fontSize: 12, color: theme.textMuted }}>{t('profile.memberSince')} Nov 2025</span>
+                    </div>
                   </div>
 
                   {/* Row 1: Name, NID, DOB */}

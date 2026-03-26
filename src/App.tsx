@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 import { useTheme } from './ThemeContext'
 import { useI18n } from './i18n'
 import Sidebar from './components/layout/Sidebar'
@@ -25,6 +25,7 @@ export type UserState = 'first-time' | 'verified'
 function App() {
   const { theme } = useTheme()
   const { t, isRTL } = useI18n()
+  const navigate = useNavigate()
   const [searchParams, setSearchParams] = useSearchParams()
   const stateParam = searchParams.get('state') as UserState | null
   const legacyVerified = searchParams.get('verified') === 'true'
@@ -74,6 +75,7 @@ function App() {
 
             {/* Demo Toggle — compact pill style */}
             <div
+              className="demo-toggle"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -113,6 +115,20 @@ function App() {
             {verified ? (
               <>
                 <QuickStats hasLoans={hasSubmitted} />
+                {/* Mobile-only: full-width request financing CTA */}
+                <button
+                  className="mobile-financing-cta"
+                  onClick={() => navigate('/request-financing')}
+                  style={{
+                    display: 'none', width: '100%', padding: '14px 0',
+                    background: '#2563EB', color: '#fff', fontWeight: 700, fontSize: 15,
+                    borderRadius: 12, border: 'none', cursor: 'pointer',
+                    alignItems: 'center', justifyContent: 'center', gap: 8,
+                    marginBottom: 16,
+                  }}
+                >
+                  + {t('header.newLoanRequest')}
+                </button>
                 {hasSubmitted ? <RecentApplication headerOnly /> : null}
                 <div className="dashboard-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: 20, alignItems: 'start' }}>
                   {/* Left column */}

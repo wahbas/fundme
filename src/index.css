@@ -170,16 +170,43 @@ button {
     padding: 16px !important;
   }
 
-  /* Header: stack on small screens */
-  header {
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 12px !important;
+  /* Header: greeting left, only theme+bell on right; hide avatar & loan btn */
+  .app-header {
+    margin-bottom: 12px !important;
+    gap: 8px !important;
+  }
+  .app-header-title {
+    font-size: 18px !important;
+  }
+  .header-loan-btn {
+    display: none !important;
+  }
+  .header-avatar {
+    display: none !important;
   }
 
-  /* KPI cards: single column */
+  /* Show mobile-only financing CTA */
+  .mobile-financing-cta {
+    display: flex !important;
+  }
+
+  /* KPI cards: horizontal scroll strip */
   .quick-stats-grid {
-    grid-template-columns: 1fr !important;
+    display: flex !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    gap: 12px !important;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+  .quick-stats-grid::-webkit-scrollbar {
+    display: none;
+  }
+  .quick-stats-grid > * {
+    flex: 0 0 72% !important;
+    min-width: 0;
+    scroll-snap-align: start;
   }
 
   /* Dashboard widgets: single column */
@@ -192,9 +219,15 @@ button {
     grid-template-columns: 1fr !important;
   }
 
-  /* Profile layout: stack columns */
+  /* Profile layout: stack columns, reorder for mobile */
   .profile-layout {
     grid-template-columns: 1fr !important;
+  }
+  .profile-right-col {
+    order: -1 !important;
+  }
+  .profile-left-col {
+    order: 1 !important;
   }
 
   /* Profile fields: single column */
@@ -310,9 +343,84 @@ button {
     grid-template-columns: 1fr !important;
   }
 
-  /* Financing options: stack */
+  /* Reduce section margins on mobile */
+  .quick-stats-section {
+    margin-bottom: 16px !important;
+  }
+
+  /* Hide demo toggle on mobile */
+  .demo-toggle {
+    display: none !important;
+  }
+
+  /* Tighter section spacing on mobile */
+  .dashboard-grid {
+    gap: 16px !important;
+  }
+
+  /* Stat cards: compact on mobile */
+  .stat-value {
+    font-size: 22px !important;
+  }
+  .stat-card-body {
+    padding: 12px !important;
+  }
+  .stat-card-header {
+    margin-bottom: 6px !important;
+  }
+  .stat-card-icon {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 8px !important;
+  }
+  .stat-card-icon svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+  .stat-card-trend {
+    padding: 2px 8px !important;
+    font-size: 11px !important;
+  }
+  .stat-card-label {
+    margin-bottom: 2px !important;
+    font-size: 10px !important;
+  }
+  .stat-card-sub {
+    font-size: 11px !important;
+  }
+  .quick-stats-grid > * {
+    flex: 0 0 52% !important;
+    min-width: 155px;
+    border-radius: 12px !important;
+  }
+
+  /* Financing options: horizontal scroll */
   .financing-options-grid {
-    grid-template-columns: 1fr !important;
+    display: flex !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    gap: 12px !important;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+  .financing-options-grid::-webkit-scrollbar {
+    display: none;
+  }
+  .financing-options-grid > * {
+    flex: 0 0 75% !important;
+    min-width: 260px;
+    scroll-snap-align: start;
+  }
+
+  /* Reduce financing card illustration height */
+  .financing-card-illust {
+    height: 120px !important;
+  }
+
+  /* Reduce section margins on mobile */
+  section {
+    margin-bottom: 16px !important;
   }
 
   /* What to expect: stack */

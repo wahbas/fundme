@@ -316,27 +316,17 @@ export default function DataHub() {
 
             {/* ── Section 1: Upload Documents ── */}
             <SectionCard delay={0.05}>
-              <div className="datahub-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 20 }}>
-                <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
-                  <div style={{
-                    width: 44, height: 44, borderRadius: 10, background: '#EFF6FF',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-                  }}>
-                    <Upload size={20} color="#2563EB" />
-                  </div>
-                  <div>
-                    <h3 style={{ fontSize: 17, fontWeight: 700, color: theme.textPrimary, marginBottom: 4 }}>Upload Documents</h3>
-                    <p style={{ fontSize: 13, color: theme.textMuted }}>Upload the required documents to complete your financing application.</p>
-                  </div>
-                </div>
-                <button style={{
-                  padding: '10px 20px', background: '#2563EB', color: '#fff', fontWeight: 600,
-                  fontSize: 14, borderRadius: 10, border: 'none', cursor: 'pointer',
-                  display: 'flex', alignItems: 'center', gap: 8, whiteSpace: 'nowrap',
+              <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start', marginBottom: 20 }}>
+                <div style={{
+                  width: 44, height: 44, borderRadius: 10, background: '#EFF6FF',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
                 }}>
-                  <Plus size={16} />
-                  Upload New Document
-                </button>
+                  <Upload size={20} color="#2563EB" />
+                </div>
+                <div>
+                  <h3 style={{ fontSize: 17, fontWeight: 700, color: theme.textPrimary, marginBottom: 4 }}>Upload Documents</h3>
+                  <p style={{ fontSize: 13, color: theme.textMuted }}>Upload the required documents to complete your financing application.</p>
+                </div>
               </div>
 
               {/* Doc tabs */}
@@ -370,38 +360,38 @@ export default function DataHub() {
               </div>
 
               {/* Progress bar */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 20 }}>
                 <ProgressBar completed={totalCompleted} total={totalDocs} />
                 <span style={{ fontSize: 13, color: theme.textMuted, whiteSpace: 'nowrap' }}>{totalCompleted} / {totalDocs} completed</span>
               </div>
+
+              {/* CTA */}
+              <button style={{
+                width: '100%', padding: '12px 20px', background: '#2563EB', color: '#fff', fontWeight: 600,
+                fontSize: 14, borderRadius: 10, border: 'none', cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+              }}>
+                <Plus size={16} />
+                Upload New Document
+              </button>
             </SectionCard>
 
             {/* ── Section 2: Bank Connections ── */}
             <SectionCard delay={0.12}>
-              <div className="datahub-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 20 }}>
-                <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
-                  <div style={{
-                    width: 44, height: 44, borderRadius: 10, background: '#EFF6FF',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-                  }}>
-                    <Landmark size={20} color="#2563EB" />
-                  </div>
-                  <div>
-                    <h3 style={{ fontSize: 17, fontWeight: 700, color: theme.textPrimary, marginBottom: 4 }}>{t('dataHub.bankConnections')}</h3>
-                    <p style={{ fontSize: 13, color: theme.textMuted }}>Connect and manage your bank accounts</p>
-                  </div>
-                </div>
-                <button style={{
-                  padding: '10px 20px', background: '#2563EB', color: '#fff', fontWeight: 600,
-                  fontSize: 14, borderRadius: 10, border: 'none', cursor: 'pointer',
-                  display: 'flex', alignItems: 'center', gap: 8, whiteSpace: 'nowrap',
+              <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start', marginBottom: 20 }}>
+                <div style={{
+                  width: 44, height: 44, borderRadius: 10, background: '#EFF6FF',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
                 }}>
-                  <Plus size={16} />
-                  Connect Bank
-                </button>
+                  <Landmark size={20} color="#2563EB" />
+                </div>
+                <div>
+                  <h3 style={{ fontSize: 17, fontWeight: 700, color: theme.textPrimary, marginBottom: 4 }}>{t('dataHub.bankConnections')}</h3>
+                  <p style={{ fontSize: 13, color: theme.textMuted }}>Connect and manage your bank accounts</p>
+                </div>
               </div>
 
-              <div className="bank-connections-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+              <div className="bank-connections-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20 }}>
                 {BANKS.map(bank => {
                   const isConnected = bank.status === 'connected'
                   return (
@@ -439,6 +429,16 @@ export default function DataHub() {
                   )
                 })}
               </div>
+
+              {/* CTA */}
+              <button style={{
+                width: '100%', padding: '12px 20px', background: '#2563EB', color: '#fff', fontWeight: 600,
+                fontSize: 14, borderRadius: 10, border: 'none', cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+              }}>
+                <Plus size={16} />
+                Connect Bank
+              </button>
             </SectionCard>
 
             {/* ── Section 3: Required Documents ── */}

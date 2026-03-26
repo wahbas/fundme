@@ -31,16 +31,17 @@ export default function Header({ showNewLoanButton = false, showVerifiedLoanButt
 
   return (
     <>
-    <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-      <div>
-        <h1 style={{ fontSize: showVerifiedLoanButton ? 26 : 20, fontWeight: 700, color: theme.textHeading }}>
+    <header className="app-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, flexWrap: 'nowrap', gap: 12 }}>
+      <div className="app-header-greeting" style={{ minWidth: 0 }}>
+        <h1 className="app-header-title" style={{ fontSize: showVerifiedLoanButton ? 26 : 20, fontWeight: 700, color: theme.textHeading }}>
           {getGreeting()}, Ahmed
         </h1>
         <p style={{ fontSize: 12, color: theme.textSecondary, fontWeight: 400, marginTop: 2 }}>{getFormattedDate()}</p>
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+      <div className="app-header-actions" style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
         {showNewLoanButton && (
           <motion.button
+            className="header-loan-btn"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             onClick={() => navigate('/onboarding')}
@@ -60,11 +61,12 @@ export default function Header({ showNewLoanButton = false, showVerifiedLoanButt
             }}
           >
             <PlusIcon size={14} color="#fff" />
-            {t('header.newLoanRequest')}
+            <span className="header-loan-btn-text">{t('header.newLoanRequest')}</span>
           </motion.button>
         )}
         {showVerifiedLoanButton && (
           <motion.button
+            className="header-loan-btn"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             onClick={() => navigate('/request-financing')}
@@ -84,7 +86,7 @@ export default function Header({ showNewLoanButton = false, showVerifiedLoanButt
             }}
           >
             <PlusIcon size={14} color="#fff" />
-            {t('header.newLoanRequest')}
+            <span className="header-loan-btn-text">{t('header.newLoanRequest')}</span>
           </motion.button>
         )}
         {/* Dark/Light mode toggle */}
@@ -114,6 +116,7 @@ export default function Header({ showNewLoanButton = false, showVerifiedLoanButt
           >2</span>
         </div>
         <div
+          className="header-avatar"
           style={{
             width: 36, height: 36, borderRadius: '50%',
             background: '#1B2A3D', color: '#fff',
