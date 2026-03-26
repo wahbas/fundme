@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Lock, ChevronRight, ChevronLeft } from 'lucide-react'
 import { motion } from 'framer-motion'
@@ -234,6 +234,17 @@ function ProductCard({ p, i }: { p: Product; i: number }) {
 export default function FinancingOptions() {
   const { theme } = useTheme()
   const { t } = useI18n()
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const [activeIdx, setActiveIdx] = useState(0)
+
+  function handleScroll() {
+    const el = scrollRef.current
+    if (!el || !el.children.length) return
+    const child = el.children[0] as HTMLElement
+    const cardWidth = child.offsetWidth + 12 // card width + gap
+    const idx = Math.round(el.scrollLeft / cardWidth)
+    setActiveIdx(Math.min(idx, 2))
+  }
 
   const products: Product[] = [
     {
@@ -275,9 +286,25 @@ export default function FinancingOptions() {
         <p style={{ fontSize: 13, color: theme.textMuted }}>{t('product.chooseRight')}</p>
       </div>
 
-      <div className="financing-options-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+      <div ref={scrollRef} onScroll={handleScroll} className="financing-options-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
         {products.map((p, i) => (
           <ProductCard key={p.id} p={p} i={i} />
+        ))}
+      </div>
+
+      {/* Scroll dot indicators — mobile only */}
+      <div className="scroll-dots" style={{ display: 'none' }}>
+        {products.map((_, i) => (
+          <div
+            key={i}
+            style={{
+              width: activeIdx === i ? 20 : 6,
+              height: 6,
+              borderRadius: 3,
+              background: activeIdx === i ? '#2563EB' : '#CBD5E1',
+              transition: 'all 0.2s',
+            }}
+          />
         ))}
       </div>
     </section>

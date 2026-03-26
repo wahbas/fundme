@@ -472,6 +472,14 @@ button {
     height: 120px !important;
   }
 
+  /* Scroll dot indicators */
+  .scroll-dots {
+    display: flex !important;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 12px;
+  }
+
   /* Reduce section margins on mobile */
   section {
     margin-bottom: 16px !important;
