@@ -133,6 +133,39 @@ function VerifiedSupportWidget() {
         </div>
       </div>
       <ContactSupportModal open={supportOpen} onClose={() => setSupportOpen(false)} />
+
+      {/* Mobile-only compact strip — replaces the full card on mobile */}
+      <div className="support-mobile-strip" style={{ display: 'none' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flex: 1, minWidth: 0 }}>
+          <div style={{
+            width: 32, height: 32, borderRadius: '50%', background: 'rgba(37,99,235,0.12)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+          }}>
+            <User size={16} color="#3B82F6" />
+          </div>
+          <span style={{ fontSize: 13, fontWeight: 600, color: theme.textPrimary, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Ahmed Al-Mansour</span>
+        </div>
+        <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
+          <a href="tel:+966123456789" style={{
+            width: 40, height: 40, borderRadius: 10, background: theme.bgPrimary,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <Phone size={18} color="#3B82F6" />
+          </a>
+          <a href="mailto:ahmed.almansour@fundme.sa" style={{
+            width: 40, height: 40, borderRadius: 10, background: theme.bgPrimary,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <Mail size={18} color="#3B82F6" />
+          </a>
+          <div onClick={() => setSupportOpen(true)} style={{
+            width: 40, height: 40, borderRadius: 10, background: theme.bgPrimary,
+            display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
+          }}>
+            <MessageCircle size={18} color="#3B82F6" />
+          </div>
+        </div>
+      </div>
     </motion.div>
   )
 }
