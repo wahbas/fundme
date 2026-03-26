@@ -77,8 +77,8 @@ button {
   font-family: 'IBM Plex Sans Arabic', 'DM Sans', sans-serif;
 }
 
-/* Hide greeting header on inner pages — only show on overview/dashboard */
-.inner-page-header {
+/* Hide greeting text on inner pages — keep action icons visible */
+.inner-page-header .app-header-greeting {
   display: none !important;
 }
 
