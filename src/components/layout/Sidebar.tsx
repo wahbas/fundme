@@ -14,7 +14,7 @@ import {
   ChevronsLeftIcon,
   ChevronsRightIcon,
 } from '../icons/NavIcons'
-import { LogOut, ArrowLeftRight, MoreVertical } from 'lucide-react'
+import { LogOut, ArrowLeftRight } from 'lucide-react'
 import logo from '../../assets/logo.png'
 
 interface NavItemProps {
@@ -332,7 +332,7 @@ export default function Sidebar({ verified = false, collapsed = false, onToggle,
             </div>
           )}
           {!collapsed && (
-            <MoreVertical size={16} color="#64748B" style={{ flexShrink: 0 }} />
+            <ArrowLeftRight size={14} color="#64748B" style={{ flexShrink: 0 }} />
           )}
         </div>
       </div>

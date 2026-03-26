@@ -9,6 +9,7 @@ const translations = {
   'nav.dataHub': { en: 'Data Hub', ar: 'مركز البيانات' },
   'nav.myProfile': { en: 'My Profile', ar: 'ملفي الشخصي' },
   'nav.helpSupport': { en: 'Help & Support', ar: 'المساعدة والدعم' },
+  'nav.help': { en: 'Help', ar: 'المساعدة' },
   'nav.settings': { en: 'Settings', ar: 'الإعدادات' },
   'nav.firstTimeUser': { en: 'First-time user', ar: 'مستخدم جديد' },
   'nav.signOut': { en: 'Sign Out', ar: 'تسجيل الخروج' },
