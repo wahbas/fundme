@@ -14,7 +14,7 @@ import {
   ChevronsLeftIcon,
   ChevronsRightIcon,
 } from '../icons/NavIcons'
-import { LogOut, ArrowLeftRight, Sun, Moon } from 'lucide-react'
+import { LogOut, ArrowLeftRight, MoreVertical } from 'lucide-react'
 import logo from '../../assets/logo.png'
 
 interface NavItemProps {
@@ -94,7 +94,7 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ verified = false, collapsed = false, onToggle, activeTab }: SidebarProps) {
-  const { theme, isDark, toggleTheme } = useTheme()
+  const { theme } = useTheme()
   const { t, isRTL } = useI18n()
   const navigate = useNavigate()
   const location = useLocation()
@@ -205,14 +205,13 @@ export default function Sidebar({ verified = false, collapsed = false, onToggle,
         </div>
       )}
 
-      {/* Nav */}
+      {/* Primary Nav */}
       <nav
         style={{
           padding: collapsed ? '0 8px' : '0 12px',
           display: 'flex',
           flexDirection: 'column',
           gap: 2,
-          flex: 1,
           transition: 'padding 0.3s',
         }}
       >
@@ -222,176 +221,118 @@ export default function Sidebar({ verified = false, collapsed = false, onToggle,
         <NavItem icon={ProfileIcon} label={t('nav.myProfile')} hasNotification active={getActive('profile')} collapsed={collapsed} isRTL={isRTL} onClick={() => navigate(`/profile${query}`)} />
       </nav>
 
-      {/* Bottom */}
-      <div ref={bottomRef} style={{ padding: collapsed ? '0 8px 20px' : '0 12px 20px', transition: 'padding 0.3s', position: 'relative' }}>
-        <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', marginBottom: 8, paddingTop: 8 }} />
-        <NavItem icon={HelpSupportIcon} label={t('nav.helpSupport')} collapsed={collapsed} isRTL={isRTL} onClick={() => setSupportOpen(true)} />
-        <NavItem icon={SettingsIcon} label={t('nav.settings')} collapsed={collapsed} isRTL={isRTL} onClick={() => navigate(`/settings${query}`)} />
+      {/* Spacer */}
+      <div style={{ flex: 1 }} />
 
-        {/* Sign Out */}
-        <div
-          title={collapsed ? t('nav.signOut') : undefined}
-          onClick={() => navigate('/login')}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: collapsed ? 0 : 12,
-            padding: collapsed ? '10px 0' : '10px 16px',
-            justifyContent: collapsed ? 'center' : 'flex-start',
-            borderRadius: 10,
-            fontSize: 14,
-            fontWeight: 500,
-            color: '#EF4444',
-            cursor: 'pointer',
-            transition: 'background 0.15s',
-          }}
-          onMouseEnter={e => e.currentTarget.style.background = 'rgba(239,68,68,0.08)'}
-          onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-        >
-          <LogOut size={20} color="#EF4444" style={{ flexShrink: 0 }} />
-          {!collapsed && <span>{t('nav.signOut')}</span>}
+      {/* Bottom utility items */}
+      <div ref={bottomRef} style={{ padding: collapsed ? '0 8px 12px' : '0 12px 12px', transition: 'padding 0.3s', position: 'relative' }}>
+        {/* Utility nav — subtle styling */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 0, marginBottom: 8 }}>
+          <div
+            title={collapsed ? t('nav.helpSupport') : undefined}
+            onClick={() => setSupportOpen(true)}
+            style={{
+              display: 'flex', alignItems: 'center', gap: collapsed ? 0 : 12,
+              padding: collapsed ? '8px 0' : '8px 12px',
+              justifyContent: collapsed ? 'center' : 'flex-start',
+              borderRadius: 8, fontSize: 13, fontWeight: 500, color: 'rgba(203,213,225,0.55)',
+              cursor: 'pointer', transition: 'background 0.15s',
+            }}
+            onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.04)'}
+            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+          >
+            <HelpSupportIcon size={18} color="rgba(203,213,225,0.45)" />
+            {!collapsed && <span>{t('nav.help' as any) || 'Help'}</span>}
+          </div>
+          <div
+            title={collapsed ? t('nav.settings') : undefined}
+            onClick={() => navigate(`/settings${query}`)}
+            style={{
+              display: 'flex', alignItems: 'center', gap: collapsed ? 0 : 12,
+              padding: collapsed ? '8px 0' : '8px 12px',
+              justifyContent: collapsed ? 'center' : 'flex-start',
+              borderRadius: 8, fontSize: 13, fontWeight: 500, color: 'rgba(203,213,225,0.55)',
+              cursor: 'pointer', transition: 'background 0.15s',
+            }}
+            onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.04)'}
+            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+          >
+            <SettingsIcon size={18} color="rgba(203,213,225,0.45)" />
+            {!collapsed && <span>{t('nav.settings')}</span>}
+          </div>
         </div>
+
+        {/* User strip divider */}
+        <div style={{ height: 1, background: 'rgba(255,255,255,0.06)', margin: collapsed ? '0' : '0 4px', marginBottom: 8 }} />
 
         {/* Profile switcher dropdown */}
         {profileMenuOpen && !collapsed && (
           <div style={{
-            position: 'absolute',
-            bottom: 80,
-            left: 12,
-            right: 12,
-            background: '#243447',
-            borderRadius: 12,
-            padding: 8,
-            boxShadow: '0 -4px 16px rgba(0,0,0,0.3)',
-            zIndex: 10,
+            position: 'absolute', bottom: 64, left: 12, right: 12,
+            background: '#243447', borderRadius: 12, padding: 8,
+            boxShadow: '0 -4px 16px rgba(0,0,0,0.3)', zIndex: 10,
           }}>
-            {/* Current profile */}
             <div style={{
               display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px',
               borderRadius: 8, background: 'rgba(37,99,235,0.15)', marginBottom: 4,
             }}>
-              <div style={{
-                width: 32, height: 32, borderRadius: '50%', background: '#7CFF01',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: '#1B2A3D', fontSize: 12, fontWeight: 700,
-              }}>A</div>
+              <div style={{ width: 28, height: 28, borderRadius: '50%', background: '#7CFF01', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#1B2A3D', fontSize: 11, fontWeight: 700 }}>A</div>
               <div style={{ flex: 1 }}>
                 <p style={{ fontSize: 13, fontWeight: 600, color: '#fff' }}>Ahmed Al-Rashid</p>
                 <p style={{ fontSize: 11, color: '#94A3B8' }}>Al-Majd Trading Company</p>
               </div>
-              <span style={{ color: '#7CFF01', fontSize: 16 }}>✓</span>
+              <span style={{ color: '#7CFF01', fontSize: 14 }}>✓</span>
             </div>
-
-            {/* Other profile */}
-            <div style={{
-              display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px',
-              borderRadius: 8, cursor: 'pointer', marginBottom: 4,
-            }}
-            onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
-            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', borderRadius: 8, cursor: 'pointer' }}
+              onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
+              onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
             >
-              <div style={{
-                width: 32, height: 32, borderRadius: '50%', background: '#3B82F6',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: '#fff', fontSize: 12, fontWeight: 700,
-              }}>F</div>
+              <div style={{ width: 28, height: 28, borderRadius: '50%', background: '#3B82F6', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 11, fontWeight: 700 }}>F</div>
               <div>
                 <p style={{ fontSize: 13, fontWeight: 500, color: '#CBD5E1' }}>Faisal Al-Otaibi</p>
                 <p style={{ fontSize: 11, color: '#64748B' }}>Gulf Services Co.</p>
               </div>
             </div>
-
-            {/* Divider */}
             <div style={{ height: 1, background: 'rgba(255,255,255,0.1)', margin: '4px 0' }} />
-
-            {/* Add profile */}
-            <div style={{
-              display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px',
-              borderRadius: 8, cursor: 'pointer',
-            }}
-            onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
-            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+            <div
+              onClick={() => navigate('/login')}
+              style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', borderRadius: 8, cursor: 'pointer' }}
+              onMouseEnter={e => e.currentTarget.style.background = 'rgba(239,68,68,0.08)'}
+              onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
             >
-              <div style={{
-                width: 32, height: 32, borderRadius: '50%', border: '1.5px dashed #64748B',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: '#64748B', fontSize: 16,
-              }}>+</div>
-              <p style={{ fontSize: 13, fontWeight: 500, color: '#94A3B8' }}>Add Business Profile</p>
+              <LogOut size={16} color="#EF4444" />
+              <p style={{ fontSize: 13, fontWeight: 500, color: '#EF4444' }}>{t('nav.signOut')}</p>
             </div>
           </div>
         )}
 
-        {/* Theme toggle */}
-        <div
-          onClick={toggleTheme}
-          style={{
-            display: 'flex', alignItems: 'center', gap: 10,
-            padding: collapsed ? '10px 0' : '10px 16px',
-            justifyContent: collapsed ? 'center' : 'flex-start',
-            cursor: 'pointer', transition: 'background 0.15s', borderRadius: 8,
-            margin: collapsed ? '0 8px' : '0 8px',
-          }}
-          onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
-          onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-          title={isDark ? 'Light mode' : 'Dark mode'}
-        >
-          {isDark ? <Sun size={18} color="#F59E0B" /> : <Moon size={18} color="#94A3B8" />}
-          {!collapsed && <span style={{ fontSize: 13, color: '#94A3B8', fontWeight: 500 }}>{isDark ? 'Light Mode' : 'Dark Mode'}</span>}
-        </div>
-
-        {/* Divider */}
-        <div style={{ height: 1, background: '#1E293B', margin: collapsed ? '0 8px' : '0 16px' }} />
-
+        {/* User strip */}
         <div
           onClick={() => setProfileMenuOpen(p => !p)}
           style={{
-            display: 'flex',
-            alignItems: 'center',
+            display: 'flex', alignItems: 'center',
             gap: collapsed ? 0 : 10,
-            padding: collapsed ? '12px 0' : '12px',
+            padding: collapsed ? '8px 0' : '8px',
             justifyContent: collapsed ? 'center' : 'flex-start',
-            cursor: 'pointer',
-            transition: 'padding 0.3s, gap 0.3s',
+            cursor: 'pointer', borderRadius: 8,
+            transition: 'background 0.15s',
           }}
+          onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.04)'}
+          onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
         >
-          <div
-            style={{
-              width: 32,
-              height: 32,
-              borderRadius: '50%',
-              background: '#7CFF01',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#1B2A3D',
-              fontSize: 12,
-              fontWeight: 700,
-              flexShrink: 0,
-            }}
-          >
-            A
-          </div>
+          <div style={{
+            width: 30, height: 30, borderRadius: '50%', background: '#7CFF01',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            color: '#1B2A3D', fontSize: 11, fontWeight: 700, flexShrink: 0,
+          }}>A</div>
           {!collapsed && (
             <div style={{ overflow: 'hidden', flex: 1, minWidth: 0 }}>
-              <span style={{ color: '#FFFFFF', fontSize: 13, fontWeight: 600, display: 'block', whiteSpace: 'nowrap' }}>
-                Ahmed
-              </span>
-              <span style={{ color: '#94A3B8', fontSize: 11, display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>ahmed@fundme.sa</span>
+              <span style={{ color: '#FFFFFF', fontSize: 13, fontWeight: 600, display: 'block', whiteSpace: 'nowrap' }}>Ahmed</span>
+              <span style={{ color: '#64748B', fontSize: 11, display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>ahmed@fundme.sa</span>
             </div>
           )}
           {!collapsed && (
-            <div
-              title={t('nav.switchProfile')}
-              style={{
-                width: 28, height: 28, borderRadius: 6,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                flexShrink: 0, cursor: 'pointer',
-                background: 'rgba(255,255,255,0.06)',
-              }}
-            >
-              <ArrowLeftRight size={14} color="#64748B" />
-            </div>
+            <MoreVertical size={16} color="#64748B" style={{ flexShrink: 0 }} />
           )}
         </div>
       </div>
