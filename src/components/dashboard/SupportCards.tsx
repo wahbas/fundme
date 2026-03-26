@@ -25,16 +25,18 @@ function VerifiedSupportWidget() {
   }
   return (
     <motion.div
+      className="support-card"
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.4, duration: 0.5, ease: 'easeOut' }}
       style={{ ...cardBase, display: 'flex', flexDirection: 'column' }}
     >
-      <h3 style={{ fontSize: 15, fontWeight: 700, color: theme.textPrimary, marginBottom: 20 }}>{t('support.yourSupport')}</h3>
+      <h3 className="support-card-title" style={{ fontSize: 15, fontWeight: 700, color: theme.textPrimary, marginBottom: 20 }}>{t('support.yourSupport')}</h3>
 
       {/* Account Manager */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
         <div
+          className="support-avatar"
           style={{
             width: 42,
             height: 42,
@@ -55,19 +57,20 @@ function VerifiedSupportWidget() {
       </div>
 
       {/* Contact info */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 18 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: theme.textSecondary }}>
+      <div className="support-contact-info" style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 18 }}>
+        <a href="tel:+966123456789" style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: theme.textSecondary, textDecoration: 'none' }}>
           <Phone size={14} color={theme.textMuted} />
           +966 12 345 6789
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: theme.textSecondary }}>
+        </a>
+        <a href="mailto:ahmed.almansour@fundme.sa" style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: theme.textSecondary, textDecoration: 'none' }}>
           <Mail size={14} color={theme.textMuted} />
           ahmed.almansour@fundme.sa
-        </div>
+        </a>
       </div>
 
       {/* Schedule button */}
       <button
+        className="support-schedule-btn"
         style={{
           width: '100%',
           padding: 10,
@@ -93,10 +96,11 @@ function VerifiedSupportWidget() {
       </button>
 
       {/* Divider */}
-      <div style={{ height: 1, background: theme.border, marginBottom: 16 }} />
+      <div className="support-divider" style={{ height: 1, background: theme.border, marginBottom: 16 }} />
 
       {/* Contact Support */}
       <div
+        className="support-contact-row"
         onClick={() => setSupportOpen(true)}
         onMouseEnter={() => setContactHovered(true)}
         onMouseLeave={() => setContactHovered(false)}
