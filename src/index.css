@@ -438,9 +438,7 @@ button {
   }
   .support-mobile-strip {
     display: flex !important;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
+    flex-direction: column;
   }
 
   /* What to expect: stack */
