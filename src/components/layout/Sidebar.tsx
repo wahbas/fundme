@@ -322,30 +322,32 @@ export default function Sidebar({ verified = false, collapsed = false, onToggle,
           </div>
         )}
 
+        {/* Divider */}
+        <div style={{ height: 1, background: '#1E293B', margin: collapsed ? '0 8px' : '0 16px' }} />
+
         <div
           onClick={() => setProfileMenuOpen(p => !p)}
           style={{
             display: 'flex',
             alignItems: 'center',
             gap: collapsed ? 0 : 10,
-            padding: collapsed ? '12px 0' : '12px 16px',
+            padding: collapsed ? '12px 0' : '12px',
             justifyContent: collapsed ? 'center' : 'flex-start',
-            marginTop: 4,
             cursor: 'pointer',
             transition: 'padding 0.3s, gap 0.3s',
           }}
         >
           <div
             style={{
-              width: 34,
-              height: 34,
+              width: 32,
+              height: 32,
               borderRadius: '50%',
               background: '#7CFF01',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               color: '#1B2A3D',
-              fontSize: 13,
+              fontSize: 12,
               fontWeight: 700,
               flexShrink: 0,
             }}
@@ -353,17 +355,24 @@ export default function Sidebar({ verified = false, collapsed = false, onToggle,
             A
           </div>
           {!collapsed && (
-            <div style={{ overflow: 'hidden', whiteSpace: 'nowrap', flex: 1 }}>
-              <span style={{ color: '#FFFFFF', fontSize: 14, fontWeight: 600, display: 'block' }}>
+            <div style={{ overflow: 'hidden', flex: 1, minWidth: 0 }}>
+              <span style={{ color: '#FFFFFF', fontSize: 13, fontWeight: 600, display: 'block', whiteSpace: 'nowrap' }}>
                 Ahmed
               </span>
-              <span style={{ color: '#94A3B8', fontSize: 11 }}>ahmed@fundme.sa</span>
+              <span style={{ color: '#94A3B8', fontSize: 11, display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>ahmed@fundme.sa</span>
             </div>
           )}
           {!collapsed && (
-            <div title={t('nav.switchProfile')} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, cursor: 'pointer', flexShrink: 0 }}>
-              <ArrowLeftRight size={14} color="#94A3B8" />
-              <span style={{ fontSize: 9, color: '#64748B', whiteSpace: 'nowrap' }}>{t('nav.switchProfile')}</span>
+            <div
+              title={t('nav.switchProfile')}
+              style={{
+                width: 28, height: 28, borderRadius: 6,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                flexShrink: 0, cursor: 'pointer',
+                background: 'rgba(255,255,255,0.06)',
+              }}
+            >
+              <ArrowLeftRight size={14} color="#64748B" />
             </div>
           )}
         </div>
