@@ -19,7 +19,7 @@ export default function OnboardingChecklist() {
       stepId: 'create-account',
     },
     {
-      title: t('onboarding.verifyIdentity'),
+      title: t('onboarding.verifyBusiness'),
       description: 'Connect your Commercial Registration via Wathiq.',
       status: 'current' as const,
       timeLabel: '~3 min',
