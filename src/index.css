@@ -432,6 +432,27 @@ button {
     width: 100% !important;
   }
 
+  /* Loan summary card: compact 2-col on mobile */
+  .loan-summary-card {
+    padding: 16px !important;
+    border-radius: 12px !important;
+  }
+  .loan-summary-title {
+    display: block !important;
+  }
+  .loan-summary-facility,
+  .loan-summary-id,
+  .loan-summary-status {
+    display: none !important;
+  }
+  .loan-summary-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 14px !important;
+  }
+  .loan-summary-progress {
+    grid-column: 1 / -1 !important;
+  }
+
   /* Loan cards: compact on mobile */
   .loan-card {
     padding: 16px !important;

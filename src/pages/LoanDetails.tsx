@@ -556,35 +556,46 @@ export default function LoanDetails() {
 
             {/* ── Summary Bar ── */}
             <motion.div
-              className="loan-summary-grid"
+              className="loan-summary-card"
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.05 }}
               style={{
                 background: theme.cardBg, border: `1px solid ${theme.border}`, borderRadius: 16,
                 padding: '24px 28px', marginBottom: 20, boxShadow: theme.shadow,
-                display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr', gap: 24, alignItems: 'center',
               }}
             >
-              <div>
-                <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 4 }}>{t('loanDetail.facilityType')}</p>
-                <p style={{ fontSize: 15, fontWeight: 600, color: theme.textPrimary }}>{loan.facilityType}</p>
+              {/* Title row: Facility Type + Loan ID — visible on mobile, hidden on desktop (shown in grid instead) */}
+              <div className="loan-summary-title" style={{ display: 'none' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
+                  <p style={{ fontSize: 17, fontWeight: 700, color: theme.textPrimary }}>{loan.facilityType}</p>
+                  <StatusBadge label={loan.statusLabel} status={loan.status} />
+                </div>
+                <p style={{ fontSize: 13, color: theme.textMuted, fontFamily: 'monospace', marginBottom: 16 }}>{loan.id}</p>
               </div>
-              <div>
-                <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 4 }}>{t('loanDetail.loanId')}</p>
-                <p style={{ fontSize: 15, fontWeight: 600, color: theme.textPrimary, fontFamily: 'monospace' }}>{loan.id}</p>
-              </div>
-              <div>
-                <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 4 }}>{t('loanDetail.outstandingBalance')}</p>
-                <p style={{ fontSize: 18, fontWeight: 700, color: '#2563EB' }}><RiyalSign color="#2563EB" /> {loan.outstandingBalance.toLocaleString()}</p>
-              </div>
-              <div>
-                <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 4 }}>{t('loanDetail.status')}</p>
-                <StatusBadge label={loan.statusLabel} status={loan.status} />
-              </div>
-              <div>
-                <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 6 }}>{t('loanDetail.loanProgress')}</p>
-                <ProgressBar progress={loan.progress} />
+
+              {/* Grid fields */}
+              <div className="loan-summary-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr', gap: 24, alignItems: 'center' }}>
+                <div className="loan-summary-facility">
+                  <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 4 }}>{t('loanDetail.facilityType')}</p>
+                  <p style={{ fontSize: 15, fontWeight: 600, color: theme.textPrimary }}>{loan.facilityType}</p>
+                </div>
+                <div className="loan-summary-id">
+                  <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 4 }}>{t('loanDetail.loanId')}</p>
+                  <p style={{ fontSize: 15, fontWeight: 600, color: theme.textPrimary, fontFamily: 'monospace' }}>{loan.id}</p>
+                </div>
+                <div>
+                  <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 4 }}>{t('loanDetail.outstandingBalance')}</p>
+                  <p style={{ fontSize: 18, fontWeight: 700, color: '#2563EB' }}><RiyalSign color="#2563EB" /> {loan.outstandingBalance.toLocaleString()}</p>
+                </div>
+                <div className="loan-summary-status">
+                  <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 4 }}>{t('loanDetail.status')}</p>
+                  <StatusBadge label={loan.statusLabel} status={loan.status} />
+                </div>
+                <div className="loan-summary-progress">
+                  <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 6 }}>{t('loanDetail.loanProgress')}</p>
+                  <ProgressBar progress={loan.progress} />
+                </div>
               </div>
             </motion.div>
 
