@@ -361,7 +361,10 @@ export default function Sidebar({ verified = false, collapsed = false, onToggle,
             </div>
           )}
           {!collapsed && (
-            <span title={t('nav.switchProfile')}><ArrowLeftRight size={14} color="#94A3B8" style={{ flexShrink: 0 }} /></span>
+            <div title={t('nav.switchProfile')} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, cursor: 'pointer', flexShrink: 0 }}>
+              <ArrowLeftRight size={14} color="#94A3B8" />
+              <span style={{ fontSize: 9, color: '#64748B', whiteSpace: 'nowrap' }}>{t('nav.switchProfile')}</span>
+            </div>
           )}
         </div>
       </div>
