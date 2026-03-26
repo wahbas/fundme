@@ -68,11 +68,19 @@ export default function NafathScreen() {
     }
   }, [state, initiate])
 
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (state === 'success') {
+      navigate('/dashboard')
+    }
+  }, [state, navigate])
+
   if (state === 'intro') return <LoadingView />
   if (state === 'requesting') return <LoadingView />
   if (state === 'waiting') return <WaitingView number={number} timeLeft={timeLeft} onCancel={retry} />
   if (state === 'verifying') return <VerifyingView />
-  if (state === 'success') return <SuccessView />
+  if (state === 'success') return <LoadingView />
   return <FailedView onRetry={retry} />
 }
 
