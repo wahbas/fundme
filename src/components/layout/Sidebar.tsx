@@ -357,7 +357,7 @@ export default function Sidebar({ verified = false, collapsed = false, onToggle,
               <span style={{ color: '#FFFFFF', fontSize: 14, fontWeight: 600, display: 'block' }}>
                 Ahmed
               </span>
-              <span style={{ color: '#94A3B8', fontSize: 11 }}>{t('nav.firstTimeUser')}</span>
+              <span style={{ color: '#94A3B8', fontSize: 11 }}>ahmed@fundme.sa</span>
             </div>
           )}
           {!collapsed && (
