@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   ArrowRight, ArrowLeft, Smartphone, Clock,
-  CheckCircle2, AlertTriangle, RefreshCw,
+  CheckCircle2, AlertTriangle, RefreshCw, ShieldCheck,
 } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { NafathLogo } from '../../components/onboarding/logos'
@@ -97,22 +97,23 @@ function WaitingView({ number, timeLeft, onCancel }: { number: string; timeLeft:
 
       <div style={{ textAlign: 'center' }}>
         {/* Pulsing icon */}
-        <div style={{ position: 'relative', width: 88, height: 88, margin: '0 auto 28px' }}>
+        <div style={{ position: 'relative', width: 72, height: 72, margin: '0 auto 28px' }}>
           <motion.div
-            animate={{ scale: [1, 1.05, 1] }}
-            transition={{ repeat: Infinity, duration: 2 }}
+            animate={{ scale: [1, 1.04, 1] }}
+            transition={{ repeat: Infinity, duration: 2.5 }}
             style={{
-              width: 88, height: 88, borderRadius: 22,
-              background: 'linear-gradient(135deg, #0D9488, #0D82F9)',
+              width: 72, height: 72, borderRadius: '50%',
+              background: '#EFF6FF',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
+              border: '2px solid #BFDBFE',
             }}
           >
-            <Smartphone size={36} color="#fff" />
+            <ShieldCheck size={32} color="#2563EB" />
           </motion.div>
           <motion.div
-            animate={{ scale: [1, 1.35], opacity: [0.35, 0] }}
-            transition={{ repeat: Infinity, duration: 1.8 }}
-            style={{ position: 'absolute', inset: -8, borderRadius: 28, border: '3px solid #0D82F9' }}
+            animate={{ scale: [1, 1.4], opacity: [0.3, 0] }}
+            transition={{ repeat: Infinity, duration: 2 }}
+            style={{ position: 'absolute', inset: -6, borderRadius: '50%', border: '2px solid #2563EB' }}
           />
         </div>
 
