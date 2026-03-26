@@ -40,7 +40,7 @@ export default function Settings() {
       }}>
         <div style={{ background: theme.bgPrimary, minHeight: '100vh', padding: '28px 32px', display: 'flex', flexDirection: 'column' }}>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <Header />
+            <div className="inner-page-header"><Header /></div>
 
             <h1 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary, marginBottom: 24 }}>{t('settings.title')}</h1>
 

@@ -353,6 +353,60 @@ button {
     display: none !important;
   }
 
+  /* Hide greeting header on inner pages */
+  .inner-page-header {
+    display: none !important;
+  }
+
+  /* Inner page title: compact */
+  .page-title-row {
+    margin-bottom: 16px !important;
+  }
+  .page-title-icon {
+    display: none !important;
+  }
+  .page-title {
+    font-size: 20px !important;
+  }
+  .page-action-btn {
+    padding: 8px 14px !important;
+    font-size: 13px !important;
+  }
+  .page-action-btn .header-loan-btn-text {
+    display: inline !important;
+  }
+
+  /* Filter tabs: compact */
+  .filter-tabs {
+    margin-bottom: 16px !important;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex-wrap: nowrap !important;
+  }
+  .filter-tabs::-webkit-scrollbar {
+    display: none;
+  }
+  .filter-tabs button {
+    padding: 6px 14px !important;
+    font-size: 13px !important;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Loan cards: compact on mobile */
+  .loan-card {
+    padding: 16px !important;
+  }
+  .loan-card-divider {
+    margin-bottom: 10px !important;
+  }
+  .loan-card-cta {
+    padding: 10px 0 !important;
+    font-size: 13px !important;
+    border-radius: 8px !important;
+  }
+
   /* Tighter section spacing on mobile */
   .dashboard-grid {
     gap: 16px !important;

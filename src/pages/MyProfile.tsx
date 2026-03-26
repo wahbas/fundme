@@ -91,7 +91,7 @@ export default function MyProfile() {
       }}>
         <div style={{ background: theme.bgPrimary, minHeight: '100vh', padding: '28px 32px', display: 'flex', flexDirection: 'column' }}>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <Header />
+            <div className="inner-page-header"><Header /></div>
 
             {/* Two-column layout */}
             <div className="profile-layout" style={{ display: 'grid', gridTemplateColumns: '340px 1fr', gap: 20, alignItems: 'start' }}>

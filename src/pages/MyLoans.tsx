@@ -59,16 +59,19 @@ function LoanCard({ loan, delay, query }: { loan: Loan; delay: number; query: st
 
   return (
     <motion.div
+      className="loan-card"
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.35, ease: 'easeOut' }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onClick={() => nav(`/my-loans/${loan.id}${query}`)}
       style={{
         background: theme.cardBg,
         border: `1px solid ${theme.cardBorder}`,
         borderRadius: 12,
         padding: '24px 24px 20px',
+        cursor: 'pointer',
         display: 'flex',
         flexDirection: 'column',
         boxShadow: hovered ? theme.shadowMd : theme.shadow,
@@ -95,7 +98,7 @@ function LoanCard({ loan, delay, query }: { loan: Loan; delay: number; query: st
       <p style={{ fontSize: 13, color: theme.textMuted, marginBottom: 20 }}>{t(loan.subtitleKey as any)}</p>
 
       {/* Divider */}
-      <div style={{ height: 1, background: theme.borderLight, marginBottom: 16 }} />
+      <div className="loan-card-divider" style={{ height: 1, background: theme.borderLight, marginBottom: 16 }} />
 
       {/* Amount */}
       <p style={{ fontSize: 12, color: theme.textMuted, marginBottom: 4 }}>{t('loan.financingAmount' as any)}</p>
@@ -108,7 +111,8 @@ function LoanCard({ loan, delay, query }: { loan: Loan; delay: number; query: st
 
       {/* CTA Button */}
       <button
-        onClick={() => nav(`/my-loans/${loan.id}${query}`)}
+        className="loan-card-cta"
+        onClick={(e) => { e.stopPropagation(); nav(`/my-loans/${loan.id}${query}`) }}
         style={{
           width: '100%',
           padding: '12px 0',
@@ -164,15 +168,16 @@ export default function MyLoans() {
       }}>
         <div style={{ background: theme.bgPrimary, minHeight: '100vh', padding: '28px 32px', display: 'flex', flexDirection: 'column' }}>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <Header />
+            <div className="inner-page-header"><Header /></div>
 
             {/* Page title row */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+            <div className="page-title-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <LoansIcon size={24} color={theme.textPrimary} />
-                <h2 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary }}>{t('loans.myLoans')}</h2>
+                <span className="page-title-icon"><LoansIcon size={24} color={theme.textPrimary} /></span>
+                <h2 className="page-title" style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary }}>{t('loans.myLoans')}</h2>
               </div>
               <motion.button
+                className="page-action-btn"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
                 onClick={() => navigate('/request-financing')}
@@ -188,7 +193,7 @@ export default function MyLoans() {
             </div>
 
             {/* Filter pills */}
-            <div style={{ display: 'flex', gap: 8, marginBottom: 28 }}>
+            <div className="filter-tabs" style={{ display: 'flex', gap: 8, marginBottom: 28 }}>
               {FILTERS.map(f => {
                 const isActive = activeFilter === f.key
                 return (
