@@ -186,9 +186,7 @@ button {
   .header-loan-btn {
     display: none !important;
   }
-  .header-avatar {
-    display: none !important;
-  }
+  /* header-avatar removed from Header component */
 
   /* Show mobile-only financing CTA */
   .mobile-financing-cta {

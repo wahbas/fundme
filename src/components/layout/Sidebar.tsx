@@ -14,7 +14,7 @@ import {
   ChevronsLeftIcon,
   ChevronsRightIcon,
 } from '../icons/NavIcons'
-import { LogOut, ArrowLeftRight } from 'lucide-react'
+import { LogOut, ArrowLeftRight, Sun, Moon } from 'lucide-react'
 import logo from '../../assets/logo.png'
 
 interface NavItemProps {
@@ -94,7 +94,7 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ verified = false, collapsed = false, onToggle, activeTab }: SidebarProps) {
-  const { theme } = useTheme()
+  const { theme, isDark, toggleTheme } = useTheme()
   const { t, isRTL } = useI18n()
   const navigate = useNavigate()
   const location = useLocation()
@@ -321,6 +321,24 @@ export default function Sidebar({ verified = false, collapsed = false, onToggle,
             </div>
           </div>
         )}
+
+        {/* Theme toggle */}
+        <div
+          onClick={toggleTheme}
+          style={{
+            display: 'flex', alignItems: 'center', gap: 10,
+            padding: collapsed ? '10px 0' : '10px 16px',
+            justifyContent: collapsed ? 'center' : 'flex-start',
+            cursor: 'pointer', transition: 'background 0.15s', borderRadius: 8,
+            margin: collapsed ? '0 8px' : '0 8px',
+          }}
+          onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
+          onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+          title={isDark ? 'Light mode' : 'Dark mode'}
+        >
+          {isDark ? <Sun size={18} color="#F59E0B" /> : <Moon size={18} color="#94A3B8" />}
+          {!collapsed && <span style={{ fontSize: 13, color: '#94A3B8', fontWeight: 500 }}>{isDark ? 'Light Mode' : 'Dark Mode'}</span>}
+        </div>
 
         {/* Divider */}
         <div style={{ height: 1, background: '#1E293B', margin: collapsed ? '0 8px' : '0 16px' }} />

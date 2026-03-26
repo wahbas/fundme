@@ -1,14 +1,14 @@
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
-import { Sun, Moon } from 'lucide-react'
+// Sun, Moon moved to Sidebar
 import { NotificationBellIcon, PlusIcon } from '../icons/WidgetIcons'
 import { useTheme } from '../../ThemeContext'
 import NotificationSheet from '../NotificationSheet'
 import { useI18n } from '../../i18n'
 
 export default function Header({ showNewLoanButton = false, showVerifiedLoanButton = false }: { showNewLoanButton?: boolean; showVerifiedLoanButton?: boolean }) {
-  const { theme, isDark, toggleTheme } = useTheme()
+  const { theme } = useTheme()
   const navigate = useNavigate()
   const { t, isRTL } = useI18n()
   const [notifOpen, setNotifOpen] = useState(false)
@@ -39,6 +39,18 @@ export default function Header({ showNewLoanButton = false, showVerifiedLoanButt
         <p style={{ fontSize: 12, color: theme.textSecondary, fontWeight: 400, marginTop: 2 }}>{getFormattedDate()}</p>
       </div>
       <div className="app-header-actions" style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+        <div onClick={() => setNotifOpen(true)} style={{ ...iconBtn, position: 'relative', cursor: 'pointer' }}>
+          <NotificationBellIcon size={20} color="#64748B" />
+          <span
+            style={{
+              position: 'absolute', top: 4, right: 4,
+              width: 16, height: 16, borderRadius: '50%',
+              background: '#EF4444', color: '#fff',
+              fontSize: 9, fontWeight: 700,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}
+          >2</span>
+        </div>
         {showNewLoanButton && (
           <motion.button
             className="header-loan-btn"
@@ -57,7 +69,6 @@ export default function Header({ showNewLoanButton = false, showVerifiedLoanButt
               display: 'flex',
               alignItems: 'center',
               gap: 6,
-              marginRight: 8,
             }}
           >
             <PlusIcon size={14} color="#fff" />
@@ -82,48 +93,12 @@ export default function Header({ showNewLoanButton = false, showVerifiedLoanButt
               display: 'flex',
               alignItems: 'center',
               gap: 6,
-              marginRight: 8,
             }}
           >
             <PlusIcon size={14} color="#fff" />
             <span className="header-loan-btn-text">{t('header.newLoanRequest')}</span>
           </motion.button>
         )}
-        {/* Dark/Light mode toggle */}
-        <div
-          onClick={toggleTheme}
-          style={{
-            ...iconBtn,
-            background: isDark ? 'rgba(255,255,255,0.08)' : '#F1F5F9',
-            cursor: 'pointer',
-            transition: 'background 0.2s',
-          }}
-          title={isDark ? 'Light mode' : 'Dark mode'}
-        >
-          {isDark ? <Sun size={18} color="#F59E0B" /> : <Moon size={18} color="#64748B" />}
-        </div>
-
-        <div onClick={() => setNotifOpen(true)} style={{ ...iconBtn, position: 'relative', cursor: 'pointer' }}>
-          <NotificationBellIcon size={20} color="#64748B" />
-          <span
-            style={{
-              position: 'absolute', top: 4, right: 4,
-              width: 16, height: 16, borderRadius: '50%',
-              background: '#EF4444', color: '#fff',
-              fontSize: 9, fontWeight: 700,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}
-          >2</span>
-        </div>
-        <div
-          className="header-avatar"
-          style={{
-            width: 36, height: 36, borderRadius: '50%',
-            background: '#1B2A3D', color: '#fff',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 14, fontWeight: 600, marginLeft: 4,
-          }}
-        >A</div>
       </div>
     </header>
     <NotificationSheet open={notifOpen} onClose={() => setNotifOpen(false)} />
