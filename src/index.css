@@ -77,8 +77,9 @@ button {
   font-family: 'IBM Plex Sans Arabic', 'DM Sans', sans-serif;
 }
 
-/* Hide greeting text on inner pages — keep action icons visible */
-.inner-page-header .app-header-greeting {
+/* Hide greeting text and notification bell on inner pages */
+.inner-page-header .app-header-greeting,
+.inner-page-header .header-notif-btn {
   display: none !important;
 }
 

@@ -39,7 +39,7 @@ export default function Header({ showNewLoanButton = false, showVerifiedLoanButt
         <p style={{ fontSize: 12, color: theme.textSecondary, fontWeight: 400, marginTop: 2 }}>{getFormattedDate()}</p>
       </div>
       <div className="app-header-actions" style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
-        <div onClick={() => setNotifOpen(true)} style={{ ...iconBtn, position: 'relative', cursor: 'pointer' }}>
+        <div className="header-notif-btn" onClick={() => setNotifOpen(true)} style={{ ...iconBtn, position: 'relative', cursor: 'pointer' }}>
           <NotificationBellIcon size={20} color="#64748B" />
           <span
             style={{
