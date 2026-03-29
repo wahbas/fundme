@@ -1,11 +1,10 @@
 import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Check, ArrowLeft, ArrowRight, Send, Info, Building2, FileText, Upload, LayoutGrid, Landmark } from 'lucide-react'
+import { Check, ArrowLeft, ArrowRight, Send, Info, Building2, FileText, Upload, Landmark } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useTheme } from '../ThemeContext'
 import { useI18n } from '../i18n'
-import SelectCategory from '../components/wizard/steps/SelectCategory'
-import SelectBiller from '../components/wizard/steps/SelectBiller'
+import SelectCategoryAndBiller from '../components/wizard/steps/SelectCategoryAndBiller'
 import InvoiceDetails from '../components/wizard/steps/InvoiceDetails'
 import Documents from '../components/wizard/steps/DocumentsAndBank'
 import BankConnect from '../components/wizard/steps/BankConnect'
@@ -38,7 +37,6 @@ export const INITIAL_WIZARD_DATA: WizardData = {
 // ─── Steps config ─────────────────────────────────────────────
 
 const STEPS = [
-  { id: 'category', labelKey: 'wizard.selectCategory', descKey: 'wizard.selectCategoryDesc', icon: LayoutGrid },
   { id: 'biller', labelKey: 'wizard.selectBiller', descKey: 'wizard.selectBillerDesc', icon: Building2 },
   { id: 'invoices', labelKey: 'wizard.invoiceDetails', descKey: 'wizard.invoiceDetailsDesc', icon: FileText },
   { id: 'documents', labelKey: 'wizard.documents', descKey: 'wizard.documentsDesc', icon: Upload },
@@ -85,22 +83,17 @@ export default function RequestFinancing() {
   const progress = ((stepIdx + 1) / TOTAL_STEPS) * 100
 
   const canContinue = (() => {
-    if (stepIdx === 0) return !!data.category
-    if (stepIdx === 1) return !!data.biller
-    if (stepIdx === 2) return data.selectedBills.length > 0
+    if (stepIdx === 0) return !!data.biller
+    if (stepIdx === 1) return data.selectedBills.length > 0
     return true
   })()
 
   function validate(): boolean {
-    if (stepIdx === 0 && !data.category) {
-      setValidationError(t('wizard.errCategory' as any))
-      return false
-    }
-    if (stepIdx === 1 && !data.biller) {
+    if (stepIdx === 0 && !data.biller) {
       setValidationError(t('wizard.errBiller' as any))
       return false
     }
-    if (stepIdx === 2 && data.selectedBills.length === 0) {
+    if (stepIdx === 1 && data.selectedBills.length === 0) {
       setValidationError(t('wizard.errBills' as any))
       return false
     }
@@ -242,13 +235,17 @@ export default function RequestFinancing() {
 
   // ─── Wizard (split-panel) ────────────────────────────────────
 
+  function handleAddFromAnotherBiller() {
+    setDirection(-1)
+    setStepIdx(0)
+  }
+
   function renderStep() {
     switch (stepIdx) {
-      case 0: return <SelectCategory data={data} onChange={patch} />
-      case 1: return <SelectBiller data={data} onChange={patch} />
-      case 2: return <InvoiceDetails data={data} onChange={patch} />
-      case 3: return <Documents data={data} onChange={patch} />
-      case 4: return <BankConnect data={data} onChange={patch} />
+      case 0: return <SelectCategoryAndBiller data={data} onChange={patch} />
+      case 1: return <InvoiceDetails data={data} onChange={patch} onAddFromAnotherBiller={handleAddFromAnotherBiller} />
+      case 2: return <Documents data={data} onChange={patch} />
+      case 3: return <BankConnect data={data} onChange={patch} />
       default: return null
     }
   }

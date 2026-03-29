@@ -17,6 +17,7 @@ import LoanDetails from './pages/LoanDetails.tsx'
 import Login from './pages/Login.tsx'
 import Notifications from './pages/Notifications.tsx'
 import Settings from './pages/Settings.tsx'
+import ForgotPassword from './pages/ForgotPassword.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -26,6 +27,7 @@ createRoot(document.getElementById('root')!).render(
       <Routes>
         <Route path="/" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/register/*" element={<Register />} />
         <Route path="/dashboard" element={<App />} />
         <Route path="/apply" element={<LoanApplication />} />

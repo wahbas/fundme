@@ -317,6 +317,14 @@ function ManualLookupScreen({ onResult, onBack }: { onResult: (cr: CommercialReg
             )}
           </div>
 
+          {/* Consent text */}
+          <p style={{
+            fontSize: 12, color: '#6B7280', textAlign: 'center', lineHeight: 1.5,
+            margin: '8px 0',
+          }}>
+            {t('onboarding.consentText' as any)}
+          </p>
+
           {/* Verify CR Button */}
           <motion.button
             whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
@@ -536,6 +544,13 @@ function SelectCRScreen({ crs, onSelect, onAddManually }: { crs: CommercialRegis
         <span style={{ fontSize: 18, lineHeight: 1 }}>+</span>
         {t('onboarding.addManually')}
       </button>
+
+      <p style={{
+        fontSize: 12, color: '#6B7280', textAlign: 'center', lineHeight: 1.5,
+        margin: '0 0 8px 0',
+      }}>
+        {t('onboarding.consentText' as any)}
+      </p>
 
       <motion.button
         whileHover={selectedId ? { scale: 1.02 } : undefined}

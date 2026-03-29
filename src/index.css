@@ -13,6 +13,7 @@ body {
   background: var(--bg-primary);
   color: var(--text-primary);
   transition: background 0.3s, color 0.3s;
+  overflow-x: hidden;
 }
 
 button {
@@ -558,22 +559,9 @@ button {
     margin-bottom: 16px !important;
   }
 
-  /* Support card: show compact strip, hide desktop content on mobile */
+  /* Hide support/agent card entirely on mobile */
   .support-card {
-    padding: 12px 16px !important;
-    border-radius: 12px !important;
-  }
-  .support-card-title,
-  .support-card > div:nth-child(2),
-  .support-contact-info,
-  .support-schedule-btn,
-  .support-divider,
-  .support-contact-row {
     display: none !important;
-  }
-  .support-mobile-strip {
-    display: flex !important;
-    flex-direction: column;
   }
 
   /* What to expect: stack */

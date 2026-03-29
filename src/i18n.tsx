@@ -171,6 +171,14 @@ const translations = {
   'settings.languageRegion': { en: 'Language & Region', ar: 'اللغة والمنطقة' },
   'settings.language': { en: 'Language', ar: 'اللغة' },
   'settings.switchLanguage': { en: 'Switch between English and Arabic', ar: 'التبديل بين الإنجليزية والعربية' },
+  'settings.changePassword': { en: 'Change Password', ar: 'تغيير كلمة المرور' },
+  'settings.changePasswordDesc': { en: 'Update your account password', ar: 'تحديث كلمة مرور حسابك' },
+
+  // ─── Investments ───
+  'investment.myInvestments': { en: 'My Current Investments', ar: 'استثماراتي الحالية' },
+  'investment.active': { en: 'Active', ar: 'نشط' },
+  'investment.totalInvested': { en: 'Total Invested', ar: 'إجمالي المستثمر' },
+  'investment.avgReturn': { en: 'Avg. Return', ar: 'متوسط العائد' },
 
   // ─── Modals ───
   'modal.makePayment': { en: 'Make Payment', ar: 'إجراء دفعة' },
@@ -221,6 +229,18 @@ const translations = {
   'login.signInBtn': { en: 'Sign In', ar: 'تسجيل الدخول' },
   'login.errNationalId': { en: 'Please enter a valid 10-digit National ID', ar: 'يرجى إدخال رقم هوية وطنية صحيح (10 أرقام)' },
   'login.errPassword': { en: 'Password must be at least 6 characters', ar: 'كلمة المرور يجب أن تكون 6 أحرف على الأقل' },
+
+  // ─── Forgot Password ───
+  'forgotPassword.title': { en: 'Forgot Password', ar: 'نسيت كلمة المرور' },
+  'forgotPassword.enterNationalId': { en: 'Enter your National ID to reset your password', ar: 'أدخل رقم هويتك الوطنية لإعادة تعيين كلمة المرور' },
+  'forgotPassword.continue': { en: 'Continue', ar: 'متابعة' },
+  'forgotPassword.setNewPassword': { en: 'Set New Password', ar: 'تعيين كلمة مرور جديدة' },
+  'forgotPassword.setNewPasswordDesc': { en: 'Create a strong password for your account', ar: 'أنشئ كلمة مرور قوية لحسابك' },
+  'forgotPassword.newPassword': { en: 'New Password', ar: 'كلمة المرور الجديدة' },
+  'forgotPassword.errMinChars': { en: 'Password must be at least 8 characters', ar: 'كلمة المرور يجب أن تكون 8 أحرف على الأقل' },
+  'forgotPassword.errMismatch': { en: 'Passwords do not match', ar: 'كلمات المرور غير متطابقة' },
+  'forgotPassword.otpDesc': { en: 'We sent a verification code to your registered mobile number', ar: 'أرسلنا رمز تحقق إلى رقم جوالك المسجل' },
+  'forgotPassword.resetPassword': { en: 'Reset Password', ar: 'إعادة تعيين كلمة المرور' },
 
   // ─── Wizard / Request Financing ───
   'wizard.step': { en: 'Step', ar: 'خطوة' },
@@ -563,6 +583,7 @@ const translations = {
   'onboarding.provideDetails': { en: 'Provide your company details', ar: 'أدخل تفاصيل شركتك' },
   'onboarding.permission': { en: 'Permission', ar: 'الصلاحية' },
   'onboarding.continueSelected': { en: 'Continue with Selected Business', ar: 'المتابعة مع النشاط المحدد' },
+  'onboarding.consentText': { en: 'By continuing, you agree to our Terms & Conditions and authorize credit checks for both you and the company.', ar: 'بالمتابعة، فإنك توافق على الشروط والأحكام الخاصة بنا وتفوّض بإجراء فحوصات ائتمانية لك وللشركة.' },
 
   // ─── SADAD Bills ───
   'sadad.selectBills': { en: 'Select SADAD Bills to Finance', ar: 'اختر فواتير سداد للتمويل' },

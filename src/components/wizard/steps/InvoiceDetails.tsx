@@ -8,6 +8,7 @@ import RiyalSign from '../../icons/RiyalSign'
 interface Props {
   data: WizardData
   onChange: (p: Partial<WizardData>) => void
+  onAddFromAnotherBiller?: () => void
 }
 
 interface Bill {
@@ -58,7 +59,7 @@ function CalendarIcon() {
   )
 }
 
-export default function InvoiceDetails({ data, onChange }: Props) {
+export default function InvoiceDetails({ data, onChange, onAddFromAnotherBiller }: Props) {
   const { theme } = useTheme()
   const [customMode, setCustomMode] = useState<Record<string, boolean>>({})
   const [showManualForm, setShowManualForm] = useState(false)
@@ -580,6 +581,27 @@ export default function InvoiceDetails({ data, onChange }: Props) {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Add from another biller */}
+      {onAddFromAnotherBiller && (
+        <div style={{ marginTop: 28, paddingTop: 20, borderTop: `1px solid ${theme.border}` }}>
+          <button
+            onClick={onAddFromAnotherBiller}
+            style={{
+              width: '100%', padding: 16, background: theme.cardBg,
+              border: `1.5px dashed #2563EB`, borderRadius: 12,
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+              fontSize: 14, fontWeight: 600, color: '#2563EB', cursor: 'pointer',
+              transition: 'background 0.15s',
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(37,99,235,0.04)' }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = theme.cardBg }}
+          >
+            <Plus size={18} />
+            Add Invoices from Another Biller
+          </button>
+        </div>
+      )}
     </div>
   )
 }

@@ -1,13 +1,12 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ChevronRight, ChevronLeft, Upload, Building2, Briefcase, Plus } from 'lucide-react'
+import { ChevronRight, ChevronLeft, Upload, Building2, Briefcase } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useTheme } from '../../ThemeContext'
 import { useI18n } from '../../i18n'
 
 const actions = [
-  { icon: Plus, labelKey: 'actions.requestFinancing' as const, descKey: 'actions.requestFinancingDesc' as const, key: 'financing', route: '/request-financing' },
-  { icon: Upload, labelKey: 'actions.uploadDocuments' as const, descKey: 'actions.uploadDocumentsDesc' as const, key: 'upload', route: '/data-hub' },
+{ icon: Upload, labelKey: 'actions.uploadDocuments' as const, descKey: 'actions.uploadDocumentsDesc' as const, key: 'upload', route: '/data-hub' },
   { icon: Building2, labelKey: 'actions.connectBank' as const, descKey: 'actions.connectBankDesc' as const, key: 'bank', route: '/data-hub' },
   { icon: Briefcase, labelKey: 'actions.companyProfile' as const, descKey: 'actions.companyProfileDesc' as const, key: 'profile', route: '/profile' },
 ]

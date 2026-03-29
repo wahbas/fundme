@@ -265,7 +265,10 @@ export default function Login() {
 
             {/* Forgot password */}
             <div style={{ textAlign: 'right', marginBottom: 24 }}>
-              <span style={{ fontSize: 13, color: '#2563EB', fontWeight: 500, cursor: 'pointer' }}>
+              <span
+                onClick={() => navigate('/forgot-password')}
+                style={{ fontSize: 13, color: '#2563EB', fontWeight: 500, cursor: 'pointer' }}
+              >
                 {t('login.forgotPassword' as any)}
               </span>
             </div>
