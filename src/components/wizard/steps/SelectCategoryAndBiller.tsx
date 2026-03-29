@@ -207,7 +207,6 @@ export default function SelectCategoryAndBiller({ data, onChange }: Props) {
   const { theme } = useTheme()
   const { t, isRTL } = useI18n()
   const [search, setSearch] = useState('')
-  const [showManualForm, setShowManualForm] = useState(false)
 
   const activeCategory = data.category || 'government'
   const billers = billersByCategory[activeCategory] || []
@@ -282,29 +281,6 @@ export default function SelectCategoryAndBiller({ data, onChange }: Props) {
           onBlur={(e) => { e.target.style.borderColor = theme.border; e.target.style.boxShadow = 'none' }}
         />
       </div>
-
-      {/* Manual entry trigger */}
-      <button
-        onClick={() => setShowManualForm(true)}
-        style={{
-          width: '100%', padding: 14, background: theme.cardBg,
-          border: `1px dashed ${theme.textMuted}`, borderRadius: 12,
-          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-          fontSize: 14, fontWeight: 500, color: theme.textSecondary, cursor: 'pointer',
-          marginBottom: 16, transition: 'border-color 0.15s',
-        }}
-        onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#2563EB'; e.currentTarget.style.background = 'rgba(37,99,235,0.02)' }}
-        onMouseLeave={(e) => { e.currentTarget.style.borderColor = theme.textMuted; e.currentTarget.style.background = theme.cardBg }}
-      >
-        <Plus size={18} />
-        {t('wizard.manualBillerEntry' as any)}
-      </button>
-
-      <ManualBillerSheet
-        open={showManualForm}
-        onClose={() => setShowManualForm(false)}
-        onAdd={(name, code) => { onChange({ biller: name, billerCode: code }); setShowManualForm(false) }}
-      />
 
       {/* Biller list */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>

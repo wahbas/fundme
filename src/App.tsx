@@ -19,7 +19,6 @@ import MakePaymentModal from './components/dashboard/MakePaymentModal'
 import ContactSupportModal from './components/dashboard/ContactSupportModal'
 import Footer from './components/layout/Footer'
 import MobileTabBar from './components/layout/MobileTabBar'
-import CurrentInvestment from './components/dashboard/CurrentInvestment'
 
 export type UserState = 'first-time' | 'verified'
 
@@ -131,7 +130,6 @@ function App() {
                   + {t('header.newLoanRequest')}
                 </button>
                 {hasSubmitted ? <RecentApplication headerOnly /> : null}
-                <CurrentInvestment />
                 {hasSubmitted ? (
                   <div className="dashboard-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: 20, alignItems: 'start' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
