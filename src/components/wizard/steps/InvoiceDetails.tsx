@@ -439,7 +439,7 @@ export default function InvoiceDetails({ data, onChange }: Props) {
       {/* List of already-added manual invoices */}
       {manualBills.length > 0 && (
         <div style={{ marginBottom: 12 }}>
-          {manualBills.map((mb, i) => (
+          {manualBills.map((mb) => (
             <div key={mb.id} style={{
               display: 'flex', alignItems: 'center', justifyContent: 'space-between',
               padding: '10px 14px', background: theme.cardBg, border: `1px solid ${theme.border}`,

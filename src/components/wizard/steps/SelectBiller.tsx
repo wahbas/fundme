@@ -60,15 +60,7 @@ export default function SelectBiller({ data, onChange }: Props) {
   const [showManualForm, setShowManualForm] = useState(false)
   const [manualBiller, setManualBiller] = useState({ name: '', accountNumber: '', billNumber: '', amount: '', dueDate: '' })
 
-  const labelStyle: React.CSSProperties = {
-    fontSize: 12, fontWeight: 600, color: theme.textMuted, marginBottom: 6,
-  }
 
-  const inputStyle: React.CSSProperties = {
-    width: '100%', padding: '12px 14px', background: theme.inputBg,
-    border: `1px solid ${theme.inputBorder}`, borderRadius: 10, fontSize: 14, outline: 'none',
-    boxSizing: 'border-box', color: theme.textPrimary,
-  }
 
   const billers = billersByCategory[data.category] || []
   const catConf = categoryConfig[data.category] || categoryConfig.others

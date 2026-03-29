@@ -1,12 +1,11 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
-  ArrowRight, ArrowLeft, Smartphone, Clock,
-  CheckCircle2, AlertTriangle, RefreshCw, ShieldCheck,
+  Clock,
+  AlertTriangle, RefreshCw, ShieldCheck,
 } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { NafathLogo } from '../../components/onboarding/logos'
-import { useI18n } from '../../i18n'
 import ProgressBar from './components/ProgressBar'
 import ContactSupportModal from '../../components/dashboard/ContactSupportModal'
 
@@ -191,81 +190,6 @@ function VerifyingView() {
       />
       <p style={{ fontSize: 14, color: '#6B7280' }}>Verifying your identity...</p>
     </div>
-  )
-}
-
-// ─── Success ────────────────────────────────────────────────
-
-function SuccessView() {
-  const navigate = useNavigate()
-  const { isRTL } = useI18n()
-
-  return (
-    <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }}>
-      <div style={{ textAlign: 'center' }}>
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-          style={{
-            width: 72, height: 72, borderRadius: '50%',
-            background: 'linear-gradient(135deg, #22C55E, #16A34A)',
-            boxShadow: '0 8px 24px rgba(34,197,94,0.3)',
-            margin: '0 auto 24px',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}
-        >
-          <CheckCircle2 size={36} color="#fff" />
-        </motion.div>
-
-        {/* Verified info card */}
-        <div style={{ background: '#F8FAFC', borderRadius: 14, padding: 20, marginBottom: 20, textAlign: 'left' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
-            <h3 style={{ fontSize: 13, fontWeight: 600, color: '#111', display: 'flex', alignItems: 'center', gap: 6 }}>
-              <CheckCircle2 size={15} color="#22C55E" />
-              Verified Information
-            </h3>
-            <span style={{
-              display: 'inline-flex', alignItems: 'center', gap: 4, padding: '3px 10px',
-              background: '#DCFCE7', color: '#166534', borderRadius: 20, fontSize: 11, fontWeight: 600,
-            }}>
-              <CheckCircle2 size={11} /> Verified
-            </span>
-          </div>
-          {[
-            ['Full Name', 'Mohammed Al-Rashidi'],
-            ['National ID', '1*** *** **89'],
-          ].map(([label, value]) => (
-            <div key={label} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8, fontSize: 13 }}>
-              <span style={{ color: '#94A3B8' }}>{label}</span>
-              <span style={{ fontWeight: 500, color: '#111' }}>{value}</span>
-            </div>
-          ))}
-        </div>
-
-        {/* Next step info */}
-        <div style={{ background: '#EFF6FF', borderRadius: 12, padding: 14, marginBottom: 24, textAlign: 'left' }}>
-          <p style={{ fontSize: 13, color: '#1E40AF', lineHeight: 1.5 }}>
-            <strong>Next up:</strong> Complete your business profile to unlock financing and get funded within 24 hours.
-          </p>
-        </div>
-
-        <motion.button
-          whileHover={{ scale: 1.01 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={() => navigate('/dashboard')}
-          style={{
-            width: '100%', height: 48,
-            background: 'linear-gradient(135deg, #000D1F, #002E83, #0052B9)',
-            color: '#fff', fontWeight: 600, fontSize: 15, borderRadius: 12, border: 'none',
-            cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-            boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15)',
-          }}
-        >
-          Go to Dashboard {isRTL ? <ArrowLeft size={18} /> : <ArrowRight size={18} />}
-        </motion.button>
-      </div>
-    </motion.div>
   )
 }
 

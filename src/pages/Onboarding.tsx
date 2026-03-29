@@ -115,7 +115,7 @@ export default function Onboarding() {
     return s
   })
 
-  const [completed, setCompleted] = useState(false)
+  const [completed] = useState(false)
   const [showExitModal, setShowExitModal] = useState(false)
 
   const WIZARD_STEPS = [
