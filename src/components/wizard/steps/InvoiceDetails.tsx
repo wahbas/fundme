@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Plus } from 'lucide-react'
+import { Plus, X, ChevronDown } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useTheme } from '../../../ThemeContext'
 import type { WizardData } from '../../../pages/RequestFinancing'
@@ -8,8 +8,34 @@ import RiyalSign from '../../icons/RiyalSign'
 interface Props {
   data: WizardData
   onChange: (p: Partial<WizardData>) => void
-  onAddFromAnotherBiller?: () => void
 }
+
+interface ManualBillerInvoice {
+  id: string
+  billerName: string
+  billerCode: string
+  billNumber: string
+  amount: number
+}
+
+const ALL_BILLERS = [
+  { name: 'Saudi Electricity Company', code: 'SEC-001' },
+  { name: 'National Water Company', code: 'NWC-002' },
+  { name: 'STC - Saudi Telecom', code: 'STC-003' },
+  { name: 'Mobily', code: 'MOB-004' },
+  { name: 'Zain KSA', code: 'ZAI-005' },
+  { name: 'Ministry of Interior', code: 'MOI-006' },
+  { name: 'General Authority of Zakat and Tax', code: 'GAZT-007' },
+  { name: 'Traffic Department', code: 'TRF-008' },
+  { name: 'Marafiq', code: 'MRF-009' },
+  { name: 'Al Rajhi Bank', code: 'ARB-010' },
+  { name: 'Saudi National Bank', code: 'SNB-011' },
+  { name: 'Riyad Bank', code: 'RYB-012' },
+  { name: 'Elm Company', code: 'ELM-013' },
+  { name: 'Thiqah Business Services', code: 'THQ-014' },
+  { name: 'Saudi Post', code: 'SPL-015' },
+  { name: 'General Organization for Social Insurance', code: 'GOSI-016' },
+]
 
 interface Bill {
   id: string
@@ -59,9 +85,13 @@ function CalendarIcon() {
   )
 }
 
-export default function InvoiceDetails({ data, onChange, onAddFromAnotherBiller }: Props) {
+export default function InvoiceDetails({ data, onChange }: Props) {
   const { theme } = useTheme()
   const [customMode, setCustomMode] = useState<Record<string, boolean>>({})
+  const [showAnotherBillerForm, setShowAnotherBillerForm] = useState(false)
+  const [anotherBillerInvoices, setAnotherBillerInvoices] = useState<ManualBillerInvoice[]>([])
+  const [abForm, setAbForm] = useState({ billerName: '', billerCode: '', billNumber: '', amount: '' })
+  const [abDropdownOpen, setAbDropdownOpen] = useState(false)
   const selected = new Set(data.selectedBills)
   const selectedCount = selected.size
 
@@ -431,11 +461,41 @@ export default function InvoiceDetails({ data, onChange, onAddFromAnotherBiller 
         )
       })()}
 
+      {/* Added invoices from other billers */}
+      {anotherBillerInvoices.length > 0 && (
+        <div style={{ marginTop: 24 }}>
+          <h3 style={{ fontSize: 15, fontWeight: 700, color: theme.textPrimary, marginBottom: 12 }}>Invoices from Other Billers</h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {anotherBillerInvoices.map((inv) => (
+              <div key={inv.id} style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                padding: '12px 16px', background: theme.cardBg, border: `1px solid ${theme.border}`,
+                borderRadius: 10,
+              }}>
+                <div>
+                  <p style={{ fontSize: 13, fontWeight: 600, color: theme.textPrimary, marginBottom: 2 }}>{inv.billerName}</p>
+                  <p style={{ fontSize: 12, color: theme.textMuted }}>{inv.billNumber} &middot; <RiyalSign size="sm" /> {inv.amount.toLocaleString()}</p>
+                </div>
+                <button
+                  onClick={() => {
+                    setAnotherBillerInvoices(prev => prev.filter(i => i.id !== inv.id))
+                    onChange({ selectedBills: data.selectedBills.filter(id => id !== inv.id) })
+                  }}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }}
+                >
+                  <X size={16} color="#DC2626" />
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Add from another biller */}
-      {onAddFromAnotherBiller && (
-        <div style={{ marginTop: 28, paddingTop: 20, borderTop: `1px solid ${theme.border}` }}>
+      <div style={{ marginTop: 28, paddingTop: 20, borderTop: `1px solid ${theme.border}` }}>
+        {!showAnotherBillerForm ? (
           <button
-            onClick={onAddFromAnotherBiller}
+            onClick={() => setShowAnotherBillerForm(true)}
             style={{
               width: '100%', padding: 16, background: theme.cardBg,
               border: `1.5px dashed #2563EB`, borderRadius: 12,
@@ -446,11 +506,144 @@ export default function InvoiceDetails({ data, onChange, onAddFromAnotherBiller 
             onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(37,99,235,0.04)' }}
             onMouseLeave={(e) => { e.currentTarget.style.background = theme.cardBg }}
           >
-            <Plus size={18} />
             Add Invoices from Another Biller
+            <Plus size={18} />
           </button>
-        </div>
-      )}
+        ) : (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            style={{ overflow: 'visible' }}
+          >
+            <div style={{ background: theme.cardBg, border: `1px solid ${theme.border}`, borderRadius: 14, padding: 20 }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+                <h4 style={{ fontSize: 15, fontWeight: 700, color: theme.textPrimary }}>Add Invoice from Another Biller</h4>
+                <button onClick={() => { setShowAnotherBillerForm(false); setAbForm({ billerName: '', billerCode: '', billNumber: '', amount: '' }); setAbDropdownOpen(false) }}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }}>
+                  <X size={16} color={theme.textMuted} />
+                </button>
+              </div>
+
+              {/* Biller selector */}
+              <div className="invoice-fields-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
+                <div style={{ position: 'relative' }}>
+                  <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: theme.textMuted, marginBottom: 6 }}>Biller Name</label>
+                  <button
+                    onClick={() => setAbDropdownOpen(!abDropdownOpen)}
+                    style={{
+                      width: '100%', padding: '12px 14px', background: theme.inputBg,
+                      border: `1px solid ${theme.border}`, borderRadius: 10, fontSize: 14,
+                      color: abForm.billerName ? theme.textPrimary : theme.textMuted,
+                      textAlign: 'left', cursor: 'pointer',
+                      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                    }}
+                  >
+                    {abForm.billerName || 'Select biller'}
+                    <ChevronDown size={16} color={theme.textMuted} />
+                  </button>
+                  <AnimatePresence>
+                    {abDropdownOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }}
+                        style={{
+                          position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 20,
+                          marginTop: 4, background: theme.cardBg, border: `1px solid ${theme.border}`,
+                          borderRadius: 10, boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
+                          maxHeight: 200, overflowY: 'auto',
+                        }}
+                      >
+                        {ALL_BILLERS.filter(b => b.name !== data.biller).map((b) => (
+                          <button
+                            key={b.code}
+                            onClick={() => {
+                              setAbForm(f => ({ ...f, billerName: b.name, billerCode: b.code }))
+                              setAbDropdownOpen(false)
+                            }}
+                            style={{
+                              width: '100%', padding: '10px 14px', background: 'none',
+                              border: 'none', borderBottom: `1px solid ${theme.border}`,
+                              textAlign: 'left', fontSize: 13, color: theme.textPrimary,
+                              cursor: 'pointer',
+                            }}
+                            onMouseEnter={(e) => { e.currentTarget.style.background = theme.bgHover }}
+                            onMouseLeave={(e) => { e.currentTarget.style.background = 'none' }}
+                          >
+                            <span style={{ fontWeight: 600 }}>{b.name}</span>
+                            <span style={{ fontSize: 11, color: theme.textMuted, marginLeft: 8 }}>{b.code}</span>
+                          </button>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: theme.textMuted, marginBottom: 6 }}>Biller ID</label>
+                  <input
+                    type="text" readOnly
+                    value={abForm.billerCode || '—'}
+                    style={{ width: '100%', padding: '12px 14px', background: theme.borderLight, border: `1px solid ${theme.borderLight}`, borderRadius: 10, fontSize: 14, outline: 'none', color: theme.textSecondary }}
+                  />
+                </div>
+              </div>
+
+              {/* Bill details */}
+              <div className="invoice-fields-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 16 }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: theme.textMuted, marginBottom: 6 }}>Bill Number *</label>
+                  <input
+                    type="text" placeholder="Enter bill number"
+                    value={abForm.billNumber}
+                    onChange={e => setAbForm(f => ({ ...f, billNumber: e.target.value }))}
+                    style={{ width: '100%', padding: '12px 14px', background: theme.inputBg, border: `1px solid ${theme.border}`, borderRadius: 10, fontSize: 14, outline: 'none', color: theme.textPrimary }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: theme.textMuted, marginBottom: 6 }}>Bill Amount (SAR) *</label>
+                  <input
+                    type="number" placeholder="0"
+                    value={abForm.amount}
+                    onChange={e => setAbForm(f => ({ ...f, amount: e.target.value }))}
+                    style={{ width: '100%', padding: '12px 14px', background: theme.inputBg, border: `1px solid ${theme.border}`, borderRadius: 10, fontSize: 14, outline: 'none', color: theme.textPrimary }}
+                  />
+                </div>
+              </div>
+
+              {/* Buttons */}
+              <div style={{ display: 'flex', gap: 12 }}>
+                <button
+                  onClick={() => { setShowAnotherBillerForm(false); setAbForm({ billerName: '', billerCode: '', billNumber: '', amount: '' }) }}
+                  style={{ flex: 1, height: 44, borderRadius: 10, border: `1px solid ${theme.border}`, background: theme.cardBg, color: theme.textSecondary, fontWeight: 600, fontSize: 14, cursor: 'pointer' }}
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => {
+                    if (!abForm.billerName || !abForm.billNumber || !abForm.amount) return
+                    const newId = 'ab-' + Date.now()
+                    const newInv: ManualBillerInvoice = {
+                      id: newId, billerName: abForm.billerName, billerCode: abForm.billerCode,
+                      billNumber: abForm.billNumber, amount: Number(abForm.amount),
+                    }
+                    setAnotherBillerInvoices(prev => [...prev, newInv])
+                    onChange({ selectedBills: [...data.selectedBills, newId] })
+                    setAbForm({ billerName: '', billerCode: '', billNumber: '', amount: '' })
+                    setShowAnotherBillerForm(false)
+                  }}
+                  style={{
+                    flex: 1, height: 44, borderRadius: 10, border: 'none',
+                    background: (abForm.billerName && abForm.billNumber && abForm.amount) ? '#2563EB' : '#E2E8F0',
+                    color: (abForm.billerName && abForm.billNumber && abForm.amount) ? '#fff' : '#94A3B8',
+                    fontWeight: 600, fontSize: 14,
+                    cursor: (abForm.billerName && abForm.billNumber && abForm.amount) ? 'pointer' : 'not-allowed',
+                  }}
+                >
+                  Add Invoice
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </div>
     </div>
   )
 }

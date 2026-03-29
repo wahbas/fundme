@@ -235,15 +235,10 @@ export default function RequestFinancing() {
 
   // ─── Wizard (split-panel) ────────────────────────────────────
 
-  function handleAddFromAnotherBiller() {
-    setDirection(-1)
-    setStepIdx(0)
-  }
-
   function renderStep() {
     switch (stepIdx) {
       case 0: return <SelectCategoryAndBiller data={data} onChange={patch} />
-      case 1: return <InvoiceDetails data={data} onChange={patch} onAddFromAnotherBiller={handleAddFromAnotherBiller} />
+      case 1: return <InvoiceDetails data={data} onChange={patch} />
       case 2: return <Documents data={data} onChange={patch} />
       case 3: return <BankConnect data={data} onChange={patch} />
       default: return null
