@@ -32,7 +32,7 @@ export default function InvestorTopbar({ userName = 'Wahba', tier = 'BASIC' }: I
     <header
       style={{
         gridColumn: '1 / -1',
-        height: 'auto',
+        height: 80,
         background: topbarBg,
         borderBottom: `1px solid ${borderColor}`,
         display: 'grid',

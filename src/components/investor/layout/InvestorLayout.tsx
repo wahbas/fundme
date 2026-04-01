@@ -40,7 +40,7 @@ export default function InvestorLayout({
           gridColumn: '2',
           gridRow: '2',
           overflow: 'auto',
-          padding: '24px 28px 24px 0',
+          padding: '0 32px 40px 24px',
           background: theme.pageBg,
           scrollBehavior: 'smooth',
           scrollbarWidth: 'thin',
