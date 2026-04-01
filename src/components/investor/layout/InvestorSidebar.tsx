@@ -1,6 +1,7 @@
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useInvestorTheme } from '../InvestorThemeContext'
-import logo from '../../../assets/logo.png'
+import logoDark from '../../../assets/logo.png'
+import logoLight from '../../../assets/logo-light.png'
 import {
   LayoutGridIcon,
   TrendingUpIcon,
@@ -137,7 +138,7 @@ export default function InvestorSidebar({ activeTab }: InvestorSidebarProps) {
         }}
       >
         <img
-          src={logo}
+          src={theme.isDark ? logoDark : logoLight}
           alt="FundMe"
           style={{
             width: 64,
