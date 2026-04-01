@@ -173,6 +173,11 @@ const translations = {
   'settings.switchLanguage': { en: 'Switch between English and Arabic', ar: 'التبديل بين الإنجليزية والعربية' },
   'settings.changePassword': { en: 'Change Password', ar: 'تغيير كلمة المرور' },
   'settings.changePasswordDesc': { en: 'Update your account password', ar: 'تحديث كلمة مرور حسابك' },
+  'settings.verified': { en: 'Verified', ar: 'موثّق' },
+  'settings.verifiedDesc': { en: 'Your identity has been verified successfully', ar: 'تم التحقق من هويتك بنجاح' },
+  'settings.notVerified': { en: 'Not Verified', ar: 'غير موثّق' },
+  'settings.notVerifiedDesc': { en: 'Complete onboarding to verify your identity', ar: 'أكمل التسجيل للتحقق من هويتك' },
+  'settings.completeVerification': { en: 'Complete Verification', ar: 'إكمال التحقق' },
 
   // ─── Investments ───
   'investment.myInvestments': { en: 'My Current Investments', ar: 'استثماراتي الحالية' },
