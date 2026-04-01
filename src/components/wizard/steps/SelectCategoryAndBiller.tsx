@@ -1,10 +1,9 @@
 import { useState } from 'react'
-import { Search, ChevronRight, ChevronLeft, Plus, X } from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { Search, ChevronRight, ChevronLeft } from 'lucide-react'
+import { motion } from 'framer-motion'
 import { useTheme } from '../../../ThemeContext'
 import { useI18n } from '../../../i18n'
 import type { WizardData } from '../../../pages/RequestFinancing'
-import RiyalSign from '../../icons/RiyalSign'
 
 interface Props {
   data: WizardData
@@ -113,92 +112,6 @@ const billersByCategory: Record<string, { name: string; code: string; initials: 
     { name: 'Saudi Post', code: 'SPL-015', initials: 'SP' },
     { name: 'General Organization for Social Insurance', code: 'GOSI-016', initials: 'GO' },
   ],
-}
-
-// ─── Manual Biller Sheet ─────────────────────────────────────
-
-function ManualBillerSheet({ open, onClose, onAdd }: {
-  open: boolean
-  onClose: () => void
-  onAdd: (name: string, code: string) => void
-}) {
-  const { theme } = useTheme()
-  const { t } = useI18n()
-  const [form, setForm] = useState({ name: '', accountNumber: '', billNumber: '', amount: '', dueDate: '' })
-
-  const labelStyle: React.CSSProperties = {
-    display: 'block', fontSize: 12, fontWeight: 600, color: theme.textMuted, marginBottom: 6,
-  }
-  const inputStyle: React.CSSProperties = {
-    width: '100%', padding: '12px 14px', background: theme.inputBg,
-    border: `1px solid ${theme.inputBorder}`, borderRadius: 10, fontSize: 14, outline: 'none',
-    boxSizing: 'border-box', color: theme.textPrimary,
-  }
-  const canAdd = form.name.trim() && form.billNumber.trim() && form.amount.trim()
-
-  return (
-    <AnimatePresence>
-      {open && (
-        <>
-          <motion.div
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            onClick={onClose}
-            style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.35)', zIndex: 9998, backdropFilter: 'blur(3px)' }}
-          />
-          <motion.div
-            initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }}
-            transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-            className="side-sheet"
-            style={{
-              position: 'fixed', top: 0, right: 0, bottom: 0, width: 440, maxWidth: '100%',
-              background: theme.cardBg, boxShadow: '-8px 0 40px rgba(0,0,0,0.15)',
-              zIndex: 9999, display: 'flex', flexDirection: 'column',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 24px', borderBottom: `1px solid ${theme.border}` }}>
-              <h3 style={{ fontSize: 17, fontWeight: 700, color: theme.textPrimary, margin: 0 }}>{t('wizard.manualBillerEntry' as any)}</h3>
-              <button onClick={onClose} style={{ width: 32, height: 32, borderRadius: 8, border: 'none', background: theme.bgPrimary, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <X size={16} color={theme.textMuted} />
-              </button>
-            </div>
-            <div style={{ flex: 1, overflowY: 'auto', padding: 24 }}>
-              <div style={{ marginBottom: 16 }}>
-                <label style={labelStyle}>{t('wizard.billerName' as any)} *</label>
-                <input type="text" value={form.name} onChange={(e) => setForm(p => ({ ...p, name: e.target.value }))} style={inputStyle} placeholder={t('wizard.enterBillerName' as any)} />
-              </div>
-              <div style={{ marginBottom: 16 }}>
-                <label style={labelStyle}>{t('wizard.billerAccountNo' as any)}</label>
-                <input type="text" value={form.accountNumber} onChange={(e) => setForm(p => ({ ...p, accountNumber: e.target.value }))} style={inputStyle} placeholder={t('wizard.enterAccountNo' as any)} />
-              </div>
-              <div style={{ marginBottom: 16 }}>
-                <label style={labelStyle}>{t('wizard.billNumber' as any)} *</label>
-                <input type="text" value={form.billNumber} onChange={(e) => setForm(p => ({ ...p, billNumber: e.target.value }))} style={inputStyle} placeholder={t('wizard.enterBillNo' as any)} />
-              </div>
-              <div style={{ marginBottom: 16 }}>
-                <label style={labelStyle}>{t('wizard.amount' as any)} (<RiyalSign size="sm" />) *</label>
-                <input type="number" value={form.amount} onChange={(e) => setForm(p => ({ ...p, amount: e.target.value }))} style={inputStyle} placeholder="0.00" />
-              </div>
-              <div style={{ marginBottom: 24 }}>
-                <label style={labelStyle}>{t('wizard.dueDate' as any)}</label>
-                <input type="date" value={form.dueDate} onChange={(e) => setForm(p => ({ ...p, dueDate: e.target.value }))} style={inputStyle} />
-              </div>
-            </div>
-            <div style={{ padding: '16px 24px', borderTop: `1px solid ${theme.border}`, display: 'flex', gap: 12 }}>
-              <button
-                onClick={() => { if (!canAdd) return; onAdd(form.name, 'MANUAL-' + Date.now()); setForm({ name: '', accountNumber: '', billNumber: '', amount: '', dueDate: '' }) }}
-                style={{ flex: 1, height: 44, borderRadius: 10, border: 'none', background: canAdd ? '#2563EB' : '#E2E8F0', color: canAdd ? '#fff' : '#94A3B8', fontWeight: 600, fontSize: 14, cursor: canAdd ? 'pointer' : 'not-allowed' }}
-              >
-                {t('wizard.addBill' as any)}
-              </button>
-              <button onClick={onClose} style={{ flex: 1, height: 44, borderRadius: 10, border: `1px solid ${theme.border}`, background: theme.cardBg, color: theme.textSecondary, fontWeight: 600, fontSize: 14, cursor: 'pointer' }}>
-                Cancel
-              </button>
-            </div>
-          </motion.div>
-        </>
-      )}
-    </AnimatePresence>
-  )
 }
 
 // ─── Main Component ──────────────────────────────────────────
