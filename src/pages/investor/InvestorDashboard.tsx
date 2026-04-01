@@ -6,8 +6,6 @@ import { useInvestorTheme } from '../../components/investor/InvestorThemeContext
 import {
   ChevronLeft,
   ChevronRight,
-  Lock,
-  DollarSign,
 } from 'lucide-react'
 
 interface GlassCardProps {
@@ -46,6 +44,140 @@ interface OpportunityData {
   funded: number
   badge: 'trending' | 'exclusive' | 'new'
   coverGradient: string
+  iconColor?: string
+}
+
+const opportunityIconColors: Record<string, string> = {
+  'Invoice Financing': '#5ab4ff',
+  'Murabaha': '#34D399',
+  'Clean Energy': '#34D399',
+  'Healthcare': '#a78bfa',
+  'Agriculture': '#6ee7b7',
+  'Logistics': '#E8C872',
+}
+
+function OpportunityIcon({ type }: { type: string }) {
+  const color = opportunityIconColors[type] || '#fff'
+  const props = {
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1.8,
+    strokeLinecap: 'round' as const,
+    strokeLinejoin: 'round' as const,
+    width: 26,
+    height: 26,
+    style: { color },
+  }
+
+  switch (type) {
+    case 'Invoice Financing':
+      return (
+        <svg {...props}>
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="9" y1="13" x2="15" y2="13"/>
+          <line x1="9" y1="17" x2="13" y2="17"/>
+        </svg>
+      )
+    case 'Murabaha':
+      return (
+        <svg {...props}>
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M16 8h-4a2 2 0 0 0 0 4h2a2 2 0 0 1 0 4H8"/>
+          <line x1="12" y1="6" x2="12" y2="8"/>
+          <line x1="12" y1="16" x2="12" y2="18"/>
+        </svg>
+      )
+    case 'Clean Energy':
+      return (
+        <svg {...props}>
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        </svg>
+      )
+    case 'Healthcare':
+      return (
+        <svg {...props}>
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+        </svg>
+      )
+    case 'Agriculture':
+      return (
+        <svg {...props}>
+          <path d="M12 22c-4 0-8-2-8-6s4-6 8-6 8 2 8 6-4 6-8 6z"/>
+          <path d="M12 10V2"/>
+          <path d="M8 6l4 4 4-4"/>
+        </svg>
+      )
+    case 'Logistics':
+      return (
+        <svg {...props}>
+          <rect x="1" y="3" width="15" height="13"/>
+          <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
+          <circle cx="5.5" cy="18.5" r="2.5"/>
+          <circle cx="18.5" cy="18.5" r="2.5"/>
+        </svg>
+      )
+    default:
+      return (
+        <svg {...props}>
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M16 8h-4a2 2 0 0 0 0 4h2a2 2 0 0 1 0 4H8"/>
+          <line x1="12" y1="6" x2="12" y2="8"/>
+          <line x1="12" y1="16" x2="12" y2="18"/>
+        </svg>
+      )
+  }
+}
+
+function RepaymentIcon({ type }: { type: string }) {
+  const props = {
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1.8,
+    strokeLinecap: 'round' as const,
+    strokeLinejoin: 'round' as const,
+    width: 18,
+    height: 18,
+    style: { color: '#fff' },
+  }
+
+  switch (type) {
+    case 'Invoice Financing':
+      return (
+        <svg {...props}>
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="9" y1="13" x2="15" y2="13"/>
+          <line x1="9" y1="17" x2="13" y2="17"/>
+        </svg>
+      )
+    case 'Clean Energy':
+      return (
+        <svg {...props}>
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        </svg>
+      )
+    case 'Healthcare':
+      return (
+        <svg {...props}>
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+        </svg>
+      )
+    default:
+      return (
+        <svg {...props}>
+          <circle cx="12" cy="12" r="10"/>
+        </svg>
+      )
+  }
+}
+
+const repaymentIconBg: Record<string, string> = {
+  'Invoice Financing': '#0D82F9',
+  'Clean Energy': '#34D399',
+  'Healthcare': '#9370db',
 }
 
 const opportunitiesPage1: OpportunityData[] = [
@@ -98,7 +230,7 @@ const opportunitiesPage2: OpportunityData[] = [
     amount: 1500000,
     funded: 35,
     badge: 'new',
-    coverGradient: 'linear-gradient(170deg, #1a0033 0%, #4a0080 35%, #9933cc 100%)',
+    coverGradient: 'linear-gradient(170deg, #0a0020 0%, #1a0050 35%, #5b4fcf 100%)',
   },
   {
     id: 'opp-5',
@@ -110,7 +242,7 @@ const opportunitiesPage2: OpportunityData[] = [
     amount: 800000,
     funded: 92,
     badge: 'trending',
-    coverGradient: 'linear-gradient(170deg, #1a1a00 0%, #4a4a00 35%, #cccc00 100%)',
+    coverGradient: 'linear-gradient(170deg, #001208 0%, #003820 35%, #34D399 100%)',
   },
   {
     id: 'opp-6',
@@ -122,7 +254,7 @@ const opportunitiesPage2: OpportunityData[] = [
     amount: 3200000,
     funded: 18,
     badge: 'exclusive',
-    coverGradient: 'linear-gradient(170deg, #330000 0%, #663300 35%, #ff6600 100%)',
+    coverGradient: 'linear-gradient(170deg, #001230 0%, #002E83 40%, #D4A843 100%)',
   },
 ]
 
@@ -199,21 +331,34 @@ function OpportunityCard({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+          position: 'relative',
         }}
       >
+        {/* Grid overlay */}
+        <div style={{
+          position: 'absolute', inset: 0,
+          backgroundImage: 'linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px)',
+          backgroundSize: '22px 22px',
+          maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.08) 100%)',
+          WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.08) 100%)',
+        }} />
         <div
           style={{
-            width: '48px',
-            height: '48px',
-            borderRadius: '12px',
-            background: 'rgba(255,255,255,0.1)',
+            width: '52px',
+            height: '52px',
+            borderRadius: '16px',
+            background: 'rgba(0,0,0,0.25)',
+            backdropFilter: 'blur(12px)',
+            border: '1px solid rgba(255,255,255,0.12)',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#fff',
+            position: 'relative',
+            zIndex: 1,
           }}
         >
-          <DollarSign size={24} strokeWidth={1.5} />
+          <OpportunityIcon type={opp.type} />
         </div>
       </div>
 
@@ -298,14 +443,22 @@ function OpportunityCard({
               {opp.tenor}
             </div>
           </div>
+          <div>
+            <div style={{ fontSize: '11px', color: theme.textTertiary, marginBottom: '4px' }}>
+              Size
+            </div>
+            <div style={{ fontSize: '14px', fontWeight: '600', color: theme.textHeading }}>
+              SAR {(opp.amount / 1000).toFixed(0)}K
+            </div>
+          </div>
         </div>
 
         {/* Progress bar */}
         <div
           style={{
-            height: '6px',
-            background: theme.progressBg,
-            borderRadius: '3px',
+            height: '10px',
+            background: 'repeating-linear-gradient(-45deg, rgba(13,130,249,0.15), rgba(13,130,249,0.15) 4px, rgba(13,130,249,0.06) 4px, rgba(13,130,249,0.06) 8px)',
+            borderRadius: '6px',
             marginBottom: '8px',
             overflow: 'hidden',
           }}
@@ -314,8 +467,8 @@ function OpportunityCard({
             style={{
               height: '100%',
               width: `${opp.funded}%`,
-              background: theme.progressFill,
-              borderRadius: '3px',
+              background: theme.blue,
+              borderRadius: '6px',
             }}
           />
         </div>
@@ -377,7 +530,10 @@ function OpportunityCard({
               gap: '8px',
             }}
           >
-            <Lock size={24} color="#D4A843" />
+            <svg viewBox="0 0 24 24" fill="none" stroke="#D4A843" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" width="24" height="24">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
             <div
               style={{
                 fontSize: '12px',
@@ -407,78 +563,79 @@ function BalanceCard() {
   return (
     <GlassCard
       style={{
-        padding: '20px',
-        flex: '1',
+        padding: '18px 24px 0',
         minWidth: '0',
       }}
     >
       {/* Header */}
-      <div style={{ marginBottom: '16px' }}>
-        <div style={{ fontSize: '12px', color: theme.textSecondary, marginBottom: '4px' }}>
-          Total Active Investments
-        </div>
-        <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px', marginBottom: '8px' }}>
-          <div style={{ fontSize: '32px', fontWeight: '700', color: theme.textHeading }}>
-            2,418,240
+      <div style={{ marginBottom: '6px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <div>
+            <div style={{ fontSize: '12px', color: theme.textSecondary, marginBottom: '4px' }}>
+              Total Active Investments
+            </div>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
+              <div style={{ fontSize: '32px', fontWeight: '700', color: theme.textHeading }}>
+                2,418,240
+              </div>
+              <div style={{ fontSize: '14px', color: theme.textSecondary }}>.00</div>
+            </div>
           </div>
-          <div style={{ fontSize: '14px', color: theme.textSecondary }}>.00</div>
+          {/* Time pill dropdown */}
+          <div style={{
+            background: 'rgba(255,255,255,0.06)',
+            border: '1px solid rgba(255,255,255,0.08)',
+            borderRadius: '10px',
+            padding: '6px 14px',
+            fontSize: '12px',
+            fontWeight: 600,
+            color: 'rgba(255,255,255,0.6)',
+            cursor: 'pointer',
+            whiteSpace: 'nowrap',
+          }}>
+            Last 30 Days ▾
+          </div>
         </div>
-        <div style={{ fontSize: '12px', color: theme.textSecondary }}>
-          Across 3 deals · Expected Profit{' '}
-          <span style={{ color: theme.green, fontWeight: '600' }}>SAR 27,125</span>{' '}
-          <span style={{ color: theme.green }}>+11.3%</span>
+        {/* Sub-row */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '6px', fontSize: '12px', color: theme.textSecondary }}>
+          <span>Across <strong style={{ color: theme.textHeading }}>3</strong> deals</span>
+          <span style={{ width: '3px', height: '3px', borderRadius: '50%', background: theme.textTertiary, display: 'inline-block' }} />
+          <span>Expected Profit <strong style={{ color: theme.green, fontWeight: 600 }}>SAR 27,125</strong></span>
+          <span style={{
+            background: 'rgba(52,211,153,0.1)',
+            padding: '2px 6px',
+            borderRadius: '5px',
+            color: theme.green,
+            fontWeight: 600,
+            fontSize: '12px',
+          }}>+11.3%</span>
         </div>
-      </div>
-
-      {/* Time range pills */}
-      <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
-        {['1M', '3M', '6M', '1Y'].map((period, idx) => (
-          <button
-            key={period}
-            style={{
-              padding: '6px 12px',
-              borderRadius: '6px',
-              border: 'none',
-              fontSize: '11px',
-              fontWeight: '600',
-              background:
-                idx === 0
-                  ? theme.blue
-                  : theme.isDark
-                    ? 'rgba(255,255,255,0.06)'
-                    : 'rgba(13,130,249,0.06)',
-              color: idx === 0 ? '#fff' : theme.textSecondary,
-              cursor: 'pointer',
-              transition: 'all 0.2s',
-            }}
-            onMouseEnter={(e) => {
-              if (idx !== 0) {
-                e.currentTarget.style.background = theme.hoverBg
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (idx !== 0) {
-                e.currentTarget.style.background = theme.isDark
-                  ? 'rgba(255,255,255,0.06)'
-                  : 'rgba(13,130,249,0.06)'
-              }
-            }}
-          >
-            {period}
-          </button>
-        ))}
       </div>
 
       {/* Chart */}
       <div
         style={{
-          width: '100%',
-          height: '90px',
+          width: 'calc(100% + 48px)',
+          margin: '6px -24px 0',
+          height: '80px',
           position: 'relative',
+          overflow: 'hidden',
         }}
       >
+        {/* Chart annotation */}
+        <div style={{
+          position: 'absolute',
+          top: '4px',
+          right: '40px',
+          fontSize: '11px',
+          fontWeight: 600,
+          color: theme.green,
+          zIndex: 1,
+        }}>
+          +12.3% ↑
+        </div>
         <svg
-          viewBox="0 0 600 90"
+          viewBox="0 0 600 80"
           preserveAspectRatio="none"
           style={{
             width: '100%',
@@ -495,17 +652,17 @@ function BalanceCard() {
               <stop offset="100%" stopColor={theme.blue} />
             </linearGradient>
             <clipPath id="chartReveal">
-              <rect x="0" y="0" width={`${chartRevealWidth}%`} height="90" />
+              <rect x="0" y="0" width={`${chartRevealWidth}%`} height="80" />
             </clipPath>
           </defs>
 
           <g clipPath="url(#chartReveal)" style={{ transition: 'opacity 0.6s ease-out' }}>
             <path
-              d="M0 70 L40 65 L80 68 L120 58 L160 55 L200 50 L240 42 L280 40 L320 35 L360 30 L400 24 L440 20 L480 16 L520 12 L560 8 L600 4 L600 90 L0 90Z"
+              d="M0 62 L40 58 L80 60 L120 52 L160 49 L200 44 L240 37 L280 35 L320 31 L360 27 L400 21 L440 18 L480 14 L520 10 L560 7 L600 4 L600 80 L0 80Z"
               fill="url(#sparkFill)"
             />
             <path
-              d="M0 70 L40 65 L80 68 L120 58 L160 55 L200 50 L240 42 L280 40 L320 35 L360 30 L400 24 L440 20 L480 16 L520 12 L560 8 L600 4"
+              d="M0 62 L40 58 L80 60 L120 52 L160 49 L200 44 L240 37 L280 35 L320 31 L360 27 L400 21 L440 18 L480 14 L520 10 L560 7 L600 4"
               stroke="url(#sparkLine)"
               strokeWidth="2"
               fill="none"
@@ -535,26 +692,24 @@ function WalletWidget() {
     <GlassCard
       style={{
         padding: '20px',
-        flex: '0 0 28%',
         minWidth: '0',
       }}
     >
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
-        <div
-          style={{
-            width: '28px',
-            height: '28px',
-            borderRadius: '8px',
-            background: 'rgba(13,130,249,0.1)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <DollarSign size={16} color={theme.blue} strokeWidth={2} />
-        </div>
-        <div style={{ fontSize: '13px', fontWeight: '600', color: theme.textHeading }}>
+        <svg viewBox="0 0 48 40" fill="none" width="36" height="30">
+          <rect x="2" y="4" width="38" height="28" rx="6" stroke={theme.blue} strokeWidth="1.5" fill="rgba(13,130,249,0.06)"/>
+          <rect x="2" y="4" width="38" height="10" rx="6" fill="rgba(13,130,249,0.08)" stroke="none"/>
+          <line x1="2" y1="14" x2="40" y2="14" stroke="rgba(13,130,249,0.15)" strokeWidth="1"/>
+          <circle cx="20" cy="24" r="5.5" stroke="rgba(255,255,255,0.2)" strokeWidth="1" strokeDasharray="2.5 2" fill="none"/>
+          <line x1="20" y1="21.5" x2="20" y2="26.5" stroke="rgba(255,255,255,0.3)" strokeWidth="1" strokeLinecap="round"/>
+          <line x1="17.5" y1="24" x2="22.5" y2="24" stroke="rgba(255,255,255,0.3)" strokeWidth="1" strokeLinecap="round"/>
+          <rect x="34" y="16" width="12" height="12" rx="4" stroke={theme.blue} strokeWidth="1.2" fill="rgba(13,130,249,0.08)"/>
+          <circle cx="40" cy="22" r="2.5" stroke="rgba(255,255,255,0.25)" strokeWidth="1" fill="none"/>
+          <circle cx="4" cy="2" r="1.5" fill="rgba(212,168,67,0.4)"/>
+          <circle cx="42" cy="8" r="1" fill="rgba(52,211,153,0.4)"/>
+        </svg>
+        <div style={{ fontSize: '14px', fontWeight: 700, color: theme.textHeading }}>
           Wallet
         </div>
       </div>
@@ -578,28 +733,24 @@ function WalletWidget() {
         }}
       />
 
-      {/* Quick stats */}
+      {/* Quick stats — side by side */}
       <div style={{ marginBottom: '16px' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              fontSize: '11px',
-            }}
-          >
-            <span style={{ color: theme.textSecondary }}>This Month In</span>
-            <span style={{ color: theme.green, fontWeight: '600' }}>+SAR 84,200</span>
+        <div style={{ display: 'flex', gap: '12px' }}>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: '10px', fontWeight: 500, color: 'rgba(255,255,255,0.3)', marginBottom: '4px' }}>
+              This Month In
+            </div>
+            <div style={{ fontSize: '13px', fontWeight: 700, color: theme.green }}>
+              +SAR 84,200
+            </div>
           </div>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              fontSize: '11px',
-            }}
-          >
-            <span style={{ color: theme.textSecondary }}>This Month Out</span>
-            <span style={{ color: theme.red, fontWeight: '600' }}>-SAR 12,500</span>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: '10px', fontWeight: 500, color: 'rgba(255,255,255,0.3)', marginBottom: '4px' }}>
+              This Month Out
+            </div>
+            <div style={{ fontSize: '13px', fontWeight: 700, color: theme.red }}>
+              -SAR 12,500
+            </div>
           </div>
         </div>
       </div>
@@ -682,7 +833,7 @@ function OpportunitiesSection() {
           marginBottom: '16px',
         }}
       >
-        <div style={{ fontSize: '16px', fontWeight: '700', color: theme.textHeading }}>
+        <div style={{ fontSize: '20px', fontWeight: '700', color: theme.textHeading, letterSpacing: '-0.02em' }}>
           Opportunities
         </div>
 
@@ -796,6 +947,7 @@ function OpportunitiesSection() {
 
 function RepaymentItem({ repayment }: { repayment: RepaymentData }) {
   const { theme } = useInvestorTheme()
+  const bgColor = repaymentIconBg[repayment.type] || repayment.iconColor
 
   return (
     <div
@@ -810,17 +962,17 @@ function RepaymentItem({ repayment }: { repayment: RepaymentData }) {
       {/* Icon */}
       <div
         style={{
-          width: '36px',
-          height: '36px',
-          borderRadius: '8px',
-          background: `${repayment.iconColor}15`,
+          width: '38px',
+          height: '38px',
+          borderRadius: '50%',
+          background: bgColor,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           flexShrink: 0,
         }}
       >
-        <DollarSign size={18} color={repayment.iconColor} strokeWidth={1.8} />
+        <RepaymentIcon type={repayment.type} />
       </div>
 
       {/* Info */}
@@ -850,9 +1002,9 @@ function RepaymentSection() {
   const { theme } = useInvestorTheme()
 
   return (
-    <div style={{ display: 'flex', gap: '16px', marginTop: '24px' }}>
-      {/* Repayments card (70%) */}
-      <GlassCard style={{ flex: '1', padding: '20px' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: '7fr 3fr', gap: '20px', marginTop: '24px' }}>
+      {/* Repayments card */}
+      <GlassCard style={{ padding: '20px' }}>
         {/* Header */}
         <div
           style={{
@@ -890,8 +1042,18 @@ function RepaymentSection() {
         </div>
       </GlassCard>
 
-      {/* VIP Upgrade card (30%) */}
-      <GlassCard style={{ flex: '0 0 30%', padding: '20px', position: 'relative', overflow: 'hidden' }}>
+      {/* VIP Upgrade card */}
+      <div
+        style={{
+          background: 'linear-gradient(160deg, rgba(212,168,67,0.08) 0%, rgba(0,20,60,0.4) 50%, rgba(212,168,67,0.06) 100%)',
+          border: '1px solid rgba(212,168,67,0.15)',
+          backdropFilter: 'blur(40px) saturate(1.4)',
+          borderRadius: theme.cardRadius,
+          padding: '20px',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
         {/* Glow effect */}
         <div
           style={{
@@ -915,21 +1077,33 @@ function RepaymentSection() {
               marginBottom: '12px',
             }}
           >
-            <Lock size={32} color="#D4A843" strokeWidth={1.5} />
+            <svg viewBox="0 0 64 64" fill="none" width="56" height="56">
+              <path d="M32 6 L52 16 V34 C52 46 42 56 32 60 C22 56 12 46 12 34 V16 Z" stroke="#D4A843" strokeWidth="1.5" fill="rgba(212,168,67,0.06)"/>
+              <path d="M32 12 L46 20 V34 C46 43 39 51 32 54" stroke="rgba(212,168,67,0.15)" strokeWidth="1" fill="none"/>
+              <polygon points="32,22 34.5,28 41,28.5 36,33 37.5,39.5 32,36 26.5,39.5 28,33 23,28.5 29.5,28" stroke="#D4A843" strokeWidth="1.2" fill="rgba(212,168,67,0.12)"/>
+              <circle cx="50" cy="12" r="5" stroke="rgba(255,255,255,0.2)" strokeWidth="1" strokeDasharray="2.5 2" fill="none"/>
+              <line x1="50" y1="10" x2="50" y2="14" stroke="rgba(255,255,255,0.3)" strokeWidth="1" strokeLinecap="round"/>
+              <line x1="48" y1="12" x2="52" y2="12" stroke="rgba(255,255,255,0.3)" strokeWidth="1" strokeLinecap="round"/>
+              <circle cx="14" cy="14" r="1.2" fill="rgba(212,168,67,0.4)"/>
+              <circle cx="54" cy="44" r="0.8" fill="rgba(52,211,153,0.4)"/>
+              <circle cx="10" cy="42" r="0.8" fill="rgba(255,255,255,0.15)"/>
+            </svg>
           </div>
 
-          {/* Badge */}
-          <div
-            style={{
-              fontSize: '10px',
-              fontWeight: '800',
+          {/* VIP GOLD Badge */}
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '8px' }}>
+            <div style={{
+              fontSize: '9px',
+              fontWeight: 800,
+              letterSpacing: '0.1em',
               color: '#D4A843',
-              textAlign: 'center',
-              marginBottom: '8px',
-              letterSpacing: '0.05em',
-            }}
-          >
-            VIP GOLD
+              padding: '3px 10px',
+              borderRadius: '6px',
+              background: 'rgba(212,168,67,0.1)',
+              border: '1px solid rgba(212,168,67,0.15)',
+            }}>
+              VIP GOLD
+            </div>
           </div>
 
           {/* Title */}
@@ -1006,14 +1180,15 @@ function RepaymentSection() {
             style={{
               width: '100%',
               padding: '8px 12px',
-              background: 'linear-gradient(135deg, #D4A843 0%, #E8C872 100%)',
-              color: '#000',
+              background: 'linear-gradient(135deg, #D4A843, #A67B1E)',
+              color: '#fff',
               border: 'none',
               borderRadius: '8px',
               fontSize: '12px',
               fontWeight: '600',
               cursor: 'pointer',
               transition: 'opacity 0.2s',
+              boxShadow: '0 4px 16px rgba(212,168,67,0.2)',
             }}
             onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.85')}
             onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
@@ -1021,7 +1196,7 @@ function RepaymentSection() {
             Upgrade to VIP
           </button>
         </div>
-      </GlassCard>
+      </div>
     </div>
   )
 }
@@ -1032,8 +1207,9 @@ export default function InvestorDashboard() {
       {/* Top row: Balance Card + Wallet Widget */}
       <div
         style={{
-          display: 'flex',
-          gap: '16px',
+          display: 'grid',
+          gridTemplateColumns: '1fr 240px',
+          gap: '18px',
           marginBottom: '24px',
         }}
       >
