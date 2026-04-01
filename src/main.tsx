@@ -18,6 +18,11 @@ import Login from './pages/Login.tsx'
 import Notifications from './pages/Notifications.tsx'
 import Settings from './pages/Settings.tsx'
 import ForgotPassword from './pages/ForgotPassword.tsx'
+import { InvestorThemeProvider } from './components/investor/InvestorThemeContext.tsx'
+import InvestorDashboard from './pages/investor/InvestorDashboard.tsx'
+import InvestorOpportunities from './pages/investor/InvestorOpportunities.tsx'
+import InvestorPortfolio from './pages/investor/InvestorPortfolio.tsx'
+import InvestorWallet from './pages/investor/InvestorWallet.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -25,6 +30,7 @@ createRoot(document.getElementById('root')!).render(
     <I18nProvider>
     <BrowserRouter>
       <Routes>
+        {/* Borrower routes */}
         <Route path="/" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -39,6 +45,12 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/profile" element={<MyProfile />} />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/settings" element={<Settings />} />
+
+        {/* Investor routes */}
+        <Route path="/investor" element={<InvestorThemeProvider><InvestorDashboard /></InvestorThemeProvider>} />
+        <Route path="/investor/opportunities" element={<InvestorThemeProvider><InvestorOpportunities /></InvestorThemeProvider>} />
+        <Route path="/investor/portfolio" element={<InvestorThemeProvider><InvestorPortfolio /></InvestorThemeProvider>} />
+        <Route path="/investor/wallet" element={<InvestorThemeProvider><InvestorWallet /></InvestorThemeProvider>} />
       </Routes>
     </BrowserRouter>
     </I18nProvider>
