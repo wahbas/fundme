@@ -3,9 +3,9 @@ import { useInvestorTheme } from '../InvestorThemeContext'
 import logoDark from '../../../assets/logo.png'
 import logoLight from '../../../assets/logo-light.png'
 import {
-  LayoutGridIcon,
-  TrendingUpIcon,
-  BriefcaseIcon,
+  HomeIcon,
+  SearchIcon,
+  ActivityIcon,
   WalletIcon,
   GiftIcon,
 } from 'lucide-react'
@@ -39,7 +39,8 @@ function NavItem({ icon: Icon, label, badge, active, onClick }: NavItemProps) {
         display: 'flex',
         alignItems: 'center',
         gap: 12,
-        padding: '10px 16px',
+        padding: '12px 14px',
+        marginBottom: 8,
         borderRadius: 10,
         fontSize: 14,
         fontWeight: active ? 600 : 500,
@@ -159,20 +160,20 @@ export default function InvestorSidebar({ activeTab }: InvestorSidebarProps) {
         }}
       >
         <NavItem
-          icon={LayoutGridIcon}
+          icon={HomeIcon}
           label="Dashboard"
           active={getActive('dashboard')}
           onClick={() => navigate('/investor')}
         />
         <NavItem
-          icon={TrendingUpIcon}
+          icon={SearchIcon}
           label="Opportunities"
           badge={3}
           active={getActive('opportunities')}
           onClick={() => navigate('/investor/opportunities')}
         />
         <NavItem
-          icon={BriefcaseIcon}
+          icon={ActivityIcon}
           label="Portfolio"
           active={getActive('portfolio')}
           onClick={() => navigate('/investor/portfolio')}
@@ -226,6 +227,16 @@ export default function InvestorSidebar({ activeTab }: InvestorSidebarProps) {
               }}
             >
               Refer & Earn
+            </p>
+            <p
+              style={{
+                fontSize: 11,
+                color: theme.textSecondary,
+                marginBottom: 4,
+                lineHeight: 1.3,
+              }}
+            >
+              Invite a friend and both get rewarded
             </p>
             <p
               style={{

@@ -130,55 +130,6 @@ function OpportunityIcon({ type }: { type: string }) {
   }
 }
 
-function RepaymentIcon({ type }: { type: string }) {
-  const props = {
-    viewBox: '0 0 24 24',
-    fill: 'none',
-    stroke: 'currentColor',
-    strokeWidth: 1.8,
-    strokeLinecap: 'round' as const,
-    strokeLinejoin: 'round' as const,
-    width: 18,
-    height: 18,
-    style: { color: '#fff' },
-  }
-
-  switch (type) {
-    case 'Invoice Financing':
-      return (
-        <svg {...props}>
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-          <polyline points="14 2 14 8 20 8"/>
-          <line x1="9" y1="13" x2="15" y2="13"/>
-          <line x1="9" y1="17" x2="13" y2="17"/>
-        </svg>
-      )
-    case 'Clean Energy':
-      return (
-        <svg {...props}>
-          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-        </svg>
-      )
-    case 'Healthcare':
-      return (
-        <svg {...props}>
-          <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
-        </svg>
-      )
-    default:
-      return (
-        <svg {...props}>
-          <circle cx="12" cy="12" r="10"/>
-        </svg>
-      )
-  }
-}
-
-const repaymentIconBg: Record<string, string> = {
-  'Invoice Financing': '#0D82F9',
-  'Clean Energy': '#34D399',
-  'Healthcare': '#9370db',
-}
 
 const opportunitiesPage1: OpportunityData[] = [
   {
@@ -258,45 +209,6 @@ const opportunitiesPage2: OpportunityData[] = [
   },
 ]
 
-interface RepaymentData {
-  id: string
-  company: string
-  type: string
-  code: string
-  amount: number
-  date: string
-  iconColor: string
-}
-
-const repayments: RepaymentData[] = [
-  {
-    id: 'repay-1',
-    company: 'Al-Baraka Trading Co.',
-    type: 'Invoice Financing',
-    code: 'FM-0001-309',
-    amount: 56250,
-    date: 'Apr 15, 2026',
-    iconColor: '#0D82F9',
-  },
-  {
-    id: 'repay-2',
-    company: 'Riyadh EV Charging',
-    type: 'Clean Energy',
-    code: 'FM-0003-072',
-    amount: 115500,
-    date: 'May 2, 2026',
-    iconColor: '#34D399',
-  },
-  {
-    id: 'repay-3',
-    company: 'Jeddah Health Hub',
-    type: 'Healthcare',
-    code: 'FM-0005-218',
-    amount: 84000,
-    date: 'Jun 10, 2026',
-    iconColor: '#9933cc',
-  },
-]
 
 function OpportunityCard({
   opp,
@@ -308,9 +220,9 @@ function OpportunityCard({
   const { theme } = useInvestorTheme()
 
   const badgeConfig = {
-    trending: { label: 'Trending', bg: theme.badgeTrendingBg, text: theme.badgeTrendingText },
-    exclusive: { label: '★ Exclusive', bg: theme.badgeHotBg, text: theme.badgeHotText },
-    new: { label: 'New', bg: theme.badgeNewBg, text: theme.badgeNewText },
+    trending: { label: 'TRENDING', bg: theme.badgeTrendingBg, text: theme.badgeTrendingText },
+    exclusive: { label: '★ EXCLUSIVE', bg: theme.badgeHotBg, text: theme.badgeHotText },
+    new: { label: 'NEW', bg: theme.badgeNewBg, text: theme.badgeNewText },
   }
 
   const config = badgeConfig[opp.badge]
@@ -441,14 +353,6 @@ function OpportunityCard({
             </div>
             <div style={{ fontSize: '14px', fontWeight: '600', color: theme.textHeading }}>
               {opp.tenor}
-            </div>
-          </div>
-          <div>
-            <div style={{ fontSize: '11px', color: theme.textTertiary, marginBottom: '4px' }}>
-              Size
-            </div>
-            <div style={{ fontSize: '14px', fontWeight: '600', color: theme.textHeading }}>
-              SAR {(opp.amount / 1000).toFixed(0)}K
             </div>
           </div>
         </div>
@@ -593,7 +497,7 @@ function BalanceCard() {
             cursor: 'pointer',
             whiteSpace: 'nowrap',
           }}>
-            Last 30 Days ▾
+            1M ▾
           </div>
         </div>
         {/* Sub-row */}
@@ -622,18 +526,6 @@ function BalanceCard() {
           overflow: 'hidden',
         }}
       >
-        {/* Chart annotation */}
-        <div style={{
-          position: 'absolute',
-          top: '4px',
-          right: '40px',
-          fontSize: '11px',
-          fontWeight: 600,
-          color: theme.green,
-          zIndex: 1,
-        }}>
-          +12.3% ↑
-        </div>
         <svg
           viewBox="0 0 600 80"
           preserveAspectRatio="none"
@@ -748,7 +640,7 @@ function WalletWidget() {
             <div style={{ fontSize: '10px', fontWeight: 500, color: 'rgba(255,255,255,0.3)', marginBottom: '4px' }}>
               This Month Out
             </div>
-            <div style={{ fontSize: '13px', fontWeight: 700, color: theme.red }}>
+            <div style={{ fontSize: '13px', fontWeight: 700, color: theme.textHeading }}>
               -SAR 12,500
             </div>
           </div>
@@ -761,18 +653,26 @@ function WalletWidget() {
           style={{
             flex: 1,
             padding: '8px 12px',
-            background: theme.blue,
-            color: '#fff',
-            border: 'none',
+            background: 'transparent',
+            color: theme.blue,
+            border: '1px solid rgba(13,130,249,0.3)',
             borderRadius: '8px',
             fontSize: '12px',
             fontWeight: '600',
             cursor: 'pointer',
             transition: 'opacity 0.2s',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '4px',
           }}
           onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.85')}
           onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
         >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="12" y1="19" x2="12" y2="5" />
+            <polyline points="5 12 12 5 19 12" />
+          </svg>
           Deposit
         </button>
         <button
@@ -787,6 +687,10 @@ function WalletWidget() {
             fontWeight: '600',
             cursor: 'pointer',
             transition: 'all 0.2s',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '4px',
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.borderColor = theme.blue
@@ -797,6 +701,10 @@ function WalletWidget() {
             e.currentTarget.style.color = theme.textSecondary
           }}
         >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <polyline points="19 12 12 19 5 12" />
+          </svg>
           Withdraw
         </button>
       </div>
@@ -945,265 +853,10 @@ function OpportunitiesSection() {
   )
 }
 
-function RepaymentItem({ repayment }: { repayment: RepaymentData }) {
-  const { theme } = useInvestorTheme()
-  const bgColor = repaymentIconBg[repayment.type] || repayment.iconColor
-
-  return (
-    <div
-      style={{
-        display: 'flex',
-        gap: '12px',
-        padding: '12px 0',
-        borderBottom: `1px solid ${theme.cardBorder}`,
-        alignItems: 'center',
-      }}
-    >
-      {/* Icon */}
-      <div
-        style={{
-          width: '38px',
-          height: '38px',
-          borderRadius: '50%',
-          background: bgColor,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexShrink: 0,
-        }}
-      >
-        <RepaymentIcon type={repayment.type} />
-      </div>
-
-      {/* Info */}
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontSize: '13px', fontWeight: '600', color: theme.textHeading }}>
-          {repayment.company}
-        </div>
-        <div style={{ fontSize: '11px', color: theme.textSecondary }}>
-          {repayment.type} · {repayment.code}
-        </div>
-      </div>
-
-      {/* Right side */}
-      <div style={{ textAlign: 'right', flexShrink: 0 }}>
-        <div style={{ fontSize: '13px', fontWeight: '600', color: theme.green }}>
-          SAR {repayment.amount.toLocaleString('en-US')}
-        </div>
-        <div style={{ fontSize: '11px', color: theme.textSecondary }}>
-          {repayment.date}
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function RepaymentSection() {
-  const { theme } = useInvestorTheme()
-
-  return (
-    <div style={{ display: 'grid', gridTemplateColumns: '7fr 3fr', gap: '20px', marginTop: '24px' }}>
-      {/* Repayments card */}
-      <GlassCard style={{ padding: '20px' }}>
-        {/* Header */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginBottom: '16px',
-          }}
-        >
-          <div style={{ fontSize: '16px', fontWeight: '700', color: theme.textHeading }}>
-            Upcoming Repayments
-          </div>
-          <a
-            href="#"
-            style={{
-              fontSize: '12px',
-              color: theme.blue,
-              textDecoration: 'none',
-              fontWeight: '500',
-              transition: 'opacity 0.2s',
-              cursor: 'pointer',
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.7')}
-            onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
-          >
-            View all →
-          </a>
-        </div>
-
-        {/* Repayment items */}
-        <div>
-          {repayments.map((repayment) => (
-            <RepaymentItem key={repayment.id} repayment={repayment} />
-          ))}
-        </div>
-      </GlassCard>
-
-      {/* VIP Upgrade card */}
-      <div
-        style={{
-          background: 'linear-gradient(160deg, rgba(212,168,67,0.08) 0%, rgba(0,20,60,0.4) 50%, rgba(212,168,67,0.06) 100%)',
-          border: '1px solid rgba(212,168,67,0.15)',
-          backdropFilter: 'blur(40px) saturate(1.4)',
-          borderRadius: theme.cardRadius,
-          padding: '20px',
-          position: 'relative',
-          overflow: 'hidden',
-        }}
-      >
-        {/* Glow effect */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '-40%',
-            right: '-40%',
-            width: '200px',
-            height: '200px',
-            background: 'radial-gradient(circle, rgba(212,168,67,0.15) 0%, transparent 70%)',
-            borderRadius: '50%',
-            pointerEvents: 'none',
-          }}
-        />
-
-        <div style={{ position: 'relative', zIndex: 1 }}>
-          {/* Icon */}
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              marginBottom: '12px',
-            }}
-          >
-            <svg viewBox="0 0 64 64" fill="none" width="56" height="56">
-              <path d="M32 6 L52 16 V34 C52 46 42 56 32 60 C22 56 12 46 12 34 V16 Z" stroke="#D4A843" strokeWidth="1.5" fill="rgba(212,168,67,0.06)"/>
-              <path d="M32 12 L46 20 V34 C46 43 39 51 32 54" stroke="rgba(212,168,67,0.15)" strokeWidth="1" fill="none"/>
-              <polygon points="32,22 34.5,28 41,28.5 36,33 37.5,39.5 32,36 26.5,39.5 28,33 23,28.5 29.5,28" stroke="#D4A843" strokeWidth="1.2" fill="rgba(212,168,67,0.12)"/>
-              <circle cx="50" cy="12" r="5" stroke="rgba(255,255,255,0.2)" strokeWidth="1" strokeDasharray="2.5 2" fill="none"/>
-              <line x1="50" y1="10" x2="50" y2="14" stroke="rgba(255,255,255,0.3)" strokeWidth="1" strokeLinecap="round"/>
-              <line x1="48" y1="12" x2="52" y2="12" stroke="rgba(255,255,255,0.3)" strokeWidth="1" strokeLinecap="round"/>
-              <circle cx="14" cy="14" r="1.2" fill="rgba(212,168,67,0.4)"/>
-              <circle cx="54" cy="44" r="0.8" fill="rgba(52,211,153,0.4)"/>
-              <circle cx="10" cy="42" r="0.8" fill="rgba(255,255,255,0.15)"/>
-            </svg>
-          </div>
-
-          {/* VIP GOLD Badge */}
-          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '8px' }}>
-            <div style={{
-              fontSize: '9px',
-              fontWeight: 800,
-              letterSpacing: '0.1em',
-              color: '#D4A843',
-              padding: '3px 10px',
-              borderRadius: '6px',
-              background: 'rgba(212,168,67,0.1)',
-              border: '1px solid rgba(212,168,67,0.15)',
-            }}>
-              VIP GOLD
-            </div>
-          </div>
-
-          {/* Title */}
-          <div
-            style={{
-              fontSize: '14px',
-              fontWeight: '700',
-              color: theme.textHeading,
-              textAlign: 'center',
-              marginBottom: '6px',
-            }}
-          >
-            Unlock Premium Opportunities
-          </div>
-
-          {/* Subtitle */}
-          <div
-            style={{
-              fontSize: '11px',
-              color: theme.textSecondary,
-              textAlign: 'center',
-              marginBottom: '12px',
-              lineHeight: 1.4,
-            }}
-          >
-            Get exclusive deals, higher returns, and priority access to new offerings
-          </div>
-
-          {/* Perks */}
-          <div style={{ marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            {['Exclusive deals', 'Up to 18% returns', 'Dedicated manager'].map((perk) => (
-              <div
-                key={perk}
-                style={{
-                  fontSize: '11px',
-                  color: theme.textSecondary,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                }}
-              >
-                <div
-                  style={{
-                    width: '14px',
-                    height: '14px',
-                    borderRadius: '3px',
-                    background: '#D4A843',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexShrink: 0,
-                  }}
-                >
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    width="10"
-                    height="10"
-                    style={{ color: '#000' }}
-                  >
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
-                </div>
-                {perk}
-              </div>
-            ))}
-          </div>
-
-          {/* Button */}
-          <button
-            style={{
-              width: '100%',
-              padding: '8px 12px',
-              background: 'linear-gradient(135deg, #D4A843, #A67B1E)',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '8px',
-              fontSize: '12px',
-              fontWeight: '600',
-              cursor: 'pointer',
-              transition: 'opacity 0.2s',
-              boxShadow: '0 4px 16px rgba(212,168,67,0.2)',
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.85')}
-            onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
-          >
-            Upgrade to VIP
-          </button>
-        </div>
-      </div>
-    </div>
-  )
-}
 
 export default function InvestorDashboard() {
   return (
-    <InvestorLayout activeTab="dashboard" userName="Ahmed" tier="BASIC">
+    <InvestorLayout activeTab="dashboard" userName="Wahba" tier="BASIC">
       {/* Top row: Balance Card + Wallet Widget */}
       <div
         style={{
@@ -1219,9 +872,6 @@ export default function InvestorDashboard() {
 
       {/* Opportunities Section */}
       <OpportunitiesSection />
-
-      {/* Repayments + VIP Upgrade Section */}
-      <RepaymentSection />
     </InvestorLayout>
   )
 }

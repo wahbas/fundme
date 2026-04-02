@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
-import { ArrowLeftRight, LogOut, ChevronRight, ChevronLeft, Lock, Eye, EyeOff, ShieldCheck, ArrowLeft, ArrowRight, BadgeCheck, AlertCircle } from 'lucide-react'
+import { ArrowLeftRight, LogOut, ChevronRight, ChevronLeft, Lock, Eye, EyeOff, ShieldCheck, ArrowLeft, ArrowRight } from 'lucide-react'
 import Sidebar from '../components/layout/Sidebar'
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
@@ -141,55 +141,6 @@ export default function Settings() {
             <div className="inner-page-header"><Header /></div>
 
             <h1 style={{ fontSize: 22, fontWeight: 700, color: theme.textPrimary, marginBottom: 24 }}>{t('settings.title')}</h1>
-
-            {/* Verification Status */}
-            <div style={{
-              background: verified
-                ? (isDark ? 'rgba(16,185,129,0.08)' : '#ECFDF5')
-                : (isDark ? 'rgba(245,158,11,0.08)' : '#FFFBEB'),
-              border: `1px solid ${verified ? (isDark ? 'rgba(16,185,129,0.25)' : '#A7F3D0') : (isDark ? 'rgba(245,158,11,0.25)' : '#FDE68A')}`,
-              borderRadius: 16,
-              padding: '20px 24px',
-              marginBottom: 20,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: 16,
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-                <div style={{
-                  width: 44, height: 44, borderRadius: 12,
-                  background: verified ? (isDark ? 'rgba(16,185,129,0.15)' : '#D1FAE5') : (isDark ? 'rgba(245,158,11,0.15)' : '#FEF3C7'),
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-                }}>
-                  {verified
-                    ? <BadgeCheck size={22} color="#10B981" />
-                    : <AlertCircle size={22} color="#F59E0B" />
-                  }
-                </div>
-                <div>
-                  <p style={{ fontSize: 15, fontWeight: 700, color: verified ? '#10B981' : '#F59E0B', marginBottom: 3 }}>
-                    {verified ? t('settings.verified' as any) : t('settings.notVerified' as any)}
-                  </p>
-                  <p style={{ fontSize: 13, color: theme.textMuted, lineHeight: 1.4 }}>
-                    {verified ? t('settings.verifiedDesc' as any) : t('settings.notVerifiedDesc' as any)}
-                  </p>
-                </div>
-              </div>
-              {!verified && (
-                <motion.button
-                  whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
-                  onClick={() => navigate(`/onboarding${stateParam ? `?state=${stateParam}` : ''}`)}
-                  style={{
-                    padding: '10px 20px', borderRadius: 10, border: 'none',
-                    background: '#F59E0B', color: '#fff', fontWeight: 600, fontSize: 13,
-                    cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0,
-                  }}
-                >
-                  {t('settings.completeVerification' as any)}
-                </motion.button>
-              )}
-            </div>
 
             {/* Card 1: Appearance */}
             <div style={{

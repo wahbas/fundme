@@ -1,5 +1,5 @@
 import { useInvestorTheme } from '../InvestorThemeContext'
-import { Moon, Sun, Settings } from 'lucide-react'
+import { Settings } from 'lucide-react'
 
 interface InvestorTopbarProps {
   userName?: string
@@ -7,7 +7,7 @@ interface InvestorTopbarProps {
 }
 
 export default function InvestorTopbar({ userName = 'Wahba', tier = 'BASIC' }: InvestorTopbarProps) {
-  const { theme, isDark, toggleTheme } = useInvestorTheme()
+  const { theme } = useInvestorTheme()
 
   const tierBadgeBg = tier === 'VIP'
     ? theme.isDark
@@ -48,47 +48,30 @@ export default function InvestorTopbar({ userName = 'Wahba', tier = 'BASIC' }: I
       <div style={{ borderRight: `1px solid ${borderColor}`, height: '100%', display: 'flex', alignItems: 'center' }} />
 
       {/* Welcome section */}
-      <div>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
         <p
           style={{
             fontSize: 22,
-            fontWeight: 700,
-            color: theme.textHeading,
             margin: 0,
           }}
         >
-          Welcome, <span style={{ fontWeight: 700 }}>{userName}</span>
+          <span style={{ fontWeight: 300, color: 'rgba(255,255,255,0.55)' }}>Welcome, </span>
+          <span style={{ fontWeight: 700, color: '#fff' }}>{userName}</span>
         </p>
-        <div
+        <span
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 8,
-            marginTop: 6,
+            fontSize: 11,
+            fontWeight: 600,
+            color: tierBadgeColor,
+            background: tierBadgeBg,
+            padding: '4px 8px',
+            borderRadius: 6,
+            border: `1px solid ${tierBadgeColor}`,
+            marginLeft: 10,
           }}
         >
-          <span
-            style={{
-              fontSize: 11,
-              fontWeight: 600,
-              color: tierBadgeColor,
-              background: tierBadgeBg,
-              padding: '4px 8px',
-              borderRadius: 6,
-              border: `1px solid ${tierBadgeColor}`,
-            }}
-          >
-            {tier}
-          </span>
-          <span
-            style={{
-              fontSize: 12,
-              color: theme.textSecondary,
-            }}
-          >
-            {new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
-          </span>
-        </div>
+          ★ {tier}
+        </span>
       </div>
 
       {/* Right actions */}
@@ -100,42 +83,6 @@ export default function InvestorTopbar({ userName = 'Wahba', tier = 'BASIC' }: I
           justifyContent: 'flex-end',
         }}
       >
-        {/* Theme toggle */}
-        <button
-          onClick={toggleTheme}
-          style={{
-            width: 40,
-            height: 40,
-            borderRadius: '50%',
-            border: `1px solid ${theme.borderColor}`,
-            background: theme.isDark
-              ? 'rgba(255,255,255,0.05)'
-              : 'rgba(0,0,0,0.02)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            transition: 'all 0.2s',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = theme.isDark
-              ? 'rgba(255,255,255,0.1)'
-              : 'rgba(0,0,0,0.05)'
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = theme.isDark
-              ? 'rgba(255,255,255,0.05)'
-              : 'rgba(0,0,0,0.02)'
-          }}
-          title={isDark ? 'Light mode' : 'Dark mode'}
-        >
-          {isDark ? (
-            <Sun size={18} color={theme.textSecondary} />
-          ) : (
-            <Moon size={18} color={theme.textSecondary} />
-          )}
-        </button>
-
         {/* Settings */}
         <button
           style={{
@@ -208,7 +155,7 @@ export default function InvestorTopbar({ userName = 'Wahba', tier = 'BASIC' }: I
               flexShrink: 0,
             }}
           >
-            A
+            W
           </div>
           <div
             style={{
@@ -226,7 +173,7 @@ export default function InvestorTopbar({ userName = 'Wahba', tier = 'BASIC' }: I
                 whiteSpace: 'nowrap',
               }}
             >
-              Ahmed Wahba
+              Wahba
             </span>
             <span
               style={{
@@ -238,6 +185,7 @@ export default function InvestorTopbar({ userName = 'Wahba', tier = 'BASIC' }: I
               Investor
             </span>
           </div>
+          <span style={{ fontSize: 12, color: theme.textSecondary, marginLeft: 2 }}>▾</span>
         </div>
       </div>
     </header>
