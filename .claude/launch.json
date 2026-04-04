@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "dev",
-      "runtimeExecutable": "/bin/sh",
-      "runtimeArgs": ["-c", "cd /Users/thisiswahba/fundme && PATH=/opt/homebrew/bin:$PATH npm run dev -- --port 5173"],
+      "runtimeExecutable": "/opt/homebrew/Cellar/node@22/22.22.1_1/bin/node",
+      "runtimeArgs": ["/opt/homebrew/bin/npx", "vite", "--port", "5173"],
       "port": 5173
     }
   ]

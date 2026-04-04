@@ -7,7 +7,6 @@ import { useInvestorTheme } from '../../components/investor/InvestorThemeContext
 import RiyalSign from '../../components/icons/RiyalSign'
 import InvestPanel from '../../components/investor/InvestPanel'
 import {
-  ArrowLeft,
   Wallet,
   FileText,
   Calendar,
@@ -20,8 +19,6 @@ import {
   Clock,
   TrendingUp,
   Percent,
-  PieChart,
-  Sparkles,
   Building2,
   Globe,
   Star,
@@ -214,7 +211,7 @@ const documentsList = [
 
 type TabKey = 'details' | 'repayments' | 'financials' | 'documents'
 
-function DonutChart({
+export function DonutChart({
   percentage,
   size = 180,
   strokeWidth = 18,

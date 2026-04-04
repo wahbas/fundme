@@ -1166,7 +1166,8 @@ function RepaymentSection() {
   )
 }
 
-function IncompleteDashboard() {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function IncompleteDashboard() {
   const { theme, isDark } = useInvestorTheme()
   const navigate = useNavigate()
   const nafathDone = localStorage.getItem('fundme-investor-nafath-verified') === 'true'

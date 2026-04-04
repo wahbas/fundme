@@ -16,8 +16,6 @@ export default function InvestorProgressStepper({ currentStep, totalSteps = 5 }:
         const step = i + 1
         const isCompleted = step < currentStep
         const isActive = step === currentStep
-        const isFuture = step > currentStep
-
         return (
           <div key={step} style={{ display: 'flex', alignItems: 'center', flex: i < totalSteps - 1 ? 1 : 0 }}>
             {/* Circle */}

@@ -26,8 +26,8 @@ import {
   Cell,
   BarChart,
   Bar,
-  Legend,
 } from 'recharts'
+import type { ValueType } from 'recharts/types/component/DefaultTooltipContent'
 
 /* ═══════════════════════════════════════════
    Shared UI
@@ -270,7 +270,7 @@ const riskDistData = [
 ]
 
 function RiskDistributionChart() {
-  const { theme, isDark } = useInvestorTheme()
+  const { theme } = useInvestorTheme()
 
   return (
     <GlassCard style={{ padding: '24px', flex: 1 }}>
@@ -334,7 +334,6 @@ const riskBarData = [
 function RiskBarChart() {
   const { theme, isDark } = useInvestorTheme()
 
-  const axisColor = isDark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.2)'
   const gridColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'
 
   const formatY = (v: number) => {
@@ -404,7 +403,7 @@ function RiskBarChart() {
                 color: theme.textHeading,
                 boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
               }}
-              formatter={(value: number) => [`SAR ${value.toLocaleString()}`, '']}
+              formatter={(value: ValueType | undefined) => [`SAR ${(value as number).toLocaleString()}`, '']}
             />
             <Bar
               dataKey="Active"
@@ -526,7 +525,7 @@ function InvestmentActivityChart() {
                 color: theme.textHeading,
                 boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
               }}
-              formatter={(value: number) => [`SAR ${value.toLocaleString()}`, 'Amount']}
+              formatter={(value: ValueType | undefined) => [`SAR ${(value as number).toLocaleString()}`, 'Amount']}
             />
             <Area
               type="monotone"
