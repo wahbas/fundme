@@ -1,12 +1,24 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import InvestorLayout from '../../components/investor/layout/InvestorLayout'
 import { useInvestorTheme } from '../../components/investor/InvestorThemeContext'
 import {
   ChevronLeft,
   ChevronRight,
+  BarChart3 as BarChart3Icon,
+  Wallet as WalletIcon,
+  Search as SearchIcon,
+  TrendingUp as TrendingUpIcon,
 } from 'lucide-react'
+import {
+  AreaChart,
+  Area,
+  ResponsiveContainer,
+} from 'recharts'
+import ProfileCompletionBanner from '../../components/investor/register/ProfileCompletionBanner'
+import LockedFeatureCard from '../../components/investor/register/LockedFeatureCard'
 
 interface GlassCardProps {
   children: React.ReactNode
@@ -218,6 +230,7 @@ function OpportunityCard({
   isExclusive?: boolean
 }) {
   const { theme } = useInvestorTheme()
+  const navigate = useNavigate()
 
   const badgeConfig = {
     trending: { label: 'TRENDING', bg: theme.badgeTrendingBg, text: theme.badgeTrendingText },
@@ -407,6 +420,9 @@ function OpportunityCard({
           }}
           onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.85')}
           onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
+          onClick={() => {
+            if (!isExclusive) navigate(`/investor/opportunities/${opp.id}`)
+          }}
         >
           Invest Now
         </button>
@@ -455,13 +471,33 @@ function OpportunityCard({
   )
 }
 
+const balanceChartData = [
+  { d: 1, v: 2320000 }, { d: 3, v: 2330000 }, { d: 5, v: 2310000 },
+  { d: 7, v: 2340000 }, { d: 9, v: 2350000 }, { d: 11, v: 2340000 },
+  { d: 13, v: 2360000 }, { d: 15, v: 2350000 }, { d: 17, v: 2370000 },
+  { d: 19, v: 2360000 }, { d: 21, v: 2380000 }, { d: 23, v: 2390000 },
+  { d: 25, v: 2400000 }, { d: 27, v: 2410000 }, { d: 29, v: 2415000 },
+  { d: 30, v: 2418240 },
+]
+
 function BalanceCard() {
-  const { theme } = useInvestorTheme()
-  const [chartRevealWidth, setChartRevealWidth] = useState(0)
+  const { theme, isDark } = useInvestorTheme()
+  const [countUp, setCountUp] = useState(0)
 
   useEffect(() => {
-    const timer = setTimeout(() => setChartRevealWidth(100), 100)
-    return () => clearTimeout(timer)
+    const target = 2418240
+    const duration = 1400
+    const start = performance.now()
+    let frame: number
+    const step = (now: number) => {
+      const elapsed = now - start
+      const progress = Math.min(elapsed / duration, 1)
+      const eased = 1 - Math.pow(1 - progress, 3)
+      setCountUp(Math.round(eased * target))
+      if (progress < 1) frame = requestAnimationFrame(step)
+    }
+    frame = requestAnimationFrame(step)
+    return () => cancelAnimationFrame(frame)
   }, [])
 
   return (
@@ -479,28 +515,26 @@ function BalanceCard() {
               Total Active Investments
             </div>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
-              <div style={{ fontSize: '32px', fontWeight: '700', color: theme.textHeading }}>
-                2,418,240
+              <div style={{ fontSize: '32px', fontWeight: '700', color: theme.textHeading, fontVariantNumeric: 'tabular-nums' }}>
+                {countUp.toLocaleString('en-US')}
               </div>
               <div style={{ fontSize: '14px', color: theme.textSecondary }}>.00</div>
             </div>
           </div>
-          {/* Time pill dropdown */}
           <div style={{
-            background: 'rgba(255,255,255,0.06)',
-            border: '1px solid rgba(255,255,255,0.08)',
+            background: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)',
+            border: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
             borderRadius: '10px',
             padding: '6px 14px',
             fontSize: '12px',
             fontWeight: 600,
-            color: 'rgba(255,255,255,0.6)',
+            color: theme.textSecondary,
             cursor: 'pointer',
             whiteSpace: 'nowrap',
           }}>
             1M ▾
           </div>
         </div>
-        {/* Sub-row */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '6px', fontSize: '12px', color: theme.textSecondary }}>
           <span>Across <strong style={{ color: theme.textHeading }}>3</strong> deals</span>
           <span style={{ width: '3px', height: '3px', borderRadius: '50%', background: theme.textTertiary, display: 'inline-block' }} />
@@ -516,62 +550,34 @@ function BalanceCard() {
         </div>
       </div>
 
-      {/* Chart */}
+      {/* Recharts area chart */}
       <div
         style={{
           width: 'calc(100% + 48px)',
           margin: '6px -24px 0',
           height: '80px',
-          position: 'relative',
-          overflow: 'hidden',
         }}
       >
-        <svg
-          viewBox="0 0 600 80"
-          preserveAspectRatio="none"
-          style={{
-            width: '100%',
-            height: '100%',
-          }}
-        >
-          <defs>
-            <linearGradient id="sparkFill" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor={theme.blue} stopOpacity="0.3" />
-              <stop offset="100%" stopColor={theme.blue} stopOpacity="0" />
-            </linearGradient>
-            <linearGradient id="sparkLine" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor={theme.blue} stopOpacity="0.3" />
-              <stop offset="100%" stopColor={theme.blue} />
-            </linearGradient>
-            <clipPath id="chartReveal">
-              <rect x="0" y="0" width={`${chartRevealWidth}%`} height="80" />
-            </clipPath>
-          </defs>
-
-          <g clipPath="url(#chartReveal)" style={{ transition: 'opacity 0.6s ease-out' }}>
-            <path
-              d="M0 62 L40 58 L80 60 L120 52 L160 49 L200 44 L240 37 L280 35 L320 31 L360 27 L400 21 L440 18 L480 14 L520 10 L560 7 L600 4 L600 80 L0 80Z"
-              fill="url(#sparkFill)"
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart data={balanceChartData} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
+            <defs>
+              <linearGradient id="dashSparkFill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor={theme.blue} stopOpacity={0.3} />
+                <stop offset="100%" stopColor={theme.blue} stopOpacity={0.02} />
+              </linearGradient>
+            </defs>
+            <Area
+              type="monotone"
+              dataKey="v"
+              stroke={theme.blue}
+              strokeWidth={2}
+              fill="url(#dashSparkFill)"
+              dot={false}
+              animationDuration={2000}
+              animationEasing="ease-out"
             />
-            <path
-              d="M0 62 L40 58 L80 60 L120 52 L160 49 L200 44 L240 37 L280 35 L320 31 L360 27 L400 21 L440 18 L480 14 L520 10 L560 7 L600 4"
-              stroke="url(#sparkLine)"
-              strokeWidth="2"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <circle cx="600" cy="4" r="3" fill={theme.blue} />
-            <circle
-              cx="600"
-              cy="4"
-              r="6"
-              fill={theme.blue}
-              opacity="0.15"
-              stroke="none"
-            />
-          </g>
-        </svg>
+          </AreaChart>
+        </ResponsiveContainer>
       </div>
     </GlassCard>
   )
@@ -854,7 +860,397 @@ function OpportunitiesSection() {
 }
 
 
+interface RepaymentData {
+  id: string
+  company: string
+  type: string
+  code: string
+  amount: number
+  date: string
+  iconColor: string
+}
+
+const repayments: RepaymentData[] = [
+  {
+    id: 'repay-1',
+    company: 'Al-Baraka Trading Co.',
+    type: 'Invoice Financing',
+    code: 'FM-0001-309',
+    amount: 56250,
+    date: 'Apr 15, 2026',
+    iconColor: '#0D82F9',
+  },
+  {
+    id: 'repay-2',
+    company: 'Riyadh EV Charging',
+    type: 'Clean Energy',
+    code: 'FM-0003-072',
+    amount: 115500,
+    date: 'May 2, 2026',
+    iconColor: '#34D399',
+  },
+  {
+    id: 'repay-3',
+    company: 'Jeddah Health Hub',
+    type: 'Healthcare',
+    code: 'FM-0005-218',
+    amount: 84000,
+    date: 'Jun 10, 2026',
+    iconColor: '#9370db',
+  },
+]
+
+const repaymentIconBg: Record<string, string> = {
+  'Invoice Financing': '#0D82F9',
+  'Clean Energy': '#34D399',
+  'Healthcare': '#9370db',
+}
+
+function RepaymentIcon({ type }: { type: string }) {
+  const props = {
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth: 1.8,
+    strokeLinecap: 'round' as const,
+    strokeLinejoin: 'round' as const,
+    width: 18,
+    height: 18,
+    style: { color: '#fff' },
+  }
+
+  switch (type) {
+    case 'Invoice Financing':
+      return (
+        <svg {...props}>
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="9" y1="13" x2="15" y2="13"/>
+          <line x1="9" y1="17" x2="13" y2="17"/>
+        </svg>
+      )
+    case 'Clean Energy':
+      return (
+        <svg {...props}>
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        </svg>
+      )
+    case 'Healthcare':
+      return (
+        <svg {...props}>
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+        </svg>
+      )
+    default:
+      return (
+        <svg {...props}>
+          <circle cx="12" cy="12" r="10"/>
+        </svg>
+      )
+  }
+}
+
+function RepaymentItem({ repayment }: { repayment: RepaymentData }) {
+  const { theme } = useInvestorTheme()
+  const bgColor = repaymentIconBg[repayment.type] || repayment.iconColor
+
+  return (
+    <div
+      style={{
+        display: 'flex',
+        gap: '14px',
+        padding: '14px 24px',
+        borderBottom: `1px solid ${theme.isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.06)'}`,
+        alignItems: 'center',
+        cursor: 'pointer',
+        transition: 'background 0.1s',
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.background = theme.isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)'
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.background = 'transparent'
+      }}
+    >
+      <div
+        style={{
+          width: '38px',
+          height: '38px',
+          borderRadius: '50%',
+          background: bgColor,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
+        }}
+      >
+        <RepaymentIcon type={repayment.type} />
+      </div>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ fontSize: '13px', fontWeight: '600', color: theme.textHeading, marginBottom: '2px' }}>
+          {repayment.company}
+        </div>
+        <div style={{ fontSize: '11px', color: theme.textSecondary }}>
+          {repayment.type} · {repayment.code}
+        </div>
+      </div>
+      <div style={{ textAlign: 'right', flexShrink: 0 }}>
+        <div style={{ fontSize: '14px', fontWeight: '700', color: theme.green, marginBottom: '2px' }}>
+          SAR {repayment.amount.toLocaleString('en-US')}
+        </div>
+        <div style={{ fontSize: '10px', color: theme.textSecondary }}>
+          {repayment.date}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function RepaymentSection() {
+  const { theme, isDark } = useInvestorTheme()
+
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: '7fr 3fr', gap: '20px', marginTop: '24px' }}>
+      {/* Repayments card */}
+      <GlassCard style={{ padding: 0 }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '18px 24px',
+            borderBottom: `1px solid ${theme.isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
+          }}
+        >
+          <div style={{ fontSize: '16px', fontWeight: '700', color: theme.textHeading }}>
+            Upcoming Repayments
+          </div>
+          <a
+            href="#"
+            style={{
+              fontSize: '12px',
+              color: theme.blue,
+              textDecoration: 'none',
+              fontWeight: '500',
+              transition: 'opacity 0.2s',
+              cursor: 'pointer',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.7')}
+            onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
+          >
+            View all →
+          </a>
+        </div>
+        <div style={{ padding: '6px 0' }}>
+          {repayments.map((repayment) => (
+            <RepaymentItem key={repayment.id} repayment={repayment} />
+          ))}
+        </div>
+      </GlassCard>
+
+      {/* VIP Upgrade card */}
+      <div
+        style={{
+          background: isDark
+            ? 'linear-gradient(160deg, rgba(212,168,67,0.08) 0%, rgba(0,20,60,0.4) 50%, rgba(212,168,67,0.06) 100%)'
+            : 'linear-gradient(160deg, rgba(212,168,67,0.06) 0%, rgba(255,255,255,0.95) 50%, rgba(212,168,67,0.04) 100%)',
+          border: `1px solid ${isDark ? 'rgba(212,168,67,0.15)' : 'rgba(212,168,67,0.25)'}`,
+          backdropFilter: 'blur(40px) saturate(1.4)',
+          borderRadius: theme.cardRadius,
+          padding: '24px 20px',
+          position: 'relative',
+          overflow: 'hidden',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          textAlign: 'center',
+        }}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            top: '-40px',
+            right: '-40px',
+            width: '140px',
+            height: '140px',
+            background: `radial-gradient(circle, rgba(212,168,67,${isDark ? '0.1' : '0.08'}) 0%, transparent 70%)`,
+            borderRadius: '50%',
+            pointerEvents: 'none',
+          }}
+        />
+
+        <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100%' }}>
+          {/* Shield icon */}
+          <div style={{ marginBottom: '12px' }}>
+            <svg viewBox="0 0 64 64" fill="none" width="56" height="56">
+              <path d="M32 6 L52 16 V34 C52 46 42 56 32 60 C22 56 12 46 12 34 V16 Z" stroke={isDark ? '#D4A843' : '#B8942E'} strokeWidth="1.5" fill={isDark ? 'rgba(212,168,67,0.06)' : 'rgba(212,168,67,0.08)'}/>
+              <path d="M32 12 L46 20 V34 C46 43 39 51 32 54" stroke={isDark ? 'rgba(212,168,67,0.15)' : 'rgba(212,168,67,0.2)'} strokeWidth="1" fill="none"/>
+              <polygon points="32,22 34.5,28 41,28.5 36,33 37.5,39.5 32,36 26.5,39.5 28,33 23,28.5 29.5,28" stroke={isDark ? '#D4A843' : '#B8942E'} strokeWidth="1.2" fill={isDark ? 'rgba(212,168,67,0.12)' : 'rgba(212,168,67,0.15)'}/>
+            </svg>
+          </div>
+
+          {/* VIP GOLD Badge */}
+          <div style={{
+            fontSize: '9px',
+            fontWeight: 800,
+            letterSpacing: '0.1em',
+            color: isDark ? '#D4A843' : '#9E7B20',
+            padding: '3px 10px',
+            borderRadius: '6px',
+            background: isDark ? 'rgba(212,168,67,0.1)' : 'rgba(212,168,67,0.12)',
+            border: `1px solid ${isDark ? 'rgba(212,168,67,0.15)' : 'rgba(212,168,67,0.25)'}`,
+            marginBottom: '10px',
+          }}>
+            VIP GOLD
+          </div>
+
+          <div style={{ fontSize: '16px', fontWeight: '700', color: theme.textHeading, marginBottom: '6px', lineHeight: 1.3 }}>
+            Unlock Premium Opportunities
+          </div>
+          <div style={{ fontSize: '11px', color: theme.textSecondary, lineHeight: 1.45, marginBottom: '16px' }}>
+            Get exclusive deals, higher returns, and priority access to new offerings
+          </div>
+
+          {/* Perks */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '20px', width: '100%', textAlign: 'left' }}>
+            {['Exclusive deals', 'Up to 18% returns', 'Dedicated manager'].map((perk) => (
+              <div
+                key={perk}
+                style={{
+                  fontSize: '11px',
+                  fontWeight: 500,
+                  color: theme.textSecondary,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                }}
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke={isDark ? '#D4A843' : '#9E7B20'} strokeWidth="2.5" strokeLinecap="round" width="14" height="14" style={{ flexShrink: 0 }}>
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                {perk}
+              </div>
+            ))}
+          </div>
+
+          <button
+            style={{
+              width: '100%',
+              padding: '10px 0',
+              background: 'linear-gradient(135deg, #D4A843, #A67B1E)',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '12px',
+              fontSize: '12px',
+              fontWeight: '700',
+              cursor: 'pointer',
+              fontFamily: 'inherit',
+              transition: 'all 0.2s',
+              boxShadow: isDark ? '0 4px 16px rgba(212,168,67,0.2)' : '0 4px 16px rgba(212,168,67,0.3)',
+              marginTop: 'auto',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.boxShadow = isDark ? '0 6px 24px rgba(212,168,67,0.35)' : '0 6px 24px rgba(212,168,67,0.4)'
+              e.currentTarget.style.filter = 'brightness(1.1)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.boxShadow = isDark ? '0 4px 16px rgba(212,168,67,0.2)' : '0 4px 16px rgba(212,168,67,0.3)'
+              e.currentTarget.style.filter = 'brightness(1)'
+            }}
+          >
+            Upgrade to VIP
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function IncompleteDashboard() {
+  const { theme, isDark } = useInvestorTheme()
+  const navigate = useNavigate()
+  const nafathDone = localStorage.getItem('fundme-investor-nafath-verified') === 'true'
+
+  return (
+    <InvestorLayout activeTab="dashboard" userName="Wahba" tier="BASIC">
+      {/* Completion banner */}
+      <div style={{ marginTop: 16, marginBottom: 24 }}>
+        <ProfileCompletionBanner
+          completionPercent={nafathDone ? 33 : 0}
+          currentStep={nafathDone ? 'Investor profile required' : 'Identity verification pending'}
+          onContinue={() => navigate('/investor/onboarding')}
+        />
+      </div>
+
+      {/* Locked feature cards */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(2, 1fr)',
+          gap: 16,
+          marginBottom: 24,
+        }}
+      >
+        <LockedFeatureCard
+          title="Active Investments"
+          description="Complete verification to unlock"
+          icon={<BarChart3Icon size={22} color={theme.blue} />}
+        />
+        <LockedFeatureCard
+          title="Wallet"
+          description="Complete verification to unlock"
+          icon={<WalletIcon size={22} color={theme.green || '#34D399'} />}
+        />
+        <LockedFeatureCard
+          title="Opportunities"
+          description="Complete verification to unlock"
+          icon={<SearchIcon size={22} color="#A78BFA" />}
+        />
+        <LockedFeatureCard
+          title="Portfolio Analytics"
+          description="Complete verification to unlock"
+          icon={<TrendingUpIcon size={22} color="#F59E0B" />}
+        />
+      </div>
+
+      {/* What you'll unlock */}
+      <GlassCard style={{ padding: '24px' }}>
+        <div style={{ fontSize: 16, fontWeight: 700, color: theme.textHeading, marginBottom: 16 }}>
+          What you'll unlock
+        </div>
+        <div style={{ display: 'flex', gap: 16 }}>
+          {[
+            { title: 'Vetted Opportunities', desc: 'Access SAMA-regulated investment deals', color: theme.blue },
+            { title: 'Portfolio Tracking', desc: 'Real-time returns and analytics', color: theme.green || '#34D399' },
+            { title: 'Secure Wallet', desc: 'Deposit, withdraw, and manage funds', color: '#A78BFA' },
+          ].map((item) => (
+            <div
+              key={item.title}
+              style={{
+                flex: 1,
+                padding: '16px',
+                background: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)',
+                borderRadius: 12,
+                border: `1px solid ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)'}`,
+              }}
+            >
+              <div style={{ width: 8, height: 8, borderRadius: '50%', background: item.color, marginBottom: 10 }} />
+              <div style={{ fontSize: 13, fontWeight: 600, color: theme.textHeading, marginBottom: 4 }}>{item.title}</div>
+              <div style={{ fontSize: 12, color: theme.textSecondary, lineHeight: 1.4 }}>{item.desc}</div>
+            </div>
+          ))}
+        </div>
+      </GlassCard>
+    </InvestorLayout>
+  )
+}
+
 export default function InvestorDashboard() {
+  // Profile gating disabled for now — always show full dashboard
+  // const nafathDone = localStorage.getItem('fundme-investor-nafath-verified') === 'true'
+  // const profileDone = localStorage.getItem('fundme-investor-profile-complete') === 'true'
+  // if (!nafathDone || !profileDone) return <IncompleteDashboard />
+
   return (
     <InvestorLayout activeTab="dashboard" userName="Wahba" tier="BASIC">
       {/* Top row: Balance Card + Wallet Widget */}
@@ -872,6 +1268,9 @@ export default function InvestorDashboard() {
 
       {/* Opportunities Section */}
       <OpportunitiesSection />
+
+      {/* Repayments + VIP Upgrade Section */}
+      <RepaymentSection />
     </InvestorLayout>
   )
 }

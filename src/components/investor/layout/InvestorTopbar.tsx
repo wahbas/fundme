@@ -1,5 +1,5 @@
 import { useInvestorTheme } from '../InvestorThemeContext'
-import { Settings } from 'lucide-react'
+import { Settings, Moon, Sun } from 'lucide-react'
 
 interface InvestorTopbarProps {
   userName?: string
@@ -7,7 +7,7 @@ interface InvestorTopbarProps {
 }
 
 export default function InvestorTopbar({ userName = 'Wahba', tier = 'BASIC' }: InvestorTopbarProps) {
-  const { theme } = useInvestorTheme()
+  const { theme, isDark, toggleTheme } = useInvestorTheme()
 
   const tierBadgeBg = tier === 'VIP'
     ? theme.isDark
@@ -36,7 +36,7 @@ export default function InvestorTopbar({ userName = 'Wahba', tier = 'BASIC' }: I
         background: topbarBg,
         borderBottom: `1px solid ${borderColor}`,
         display: 'grid',
-        gridTemplateColumns: '190px 1fr auto',
+        gridTemplateColumns: '220px 1fr auto',
         alignItems: 'center',
         paddingRight: 28,
         gap: 24,
@@ -55,8 +55,8 @@ export default function InvestorTopbar({ userName = 'Wahba', tier = 'BASIC' }: I
             margin: 0,
           }}
         >
-          <span style={{ fontWeight: 300, color: 'rgba(255,255,255,0.55)' }}>Welcome, </span>
-          <span style={{ fontWeight: 700, color: '#fff' }}>{userName}</span>
+          <span style={{ fontWeight: 300, color: theme.textSecondary }}>Welcome, </span>
+          <span style={{ fontWeight: 700, color: theme.textHeading }}>{userName}</span>
         </p>
         <span
           style={{
@@ -83,6 +83,42 @@ export default function InvestorTopbar({ userName = 'Wahba', tier = 'BASIC' }: I
           justifyContent: 'flex-end',
         }}
       >
+        {/* Theme toggle */}
+        <button
+          onClick={toggleTheme}
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: '50%',
+            border: `1px solid ${theme.borderColor}`,
+            background: theme.isDark
+              ? 'rgba(255,255,255,0.05)'
+              : 'rgba(0,0,0,0.02)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            transition: 'all 0.2s',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = theme.isDark
+              ? 'rgba(255,255,255,0.1)'
+              : 'rgba(0,0,0,0.05)'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = theme.isDark
+              ? 'rgba(255,255,255,0.05)'
+              : 'rgba(0,0,0,0.02)'
+          }}
+          title={isDark ? 'Light mode' : 'Dark mode'}
+        >
+          {isDark ? (
+            <Sun size={18} color={theme.textSecondary} />
+          ) : (
+            <Moon size={18} color={theme.textSecondary} />
+          )}
+        </button>
+
         {/* Settings */}
         <button
           style={{

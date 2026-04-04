@@ -21,7 +21,7 @@ export default function InvestorLayout({
     <div
       style={{
         display: 'grid',
-        gridTemplateColumns: '190px 1fr',
+        gridTemplateColumns: '220px 1fr',
         gridTemplateRows: 'auto 1fr',
         height: '100vh',
         width: '100%',

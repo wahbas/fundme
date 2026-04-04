@@ -23,6 +23,10 @@ import InvestorDashboard from './pages/investor/InvestorDashboard.tsx'
 import InvestorOpportunities from './pages/investor/InvestorOpportunities.tsx'
 import InvestorPortfolio from './pages/investor/InvestorPortfolio.tsx'
 import InvestorWallet from './pages/investor/InvestorWallet.tsx'
+import InvestorOpportunityDetail from './pages/investor/InvestorOpportunityDetail.tsx'
+// Registration & onboarding (disabled for now — files kept for later)
+// import InvestorRegister from './pages/investor/register/index.tsx'
+// import InvestorOnboarding from './pages/investor/onboarding/index.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -47,8 +51,12 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/settings" element={<Settings />} />
 
         {/* Investor routes */}
+        {/* Registration & onboarding routes (disabled for now) */}
+        {/* <Route path="/investor/register/*" element={<InvestorThemeProvider><InvestorRegister /></InvestorThemeProvider>} /> */}
+        {/* <Route path="/investor/onboarding/*" element={<InvestorThemeProvider><InvestorOnboarding /></InvestorThemeProvider>} /> */}
         <Route path="/investor" element={<InvestorThemeProvider><InvestorDashboard /></InvestorThemeProvider>} />
         <Route path="/investor/opportunities" element={<InvestorThemeProvider><InvestorOpportunities /></InvestorThemeProvider>} />
+        <Route path="/investor/opportunities/:id" element={<InvestorThemeProvider><InvestorOpportunityDetail /></InvestorThemeProvider>} />
         <Route path="/investor/portfolio" element={<InvestorThemeProvider><InvestorPortfolio /></InvestorThemeProvider>} />
         <Route path="/investor/wallet" element={<InvestorThemeProvider><InvestorWallet /></InvestorThemeProvider>} />
       </Routes>

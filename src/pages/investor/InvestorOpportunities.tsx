@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import InvestorLayout from '../../components/investor/layout/InvestorLayout'
 import { useInvestorTheme } from '../../components/investor/InvestorThemeContext'
 import {
@@ -167,6 +168,7 @@ const riskOptions = ['All Risks', 'Risk A', 'Risk B', 'Risk C']
 
 function OpportunityCard({ opp }: { opp: OpportunityData }) {
   const { theme, isDark } = useInvestorTheme()
+  const navigate = useNavigate()
 
   const badgeConfig: Record<string, { label: string; bg: string; text: string }> = {
     trending: { label: 'Trending', bg: theme.badgeTrendingBg, text: theme.badgeTrendingText },
@@ -355,6 +357,10 @@ function OpportunityCard({ opp }: { opp: OpportunityData }) {
           }}
           onMouseEnter={(e: any) => (e.currentTarget.style.opacity = '0.85')}
           onMouseLeave={(e: any) => (e.currentTarget.style.opacity = '1')}
+          onClick={(e: React.MouseEvent) => {
+            e.stopPropagation()
+            if (!opp.locked) navigate(`/investor/opportunities/${opp.id}`)
+          }}
         >
           Invest Now
         </button>

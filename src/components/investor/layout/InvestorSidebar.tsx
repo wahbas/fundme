@@ -70,9 +70,9 @@ function NavItem({ icon: Icon, label, badge, active, onClick }: NavItemProps) {
       {badge !== undefined && badge > 0 && (
         <span
           style={{
-            minWidth: '24px',
-            height: '24px',
-            borderRadius: '12px',
+            minWidth: '22px',
+            height: '22px',
+            borderRadius: '11px',
             background: theme.blue,
             color: '#fff',
             fontSize: 11,
@@ -115,7 +115,7 @@ export default function InvestorSidebar({ activeTab }: InvestorSidebarProps) {
   return (
     <aside
       style={{
-        width: 190,
+        width: 220,
         height: '100vh',
         position: 'fixed',
         left: 0,
